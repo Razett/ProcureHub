@@ -19,8 +19,8 @@ public class BaseEntity {
     @Column(updatable = false, nullable = false)
     private LocalDateTime regdate;
 
-//    @LastModifiedDate
-//    @Column(nullable = false)
-//    private LocalDateTime moddate;
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime moddate;
 
 }
