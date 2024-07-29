@@ -2,6 +2,7 @@ package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialWarehouseDTO;
+import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.repository.MaterialRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import jakarta.transaction.Transactional;
@@ -31,11 +32,8 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    @Transactional
-    public void register(MaterialDTO materialDTO) {
-
-        materialRepository.save(materialDTOToEntity(materialDTO));
-
+    public Material register(MaterialDTO materialDTO) {
+        return materialRepository.save(materialDTOToEntity(materialDTO));
     }
 
     @Override

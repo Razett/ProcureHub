@@ -75,20 +75,6 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>견적 등록</title>
-                            <style>
-                                /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
-                                input[type="text"] {
-                                    font-size: 15px;
-                                    padding: 6px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-                            </style>
-                        </head>
-                        <body>
                         <form action="quoregister" method="post">
                             <header><h1>견적등록</h1></header>
                             <div>
@@ -166,9 +152,6 @@
                             <button type="button" id="cancel">취소</button>
                             <input type="submit" value="등록하기">
                         </form>
-                        </body>
-                        </html>
-
                     </th:block>
                 </div>
             </div>

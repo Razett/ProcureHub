@@ -15,7 +15,7 @@ public interface MaterialService {
 
     MaterialDTO read(Long mtrlno);
 
-    void register(MaterialDTO materialDTO);
+    Material register(MaterialDTO materialDTO);
 
     int update(MaterialDTO materialDTO);
 

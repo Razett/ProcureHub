@@ -75,26 +75,6 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>자재 등록</title>
-                            <style>
-                                /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
-                                input[type="text"] {
-                                    font-size: 15px;
-                                    padding: 6px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-                                input[type="textarea"] {
-                                    font-size: 15px;
-                                    padding: 80px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-
-                            </style>
-                        </head>
-                        <body>
                         <form action="/material/register" method="post">
                             <header><h1>자재등록</h1></header>
                             <div>
@@ -104,10 +84,11 @@
                             <div>
                                 그룹선택
                                 <select name="grpcode">
-                                    <option value="BODY_MOD_CAS">자재그룹을 선택하시오</option>
+                                    <option value="BODY_MOD_CAS" selected>자재그룹을 선택하시오</option>
+                                    <option value="ETC" selected>test</option>
                                 </select>
                                 창고선택
-                                <select name="wrhscode" >
+                                <select name="wrhscode">
                                     <th:block th:each="warehouse : ${warehouses}">
                                     <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}"></option>
                                     </th:block>
@@ -136,9 +117,6 @@
                             <button type="button" id="cancel">취소</button>
                             <input type="submit" value="등록하기" id="register">
                         </form>
-                        </body>
-                        </html>
-
                     </th:block>
                 </div>
             </div>

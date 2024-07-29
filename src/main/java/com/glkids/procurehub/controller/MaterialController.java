@@ -8,10 +8,7 @@ import com.glkids.procurehub.service.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 자재 관리 메뉴 컨트롤러
@@ -64,7 +61,8 @@ public class MaterialController {
      */
     @GetMapping("/register")
     public String getRegister(Model model) {
-       model.addAttribute("warehouses",materialService.listWarehouse());
+        model.addAttribute("warehouses",materialService.listWarehouse());
+
         return "material/register";
     }
 
@@ -72,11 +70,13 @@ public class MaterialController {
      * 자재 등록 버튼 클릭 시 목록 화면으로
      */
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute MaterialDTO materialDTO, MaterialWarehouse materialWarehouse , MaterialGroup materialGroup, Model model) {
+    public String postRegister(@ModelAttribute MaterialDTO materialDTO, @RequestParam("wrhscode") MaterialWarehouse materialWarehouse, @RequestParam("grpcode") MaterialGroup materialGroup, Model model) {
 
+        System.out.println(materialGroup);
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
-        materialService.register(materialDTO);
+        materialDTO.setStatus(0);
+        model.addAttribute("regist", materialService.register(materialDTO).getMtrlno());
 
         return "/material/list";
     }
