@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
- * <b>견적서 파일</b>
+ * <b>출하명세서 파일</b>
  *
- * <p>{@code Long qtfno} - 견적서 파일 코드 [BIGINT, PK, Not Null]</p>
- * <p>{@code Quotation quotation} - 견적 [FK, Not Null]</p>
+ * <p>{@code Long orderfno} - 출하명세서 파일 코드 [BIGINT, PK, Not Null]</p>
+ * <p>{@code Order order} - 발주 [FK, Not Null]</p>
  * <p>{@code String uuid} - UUID [Varchar(255), Nullable]</p>
  * <p>{@code String name} - 파일명 [Varchar(255), Not Null]</p>
  * <p>{@code String url} - URL [Varchar(255), Not Null]</p>
@@ -18,17 +18,17 @@ import lombok.*;
 @ToString
 @Getter
 @Entity
-public class QuotationFile extends BaseEntity{
+public class OrderFile extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long qtfno;
+    private Long orderfno;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Quotation quotation;
+    private Order order;
 
-    @Column(length = 255, nullable = true)
+    @Column(nullable = true)
     private String uuid;
 
     @Column(length = 255, nullable = false)

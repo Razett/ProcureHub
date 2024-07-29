@@ -8,7 +8,7 @@ import lombok.*;
  *
  *  <p>{@code Long importfno} - 파일 코드 [BIGINT, PK, Not Null]</p>
  *  <p>{@code Import anImport} - 입고 [FK, Not Null]</p>
- *  <p>{@code String uuid} - UUID [Varchar(150), Nullable]</p>
+ *  <p>{@code String uuid} - UUID [Varchar(255), Nullable]</p>
  *  <p>{@code String name} - 파일명 [Varchar(150), Not Null]</p>
  *  <p>{@code String url} - URL [Varchar(255), Not Null]</p>
  */
