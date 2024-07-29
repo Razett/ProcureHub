@@ -1,7 +1,10 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.MaterialDTO;
+import com.glkids.procurehub.dto.MaterialWarehouseDTO;
 import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.entity.MaterialWarehouse;
+import com.glkids.procurehub.repository.MaterialRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +15,13 @@ public interface MaterialService {
 
     MaterialDTO read(Long mtrlno);
 
-    void register(MaterialDTO materialDTO);
+    Material register(MaterialDTO materialDTO);
 
     int update(MaterialDTO materialDTO);
 
     int delete(Long mtrlno);
+
+    List<MaterialWarehouseDTO> listWarehouse();
 
     default MaterialDTO materialEntityToDTO(Optional<Material> opt) {
         if (opt.isPresent()) {
@@ -45,4 +50,9 @@ public interface MaterialService {
                 .materialWarehouse(materialDTO.getMaterialWarehouse())
                 .status(materialDTO.getStatus()).build();
     }
+
+    default MaterialWarehouseDTO warehouseEntityToDTO(MaterialWarehouse materialWarehouse) {
+        return MaterialWarehouseDTO.builder().wrhscode(materialWarehouse.getWrhscode()).wrhsname(materialWarehouse.getName()).build();
+    }
+
 }

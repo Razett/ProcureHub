@@ -75,59 +75,36 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>자재 등록</title>
-                            <style>
-                                /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
-                                input[type="text"] {
-                                    font-size: 15px;
-                                    padding: 6px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-                                input[type="textarea"] {
-                                    font-size: 15px;
-                                    padding: 80px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-
-                            </style>
-                        </head>
-                        <body>
-                        <form action="list" method="get">
+                        <form action="/material/register" method="post">
                             <header><h1>자재등록</h1></header>
                             <div>
-                                자재이름 <input type="text">
+                                자재이름 <input type="text" name="name">
                             </div>
                             <br>
                             <div>
                                 그룹선택
-                                <select>
-                                    <option value="">자재그룹을 선택하시오</option>
-                                    <option value="company1">외형</option>
-                                    <option value="company2">전장부품</option>
-                                    <option value="company3">카메라</option>
+                                <select name="grpcode">
+                                    <option value="BODY_MOD_CAS" selected>자재그룹을 선택하시오</option>
+                                    <option value="ETC" selected>test</option>
                                 </select>
                                 창고선택
-                                <select>
-                                    <option value="">창고를 선택하시오</option>
-                                    <option value="company1">A-01-어셈블리-나사</option>
-                                    <option value="company2">A-02-어셈블리-날개</option>
-                                    <option value="company3">A-03-어셈블리-배터리</option>
+                                <select name="wrhscode">
+                                    <th:block th:each="warehouse : ${warehouses}">
+                                    <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                             <br>
                             <div>
-                                규격 <input type="text">
+                                규격 <input type="text" name="standard">
                             </div>
                             <br>
                             <div>
-                                수량 <input type="text">
+                                수량 <input type="text" name="quantity">
                             </div>
                             <br>
                             <div>
-                                세부내용 <input type="textarea">
+                                세부내용 <input type="textarea" name="description">
                             </div>
                             <br>
                             <div>
@@ -140,9 +117,6 @@
                             <button type="button" id="cancel">취소</button>
                             <input type="submit" value="등록하기" id="register">
                         </form>
-                        </body>
-                        </html>
-
                     </th:block>
                 </div>
             </div>

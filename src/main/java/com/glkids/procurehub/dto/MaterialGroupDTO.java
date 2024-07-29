@@ -1,10 +1,11 @@
-package com.glkids.procurehub.entity;
+package com.glkids.procurehub.dto;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.util.List;
 
 /**
  * <b>자재 그룹</b>
@@ -14,25 +15,14 @@ import java.util.List;
  * <p>{@code Integer depth} - 상위 그룹 코드 [INT, Not Null]</p>
  * <p>{@code String name} - 그룹명 [Varchar(100), Not Null]</p>
  */
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@ToString
-@Getter
-@Entity
-public class MaterialGroup {
+@Data
+public class MaterialGroupDTO {
 
-    @Id
-    @Column(length = 30, nullable = false)
     private String grpcode;
-
-    @Column(length = 30, nullable = true)
     private String pGrpcode;
-
-    @ColumnDefault("0")
-    @Column(nullable = false)
     private Integer depth;
-
-    @Column(length = 100, nullable = false)
     private String name;
 }
