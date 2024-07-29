@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>업체 수정</title>
+    <style>
+        /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
+        input[type="text"] {
+            font-size: 15px;
+            padding: 6px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
+            width: 400px; /* 입력 상자의 너비를 400px로 설정 */
+        }
+    </style>
+    <script>
+        function clearText(inputElement) {
+            inputElement.value = "";
+        }
+    </script>
+</head>
+<body>
+<form action="cpdetail" method="post">
+    <header><h1>업체 수정</h1></header>
+    <div>
+        사업자 등록번호 <input type="text" value="123-45-67890" readonly>
+    </div>
+    <br>
+    <div>
+        회사이름 <input type="text" value="회사 이름">
+    </div>
+    <br>
+    <div>
+        주소 <input type="text" value="서울시 예시구 예시로 123">
+    </div>
+    <br>
+    <div>
+        전화번호 <input type="text" value="010-1234-5678">
+    </div>
+    <br>
+    <div>
+        담당자 성명 <input type="text" value="홍길동" >
+    </div>
+    <br>
+    <div>
+        연락처 <input type="text" value="010-8765-4321" >
+    </div>
+    <br>
+    <div>
+        이메일 <input type="text" value="example@example.com">
+    </div>
+    <br>
+    <br>
+    <button type="button" onclick="location.href='#'">삭제</button>
+    <button type="button" onclick="location.href='#'">취소</button>
+    <input type="submit" value="수정하기">
+</form>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>자재 수정</title>
+    <style>
+        input[type="text"], textarea {
+            font-size: 15px;
+            padding: 6px;
+            width: 400px;
+        }
+
+        textarea {
+            height: 100px; /* 텍스트 상자의 높이를 설정 */
+        }
+    </style>
+</head>
+<body>
+<form action="materialdetail" method="post">
+    <header><h1>자재수정</h1></header>
+    <div>
+        자재이름 <input type="text" value="ASSY SCREW 3D P" readonly>
+    </div>
+    <br>
+    <div>
+        그룹선택
+        <select>
+            <option value="company1">외형</option>
+            <option value="company2">전장부품</option>
+            <option value="company3">카메라</option>
+        </select>
+        창고선택
+        <select>
+            <option value="company1">A-01-어셈블리-나사</option>
+            <option value="company2">A-02-어셈블리-날개</option>
+            <option value="company3">A-03-어셈블리-배터리</option>
+        </select>
+    </div>
+    <br>
+    <div>
+        규격 <input type="text" value="6.0*13.0*3.0mm, 1pcs">
+    </div>
+    <br>
+    <div>
+        수량 <input type="text" value="50">
+    </div>
+    <br>
+    <div>
+        세부내용 <textarea>내용</textarea>
+    </div>
+    <br>
+    <div>
+        도면 <input type="file">
+    </div>
+    <br>
+    <br>
+    <button type="button" id="delete">삭제</button>
+    <button type="button" id="cancel">취소</button>
+    <input type="submit" value="수정하기" id="register">
+</form>
+</body>
+</html>

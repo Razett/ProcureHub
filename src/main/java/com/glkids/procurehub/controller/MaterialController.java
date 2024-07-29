@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 자재 관리 메뉴 컨트롤러
@@ -20,6 +19,24 @@ public class MaterialController {
     public String List() {
 
         return "/material/list";
+    }
+
+    /**
+     * 자재 수정
+     */
+    @GetMapping("/update")
+    public String update() {
+
+        return "/material/update";
+    }
+
+    /**
+     * 자재 수정버튼 누르고 자재상세보기 화면
+     */
+    @PostMapping("/update")
+    public String Postupdate() {
+
+        return "materialdetail";
     }
 
     /**

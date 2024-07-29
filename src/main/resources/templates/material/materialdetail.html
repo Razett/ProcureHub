@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>자재 등록</title>
+    <title>자재 상세보기</title>
     <style>
         /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
         input[type="text"] {
@@ -14,14 +14,14 @@
             padding: 80px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
             width: 400px; /* 입력 상자의 너비를 400px로 설정 */
         }
-        
+
     </style>
 </head>
 <body>
 <form action="list" method="get">
-    <header><h1>자재등록</h1></header>
+    <header><h1>자재 상세보기</h1></header>
     <div>
-        자재이름 <input type="text">
+        자재이름 <input type="text" placeholder="ASSY SCREW 3D P">
     </div>
     <br>
     <div>
@@ -42,22 +42,22 @@
     </div>
     <br>
     <div>
-        규격 <input type="text">
+        규격 <input type="text" placeholder="6.0*13.0*3.0mm, 1pcs">
     </div>
     <br>
     <div>
-        수량 <input type="text">
+        수량 <input type="text" placeholder="50">
     </div>
     <br>
     <div>
-        세부내용 <input type="textarea">
+        세부내용 <input type="textarea" placeholder="내용">
     </div>
     <br>
     <div>
         도면 <input type="file" >
     </div>
     <br>
-    
+
     <br>
     <br>
     <button type="button" id="cancel">취소</button>
