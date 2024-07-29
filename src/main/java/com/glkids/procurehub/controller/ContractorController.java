@@ -29,9 +29,9 @@ public class ContractorController {
      * @param corno 사업자 등록 번호
      * @return /contractor/get 을 요청하여 업체 상세페이지를 표시합니다.
      */
-    @GetMapping("/get")
-    public String get(Long corno, Model model) {
-        return "/contractor/get";
+    @GetMapping("/read")
+    public String read(Long corno, Model model) {
+        return "/contractor/read";
     }
 
     /**
@@ -65,7 +65,7 @@ public class ContractorController {
     public String postUpdate(Model model, Contractor contractor) {
         // 데이터를 처리하는 로직 추가
         model.addAttribute("contractor", contractor);
-        return "/contractor/get?corno=" + contractor.getCorno();
+        return "/contractor/read?corno=" + contractor.getCorno();
     }
 
     /**

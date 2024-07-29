@@ -22,32 +22,30 @@ public class MaterialController {
     }
 
     /**
+     * 자재상세보기 화면
+     */
+    @GetMapping("/read")
+    public String read() {
+        return "/material/read";
+    }
+
+    /**
      * 자재 수정
      */
     @GetMapping("/update")
-    public String update() {
+    public String getUpdate() {
 
         return "/material/update";
     }
 
     /**
-     * 자재상세보기 화면
+     * 자재 수정 처리
      */
-    @GetMapping("/materialdetail")
-    public String materialdetail() {
-        return "/material/materialdetail";
+    @PostMapping("/update")
+    public String postUpdate() {
+
+        return "material/read";
     }
-
-    /**
-     * 자재 수정버튼 누르고 자재상세보기 화면
-     */
-    @PostMapping("/materialdetail")
-    public String Postupdate() {
-
-        return "/material/materialdetail";
-    }
-
-
 
     /**
      * 자재 등록
@@ -71,8 +69,10 @@ public class MaterialController {
     public void groupList() {}
 
     /**
+     * @deprecated
      * 그룹 목록에서 등록 버튼 클릭 시 완료 후 목록 화면으로
      */
+    @Deprecated
     @PostMapping("/groupregister")
     public String GroupRegister() {
 
@@ -83,13 +83,15 @@ public class MaterialController {
      * 창고 목록
      */
     @GetMapping("/warehouselist")
-    public void wareHouseList() {}
+    public void warehouseList() {}
 
     /**
+     * @deprecated
      * 창고 목록에서 등록 버튼 클릭 시 완료 후 목록 화면으로
      */
+    @Deprecated
     @PostMapping("/warehouseregister")
-    public String wareHouseRegister() {
+    public String warehouseRegister() {
 
         return "/material/warehouselist";
     }
@@ -104,14 +106,18 @@ public class MaterialController {
     }
 
     /**
+     * @deprecated
      * 조달 계획 목록 수정
      */
+    @Deprecated
     @GetMapping("/prcrupdate")
     public void getPrcrUpdate() {}
 
     /**
+     * @deprecated
      * 조달 계획 수정 화면에서 저장 버튼 클릭 시 완료 후 조달 계획 목록 화면으로
      */
+    @Deprecated
     @PostMapping("/prcrupdate")
     public String postPrcrUpdate() {
         return "/material/prcrlist";

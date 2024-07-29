@@ -35,8 +35,10 @@ public class ImportController {
     }
 
     /**
+     * @deprecated
      * 입고 상세 정보
      */
+    @Deprecated
     @GetMapping("/read")
     public void read() {}
 
