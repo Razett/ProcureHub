@@ -102,7 +102,9 @@ public class MaterialController {
      * 창고 목록
      */
     @GetMapping("/warehouselist")
-    public void warehouseList() {}
+    public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
+        model.addAttribute("warehouses", materialService.listWarehouse());
+    }
 
     /**
      * @deprecated
