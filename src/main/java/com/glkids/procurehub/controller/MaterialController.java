@@ -31,13 +31,23 @@ public class MaterialController {
     }
 
     /**
+     * 자재상세보기 화면
+     */
+    @GetMapping("/materialdetail")
+    public String materialdetail() {
+        return "/material/materialdetail";
+    }
+
+    /**
      * 자재 수정버튼 누르고 자재상세보기 화면
      */
-    @PostMapping("/update")
+    @PostMapping("/materialdetail")
     public String Postupdate() {
 
-        return "materialdetail";
+        return "/material/materialdetail";
     }
+
+
 
     /**
      * 자재 등록
