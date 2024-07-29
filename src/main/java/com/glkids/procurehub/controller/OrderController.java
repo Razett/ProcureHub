@@ -24,33 +24,39 @@ public class OrderController {
      * 발주 수동 추가
      */
     @GetMapping("/add")
-    public void getAdd(){}
+    public void getRegister(){}
 
     /**
      * 발주 수동 추가 화면에서 등록 버튼 클릭 시 발주 현황 화면으로
      */
     @PostMapping("/add")
-    public String postAdd(){
+    public String postRegister(){
         return "order/list";
     }
 
     /**
+     * @deprecated
      * 발주 진행 수정
      */
+    @Deprecated
     @GetMapping("/update")
     public void getUpdate(){}
 
     /**
+     * @deprecated
      * 발주 진행 사항 수정 후 저장 버튼 클릭 시 발주 현황 화면으로
      */
+    @Deprecated
     @PostMapping("/update")
     public String postUpdate(){
         return "order/list";
     }
 
     /**
+     * @deprecated
      * 발주 상세 정보
      */
+    @Deprecated
     @GetMapping("/read")
     public void getRead(){}
 
