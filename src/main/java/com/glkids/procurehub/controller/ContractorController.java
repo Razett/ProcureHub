@@ -1,26 +1,34 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Quotation;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.service.ContractorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 계약 관리 메뉴 컨트롤러
  */
 @RequestMapping("/contractor")
 @Controller
+@RequiredArgsConstructor
 public class ContractorController {
+
+    private final ContractorService contractorService;
 
     /**
      * 업체 목록
      */
     @GetMapping("/list")
-    public String List(Model model) {
+    public String List(Model model, ContractorDTO contractorDTO) {
+        model.addAttribute("contractorList", contractorService.list());
         return "/contractor/list";
     }
 
@@ -31,6 +39,7 @@ public class ContractorController {
      */
     @GetMapping("/read")
     public String read(Long corno, Model model) {
+        model.addAttribute("contractorRead", contractorService.read(corno));
         return "/contractor/read";
     }
 
@@ -38,8 +47,8 @@ public class ContractorController {
      * 업체 등록 화면
      */
     @GetMapping("/register")
-    public void getRegister() {
-
+    public void getRegister(ContractorDTO contractorDTO, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("contractorRegister", contractorService.register(contractorDTO));
     }
 
     /**
