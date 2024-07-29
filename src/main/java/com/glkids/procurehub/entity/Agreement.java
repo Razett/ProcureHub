@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Agreement extends BaseEntity {
 
+    /**
+     * 계약 코드 [BIGINT, PK, Not Null]
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long grmno;

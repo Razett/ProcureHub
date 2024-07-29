@@ -6,8 +6,8 @@ import lombok.*;
 /**
  * <b>자재 도면</b>
  *
- * <p>{@code Long mtrlfno} - 자재 도면 코드 [BIGINT, PK, Not Null]</p>
- * <p>{@code Material material} - 자재 [FK, Not Null]</p>
+ * <p>{@code Long qtfno} - 견적서 파일 코드 [BIGINT, PK, Not Null]</p>
+ * <p>{@code Quotation quotation} - 자재 [FK, Not Null]</p>
  * <p>{@code String uuid} - UUID [Varchar(150), Nullable]</p>
  * <p>{@code String name} - 파일명 [Varchar(255), Not Null]</p>
  * <p>{@code String url} - URL [Varchar(255), Not Null]</p>
@@ -18,18 +18,15 @@ import lombok.*;
 @ToString
 @Getter
 @Entity
-public class MaterialFile extends BaseEntity{
+public class QuotationFile extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mtrlfno;
+    private Long qtfno;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Material material;
-
-    @Column(nullable = true)
-    private String uuid;
+    private Quotation quotation;
 
     @Column(length = 255, nullable = false)
     private String name;
