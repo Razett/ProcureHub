@@ -1,6 +1,9 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.service.MaterialService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * 자재 관리 메뉴 컨트롤러
  */
+@RequiredArgsConstructor
 @RequestMapping("/material")
 @Controller
 public class MaterialController {
+
+    private final MaterialService materialService;
 
     /**
      * 자재 목록
@@ -25,7 +31,8 @@ public class MaterialController {
      * 자재상세보기 화면
      */
     @GetMapping("/read")
-    public String read() {
+    public String read(Long mtrlno, Model model) {
+        model.addAttribute("material", materialService.read(mtrlno));
         return "/material/read";
     }
 
