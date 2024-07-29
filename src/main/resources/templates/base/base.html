@@ -55,7 +55,7 @@
         }
       }
     </style>
-  <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+  <script defer="defer" th:src="@{/js/main.js}"></script><link th:href="@{/css/style.css}" rel="stylesheet"></head>
   <body class="app">
     
     <div id="loader">
@@ -83,7 +83,7 @@
                   <div class="peers ai-c fxw-nw">
                     <div class="peer">
                       <div class="logo">
-                        <img src="assets/static/images/logo.png" alt="">
+                        <img th:src="@{/assets/static/images/logo.png}" alt="">
                       </div>
                     </div>
                     <div class="peer peer-greed">
@@ -505,7 +505,7 @@
               <li class="dropdown">
                 <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-bs-toggle="dropdown">
                   <div class="peer mR-10">
-                    <img class="w-2r bdrs-50p" src="assets/KakaoTalk_20240724_190706322.jpg" alt="Profile Image">
+                    <img class="w-2r bdrs-50p" th:src="@{/assets/KakaoTalk_20240724_190706322.jpg}" alt="Profile Image">
 
                   </div>
                   <div class="peer">
