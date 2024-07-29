@@ -1,10 +1,15 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.MaterialDTO;
+import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.entity.MaterialGroup;
+import com.glkids.procurehub.entity.MaterialWarehouse;
 import com.glkids.procurehub.service.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -58,13 +63,20 @@ public class MaterialController {
      * 자재 등록
      */
     @GetMapping("/register")
-    public void getRegister() {}
+    public String getRegister(Model model) {
+       model.addAttribute("warehouses",materialService.listWarehouse());
+        return "material/register";
+    }
 
     /**
      * 자재 등록 버튼 클릭 시 목록 화면으로
      */
     @PostMapping("/register")
-    public String postRegister() {
+    public String postRegister(@ModelAttribute MaterialDTO materialDTO, MaterialWarehouse materialWarehouse , MaterialGroup materialGroup, Model model) {
+
+        materialDTO.setMaterialGroup(materialGroup);
+        materialDTO.setMaterialWarehouse(materialWarehouse);
+        materialService.register(materialDTO);
 
         return "/material/list";
     }

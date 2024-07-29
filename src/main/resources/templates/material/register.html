@@ -95,39 +95,35 @@
                             </style>
                         </head>
                         <body>
-                        <form action="list" method="get">
+                        <form action="/material/register" method="post">
                             <header><h1>자재등록</h1></header>
                             <div>
-                                자재이름 <input type="text">
+                                자재이름 <input type="text" name="name">
                             </div>
                             <br>
                             <div>
                                 그룹선택
-                                <select>
-                                    <option value="">자재그룹을 선택하시오</option>
-                                    <option value="company1">외형</option>
-                                    <option value="company2">전장부품</option>
-                                    <option value="company3">카메라</option>
+                                <select name="grpcode">
+                                    <option value="BODY_MOD_CAS">자재그룹을 선택하시오</option>
                                 </select>
                                 창고선택
-                                <select>
-                                    <option value="">창고를 선택하시오</option>
-                                    <option value="company1">A-01-어셈블리-나사</option>
-                                    <option value="company2">A-02-어셈블리-날개</option>
-                                    <option value="company3">A-03-어셈블리-배터리</option>
+                                <select name="wrhscode" >
+                                    <th:block th:each="warehouse : ${warehouses}">
+                                    <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                             <br>
                             <div>
-                                규격 <input type="text">
+                                규격 <input type="text" name="standard">
                             </div>
                             <br>
                             <div>
-                                수량 <input type="text">
+                                수량 <input type="text" name="quantity">
                             </div>
                             <br>
                             <div>
-                                세부내용 <input type="textarea">
+                                세부내용 <input type="textarea" name="description">
                             </div>
                             <br>
                             <div>

@@ -46,10 +46,10 @@ public class ContractorController {
     /**
      * 업체 등록 화면
      */
-    @GetMapping("/register")
-    public void getRegister(ContractorDTO contractorDTO, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("contractorRegister", contractorService.register(contractorDTO));
-    }
+//    @GetMapping("/register")
+//    public void getRegister(ContractorDTO contractorDTO, RedirectAttributes redirectAttributes) {
+//        redirectAttributes.addFlashAttribute("contractorRegister", contractorService.register(contractorDTO));
+//    }
 
     /**
      * 업체 등록 처리
