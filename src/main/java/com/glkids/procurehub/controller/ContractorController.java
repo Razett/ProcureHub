@@ -4,21 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 계약 관리 메뉴 컨트롤러
  */
-@RequestMapping("/contract")
+@RequestMapping("/contractor")
 @Controller
-public class ContractController {
+public class ContractorController {
 
     /**
      * 업체 목록
      */
     @GetMapping("/list")
     public String List() {
-        return "/contract/list";
+        return "/contractor/list";
     }
 
     /**
@@ -32,7 +31,7 @@ public class ContractController {
      */
     @PostMapping("/register")
     public String postRegister() {
-        return "/contract/list";
+        return "/contractor/list";
     }
 
     /**
@@ -40,7 +39,7 @@ public class ContractController {
      */
     @GetMapping("/quolist")
     public String quoList() {
-        return "/contract/quolist";
+        return "/contractor/quolist";
     }
 
     /**
@@ -54,7 +53,7 @@ public class ContractController {
      */
     @PostMapping("/quoregister")
     public String postQuoRegister() {
-        return "/contract/quolist";
+        return "/contractor/quolist";
     }
 
 
