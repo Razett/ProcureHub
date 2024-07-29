@@ -13,6 +13,7 @@ import lombok.*;
  * <p>{@code address2} - 상세주소 [Varchar(100), Nullable]</p>
  * <p>{@code mngrName} - 담당자 이름 [Varchar(12), Nullable]</p>
  * <p>{@code mngrPhone} - 담당자 전화번호 [Varchar(11) Nullable]</p>
+ * <p>{@code mngrAddress} - 담당자 이메일 [Varchar(50) Nullable]</p>
  * <p>{@code bank} - 은행 명 [Varchar(30), Nullable]</p>
  * <p>{@code accountNum} - 계좌 번호 [Varchar(20), Nullable]</p>
  */
@@ -44,6 +45,9 @@ public class Contractor extends BaseEntity{
 
     @Column(length = 11, nullable = true)
     private String mngrPhone;
+
+    @Column(length = 50, nullable = true)
+    private String mngrAddress;
 
     @Column(length = 30, nullable = true)
     private String bank;

@@ -17,7 +17,7 @@ public class ContractorController {
      */
     @GetMapping("/list")
     public String List() {
-        return "/contract/list";
+        return "/contractor/list";
     }
 
     /**
@@ -56,7 +56,7 @@ public class ContractorController {
      */
     @PostMapping("/register")
     public String postRegister() {
-        return "/contract/list";
+        return "/contractor/list";
     }
 
     /**
@@ -64,7 +64,7 @@ public class ContractorController {
      */
     @GetMapping("/quolist")
     public String quoList() {
-        return "/contract/quolist";
+        return "/contractor/quolist";
     }
 
     /**
@@ -78,7 +78,7 @@ public class ContractorController {
      */
     @PostMapping("/quoregister")
     public String postQuoRegister() {
-        return "/contract/quolist";
+        return "/contractor/quolist";
     }
 
 
