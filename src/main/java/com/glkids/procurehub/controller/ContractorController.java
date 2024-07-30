@@ -1,6 +1,7 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.ContractorDTO;
+import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Quotation;
 import com.glkids.procurehub.entity.QuotationMtrl;
@@ -46,17 +47,17 @@ public class ContractorController {
     /**
      * 업체 등록 화면
      */
-//    @GetMapping("/register")
-//    public void getRegister(ContractorDTO contractorDTO, RedirectAttributes redirectAttributes) {
-//        redirectAttributes.addFlashAttribute("contractorRegister", contractorService.register(contractorDTO));
-//    }
+    @GetMapping("/register")
+    public void getRegister(ContractorDTO contractorDTO, Model model) {}
 
     /**
      * 업체 등록 처리
      */
     @PostMapping("/register")
-    public String postRegister(Contractor contractor) {
-        return "/contractor/list";
+    public String postRegister(ContractorDTO contractorDTO) {
+        contractorService.register(contractorDTO);
+        System.out.println(contractorDTO);
+        return "redirect:/contractor/list";
     }
 
     /**
@@ -82,6 +83,7 @@ public class ContractorController {
      */
     @GetMapping("/quolist")
     public String quoList(Model model) {
+        model.addAttribute("quotationList", contractorService.quoList());
         return "/contractor/quolist";
     }
 
@@ -97,8 +99,8 @@ public class ContractorController {
      * 견적 등록 처리
      */
     @PostMapping("/quoregister")
-    public String postQuoRegister(Quotation quotation, QuotationMtrl quotationMtrl) {
-
+    public String postQuoRegister(QuotationDTO quotationDTO, QuotationMtrl quotationMtrl) {
+        contractorService.quoRegister(quotationDTO);
         return "/contractor/quolist";
     }
 

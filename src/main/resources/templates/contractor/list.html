@@ -75,7 +75,12 @@
           <div id="mainContent">
             <div class="full-container">
               <th:block th:fragment="content">
-                <span th:text="${contractorList}"></span>
+                <tr th:each="company:${contractorList}">
+                  <b><h3><td>[[${company.name}]]</td></h3></b>
+                  <td>[[${company.address1}]]</td><br>
+                  <td>[[${company.phone}]]</td><br>
+                  <hr>
+                </tr>
               </th:block>
             </div>
           </div>

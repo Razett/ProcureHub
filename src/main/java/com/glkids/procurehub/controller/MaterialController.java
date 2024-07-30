@@ -42,7 +42,9 @@ public class MaterialController {
      * 자재 수정
      */
     @GetMapping("/update")
-    public String getUpdate() {
+    public String getUpdate(Model model, Long mtrlno) {
+
+        model.addAttribute("materialupdate", materialService.read(mtrlno));
 
         return "/material/update";
     }
@@ -51,9 +53,10 @@ public class MaterialController {
      * 자재 수정 처리
      */
     @PostMapping("/update")
-    public String postUpdate() {
+    public String postUpdate(MaterialDTO materialDTO, Model model ) {
 
-        return "material/read";
+        materialService.update(materialDTO);
+        return "redirect:/material/update?mtrlno=" + materialDTO.getMtrlno();
     }
 
     /**
@@ -102,7 +105,9 @@ public class MaterialController {
      * 창고 목록
      */
     @GetMapping("/warehouselist")
-    public void warehouseList() {}
+    public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
+        model.addAttribute("warehouses", materialService.listWarehouse());
+    }
 
     /**
      * @deprecated
