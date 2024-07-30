@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>Home</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <style>
       #loader {
         transition: all 0.3s ease-in-out;
@@ -75,12 +76,25 @@
           <div id="mainContent">
             <div class="full-container">
               <th:block th:fragment="content">
-                <tr th:each="company:${contractorList}">
-                  <b><h3><td>[[${company.name}]]</td></h3></b>
-                  <td>[[${company.address1}]]</td><br>
-                  <td>[[${company.phone}]]</td><br>
-                  <hr>
-                </tr>
+                <div class="row gap-20 pos-r">
+                  <div class="bgc-white p-20 bd col-md-12">
+                    <div class="alert alert-light contractor" role="alert" th:each="contractor:${contractorList}" th:id="${contractor.corno}">
+                      <h3>[[${contractor.name}]]</h3>
+                      [[${contractor.address1}]]<br>
+                      TEL/FAX : [[${contractor.phone}]]
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  $(document).ready(function () {
+                    $('.contractor').on('click', function () {
+                      var corno = $(this).attr('id');
+                      var url = '/contractor/read?corno=' + corno;
+                      window.location.href = url;
+                    });
+                  });
+                </script>
+
               </th:block>
             </div>
           </div>

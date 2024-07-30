@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
  * <p>{@code mngrName} - 담당자 이름 [Varchar(12), Nullable]</p>
  * <p>{@code mngrPhone} - 담당자 전화번호 [Varchar(11) Nullable]</p>
  * <p>{@code mngrAddress} - 담당자 이메일 [Varchar(50) Nullable]</p>
- * <p>{@code bank} - 은행 명 [Varchar(30), Nullable]</p>
+ * <p>{@code bank} - 은행명 [Varchar(30), Nullable]</p>
  * <p>{@code accountNum} - 계좌 번호 [Varchar(20), Nullable]</p>
  */
 @Builder
