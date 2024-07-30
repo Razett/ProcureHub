@@ -21,8 +21,23 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public List<MaterialDTO> list() {
-        return List.of();
+        List<Material> materialList = materialRepository.findAll();
+        List<MaterialDTO> materialDTOList = new ArrayList<>();
+
+        for (Material material : materialList) {
+            MaterialDTO materialDTO = new MaterialDTO();
+            materialDTO.setMtrlno(material.getMtrlno()); // 필요한 속성들을 설정
+            materialDTO.setName(material.getName());
+            materialDTO.setDescription(material.getDescription());
+            materialDTO.setQuantity(material.getQuantity());
+            // 추가적인 속성 설정이 필요할 수 있음
+
+            materialDTOList.add(materialDTO);
+        }
+
+        return materialDTOList;
     }
+
 
     @Override
     public MaterialDTO read(Long mtrlno) {

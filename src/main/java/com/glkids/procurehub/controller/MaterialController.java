@@ -31,8 +31,10 @@ public class MaterialController {
      * 자재 목록
      */
     @GetMapping("/list")
-    public String List() {
+    public String List(Material material, Model model) {
 
+        model.addAttribute("materiallist", materialService.list());
+        model.addAttribute("warehouses" , materialService.listWarehouse());
         return "/material/list";
     }
 
