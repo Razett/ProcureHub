@@ -75,48 +75,71 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <form action="/material/register" method="post">
-                            <header><h1>자재등록</h1></header>
-                            <div>
-                                자재이름 <input type="text" name="name">
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-8">
+                                <div class="bgc-white p-20 bd">
+                                    <h4 class="c-grey-900 mT-10 mB-30">자재 등록</h4>
+                                    <form action="/material/register" method="post">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlName">자재 이름</label>
+                                            <input type="text" name="name" class="form-control" id="inputMtrlName" placeholder="자재 이름을 입력하세요" control-id="ControlID-1">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <label class="form-label" for="inputState">자재 그룹</label>
+                                                <div class="row">
+                                                    <div class="mb-2 col-md-4">
+                                                        <select class="form-control" name="grpcode" control-id="ControlID-10">
+                                                            <option value="ETC" selected="selected">자재 그룹을 선택하세요.</option>
+                                                            <option value="BODY">바디</option>
+                                                            <option>...</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-2 col-md-4">
+                                                        <select class="form-control" name="grpcode" control-id="ControlID-10">
+                                                            <option value="" selected="selected">...</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3 col-md-4">
+                                                        <select class="form-control" name="grpcode" control-id="ControlID-10">
+                                                            <option value="" selected="selected">...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-3">
+                                                <label class="form-label" for="inputState">자재 창고</label>
+                                                <select id="inputState" class="form-control" name="wrhscode" control-id="ControlID-10">
+                                                    <th:block th:each="warehouse : ${warehouses}">
+                                                        <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlStd">규격</label>
+                                            <input type="text" name="standard" class="form-control" id="inputMtrlStd" placeholder="자재 규격을 입력히세요" control-id="ControlID-1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlDescription">수량</label>
+                                            <input type="number" name="quantity" class="form-control" id="inputMtrlDescription" placeholder="자재 수량을 입력하세요" control-id="ControlID-1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlQuantity">세부내용</label>
+                                            <textarea type="text" name="description" class="form-control h-25" rows="5" id="inputMtrlQuantity" placeholder="세부내용을 입력하세요." control-id="ControlID-1"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlFile">도면</label>
+                                            <input type="file" class="form-control" id="inputMtrlFile" control-id="ControlID-1">
+                                        </div>
+                                        <div class="pt-3">
+                                            <button type="button" class="btn cur-p btn-secondary btn-color" control-id="ControlID-2">취소</button>
+                                            <button type="submit" class="btn btn-primary btn-color md-1" control-id="ControlID-4">등록하기</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <br>
-                            <div>
-                                그룹선택
-                                <select name="grpcode">
-                                    <option value="BODY_MOD_CAS" selected>자재그룹을 선택하시오</option>
-                                    <option value="ETC" selected>test</option>
-                                </select>
-                                창고선택
-                                <select name="wrhscode">
-                                    <th:block th:each="warehouse : ${warehouses}">
-                                    <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}"></option>
-                                    </th:block>
-                                </select>
-                            </div>
-                            <br>
-                            <div>
-                                규격 <input type="text" name="standard">
-                            </div>
-                            <br>
-                            <div>
-                                수량 <input type="text" name="quantity">
-                            </div>
-                            <br>
-                            <div>
-                                세부내용 <input type="textarea" name="description">
-                            </div>
-                            <br>
-                            <div>
-                                도면 <input type="file" >
-                            </div>
-                            <br>
-
-                            <br>
-                            <br>
-                            <button type="button" id="cancel">취소</button>
-                            <input type="submit" value="등록하기" id="register">
-                        </form>
+                        </div>
                     </th:block>
                 </div>
             </div>
