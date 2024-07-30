@@ -4,7 +4,6 @@ import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialWarehouseDTO;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.MaterialWarehouse;
-import com.glkids.procurehub.repository.MaterialRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,7 @@ public interface MaterialService {
 
     Material register(MaterialDTO materialDTO);
 
-    int update(MaterialDTO materialDTO);
+    void update(MaterialDTO materialDTO);
 
     int delete(Long mtrlno);
 

@@ -5,8 +5,6 @@ import com.glkids.procurehub.dto.MaterialWarehouseDTO;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.repository.MaterialRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
-import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +35,8 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public int update(MaterialDTO materialDTO) {
-        return 0;
+    public void update(MaterialDTO materialDTO) {
+        materialRepository.save(materialDTOToEntity(materialDTO));
     }
 
     @Override

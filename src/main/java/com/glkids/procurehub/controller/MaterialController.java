@@ -4,11 +4,15 @@ import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
+import com.glkids.procurehub.repository.MaterialGroupRepository;
+import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import com.glkids.procurehub.service.MaterialService;
+import com.glkids.procurehub.service.MaterialServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 자재 관리 메뉴 컨트롤러
@@ -19,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 public class MaterialController {
 
     private final MaterialService materialService;
+    private final MaterialWarehouseRepository materialWarehouseRepository;
+    private final MaterialGroupRepository materialGroupRepository;
+    private final MaterialServiceImpl materialServiceImpl;
 
     /**
      * 자재 목록
@@ -34,8 +41,9 @@ public class MaterialController {
      */
     @GetMapping("/read")
     public String read(Long mtrlno, Model model) {
-        model.addAttribute("material", materialService.read(mtrlno));
-        return "/material/read";
+
+        model.addAttribute("material",materialService.read(mtrlno));
+        return "material/read";
     }
 
     /**
@@ -45,6 +53,7 @@ public class MaterialController {
     public String getUpdate(Model model, Long mtrlno) {
 
         model.addAttribute("materialupdate", materialService.read(mtrlno));
+        model.addAttribute("warehouses",materialService.listWarehouse());
 
         return "/material/update";
     }
@@ -53,11 +62,17 @@ public class MaterialController {
      * 자재 수정 처리
      */
     @PostMapping("/update")
-    public String postUpdate(MaterialDTO materialDTO, Model model ) {
+    public String postUpdate(@ModelAttribute MaterialDTO materialDTO, Model model, @RequestParam("wrhscode") MaterialWarehouse materialWarehouse, @RequestParam("grpcode") MaterialGroup materialGroup) {
 
-        materialService.update(materialDTO);
-        return "redirect:/material/update?mtrlno=" + materialDTO.getMtrlno();
+        materialDTO.setMaterialGroup(materialGroup);
+        materialDTO.setMaterialWarehouse(materialWarehouse);
+        materialDTO.setStatus(0);
+        materialService.update(materialDTO);  // void 반환형 메소드 호출
+
+        return "redirect:read?mtrlno=" + materialDTO.getMtrlno();
     }
+
+
 
     /**
      * 자재 등록
@@ -83,6 +98,7 @@ public class MaterialController {
 
         return "/material/list";
     }
+
 
     /**
      * 그룹 목록
