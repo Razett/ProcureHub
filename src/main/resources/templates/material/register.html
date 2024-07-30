@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
         <title>Home</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <style>
             #loader {
                 transition: all 0.3s ease-in-out;
@@ -89,20 +90,21 @@
                                                 <label class="form-label" for="inputState">자재 그룹</label>
                                                 <div class="row">
                                                     <div class="mb-2 col-md-4">
-                                                        <select class="form-control" name="grpcode" control-id="ControlID-10">
+                                                        <select class="form-control" id="topGroup" name="topGrpcode" control-id="ControlID-10">
                                                             <option value="ETC" selected="selected">자재 그룹을 선택하세요.</option>
-                                                            <option value="BODY">바디</option>
-                                                            <option>...</option>
+                                                            <th:block th:each="topGroup : ${topMaterialGroups}">
+                                                                <option th:value="${topGroup.getGrpcode()}" th:text="${topGroup.getName()}"></option>
+                                                            </th:block>
                                                         </select>
                                                     </div>
                                                     <div class="mb-2 col-md-4">
-                                                        <select class="form-control" name="grpcode" control-id="ControlID-10">
+                                                        <select class="form-control" id="midGroup" name="midGrpcode" control-id="ControlID-10">
                                                             <option value="" selected="selected">...</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 col-md-4">
-                                                        <select class="form-control" name="grpcode" control-id="ControlID-10">
-                                                            <option value="" selected="selected">...</option>
+                                                        <select class="form-control" id="subGroup" name="grpcode" control-id="ControlID-10">
+                                                            <option value="ETC" selected="selected">...</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -140,6 +142,19 @@
                                 </div>
                             </div>
                         </div>
+                        <script src="/js/material_group.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                $('#topGroup').change(function() {
+                                    var selectedValue = $(this).val();
+                                    materialGroupService.getChildGroup(selectedValue, $('#midGroup'), $('#subGroup'));
+                                });
+                                $('#midGroup').change(function() {
+                                    var selectedValue = $(this).val();
+                                    materialGroupService.getChildGroup(selectedValue, $('#subGroup'));
+                                });
+                            })
+                        </script>
                     </th:block>
                 </div>
             </div>

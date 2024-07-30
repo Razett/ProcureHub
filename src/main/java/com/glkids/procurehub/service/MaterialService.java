@@ -2,7 +2,9 @@ package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialWarehouseDTO;
+import com.glkids.procurehub.dto.MaterialGroupDTO;
 import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
 
 import java.util.List;
@@ -21,6 +23,10 @@ public interface MaterialService {
     int delete(Long mtrlno);
 
     List<MaterialWarehouseDTO> listWarehouse();
+
+    List<MaterialGroupDTO> getTopMaterialGroups();
+
+    List<MaterialGroupDTO> getChildMaterialGroups(String pGrpcode);
 
     default MaterialDTO materialEntityToDTO(Optional<Material> opt) {
         if (opt.isPresent()) {
@@ -52,6 +58,13 @@ public interface MaterialService {
 
     default MaterialWarehouseDTO warehouseEntityToDTO(MaterialWarehouse materialWarehouse) {
         return MaterialWarehouseDTO.builder().wrhscode(materialWarehouse.getWrhscode()).wrhsname(materialWarehouse.getName()).build();
+    }
+
+    default MaterialGroupDTO groupEntityToDTO(MaterialGroup materialGroup) {
+        return MaterialGroupDTO.builder().grpcode(materialGroup.getGrpcode())
+                .name(materialGroup.getName())
+                .pGrpcode(materialGroup.getPGrpcode())
+                .depth(materialGroup.getDepth()).build();
     }
 
 }
