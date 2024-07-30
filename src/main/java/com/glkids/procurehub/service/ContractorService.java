@@ -41,7 +41,8 @@ public interface ContractorService {
     default ContractorDTO contractorEntityToDTO(Contractor entity) {
         return ContractorDTO.builder().corno(entity.getCorno()).name(entity.getName()).phone(entity.getPhone())
                 .address1(entity.getAddress1()).address2(entity.getAddress2()).mngrName(entity.getMngrName())
-                .mngrPhone(entity.getMngrPhone()).mngrAddress(entity.getMngrAddress()).build();
+                .mngrPhone(entity.getMngrPhone()).mngrAddress(entity.getMngrAddress()).bank(entity.getBank())
+                .accountNum(entity.getAccountNum()).build();
 
     }
 
