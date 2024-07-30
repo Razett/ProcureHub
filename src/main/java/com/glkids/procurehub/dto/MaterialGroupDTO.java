@@ -12,7 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
  *
  * <p>{@code String grpcode} - 그룹 코드 [Varchar(30), PK, Not Null]</p>
  * <p>{@code String pGrpcode} - 상위 그룹 코드 [Varchar(30), Nullable]</p>
- * <p>{@code Integer depth} - 상위 그룹 코드 [INT, Not Null]</p>
+ * <p>{@code Integer depth} - 단계 [INT, Not Null]</p>
  * <p>{@code String name} - 그룹명 [Varchar(100), Not Null]</p>
  */
 @AllArgsConstructor
@@ -21,8 +21,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Data
 public class MaterialGroupDTO {
 
-    private String grpcode;
-    private String pGrpcode;
-    private Integer depth;
-    private String name;
+    private String grpcode; //그룹 코드
+    private String pGrpcode; //상위 그룹 코드
+    private Integer depth; //단계
+    private String name; //그룹명
 }

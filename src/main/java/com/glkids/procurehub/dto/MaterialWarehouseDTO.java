@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MaterialWarehouseDTO {
-    private String wrhscode;
-    private String wrhsname;
+
+    private String wrhscode; //창고 코드
+    private String wrhsname; //창고명
 }

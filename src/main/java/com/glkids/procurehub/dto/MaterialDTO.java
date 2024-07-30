@@ -25,12 +25,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MaterialDTO {
-    private Long mtrlno;
-    private String name;
-    private String description;
-    private String standard;
-    private Long quantity;
-    private MaterialGroup materialGroup;
-    private MaterialWarehouse materialWarehouse;
-    private Integer status;
+
+    private Long mtrlno; //자재 코드
+    private String name; //자재명
+    private String description; //세부 내용
+    private String standard; //규격
+    private Long quantity; //수량
+    private MaterialGroup materialGroup; //자재 그룹
+    private MaterialWarehouse materialWarehouse; //자재 창고 위치
+    private Integer status; //자재 상태 코드
 }
