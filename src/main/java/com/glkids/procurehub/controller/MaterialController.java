@@ -23,9 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MaterialController {
 
     private final MaterialService materialService;
-    private final MaterialWarehouseRepository materialWarehouseRepository;
-    private final MaterialGroupRepository materialGroupRepository;
-    private final MaterialServiceImpl materialServiceImpl;
 
     /**
      * 자재 목록
@@ -82,7 +79,7 @@ public class MaterialController {
     @GetMapping("/register")
     public String getRegister(Model model) {
         model.addAttribute("warehouses",materialService.listWarehouse());
-
+        model.addAttribute("topMaterialGroups", materialService.getTopMaterialGroups());
         return "material/register";
     }
 

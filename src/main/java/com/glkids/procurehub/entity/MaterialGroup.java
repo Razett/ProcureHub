@@ -11,7 +11,7 @@ import java.util.List;
  *
  * <p>{@code String grpcode} - 그룹 코드 [Varchar(30), PK, Not Null]</p>
  * <p>{@code String pGrpcode} - 상위 그룹 코드 [Varchar(30), Nullable]</p>
- * <p>{@code Integer depth} - 상위 그룹 코드 [INT, Not Null]</p>
+ * <p>{@code Integer depth} - 단계 [INT, Not Null]</p>
  * <p>{@code String name} - 그룹명 [Varchar(100), Not Null]</p>
  */
 @NoArgsConstructor
