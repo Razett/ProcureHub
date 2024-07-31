@@ -157,4 +157,20 @@ public class MaterialServiceImpl implements MaterialService {
 
         return materialGroupList;
     }
+
+    @Override
+    public List<MaterialGroupDTO> getMaterialGroupDirection(MaterialGroup materialGroup) {
+        List<MaterialGroupDTO> direction = new ArrayList<>();
+        direction.add(groupEntityToDTO(materialGroup));
+
+        String pgrpcode = materialGroup.getPGrpcode();
+
+        for (int i = 0; i < materialGroup.getDepth(); i++) {
+            MaterialGroupDTO dto = readMaterialGroup(pgrpcode);
+            direction.add(dto);
+            pgrpcode = dto.getPGrpcode();
+        }
+        Collections.reverse(direction);
+        return direction;
+    }
 }

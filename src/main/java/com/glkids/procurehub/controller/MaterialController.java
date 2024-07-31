@@ -1,6 +1,7 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.MaterialDTO;
+import com.glkids.procurehub.dto.MaterialGroupDTO;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
@@ -41,7 +42,10 @@ public class MaterialController {
     @GetMapping("/read")
     public String read(Long mtrlno, Model model) {
 
-        model.addAttribute("material", materialService.read(mtrlno));
+        MaterialDTO materialDTO = materialService.read(mtrlno);
+        model.addAttribute("material", materialDTO);
+        model.addAttribute("materialGroupDirection", materialService.getMaterialGroupDirection(materialDTO.getMaterialGroup()));
+        model.addAttribute("materialFile", null);
         return "material/read";
     }
 
