@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 /**
  * <b>자재</b>
@@ -33,5 +34,7 @@ public class MaterialDTO {
     private Long quantity; //수량
     private MaterialGroup materialGroup; //자재 그룹
     private MaterialWarehouse materialWarehouse; //자재 창고 위치
-    private Integer status; //자재 상태 코드
+    private Integer status;
+    private LocalDateTime regdate;
+    private LocalDateTime moddate;
 }

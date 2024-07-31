@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,19 +34,9 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public List<MaterialDTO> list() {
-        List<Material> materialList = materialRepository.findAll();
+
         List<MaterialDTO> materialDTOList = new ArrayList<>();
-
-        for (Material material : materialList) {
-            MaterialDTO materialDTO = new MaterialDTO();
-            materialDTO.setMtrlno(material.getMtrlno()); // 필요한 속성들을 설정
-            materialDTO.setName(material.getName());
-            materialDTO.setDescription(material.getDescription());
-            materialDTO.setQuantity(material.getQuantity());
-            // 추가적인 속성 설정이 필요할 수 있음
-
-            materialDTOList.add(materialDTO);
-        }
+        materialRepository.findAll().forEach(material -> {materialDTOList.add(materialEntityToDTO(Optional.ofNullable(material)));});
 
         return materialDTOList;
     }
@@ -68,7 +59,12 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public int delete(Long mtrlno) {
-        return 0;
+        if (materialRepository.existsById(mtrlno)) { // 삭제할 항목이 존재하는지 확인
+            materialRepository.deleteById(mtrlno);
+            return 1; // 삭제 성공
+        } else {
+            return 0; // 삭제할 항목이 없음
+        }
     }
 
     /**

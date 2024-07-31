@@ -44,7 +44,9 @@ public interface MaterialService {
                     .quantity(material.getQuantity())
                     .materialGroup(material.getMaterialGroup())
                     .materialWarehouse(material.getMaterialWarehouse())
-                    .status(material.getStatus()).build();
+                    .status(material.getStatus())
+                    .regdate(material.getRegdate())
+                    .moddate(material.getModdate()).build();
         } else {
             return null;
         }

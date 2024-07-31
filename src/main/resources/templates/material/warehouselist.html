@@ -75,7 +75,26 @@
           <div id="mainContent">
             <div class="full-container">
               <th:block th:fragment="content">
-                <span th:text="${warehouses}"></span>
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>자재 창고 코드</th>
+                    <th>창고명</th>
+                    <th>수정</th>
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="warehouse : ${warehouses}">
+                    <td th:text="${warehouse.wrhscode}"></td>
+                    <td th:text="${warehouse.wrhsname}"></td>
+                    <td>
+                      <button type="button" class="btn cur-p btn-dark btn-color" >수정하기</button>
+                    </td>
+
+                  </tr>
+                  </tbody>
+                </table>
               </th:block>
             </div>
           </div>

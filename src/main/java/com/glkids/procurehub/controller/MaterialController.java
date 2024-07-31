@@ -74,6 +74,12 @@ public class MaterialController {
         return "redirect:read?mtrlno=" + materialDTO.getMtrlno();
     }
 
+    @PostMapping("/delete")
+    public String delete(Long mtrlno) {
+        materialService.delete(mtrlno);
+        return "redirect:material/list" ;
+    }
+
     /**
      * 자재 등록
      */
@@ -162,6 +168,8 @@ public class MaterialController {
     public String postPrcrUpdate() {
         return "/material/prcrlist";
     }
+
+
 
 
 }
