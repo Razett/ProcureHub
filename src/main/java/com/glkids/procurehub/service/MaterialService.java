@@ -33,6 +33,8 @@ public interface MaterialService {
 
     List<MaterialGroupListDTO> getMaterialGroupLists(MaterialGroup materialGroup);
 
+    List<MaterialGroupDTO> getMaterialGroupDirection(MaterialGroup materialGroup);
+
     default MaterialDTO materialEntityToDTO(Optional<Material> opt) {
         if (opt.isPresent()) {
             Material material = opt.get();
