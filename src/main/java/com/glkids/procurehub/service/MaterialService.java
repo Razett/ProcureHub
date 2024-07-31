@@ -1,6 +1,7 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.MaterialDTO;
+import com.glkids.procurehub.dto.MaterialGroupListDTO;
 import com.glkids.procurehub.dto.MaterialWarehouseDTO;
 import com.glkids.procurehub.dto.MaterialGroupDTO;
 import com.glkids.procurehub.entity.Material;
@@ -22,11 +23,15 @@ public interface MaterialService {
 
     int delete(Long mtrlno);
 
-    List<MaterialWarehouseDTO> listWarehouse();
+    List<MaterialWarehouseDTO> getWarehouses();
 
-    List<MaterialGroupDTO> getTopMaterialGroups();
+    MaterialGroupDTO readMaterialGroup(String grpcode);
+
+    List<MaterialGroupDTO> getMaterialGroupsByDepth(Integer depth);
 
     List<MaterialGroupDTO> getChildMaterialGroups(String pGrpcode);
+
+    List<MaterialGroupListDTO> getMaterialGroupLists(MaterialGroup materialGroup);
 
     default MaterialDTO materialEntityToDTO(Optional<Material> opt) {
         if (opt.isPresent()) {

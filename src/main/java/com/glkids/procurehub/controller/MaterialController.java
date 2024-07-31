@@ -31,7 +31,7 @@ public class MaterialController {
     public String List(Material material, Model model) {
 
         model.addAttribute("materiallist", materialService.list());
-        model.addAttribute("warehouses" , materialService.listWarehouse());
+        model.addAttribute("warehouses" , materialService.getWarehouses());
         return "/material/list";
     }
 
@@ -41,7 +41,7 @@ public class MaterialController {
     @GetMapping("/read")
     public String read(Long mtrlno, Model model) {
 
-        model.addAttribute("material",materialService.read(mtrlno));
+        model.addAttribute("material", materialService.read(mtrlno));
         return "material/read";
     }
 
@@ -51,8 +51,10 @@ public class MaterialController {
     @GetMapping("/update")
     public String getUpdate(Model model, Long mtrlno) {
 
-        model.addAttribute("materialupdate", materialService.read(mtrlno));
-        model.addAttribute("warehouses",materialService.listWarehouse());
+        MaterialDTO dto = materialService.read(mtrlno);
+        model.addAttribute("material", dto);
+        model.addAttribute("materialGroupList", materialService.getMaterialGroupLists(dto.getMaterialGroup()));
+        model.addAttribute("warehouses", materialService.getWarehouses());
 
         return "/material/update";
     }
@@ -66,20 +68,19 @@ public class MaterialController {
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
         materialDTO.setStatus(0);
-        materialService.update(materialDTO);  // void 반환형 메소드 호출
+        System.out.println(materialDTO);
+        materialService.update(materialDTO);
 
         return "redirect:read?mtrlno=" + materialDTO.getMtrlno();
     }
-
-
 
     /**
      * 자재 등록
      */
     @GetMapping("/register")
     public String getRegister(Model model) {
-        model.addAttribute("warehouses",materialService.listWarehouse());
-        model.addAttribute("topMaterialGroups", materialService.getTopMaterialGroups());
+        model.addAttribute("warehouses",materialService.getWarehouses());
+        model.addAttribute("topMaterialGroups", materialService.getMaterialGroupsByDepth(0));
         return "material/register";
     }
 
@@ -121,7 +122,7 @@ public class MaterialController {
      */
     @GetMapping("/warehouselist")
     public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
-        model.addAttribute("warehouses", materialService.listWarehouse());
+        model.addAttribute("warehouses", materialService.getWarehouses());
     }
 
     /**
