@@ -47,64 +47,71 @@
           -webkit-transform: scale(0);
           transform: scale(0);
         } 100% {
-          -webkit-transform: scale(1.0);
-          transform: scale(1.0);
-          opacity: 0;
-        }
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+            opacity: 0;
+          }
+      }
+
+      .table {
+        width: 70%;
+        margin: auto;
+      }
+      .table th, .table td {
+        text-align: center !important; /* Ensures center alignment */
+        padding: 10px !important; /* Ensures padding is applied */
       }
     </style>
-  <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+    <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
   <body class="app">
-    <div id="loader">
-      <div class="spinner"></div>
-    </div>
-    <script>
-      window.addEventListener('load', function load() {
-        const loader = document.getElementById('loader');
-        setTimeout(function() {
-            loader.classList.add('fadeOut');
-        }, 300);
-      });
-    </script>
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+  <script>
+    window.addEventListener('load', function load() {
+      const loader = document.getElementById('loader');
+      setTimeout(function() {
+        loader.classList.add('fadeOut');
+      }, 300);
+    });
+  </script>
 
-      <!-- #Main ============================ -->
-      <div class="page-container">
+  <!-- #Main ============================ -->
+  <div class="page-container">
 
-        <!-- ### $App Screen Content ### -->
-        <main class="main-content bgc-grey-100">
-          <div id="mainContent">
-            <div class="full-container">
-              <th:block th:fragment="content">
-                <table class="table table-bordered">
-                  <thead>
-                  <tr>
-                    <th>자재 창고 코드</th>
-                    <th>창고명</th>
-                    <th>수정</th>
-
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr th:each="warehouse : ${warehouses}">
-                    <td th:text="${warehouse.wrhscode}"></td>
-                    <td th:text="${warehouse.wrhsname}"></td>
-                    <td>
-                      <button type="button" class="btn cur-p btn-dark btn-color" >수정하기</button>
-                    </td>
-
-                  </tr>
-                  </tbody>
-                </table>
-              </th:block>
-            </div>
-          </div>
-        </main>
-
-        <!-- ### $App Screen Footer ### -->
-        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-          <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
-        </footer>
+    <!-- ### $App Screen Content ### -->
+    <main class="main-content bgc-grey-100">
+      <div id="mainContent">
+        <div class="full-container">
+          <th:block th:fragment="content">
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>자재 창고 코드</th>
+                <th>창고명</th>
+                <th>수정</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="warehouse : ${warehouses}">
+                <td th:text="${warehouse.wrhscode}"></td>
+                <td th:text="${warehouse.wrhsname}"></td>
+                <td>
+                  <button type="button" class="btn cur-p btn-dark btn-color">수정하기</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </th:block>
+        </div>
       </div>
+    </main>
+
+    <!-- ### $App Screen Footer ### -->
+    <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+      <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+    </footer>
+  </div>
   </body>
-  </th:block>
+</th:block>
 </html>
