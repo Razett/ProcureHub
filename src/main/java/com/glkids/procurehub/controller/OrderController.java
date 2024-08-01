@@ -87,6 +87,6 @@ public class OrderController {
      */
     @GetMapping("/inspstatus")
     public String inspectionStatus() {
-        return "order/inspstatus";
+        return "/order/inspstatus";
     }
 }
