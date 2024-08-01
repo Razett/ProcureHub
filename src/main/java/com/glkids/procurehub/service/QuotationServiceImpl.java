@@ -1,58 +1,44 @@
 package com.glkids.procurehub.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glkids.procurehub.dto.QuotationDTO;
-import com.glkids.procurehub.entity.*;
-import com.glkids.procurehub.repository.*;
+import com.glkids.procurehub.dto.QuotationFileDTO;
+import com.glkids.procurehub.dto.QuotationMtrlDTO;
+import com.glkids.procurehub.entity.Quotation;
+import com.glkids.procurehub.entity.QuotationFile;
+import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.repository.QuotationFileRepository;
+import com.glkids.procurehub.repository.QuotationMtrlRepository;
+import com.glkids.procurehub.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class QuotationServiceImpl implements QuotationService {
 
-    @Autowired
-    private QuotationRepository quotationRepository;
-
-    @Autowired
-    private QuotationFileRepository quotationFileRepository;
-
-    @Autowired
-    private QuotationMtrlRepository quotationMtrlRepository;
+    private final QuotationRepository quotationRepository;
+    private final QuotationMtrlRepository quotationMtrlRepository;
+    private final QuotationFileRepository quotationFileRepository;
 
     @Override
+    @Transactional
     public Quotation saveQuotation(QuotationDTO quotationDTO) {
-        Quotation quotation = Quotation.builder()
-                .content(quotationDTO.getContent())
-                .status(quotationDTO.getStatus())
-                .title(quotationDTO.getTitle())
-                .contractor(quotationDTO.getContractor())
-                .emp(quotationDTO.getEmp())
-                .build();
+        Quotation quotation = quotationDtoToEntity(quotationDTO);
         return quotationRepository.save(quotation);
     }
+
     @Override
-    public QuotationMtrl saveFileMaterial(QuotationMtrl quotationMtrlDTO) {
-        QuotationMtrl quotationMtrl = QuotationMtrl.builder()
-                .leadtime(quotationMtrlDTO.getLeadtime())
-                .quantity(quotationMtrlDTO.getQuantity())
-                .totalprice(quotationMtrlDTO.getTotalprice())
-                .unitprice(quotationMtrlDTO.getUnitprice())
-                .emp(quotationMtrlDTO.getEmp())
-                .material(quotationMtrlDTO.getMaterial())
-                .quotation(quotationMtrlDTO.getQuotation())
-                .build();
+    @Transactional
+    public QuotationMtrl saveQuotationMtrl(QuotationMtrlDTO quotationMtrlDTO) {
+        QuotationMtrl quotationMtrl = quotationMtrlDtoToEntity(quotationMtrlDTO);
         return quotationMtrlRepository.save(quotationMtrl);
+    }
+
+    @Override
+    @Transactional
+    public QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO) {
+        QuotationFile quotationFile = quotationFileDtoToEntity(quotationFileDTO);
+        return quotationFileRepository.save(quotationFile);
     }
 }
