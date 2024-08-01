@@ -27,6 +27,10 @@ public interface MaterialService {
 
     List<MaterialWarehouseDTO> getWarehouses();
 
+    MaterialWarehouseDTO registerMaterialWarehouse(MaterialWarehouseDTO materialWarehouseDTO);
+
+    Boolean verifyWrhscode(String wrhscode);
+
     MaterialGroupDTO readMaterialGroup(String grpcode);
 
     List<MaterialGroupDTO> getMaterialGroupsByDepth(Integer depth);
@@ -69,6 +73,10 @@ public interface MaterialService {
 
     default MaterialWarehouseDTO warehouseEntityToDTO(MaterialWarehouse materialWarehouse) {
         return MaterialWarehouseDTO.builder().wrhscode(materialWarehouse.getWrhscode()).wrhsname(materialWarehouse.getName()).build();
+    }
+
+    default MaterialWarehouse warehouseDtoToEntity(MaterialWarehouseDTO materialWarehouseDTO) {
+        return MaterialWarehouse.builder().wrhscode(materialWarehouseDTO.getWrhscode()).name(materialWarehouseDTO.getWrhsname()).build();
     }
 
     default MaterialGroupDTO groupEntityToDTO(MaterialGroup materialGroup) {

@@ -120,21 +120,114 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        ...
+                        <div class="mb-3">
+                          <label class="form-label" for="inputWrhscode">창고 코드</label>
+                          <input type="text" name="quantity" class="form-control" id="inputWrhscode" placeholder="창고 코드를 입력하세요." control-id="ControlID-1">
+                          <span class="ps-1 pt-1 c-grey-700" id="subWrhscode">창고 코드는 5자리 이상 30자리 미만의 영문자, 숫자, -만 입력 가능합니다.</span>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="inputWrhsname">창고 이름</label>
+                          <input type="text" name="quantity" class="form-control" id="inputWrhsname" placeholder="창고 이름를 입력하세요." control-id="ControlID-1">
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-primary">등록하기</button>
+                        <button type="button" class="btn btn-primary btn-color disabled" id="addWrhsSubmit">등록하기</button>
                       </div>
                     </div>
                   </div>
                 </div>
+                <script src="/js/material.js"></script>
                 <script>
                   $(document).ready(function () {
                     $('#warehouseAddBtn').on('click', function (e) {
                       e.preventDefault();
                       $("#warehouseAddModal").show();
                     });
+
+                    var wrhscode = '';
+                    var wrhsname = '';
+                    var wrhscodeVerified = false;
+                    var wrhsnameVerified = false;
+
+                    var typingTimer; // Timer identifier
+                    var doneTypingInterval = 1500; // Time in milliseconds (1.5 seconds)
+                    var addWrhsSubmitButton = $('#addWrhsSubmit');
+                    var subWrhscode = $('#subWrhscode');
+
+                    $('#inputWrhscode').on('input', function () {
+                      wrhscodeVerified = false;
+                      if (!addWrhsSubmitButton.hasClass('disabled')) {
+                        addWrhsSubmitButton.addClass('disabled');
+                      }
+                      subWrhscode.text('창고 코드는 5자리 이상 30자리 미만의 영문자, 숫자, -만 입력 가능합니다.');
+                      if (!subWrhscode.hasClass('c-grey-700')) {
+                        subWrhscode.addClass('c-grey-700');
+                      }
+                      subWrhscode.removeClass('c-green-800').removeClass('c-red-700');
+
+                      wrhscode = $(this).val();
+
+                      clearTimeout(typingTimer); // Clear the previous timer
+
+                      if (wrhscode.length > 5) {
+                        // Set a new timer
+                        var isValid = materialWarehouseService.validateWrhscode(wrhscode);
+                        if (isValid) {
+                          typingTimer = setTimeout(function () {
+                            console.log(wrhscode);
+                            materialWarehouseService.verifyWrhscode(wrhscode, function (data) {
+                              console.log(data);
+                              if (data) {
+                                wrhscodeVerified = true;
+                                subWrhscode.text('사용 가능합니다.');
+                                subWrhscode.addClass('c-green-800').removeClass('c-grey-700').removeClass('c-red-700');
+
+                                if (enableAddWrhsUsbmitButton(wrhscodeVerified, wrhsnameVerified))
+                                  addWrhsSubmitButton.removeClass('disabled');
+                              } else {
+                                subWrhscode.text('이미 존재하는 창고 코드입니다. 다시 입력하세요.');
+                                subWrhscode.addClass('c-red-800').removeClass('c-grey-700').removeClass('c-green-700');
+                              }
+                            });
+                          }, doneTypingInterval);
+                        } else {
+                          subWrhscode.text('입력 값이 올바르지 않습니다. 다시 입력하세요.');
+                          subWrhscode.addClass('c-red-800').removeClass('c-grey-700').removeClass('c-green-700');
+                        }
+                      } else {
+                        subWrhscode.text('창고 코드는 5자리 이상 30자리 미만의 영문자, 숫자, -만 입력 가능합니다.');
+                        subWrhscode.addClass('c-grey-700').removeClass('c-red-800').removeClass('c-green-700');
+                      }
+                    });
+
+                    $('#inputWrhsname').on('input', function() {
+                      wrhsnameVerified = false;
+                      if (!addWrhsSubmitButton.hasClass('disabled')) {
+                        addWrhsSubmitButton.addClass('disabled');
+                      }
+
+                      wrhsname = $(this).val();
+
+                      if (wrhsname.length > 0) {
+                        wrhsnameVerified = true;
+                      }
+
+                      if (enableAddWrhsUsbmitButton(wrhscodeVerified, wrhsnameVerified))
+                        addWrhsSubmitButton.removeClass('disabled');
+                    });
+
+                    addWrhsSubmitButton.on('click', function () {
+                      materialWarehouseService.registerWarehouse(wrhscode, wrhsname, function (data) {
+                        if (data) {
+                          window.location.href = '/material/warehouselist';
+                        }
+                      })
+                    });
+
+                    function enableAddWrhsUsbmitButton(verified1, verified2) {
+                      return verified1 && verified2;
+                    }
                   });
                 </script>
               </th:block>
