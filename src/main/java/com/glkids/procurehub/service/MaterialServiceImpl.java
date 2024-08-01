@@ -84,6 +84,27 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     /**
+     * 자재 창고를 데이터베이스에 추가합니다.
+     * @param materialWarehouseDTO 추가할 자재 창고 객체
+     * @return 자재 창고 등록 성공 시 자재 창고 객체, 실패 시 null.
+     */
+    @Override
+    public MaterialWarehouseDTO registerMaterialWarehouse(MaterialWarehouseDTO materialWarehouseDTO) {
+        materialWarehouseRepository.save(warehouseDtoToEntity(materialWarehouseDTO));
+        return materialWarehouseRepository.existsById(materialWarehouseDTO.getWrhscode()) ? materialWarehouseDTO : null;
+    }
+
+    /**
+     *
+     * @param wrhscode 중복을 확인할 자재 창고 코드
+     * @return 중복 시 false, 사용가능 시 true.
+     */
+    @Override
+    public Boolean verifyWrhscode(String wrhscode) {
+        return !materialWarehouseRepository.existsById(wrhscode);
+    }
+
+    /**
      * 자재 그룹 코드가 일치하는 자재 그룹 객체를 불러옵니다.
      * @param grpcode 자재 그룹 코드
      * @return {@code MaterialGroupDTO} - 자재 그룹 Entity를 DTO로 변환한 객체
@@ -163,6 +184,11 @@ public class MaterialServiceImpl implements MaterialService {
         return materialGroupList;
     }
 
+    /**
+     * 현재 자재 그룹 객체의 상위 경로를 가져옵니다.
+     * @param materialGroup 현재 자재 그룹 정보 객체
+     * @return 현재 자재 그룹 객체를 포함하는 상위 그룹 객체들
+     */
     @Override
     public List<MaterialGroupDTO> getMaterialGroupDirection(MaterialGroup materialGroup) {
         List<MaterialGroupDTO> direction = new ArrayList<>();

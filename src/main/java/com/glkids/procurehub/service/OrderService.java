@@ -1,10 +1,8 @@
 package com.glkids.procurehub.service;
 
-import com.glkids.procurehub.dto.ContractorDTO;
-import com.glkids.procurehub.dto.OrderDTO;
-import com.glkids.procurehub.entity.Contractor;
-import com.glkids.procurehub.entity.Order;
 
+import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.entity.Order;
 import java.util.List;
 
 public interface OrderService {
