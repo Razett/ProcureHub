@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * REST 컨트롤러 클래스
  */
@@ -30,5 +32,9 @@ public class ContractorRestController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null); // or appropriate error handling
         }
+    }
+    @GetMapping("/contractor/search")
+    public List<ContractorDTO> searchContractorByName(@RequestParam("name") String name) {
+        return contractorService.findByNameContaining(name);
     }
 }

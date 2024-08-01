@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,8 +73,44 @@ public class ContractorServiceImpl implements ContractorService {
         if (contractorOpt.isPresent()) {
             return contractorEntityToDTO(contractorOpt.get());
         } else {
-            throw new IllegalArgumentException("No contractor found with name: " + name);
+            throw new IllegalArgumentException("회사명을 찾지 못햇습니다.: " + name);
         }
+    }
+
+    @Override
+    public List<ContractorDTO> findByNameContaining(String name) {
+        List<Contractor> contractors = contractorRepository.findByNameContaining(name);
+
+        // 정렬 기준에 맞게 정렬
+        List<Contractor> sortedContractors = contractors.stream()
+                .sorted((c1, c2) -> {
+                    // 이름에 대한 순서 정렬 예시 (단어의 위치에 따라 정렬)
+                    String c1Name = c1.getName().toLowerCase();
+                    String c2Name = c2.getName().toLowerCase();
+                    return compareNames(c1Name, c2Name, name.toLowerCase());
+                })
+                .collect(Collectors.toList());
+
+        return sortedContractors.stream()
+                .map(this::contractorEntityToDTO)
+                .collect(Collectors.toList());
+    }
+    private int compareNames(String name1, String name2, String query) {
+        int index1 = getIndexOfQuery(name1, query);
+        int index2 = getIndexOfQuery(name2, query);
+        return Integer.compare(index1, index2);
+    }
+
+    private int getIndexOfQuery(String name, String query) {
+        int index = 0;
+        for (char ch : query.toCharArray()) {
+            index = name.indexOf(ch, index);
+            if (index == -1) {
+                return Integer.MAX_VALUE; // 검색 쿼리가 포함되지 않는 경우 큰 값 반환
+            }
+            index++;
+        }
+        return index;
     }
 
     @Override
