@@ -150,7 +150,7 @@ public class MaterialController {
      * 조달 계획 목록
      */
     @GetMapping("/prcrlist")
-    public String prcrList() {
+    public String prcrList(Model model) {
 
         return "/material/prcrlist";
     }
