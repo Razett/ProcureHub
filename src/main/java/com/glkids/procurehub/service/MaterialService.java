@@ -17,6 +17,8 @@ public interface MaterialService {
 
     MaterialDTO read(Long mtrlno);
 
+    MaterialDTO readByFetch(Long mtrlno);
+
     Material register(MaterialDTO materialDTO);
 
     void update(MaterialDTO materialDTO);

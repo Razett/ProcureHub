@@ -41,10 +41,15 @@ public class MaterialServiceImpl implements MaterialService {
         return materialDTOList;
     }
 
-
     @Override
     public MaterialDTO read(Long mtrlno) {
         return materialEntityToDTO(materialRepository.findById(mtrlno));
+    }
+
+    @Override
+    public MaterialDTO readByFetch(Long mtrlno) {
+        Optional<Material> materialOpt = materialRepository.findByIdFetch(mtrlno);
+        return materialEntityToDTO(materialOpt);
     }
 
     @Override
