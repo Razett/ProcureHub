@@ -73,28 +73,18 @@ public class QuotationRestController {
     // 자재 정보 저장
     @PostMapping("/quotationMtrl/save")
     public ResponseEntity<String> saveQuotationMtrl(@RequestBody QuotationMtrlDTO quotationMtrlDTO) {
-        // Emp 테이블에서 사원 정보 가져오기
-        Emp emp = empRepository.findById(quotationMtrlDTO.getEmpId())
-                .orElseThrow(() -> new RuntimeException("사원을 찾을 수 없습니다."));
-
-        // Material 테이블에서 자재 정보 가져오기
-        Material material = materialRepository.findById(quotationMtrlDTO.getMaterialId())
-                .orElseThrow(() -> new RuntimeException("자재를 찾을 수 없습니다."));
-
-        // Quotation 테이블에서 견적 정보 가져오기
-        Quotation quotation = quotationRepository.findById(quotationMtrlDTO.getQuotationId())
-                .orElseThrow(() -> new RuntimeException("견적을 찾을 수 없습니다."));
 
         QuotationMtrl quotationMtrl = QuotationMtrl.builder()
                 .leadtime(quotationMtrlDTO.getLeadtime())
                 .quantity(quotationMtrlDTO.getQuantity())
                 .totalprice(quotationMtrlDTO.getTotalprice())
                 .unitprice(quotationMtrlDTO.getUnitprice())
-                .emp(emp)
-                .material(material)
-                .quotation(quotation)
+                .emp(Emp.builder().empno(201758030L).build())
+                .material(Material.builder().mtrlno(quotationMtrlDTO.getMaterialId()).build())
+                .quotation(Quotation.builder().qtno(quotationMtrlDTO.getQuotationId()).build())
                 .build();
 
+        System.out.println(quotationMtrl);
         quotationMtrlRepository.save(quotationMtrl);
 
         return ResponseEntity.ok("견적 자재 정보가 성공적으로 저장되었습니다.");
