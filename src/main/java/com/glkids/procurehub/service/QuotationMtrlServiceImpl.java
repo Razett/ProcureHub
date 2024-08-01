@@ -11,7 +11,6 @@ public class QuotationMtrlServiceImpl implements QuotationMtrlService {
     @Autowired
     private QuotationMtrlRepository quotationMtrlRepository;
 
-
     @Override
     public QuotationMtrl saveQuotationMtrl(QuotationMtrl quotationMtrl) {
         return quotationMtrlRepository.save(quotationMtrl);
