@@ -18,7 +18,6 @@ import java.util.Optional;
 public class ContractorServiceImpl implements ContractorService {
 
     private final ContractorRepository contractorRepository;
-
     private final QuotationRepository quotationRepository;
 
     @Override
@@ -63,5 +62,15 @@ public class ContractorServiceImpl implements ContractorService {
     public void quoRegister(QuotationDTO quotationDTO) {
         Quotation quoEntity = quotationDtoToEntity(quotationDTO);
         quotationRepository.save(quoEntity);
+    }
+
+    @Override
+    public ContractorDTO findByName(String name) {
+        Optional<Contractor> contractorOpt = contractorRepository.findByName(name);
+        if (contractorOpt.isPresent()) {
+            return contractorEntityToDTO(contractorOpt.get());
+        } else {
+            throw new IllegalArgumentException("No contractor found with name: " + name);
+        }
     }
 }

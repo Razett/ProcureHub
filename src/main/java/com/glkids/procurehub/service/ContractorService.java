@@ -27,6 +27,8 @@ public interface ContractorService {
     //6. 견적 등록
     void quoRegister(QuotationDTO quotationDTO);
 
+    ContractorDTO findByName(String name);
+
     default Contractor contractorDtoToEntity(ContractorDTO contractorDTO) {
         Contractor contractor=Contractor.builder().corno(contractorDTO.getCorno())
                 .name(contractorDTO.getName()).phone(contractorDTO.getPhone())
