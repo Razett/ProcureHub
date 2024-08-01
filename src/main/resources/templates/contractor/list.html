@@ -78,8 +78,9 @@
               <th:block th:fragment="content">
                 <div class="row gap-20 pos-r">
                   <div class="bgc-white p-20 bd col-md-12">
+                    <h4 class="c-grey-900 mT-10 mB-30">업체 목록</h4>
                     <div class="alert alert-light contractor" role="alert" th:each="contractor:${contractorList}" th:id="${contractor.corno}">
-                      <h3>[[${contractor.name}]]</h3>
+                      <h5><b>[[${contractor.name}]]</b></h5>
                       [[${contractor.address1}]]<br>
                       TEL/FAX : [[${contractor.phone}]]
                     </div>

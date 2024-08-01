@@ -7,6 +7,7 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.*;
 import com.glkids.procurehub.service.QuotationMtrlService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +32,7 @@ public class QuotationRestController {
     @Autowired
     private EmpRepository empRepository;
 
-    @Autowired
-    private QuotationMtrlService quotationMtrlService;
+
 
     @PostMapping(value = "/quotation/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> saveQuotation(@RequestBody QuotationDTO quotationDTO) {
@@ -57,52 +57,46 @@ public class QuotationRestController {
 
     @PostMapping(value = "/quotationFile/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveQuotationFile(@RequestBody QuotationFileDTO quotationFileDTO) {
-        // Quotation 엔터티 가져오기
-        Quotation quotation = quotationRepository.findById(quotationFileDTO.getQtno())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quotation ID: " + quotationFileDTO.getQtno()));
 
         // QuotationFile 엔터티 생성 및 저장
         QuotationFile quotationFile = QuotationFile.builder()
-                .quotation(quotation)
+                .quotation(Quotation.builder().qtno(quotationFileDTO.getQtno()).build())
                 .uuid(quotationFileDTO.getUuid())
                 .name(quotationFileDTO.getName())
                 .url(quotationFileDTO.getUrl())
                 .build();
 
         QuotationFile savedFile = quotationFileRepository.save(quotationFile);
-        return ResponseEntity.ok("File metadata saved successfully with ID: " + savedFile.getQtfno());
+        return ResponseEntity.ok("파: " + savedFile.getQtfno());
     }
 
-    @PostMapping(value = "/quotationMtrl/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    // 자재 정보 저장
+    @PostMapping("/quotationMtrl/save")
     public ResponseEntity<String> saveQuotationMtrl(@RequestBody QuotationMtrlDTO quotationMtrlDTO) {
-        // 디버깅용 로그 추가
-        System.out.println("Quotation ID: " + quotationMtrlDTO.getQuotationId());
-        System.out.println("Material ID: " + quotationMtrlDTO.getMaterialId());
-        System.out.println("Employee ID: " + quotationMtrlDTO.getEmpId());
-
-        QuotationMtrl quotationMtrl = convertToEntity(quotationMtrlDTO);
-        quotationMtrlService.saveQuotationMtrl(quotationMtrl);
-        return ResponseEntity.ok("QuotationMtrl saved successfully");
-    }
-
-    private QuotationMtrl convertToEntity(QuotationMtrlDTO quotationMtrlDTO) {
-        Quotation quotation = quotationRepository.findById(quotationMtrlDTO.getQuotationId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid quotation ID: " + quotationMtrlDTO.getQuotationId()));
-
-        Material material = materialRepository.findById(quotationMtrlDTO.getMaterialId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid material ID: " + quotationMtrlDTO.getMaterialId()));
-
+        // Emp 테이블에서 사원 정보 가져오기
         Emp emp = empRepository.findById(quotationMtrlDTO.getEmpId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + quotationMtrlDTO.getEmpId()));
+                .orElseThrow(() -> new RuntimeException("사원을 찾을 수 없습니다."));
 
-        return QuotationMtrl.builder()
-                .quotation(quotation)
-                .material(material)
-                .emp(emp)
-                .quantity(quotationMtrlDTO.getQuantity())
-                .unitprice(quotationMtrlDTO.getUnitprice())
-                .totalprice(quotationMtrlDTO.getTotalprice())
+        // Material 테이블에서 자재 정보 가져오기
+        Material material = materialRepository.findById(quotationMtrlDTO.getMaterialId())
+                .orElseThrow(() -> new RuntimeException("자재를 찾을 수 없습니다."));
+
+        // Quotation 테이블에서 견적 정보 가져오기
+        Quotation quotation = quotationRepository.findById(quotationMtrlDTO.getQuotationId())
+                .orElseThrow(() -> new RuntimeException("견적을 찾을 수 없습니다."));
+
+        QuotationMtrl quotationMtrl = QuotationMtrl.builder()
                 .leadtime(quotationMtrlDTO.getLeadtime())
+                .quantity(quotationMtrlDTO.getQuantity())
+                .totalprice(quotationMtrlDTO.getTotalprice())
+                .unitprice(quotationMtrlDTO.getUnitprice())
+                .emp(emp)
+                .material(material)
+                .quotation(quotation)
                 .build();
+
+        quotationMtrlRepository.save(quotationMtrl);
+
+        return ResponseEntity.ok("견적 자재 정보가 성공적으로 저장되었습니다.");
     }
 }

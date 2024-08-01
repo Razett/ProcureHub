@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @Data
 public class MaterialGroupListDTO {
-
+    @Builder.Default
     private List<MaterialGroupDTO> materialGroupLists = new ArrayList<>();
     private String target;
 }

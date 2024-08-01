@@ -2,9 +2,12 @@ package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
+import com.glkids.procurehub.dto.QuotationMtrlDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Quotation;
+import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.repository.ContractorRepository;
+import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ public class ContractorServiceImpl implements ContractorService {
     public List<ContractorDTO> list() {
         List<Contractor> contractors = contractorRepository.findAll();
         List<ContractorDTO> contractorDTOList = new ArrayList<>();
-        contractors.forEach(x->contractorDTOList.add(contractorEntityToDTO(x)));
+        contractors.forEach(x -> contractorDTOList.add(contractorEntityToDTO(x)));
         return contractorDTOList;
     }
 
@@ -33,8 +36,7 @@ public class ContractorServiceImpl implements ContractorService {
         Optional<Contractor> opCon = contractorRepository.findById(corno);
         if (opCon.isPresent()) {
             return contractorEntityToDTO(opCon.get());
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -54,7 +56,7 @@ public class ContractorServiceImpl implements ContractorService {
     public List<QuotationDTO> quoList() {
         List<Quotation> quotation = quotationRepository.findAll();
         List<QuotationDTO> quoDTOList = new ArrayList<>();
-        quotation.forEach(x->quoDTOList.add(quotationEntityToDTO(x)));
+        quotation.forEach(x -> quoDTOList.add(quotationEntityToDTO(x)));
         return quoDTOList;
     }
 
@@ -71,6 +73,16 @@ public class ContractorServiceImpl implements ContractorService {
             return contractorEntityToDTO(contractorOpt.get());
         } else {
             throw new IllegalArgumentException("No contractor found with name: " + name);
+        }
+    }
+
+    @Override
+    public QuotationDTO quoread(Long qtno) {
+        Optional<Quotation> quoOpt = quotationRepository.findById(qtno);
+        if (quoOpt.isPresent()) {
+            return quotationEntityToDTO(quoOpt.get());
+        } else {
+            return null;
         }
     }
 }
