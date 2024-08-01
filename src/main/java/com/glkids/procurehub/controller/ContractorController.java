@@ -107,4 +107,12 @@ public class ContractorController {
         return "/contractor/quolist";
     }
 
+    /**
+     * 견적 상세보기
+     */
+    @GetMapping("/quoread")
+    public String quodatail(Long qtno, Model model) {
+        model.addAttribute("quoread",contractorService.quoread(qtno));
+        return "/contractor/quoread";
+    }
 }
