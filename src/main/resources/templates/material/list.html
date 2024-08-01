@@ -48,7 +48,7 @@
                                 <td th:text="${material.name}"></td>
                                 <td th:text="${material.standard}"></td>
                                 <td th:text="${material.quantity}"></td>
-                                <td th:text="${material.moddate}"></td>
+                                <td th:text="${#temporals.format(material.moddate, 'yyyy-MM-dd')}"></td>
                             </tr>
                             </tbody>
                         </table>
