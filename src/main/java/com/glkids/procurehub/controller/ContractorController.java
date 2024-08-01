@@ -59,7 +59,6 @@ public class ContractorController {
     @PostMapping("/register")
     public String postRegister(ContractorDTO contractorDTO) {
         contractorService.register(contractorDTO);
-        System.out.println(contractorDTO);
         return "redirect:/contractor/list";
     }
 
@@ -107,4 +106,12 @@ public class ContractorController {
         return "/contractor/quolist";
     }
 
+    /**
+     * 견적 상세보기
+     */
+    @GetMapping("/quoread")
+    public String quodatail(Long qtno, Model model) {
+        model.addAttribute("quoread",contractorService.quoread(qtno));
+        return "/contractor/quoread";
+    }
 }

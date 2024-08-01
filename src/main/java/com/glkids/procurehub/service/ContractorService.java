@@ -29,6 +29,9 @@ public interface ContractorService {
 
     ContractorDTO findByName(String name);
 
+    // 견적상세보기
+     QuotationDTO quoread(Long qtno);
+
     default Contractor contractorDtoToEntity(ContractorDTO contractorDTO) {
         Contractor contractor=Contractor.builder().corno(contractorDTO.getCorno())
                 .name(contractorDTO.getName()).phone(contractorDTO.getPhone())
