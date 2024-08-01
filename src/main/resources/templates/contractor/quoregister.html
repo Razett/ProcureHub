@@ -95,6 +95,9 @@
 </form>
 
 <script>
+
+    const server_url = 'http://192.168.1.25:8081'
+
     $(document).ready(function () {
 
         $('#loadCompanyInfo').click(function () {
@@ -170,8 +173,8 @@
                     uploadFilesWithQuotationId(quotationId); // 파일 업로드 함수 호출
 
                     // QuotationMtrl 정보 저장
-                    var materialCode = $('#materialCode').val();
-                    var materialId = getMaterialIdByCode(materialCode); // 자재 코드로 자재 ID 가져오기
+                    var materialId = $('#materialCode').val();
+                    // var materialId = getMaterialIdByCode(materialCode); // 자재 코드로 자재 ID 가져오기
 
                     // QuotationMtrl 정보 저장
                     var quotationMtrlData = {
@@ -198,9 +201,9 @@
             for (var i = 0; i < files.length; i++) {
                 fileData.append('file', files[i]);
             }
-            fileData.append("qtno", quotationId); // `qtno`를 파일 데이터에 추가
+            // fileData.append("qtno", quotationId); // `qtno`를 파일 데이터에 추가
             $.ajax({
-                url: 'http://localhost:8081/uploadFile',
+                url: server_url + '/uploadFile',
                 type: 'POST',
                 data: fileData,
                 processData: false,
@@ -210,7 +213,7 @@
                         name: response.name,
                         url: response.url,
                         uuid: response.uuid,
-                        qtno: response.qtno
+                        qtno: quotationId
                    };
                    sendFileMetadataToMainServer(metadata);
                 },
