@@ -50,4 +50,12 @@ public class ImportController {
         return "import/totallist";
     }
 
+    /**
+     * 입고 검수 현황
+     */
+    @GetMapping("/checkstatus")
+    public String checkStatus(){
+        return "import/checkstatus";
+    }
+
 }

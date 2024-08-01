@@ -4,7 +4,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-        <title>Home</title>
+        <title>자재 상세보기</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <style>
             #loader {
                 transition: all 0.3s ease-in-out;
@@ -75,75 +76,79 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>자재 상세보기</title>
-                            <style>
-                                /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
-                                input[type="text"] {
-                                    font-size: 15px;
-                                    padding: 6px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-                                input[type="textarea"] {
-                                    font-size: 15px;
-                                    padding: 80px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-                                    width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-                                }
-
-                            </style>
-                        </head>
-                        <body>
-                        <form action="list" method="get">
-                            <header><h1>자재 상세보기</h1></header>
-
-                            <div>
-                                자재이름 <input type="text" th:value="${material.name}" readonly>
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-6">
+                                <div class="bgc-white p-20 bd">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30" th:text="${material.name}"></h4>
+                                        <div class=" mT-10 mB-30">
+                                            <a th:href="@{/material/update(mtrlno=${material.mtrlno})}" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 수정">
+                                                <i class="c-grey-900 ti-pencil-alt fa-1-25x"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="inputMtrlCode">자재 코드</label><br>
+                                        <span class="text-black fa-1-25x" id="inputMtrlCode" th:text="'MA' + ${#numbers.formatInteger(material.mtrlno, 6)}"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">자재 그룹</label><br>
+                                            <div class="d-flex align-items-center">
+                                                <th:block th:each="materialGroup, i : ${materialGroupDirection}">
+                                                    <span class="text-black fa-1-25x" th:text="${materialGroup.name}"></span>
+                                                    <i th:if="${!i.last}" class="mx-2 c-grey-900 ti-angle-right fa-0-75x"></i>
+                                                </th:block>
+                                            </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="inputMtrlStd">자재 규격</label><br>
+                                        <span class="text-black fa-1-25x" id="inputMtrlStd" th:text="${material.standard}"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="inputMtrlQuantity">수량</label><br>
+                                        <span class="text-black fa-1-25x" id="inputMtrlQuantity" th:text="${material.quantity}"></span>
+                                    </div>
+                                    <div class="mb-3 d-flex">
+                                        <div>
+                                            <label class="form-label" for="inputMtrlWrhscode">창고 코드</label><br>
+                                            <span class="text-black fa-1-25x" id="inputMtrlWrhscode" th:text="${material.materialWarehouse.wrhscode}"></span>
+                                        </div>
+                                        <div class="ms-5">
+                                            <label class="form-label" for="inputMtrlWrhsname">창고 이름</label><br>
+                                            <span class="text-black fa-1-25x" id="inputMtrlWrhsname" th:text="${material.materialWarehouse.name}"></span>
+                                        </div>
+                                    </div>
+                                    <th:block th:if="${material.description != null and !material.description.isEmpty()}">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrldesc">세부 내용</label><br>
+                                            <span class="text-black fa-1-25x" id="inputMtrldesc" th:text="${material.description}"></span>
+                                        </div>
+                                    </th:block>
+                                </div>
                             </div>
-                            <br>
-                            <div>
-                                그룹선택
-                                <select>
-                                    <option value="">자재그룹을 선택하시오</option>
-                                    <option value="company1">외형</option>
-                                    <option value="company2">전장부품</option>
-                                    <option value="company3">카메라</option>
-                                </select>
-                                창고선택
-                                <select>
-                                    <option value="">창고를 선택하시오</option>
-                                    <option value="company1">A-01-어셈블리-나사</option>
-                                    <option value="company2">A-02-어셈블리-날개</option>
-                                    <option value="company3">A-03-어셈블리-배터리</option>
-                                </select>
+                            <div class="col-md-6">
+                                <div class="bgc-white p-20 bd">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30">도면</h4>
+                                        <div th:if="${materialFile != null}" class=" mT-10 mB-30">
+                                            <a href="" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="다운로드">
+                                                <i class="c-grey-900 ti-import fa-1-25x"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <th:block th:if="${materialFile != null}">
+                                        <div>
+                                            도면 파일
+                                        </div>
+                                    </th:block>
+                                    <th:block th:unless="${materialFile != null}">
+                                        <span class="text-black fa-1-25x" >추가된 도면이 없습니다...</span>
+                                        <a th:href="@{/material/update(mtrlno=${material.mtrlno})}" class="fa-1-25x" >도면 추가하기</a>
+                                    </th:block>
+                                </div>
                             </div>
-                            <br>
-                            <div>
-                                규격 <input type="text" th:value="${material.standard}" readonly>
-                            </div>
-                            <br>
-                            <div>
-                                수량 <input type="text" th:value="${material.quantity}" readonly>
-                            </div>
-                            <br>
-                            <div>
-                                세부내용 <input type="textarea" th:value="${material.description}" readonly>
-                            </div>
-                            <br>
-                            <div>
-                                도면 <input type="file" >
-                            </div>
-                            <br>
-
-                            <br>
-                            <br>
-                            <button type="button" id="cancel">취소</button>
-                            <input type="submit" value="리스트">
-                        </form>
-                        </body>
-                        </html>
-
+                        </div>
+                    </th:block>
                 </div>
             </div>
         </main>

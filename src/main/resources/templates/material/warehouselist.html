@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>Home</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <style>
       #loader {
         transition: all 0.3s ease-in-out;
@@ -75,7 +76,67 @@
           <div id="mainContent">
             <div class="full-container">
               <th:block th:fragment="content">
-                <span th:text="${warehouses}"></span>
+                <div class="row gap-20 pos-r">
+                  <div class="col-md-8">
+                    <div class="bgc-white p-20 bd">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="c-grey-900 mT-10 mB-30">창고 목록</h4>
+                        <div class=" mT-10 mB-30" data-bs-toggle="modal" data-bs-target="#warehouseAddModal">
+                          <a href="#" id="warehouseAddBtn" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="창고 추가">
+                            <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th scope="col" class="text-center">창고 코드</th>
+                            <th scope="col" class="text-center">창고 이름</th>
+                            <th scope="col" class="text-center">수정</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr th:each="warehouse : ${warehouses}">
+                            <td class="col-md-3 text-center" th:text="${warehouse.wrhscode}"></td>
+                            <td class="col-md-8 text-center" th:text="${warehouse.wrhsname}"></td>
+                            <td class="col-md-1 text-center">
+                              <a href="#" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="수정하기">
+                                <i class="c-grey-900 ti-pencil-alt fa-1x"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="warehouseAddModal" tabindex="-1" aria-labelledby="warehouseAddModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="warehouseAddModalLabel">창고 등록</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary">등록하기</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  $(document).ready(function () {
+                    $('#warehouseAddBtn').on('click', function (e) {
+                      e.preventDefault();
+                      $("#warehouseAddModal").show();
+                    });
+                  });
+                </script>
               </th:block>
             </div>
           </div>

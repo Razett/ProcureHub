@@ -75,8 +75,32 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                       <span th:text="${materiallist}"></span>
-                        <span th:text="${warehouses}"></span>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>자재코드</th>
+                                <th>그룹명</th>
+                                <th>자재명</th>
+                                <th>규격</th>
+                                <th>수량</th>
+                                <th>최종수정일</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="material : ${materiallist}">
+                                <td th:text="${material.mtrlno}"></td>
+                                <td th:text="${material.materialGroup.name}"></td>
+                                <td th:text="${material.name}"></td>
+                                <td th:text="${material.standard}"></td>
+                                <td th:text="${material.quantity}"></td>
+                                <td th:text="${material.moddate}"></td> <!-- Assuming lastModified is the correct field for the date -->
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+
                     </th:block>
                 </div>
             </div>

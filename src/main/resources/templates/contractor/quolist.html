@@ -75,7 +75,38 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <span th:text="${quotationList}"></span>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>견적추가 날짜</th>
+                                <th>회사이름</th>
+                                <th>자재코드</th>
+                                <th>자재명</th>
+                                <th>규격</th>
+                                <th>수량</th>
+                                <th>단가</th>
+                                <th>총금액</th>
+                                <th>계약 여부</th>
+                                <th>계약 등록</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="quotationlist : ${quotationList}">
+                                <td th:text="${#temporals.format(quotationlist.contractor.moddate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${quotationlist.contractor.name}"></td>
+                                <td>음</td>
+                                <td>이</td>
+                                <td>것</td>
+                                <td>도</td>
+                                <td>조</td>
+                                <td>인</td>
+                                <td th:text="${quotationlist.status}"></td>
+                                <td>지</td>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </th:block>
                 </div>
             </div>

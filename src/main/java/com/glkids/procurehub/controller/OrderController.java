@@ -68,4 +68,11 @@ public class OrderController {
         return "order/totallist";
     }
 
+    /**
+     * 검수 현황
+     */
+    @GetMapping("/inspstatus")
+    public String inspectionStatus() {
+        return "order/inspstatus";
+    }
 }

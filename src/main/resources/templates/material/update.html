@@ -1,80 +1,181 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>자재 수정</title>
-    <style>
-        input[type="text"], textarea {
-            font-size: 15px;
-            padding: 6px;
-            width: 400px;
-        }
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <style>
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #fff;
+                z-index: 90000;
+            }
 
-        textarea {
-            height: 100px; /* 텍스트 상자의 높이를 설정 */
-        }
-    </style>
-</head>
-<body>
-<form action="update" method="post" enctype="multipart/form-data">
-    <header><h1>자재수정</h1></header>
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
 
-    <input type="hidden" name="mtrlno" th:value="${materialupdate.mtrlno}">
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
 
-    <div>
-        자재이름<input type="text" name="name" th:value="${materialupdate.name}">
+            @-webkit-keyframes sk-scaleout {
+                0% { -webkit-transform: scale(0) }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                } 100% {
+                      -webkit-transform: scale(1.0);
+                      transform: scale(1.0);
+                      opacity: 0;
+                  }
+            }
+        </style>
+        <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
     </div>
-    <br>
-    <div>
-        <label class="form-label" for="inputState">자재 그룹</label>
-        <div class="row">
-            <div class="mb-2 col-md-4">
-                <select class="form-control" name="grpcode" control-id="ControlID-10">
-                    <option value="ETC" selected="selected">자재 그룹을 선택하세요.</option>
-                    <option value="BODY">바디</option>
-                    <option>...</option>
-                </select>
+    <script>
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function() {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
+    </script>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-8">
+                                <div class="bgc-white p-20 bd">
+                                    <h4 class="c-grey-900 mT-10 mB-30">자재 수정</h4>
+                                    <form action="/material/update" method="post">
+                                        <input type="hidden" name="mtrlno" th:value="${material.mtrlno}">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlName">자재 이름</label>
+                                            <input type="text" name="name" class="form-control" id="inputMtrlName" placeholder="자재 이름을 입력하세요" control-id="ControlID-1" th:value="${material.name}">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <label class="form-label" for="inputState">자재 그룹</label>
+                                                <div class="row">
+                                                    <div class="mb-2 col-md-4">
+                                                        <select class="form-control" id="topGroup" name="topGrpcode" control-id="ControlID-10">
+                                                            <option value="ETC">자재 그룹을 선택하세요.</option>
+                                                            <th:block th:each="topGroup : ${materialGroupList.get(0).materialGroupLists}">
+                                                                <option th:value="${topGroup.getGrpcode()}" th:text="${topGroup.getName()}" th:selected="${topGroup.grpcode} == ${materialGroupList.get(0).target}"></option>
+                                                            </th:block>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-2 col-md-4">
+                                                        <select class="form-control" id="midGroup" name="midGrpcode" control-id="ControlID-10">
+                                                            <option th:value="${material.materialGroup.grpcode}">...</option>
+                                                            <th:block th:if="${materialGroupList.size() > 1}">
+                                                                <th:block th:each="midGroup : ${materialGroupList.get(1).materialGroupLists}">
+                                                                    <option th:value="${midGroup.getGrpcode()}" th:text="${midGroup.getName()}" th:selected="${midGroup.grpcode} == ${materialGroupList.get(1).target}"></option>
+                                                                </th:block>
+                                                            </th:block>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3 col-md-4">
+                                                        <select class="form-control" id="subGroup" name="grpcode" control-id="ControlID-10">
+                                                            <option th:value="${material.materialGroup.grpcode}">...</option>
+                                                            <th:block th:if="${materialGroupList.size() > 1}">
+                                                                <th:block th:each="subGroup : ${materialGroupList.get(2).materialGroupLists}">
+                                                                    <option th:value="${subGroup.getGrpcode()}" th:text="${subGroup.getName()}" th:selected="${subGroup.grpcode} == ${materialGroupList.get(2).target}"></option>
+                                                                </th:block>
+                                                            </th:block>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-3">
+                                                <label class="form-label" for="inputState">자재 창고</label>
+                                                <select id="inputState" class="form-control" name="wrhscode" control-id="ControlID-10">
+                                                    <th:block th:each="warehouse : ${warehouses}">
+                                                        <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}" th:selected="${material.materialWarehouse.wrhscode} == ${warehouse.wrhscode}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlStd">규격</label>
+                                            <input type="text" name="standard" class="form-control" id="inputMtrlStd" placeholder="자재 규격을 입력히세요" control-id="ControlID-1" th:value="${material.standard}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlDescription">수량</label>
+                                            <input type="number" name="quantity" class="form-control" id="inputMtrlDescription" placeholder="자재 수량을 입력하세요" control-id="ControlID-1" th:value="${material.quantity}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlQuantity">세부내용</label>
+                                            <textarea type="text" name="description" class="form-control h-25" rows="5" id="inputMtrlQuantity" placeholder="세부내용을 입력하세요." control-id="ControlID-1" th:text="${material.description}"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputMtrlFile">도면</label>
+                                            <input type="file" class="form-control" id="inputMtrlFile" control-id="ControlID-1">
+                                        </div>
+                                        <div class="pt-3">
+                                            <button type="button" class="btn cur-p btn-secondary btn-color" control-id="ControlID-2">취소</button>
+                                            <button type="submit" class="btn btn-primary btn-color md-1" control-id="ControlID-4">수정하기</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="/js/material_group.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                $('#topGroup').change(function() {
+                                    var selectedValue = $(this).val();
+                                    materialGroupService.getChildGroup(selectedValue, $('#midGroup'), $('#subGroup'));
+                                });
+                                $('#midGroup').change(function() {
+                                    var selectedValue = $(this).val();
+                                    materialGroupService.getChildGroup(selectedValue, $('#subGroup'));
+                                });
+                            })
+                        </script>
+                    </th:block>
+                </div>
             </div>
-            <div class="mb-2 col-md-4">
-                <select class="form-control" name="grpcode" control-id="ControlID-10">
-                    <option value="" selected="selected">...</option>
-                </select>
-            </div>
-            <div class="mb-3 col-md-4">
-                <select class="form-control" name="grpcode" control-id="ControlID-10">
-                    <option value="" selected="selected">...</option>
-                </select>
-            </div>
-        </div>
+        </main>
+
+        <!-- ### $App Screen Footer ### -->
+        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+        </footer>
     </div>
-    <div class="mb-3 col-md-3">
-        <label class="form-label" for="inputState">자재 창고</label>
-        <select id="inputState" class="form-control" name="wrhscode" control-id="ControlID-10">
-            <th:block th:each="warehouse : ${warehouses}">
-                <option th:value="${warehouse.getWrhscode()}" th:text="${warehouse.getWrhsname()}"></option>
-            </th:block>
-        </select>
-    </div>
-    <br>
-    <div>
-        규격 <input type="text" name="standard" th:value="${materialupdate.standard}">
-    </div>
-    <br>
-    <div>
-        수량 <input type="number" name="quantity"  th:value="${materialupdate.quantity}">
-    </div>
-    <br>
-    <div>
-        세부내용 <input type="text" name="description" th:value="${materialupdate.description}">
-    </div>
-    <br>
-    <div>
-        도면 <input type="file">
-    </div>
-    <br>
-    <br>
-    <button type="button" id="delete">삭제</button>
-    <button type="button" id="cancel">취소</button>
-    <input type="submit" value="수정하기">
-</form>
-</body>
+    </body>
+</th:block>
 </html>

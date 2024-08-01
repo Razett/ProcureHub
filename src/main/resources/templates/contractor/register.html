@@ -76,50 +76,52 @@
             <div class="full-container">
               <th:block th:fragment="content">
                 <form action="register" method="post">
-                  <header><h1>업체등록</h1></header>
+                  <div class="bgc-white p-20 bd">
+                  <header><h3>업체등록</h3></header><br>
                   <div>
-                    사업자 등록번호 <input type="text" name="corno" placeholder="숫자 10자리를 - 구분하여 입력하시오">
+                    사업자 등록번호 <input type="text" name="corno"  class="form-control" placeholder="숫자 10자리를 - 구분하여 입력하시오">
                   </div>
                   <br>
                   <div>
-                    회사명 <input type="text" name="name" placeholder="한글 또는 대/소문자 구분하여 입력하시오">
+                    회사명 <input type="text" name="name"  class="form-control" placeholder="한글 또는 대/소문자 구분하여 입력하시오">
                   </div>
                   <br>
                   <div>
-                    전화번호 <input type="text" name="phone" placeholder="숫자를 - 구분하여 입력하시오">
+                    전화번호 <input type="text" name="phone"  class="form-control" placeholder="숫자를 - 구분하여 입력하시오">
                   </div>
                   <br>
                   <div>
-                    도로명 주소 <input type="text" name="address1" placeholder="도로명 주소로 입력하시오">
+                    도로명 주소 <input type="text" name="address1" class="form-control" placeholder="도로명 주소로 입력하시오">
                   </div>
                   <br>
                   <div>
-                    상세 주소 <input type="text" name="address2" placeholder="나머지 상세 주소를 입력하시오">
+                    상세 주소 <input type="text" name="address2" class="form-control" placeholder="나머지 상세 주소를 입력하시오">
                   </div>
                   <br>
                   <div>
-                    담당자 성명 <input type="text" name="mngrName" placeholder="성명">
+                    담당자 성명 <input type="text" name="mngrName" class="form-control" placeholder="성명">
                   </div>
                   <br>
                   <div>
-                    연락처 <input type="text" name="mngrPhone" placeholder="숫자를 - 구분하여 입력하시오">
+                    연락처 <input type="text" name="mngrPhone" class="form-control" placeholder="숫자를 - 구분하여 입력하시오">
                   </div>
                   <br>
                   <div>
-                    이메일 <input type="text" name="mngrAddress" placeholder="대/소문자 구분하여 입력하시오">
+                    이메일 <input type="text" name="mngrAddress" class="form-control" placeholder="대/소문자 구분하여 입력하시오">
                   </div>
                   <br>
                   <div>
-                    은행명 <input type="text" name="bank" placeholder="띄어쓰기 없이 입력하시오">
+                    은행명 <input type="text" name="bank" class="form-control" placeholder="띄어쓰기 없이 입력하시오">
                   </div>
                   <br>
                   <div>
-                    계좌번호 <input type="text" name="accountNum" placeholder="숫자를 - 구분하여 입력하시오">
+                    계좌번호 <input type="text" name="accountNum" class="form-control" placeholder="숫자를 - 구분하여 입력하시오">
                   </div>
                   <br>
                   <br>
-                  <button type="button" id="cancel">취소</button>
-                  <input type="submit" value="등록하기" id="register">
+                  <button type="button" id="cancel" class="btn cur-p btn-secondary btn-color">취소</button>
+                  <input type="submit" value="등록하기" id="register" class="btn btn-primary btn-color md-1">
+                  </div>
                 </form>
               </th:block>
             </div>

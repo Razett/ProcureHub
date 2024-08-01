@@ -65121,6 +65121,34 @@ footer {
   vertical-align: -15%;
 }
 
+.fa-0-25x {
+    font-size: 0.25em;
+}
+
+.fa-0-5x {
+    font-size: 0.5em;
+}
+
+.fa-0-75x {
+    font-size: 0.75em;
+}
+
+.fa-1x {
+    font-size: 1em;
+}
+
+.fa-1-25x {
+    font-size: 1.25em;
+}
+
+.fa-1-5x {
+    font-size: 1.5em;
+}
+
+.fa-1-75x {
+    font-size: 1.75em;
+}
+
 .fa-2x {
   font-size: 2em;
 }

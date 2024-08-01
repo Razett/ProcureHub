@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.List;
+
 /**
  * <b>자재 그룹</b>
  *
@@ -14,6 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
  * <p>{@code String pGrpcode} - 상위 그룹 코드 [Varchar(30), Nullable]</p>
  * <p>{@code Integer depth} - 단계 [INT, Not Null]</p>
  * <p>{@code String name} - 그룹명 [Varchar(100), Not Null]</p>
+ * <p>{@code List<MaterialGroupDTO> direction} - 해당 그룹의 상위 전체 경로</p>
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +28,5 @@ public class MaterialGroupDTO {
     private String pGrpcode; //상위 그룹 코드
     private Integer depth; //단계
     private String name; //그룹명
+    private List<MaterialGroupDTO> direction;
 }

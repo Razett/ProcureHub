@@ -4,6 +4,7 @@ import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 /**
  * <b>견적</b>
@@ -27,4 +28,5 @@ public class QuotationDTO {
     private String title; //견적 제목
     private String content; //견적 내용
     private Integer status; //견적 상태 코드
+    private LocalDateTime moddate;
 }
