@@ -59,7 +59,6 @@ public class ContractorController {
     @PostMapping("/register")
     public String postRegister(ContractorDTO contractorDTO) {
         contractorService.register(contractorDTO);
-        System.out.println(contractorDTO);
         return "redirect:/contractor/list";
     }
 

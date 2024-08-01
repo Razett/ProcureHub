@@ -13,7 +13,7 @@ public interface OrderService {
     List<OrderDTO> list();
 
     //2. 발주 수동 추가
-    void getRegister(OrderDTO orderDTO);
+    void register(OrderDTO orderDTO);
 
     //3. 발주 진행 수정
     void update(OrderDTO orderDTO);
