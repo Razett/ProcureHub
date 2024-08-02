@@ -69,14 +69,23 @@
                                      <div class="d-flex justify-content-between">
                                     <h1 class="c-grey-900 mT-10 mB-30" th:text="${quoread.title + ' 견적'}"></h1>
                                     <div>
-                                        <button class="btn cur-p btn-dark btn-color">수정</button>
+                                        <button class="btn cur-p btn-dark btn-color" id="update">수정</button>
                                         <button class="btn cur-p btn-dark btn-color" id="add">계약추가</button>
                                         <script>
                                             $(document).ready(function () {
                                                 console.log("Document ready");
                                                 $('#add').on('click', function () {
                                                     console.log("Row clicked");
-                                                    var url = '/contractor/quoregister'
+                                                    var url = '/agreement/register'
+                                                    console.log("Navigating to: " + url);
+                                                    window.location.href = url;
+                                                });
+                                            });
+                                            $(document).ready(function () {
+                                                console.log("Document ready");
+                                                $('#update').on('click', function () {
+                                                    console.log("Row clicked");
+                                                    var url = '/contractor/update'
                                                     console.log("Navigating to: " + url);
                                                     window.location.href = url;
                                                 });

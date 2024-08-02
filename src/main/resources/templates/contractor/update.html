@@ -1,56 +1,149 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>업체 수정</title>
-    <style>
-        /* 전체 input 요소의 글꼴 크기와 스타일을 설정 */
-        input[type="text"] {
-            font-size: 15px;
-            padding: 6px; /* 텍스트 상자 안쪽에 여유 공간 추가 */
-            width: 400px; /* 입력 상자의 너비를 400px로 설정 */
-        }
-    </style>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <style>
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #fff;
+                z-index: 90000;
+            }
+
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
+
+            @-webkit-keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0)
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
     <script>
-        function clearText(inputElement) {
-            inputElement.value = "";
-        }
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
     </script>
-</head>
-<body>
-<form action="cpdetail" method="post">
-    <header><h1>업체 수정</h1></header>
-    <div>
-        사업자 등록번호 <input type="text" value="123-45-67890" readonly>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-6">
+                                <div class="bgc-white p-20 bd">
+                                    <form action="/contractor/update" method="post">
+                                        <header><h1>업체 수정</h1></header>
+                                        <div>
+                                            사업자 등록번호 <input class="form-control" type="text" name="corno"
+                                                            th:value="${updateread.corno}" readonly>
+                                        </div>
+                                        <br>
+                                        <div>
+                                            회사명 <input class="form-control" type="text" name="name"
+                                                       th:value="${updateread.name}">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            기본 주소 <input class="form-control" type="text" name="address1"
+                                                         th:value="${updateread.address1}">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            상세 주소 <input class="form-control" type="text" name="address2"
+                                                         th:value="${updateread.address2}">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            내선번호 <input class="form-control" type="text" name="phone"
+                                                        th:value="${updateread.phone}">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            담당자 성명 <input class="form-control" type="text" name="mngrName"
+                                                          th:value="${updateread.mngrName}">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            담당자 연락처 <input class="form-control" type="text" name="mngrPhone"
+                                                           th:value="${updateread.mngrPhone}">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            이메일 <input class="form-control" type="text" name="mngrAddress"
+                                                       th:value="${updateread.mngrAddress}">
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <button class="btn cur-p btn-danger btn-color" type="button"
+                                                onclick="location.href='#'">삭제
+                                        </button>
+                                        <input class="btn cur-p btn-dark btn-color" type="submit" value="수정하기">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+        <!-- ### $App Screen Footer ### -->
+        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
+        </footer>
     </div>
-    <br>
-    <div>
-        회사이름 <input type="text" value="회사 이름">
-    </div>
-    <br>
-    <div>
-        주소 <input type="text" value="서울시 예시구 예시로 123">
-    </div>
-    <br>
-    <div>
-        전화번호 <input type="text" value="010-1234-5678">
-    </div>
-    <br>
-    <div>
-        담당자 성명 <input type="text" value="홍길동" >
-    </div>
-    <br>
-    <div>
-        연락처 <input type="text" value="010-8765-4321" >
-    </div>
-    <br>
-    <div>
-        이메일 <input type="text" value="example@example.com">
-    </div>
-    <br>
-    <br>
-    <button type="button" onclick="location.href='#'">삭제</button>
-    <button type="button" onclick="location.href='#'">취소</button>
-    <input type="submit" value="수정하기">
-</form>
-</body>
+    </body>
+</th:block>
 </html>
