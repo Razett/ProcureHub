@@ -95,7 +95,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="quotationlist : ${quotationList}" class="quotationlist" th:data-id="${quotationlist.qtno}">
-                                <td th:text="${#temporals.format(quotationlist.contractor.moddate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#temporals.format(quotationlist.regdate, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${quotationlist.contractor.name}"></td>
                                 <td>음</td>
                                 <td>이</td>

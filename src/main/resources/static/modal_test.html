@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>Home</title>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
     <style>
       #loader {
         transition: all 0.3s ease-in-out;
@@ -53,7 +53,7 @@
         }
       }
     </style>
-  <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+  <link href="css/style.css" rel="stylesheet"></head>
   <body class="app">
     <div id="loader">
       <div class="spinner"></div>
@@ -75,7 +75,7 @@
           <div id="mainContent">
             <div class="full-container">
                 <h1>요기는 리스트임둥</h1>
-              <div class=" mT-10 mB-30" data-bs-toggle="modal" data-bs-target="#warehouseAddModal">
+              <div class=" mT-10 mB-30">
                 <a href="#" id="warehouseAddBtn" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="창고 추가">
                   <i class="c-grey-900 ti-plus fa-1-25x"></i>
                 </a>
@@ -109,18 +109,19 @@
           </div>
         </div>
         <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
           $(document).ready(function(){
+            $('#warehouseAddBtn').on('click', function () {
+              $('#warehouseAddModal').modal('show');
+            })
+
             $('#addWrhsSubmit').on('click', function () {
               $('#warehouseAddModal').modal('hide');
             });
 
-            $('#warehouseAddModal').on('hidden.bs.modal', function () {
-              $('.modal-backdrop').remove(); // 오버레이 수동 제거
-            });
           });
         </script>
 

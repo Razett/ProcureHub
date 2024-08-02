@@ -66,7 +66,7 @@ public interface ContractorService {
     default QuotationDTO quotationEntityToDTO(Quotation entity) {
         return QuotationDTO.builder().qtno(entity.getQtno()).contractor(entity.getContractor())
                 .emp(entity.getEmp()).title(entity.getTitle()).content(entity.getContent())
-                .status(entity.getStatus()).moddate(entity.getModdate()).build();
+                .status(entity.getStatus()).regdate(entity.getRegdate()).moddate(entity.getModdate()).build();
 
     }
 }

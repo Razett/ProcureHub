@@ -28,5 +28,6 @@ public class QuotationDTO {
     private String title; //견적 제목
     private String content; //견적 내용
     private Integer status; //견적 상태 코드
-    private LocalDateTime moddate;
+    private LocalDateTime moddate; // 수정날짜
+    private LocalDateTime regdate; // 추가날짜
 }
