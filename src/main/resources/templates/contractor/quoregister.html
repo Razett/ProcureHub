@@ -111,7 +111,6 @@
                                                 background-color: #ddd;
                                             }
 
-
                                             .form-container {
                                                 display: flex;
                                                 flex-wrap: wrap;
@@ -295,19 +294,17 @@
                                                    placeholder="content">
                                         </div>
                                         <br>
-                                        <div style="font-size: 15px">
-                                            자재코드 <br><br>
-                                            <input type="text" class="form-control" name="materialCode"
-                                                   id="materialCode" placeholder="MA0001">
-                                            <br>
-                                            <button type="button" class="btn btn-primary btn-color md-1"
-                                                    id="loadMaterialInfo">불러오기
-                                            </button>
+                                        <div style="font-size: 15px; position: relative;">
+                                            &nbsp 자재 코드<br><br>
+                                            <input class="form-control" type="text" name="materialCode"
+                                                   id="materialCode" placeholder="코드입력" autocomplete="off">
+                                            <div id="autocomplete-suggestions2"
+                                                 class="autocomplete-suggestions2"></div>
                                         </div>
+                                        <br>
                                         <div>
-                                            <br>
-                                            <input type="text" class="form-control" name="materialDetails"
-                                                   id="materialDetails" placeholder="자재명, 재고수량, 규격, 창고명" readonly>
+                                            <input type="text" class="form-control" name="materialDetail"
+                                                   id="materialDetail" placeholder="자재명, 재고수량, 규격, 창고명" readonly>
                                         </div>
                                         <br>
                                         <div class="form-container">
@@ -346,258 +343,7 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            const server_url = 'http://192.168.1.25:8081';
-                            $(document).ready(function () {
-                                var selectedSuggestionIndex = -1;
-
-                                // 자동완성 요청을 보내는 함수
-                                function fetchSuggestions(query) {
-                                    $.ajax({
-                                        url: '/contractor/search',
-                                        type: 'GET',
-                                        data: {name: query},
-                                        success: function (data) {
-                                            var suggestions = $('#autocomplete-suggestions');
-                                            suggestions.empty(); // 이전 검색 결과 비우기
-                                            selectedSuggestionIndex = -1; // 초기화
-
-                                            if (data.length > 0) {
-                                                // 첫 글자가 입력값과 같은 항목만 필터링
-                                                var filteredData = data.filter(function (item) {
-                                                    return item.name.charAt(0).toLowerCase() === query.charAt(0).toLowerCase();
-                                                });
-
-                                                if (filteredData.length > 0) {
-                                                    // 대소문자를 구별하여 정렬
-                                                    filteredData.sort(function (a, b) {
-                                                        return a.name.localeCompare(b.name, undefined, {sensitivity: 'case'});
-                                                    });
-
-                                                    // 제안 목록을 역순으로 추가하여 최신 제안이 위쪽에 오도록 함
-                                                    filteredData.reverse().forEach(function (item) {
-                                                        var suggestion = $('<div class="autocomplete-suggestion"></div>').text(item.name);
-                                                        suggestion.on('click', function () {
-                                                            selectSuggestion(item);
-                                                        });
-                                                        suggestions.append(suggestion);
-                                                    });
-                                                    suggestions.show(); // 제안 목록 표시
-                                                } else {
-                                                    suggestions.hide(); // 필터링 후 제안이 없으면 숨김
-                                                }
-                                            } else {
-                                                suggestions.hide(); // 제안이 없으면 숨김
-                                            }
-                                        }
-                                    });
-                                }
-                                // 제안 항목 선택 시 동작하는 함수
-                                function selectSuggestion(item) {
-                                    $('#contractorName').val(item.name);
-                                    $('#corno').val(item.corno);
-
-                                    // 주소를 나눠서 각각의 필드에 설정
-                                    $('#address1').val(item.address1 || ''); // 주소 1 필드
-                                    $('#address2').val(item.address2 || ''); // 주소 2 필드
-
-                                    // 주소를 합쳐서 #address 필드에 설정
-                                    var fullAddress = (item.address1 || '') + ' ' + (item.address2 || '');
-                                    $('#address').val(fullAddress.trim()); // trim()을 사용하여 불필요한 공백 제거
-
-                                    $('#phone').val(item.phone);
-                                    $('#mngrName').val(item.mngrName);
-                                    $('#mngrPhone').val(item.mngrPhone);
-                                    $('#mngrAddress').val(item.mngrAddress);
-                                    $('#autocomplete-suggestions').empty().hide(); // 선택 후 제안 목록 제거
-                                }
-
-                                // 입력 이벤트 리스너
-                                $('#contractorName').on('input', function () {
-                                    var query = $(this).val();
-                                    if (query.length > 0) { // 1자 이상 입력 시에만 검색
-                                        fetchSuggestions(query);
-                                    } else {
-                                        $('#autocomplete-suggestions').empty().hide(); // 입력이 없을 경우 제안 목록 비우기 및 숨김
-                                    }
-                                });
-
-                                // 엔터 및 방향키 이벤트 리스너
-                                $('#contractorName').on('keydown', function (event) {
-                                    var suggestions = $('#autocomplete-suggestions .autocomplete-suggestion');
-                                    if (event.key === 'Enter') {
-                                        event.preventDefault(); // 기본 엔터 키 동작 방지
-                                        if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < suggestions.length) {
-                                            suggestions.eq(selectedSuggestionIndex).click();
-                                        }
-                                    } else if (event.key === 'ArrowDown') {
-                                        event.preventDefault(); // 기본 동작 방지
-                                        if (selectedSuggestionIndex < suggestions.length - 1) {
-                                            selectedSuggestionIndex++;
-                                            suggestions.removeClass('selected');
-                                            suggestions.eq(selectedSuggestionIndex).addClass('selected');
-                                        }
-                                    } else if (event.key === 'ArrowUp') {
-                                        event.preventDefault(); // 기본 동작 방지
-                                        if (selectedSuggestionIndex > 0) {
-                                            selectedSuggestionIndex--;
-                                            suggestions.removeClass('selected');
-                                            suggestions.eq(selectedSuggestionIndex).addClass('selected');
-                                        }
-                                    }
-                                });
-
-                                // 자재 정보 불러오기 버튼 클릭 시
-                                $('#loadMaterialInfo').click(function () {
-                                    var materialCode = $('#materialCode').val();
-                                    if (materialCode) {
-                                        $.ajax({
-                                            url: '/rest/material/details',
-                                            type: 'GET',
-                                            data: {mtrlno: materialCode},
-                                            success: function (data) {
-                                                if (data) {
-                                                    $('#materialDetails').val(data.name + ', ' + data.quantity + ', ' + data.standard + ', ' + data.materialWarehouse.name);
-                                                } else {
-                                                    alert('자재 정보를 찾을 수 없습니다.');
-                                                }
-                                            },
-                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                console.error('Failed to fetch material details:', textStatus, errorThrown);
-                                                alert('자재 정보를 불러오는데 실패했습니다.');
-                                            }
-                                        });
-                                    } else {
-                                        alert('자재코드를 입력해주세요.');
-                                    }
-                                });
-
-                                // 견적서 폼 제출 시
-                                $('#quotationForm').submit(function (event) {
-                                    event.preventDefault();
-
-                                    // 필수 입력 항목 체크
-                                    var title = $('input[name="title"]').val();
-                                    var content = $('input[name="content"]').val();
-                                    var quantity = $('input[name="quantity"]').val();
-                                    var unitPrice = $('input[name="unitPrice"]').val();
-                                    var totalPrice = $('input[name="totalPrice"]').val();
-                                    var leadTime = $('input[name="leadTime"]').val();
-
-                                    if (!title || !content || !quantity || !unitPrice || !totalPrice || !leadTime) {
-                                        alert('모든 필수 항목을 입력해주세요.');
-                                        return;
-                                    }
-
-                                    var quotationData = {
-                                        title: title,
-                                        content: content,
-                                        status: 0,
-                                        contractor: {
-                                            corno: $('input[name="corno"]').val() // 사업자 등록번호
-                                        },
-                                        emp: {
-                                            empno: $('input[name="empno"]').val() // 사원 번호
-                                        }
-                                    };
-                                    $.ajax({
-                                        url: 'http://localhost:8080/quotation/save',
-                                        type: 'POST',
-                                        data: JSON.stringify(quotationData),
-                                        contentType: 'application/json',
-                                        success: function (response) {
-                                            var quotationId = response; // 서버로부터 받은 견적서 ID
-
-                                            // 파일 업로드할 파일이 있을 경우에만 파일 업로드 및 메타데이터 전송
-                                            var files = $('input[name="file"]')[0].files;
-                                            if (files.length > 0) {
-                                                uploadFilesWithQuotationId(quotationId); // 파일 업로드 함수 호출
-                                            }
-
-                                            // QuotationMtrl 정보 저장
-                                            var materialId = $('#materialCode').val();
-                                            var quotationMtrlData = {
-                                                quotationId: quotationId,
-                                                materialId: materialId, // 서버에서 가져온 자재 ID
-                                                quantity: quantity, // 수량
-                                                unitprice: unitPrice, // 단가
-                                                totalprice: totalPrice, // 총금액
-                                                leadtime: leadTime // L/T
-                                            };
-                                            saveQuotationMtrl(quotationMtrlData);
-                                            window.location.href = '/contractor/quolist';
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            console.error('견적서 저장 실패:', textStatus, errorThrown);
-                                            alert('견적서 저장에 실패했습니다.');
-                                        }
-                                    });
-                                });
-
-                                // 파일 업로드 함수
-                                function uploadFilesWithQuotationId(quotationId) {
-                                    var fileData = new FormData();
-                                    var files = $('input[name="file"]')[0].files;
-
-                                    for (var i = 0; i < files.length; i++) {
-                                        fileData.append('file', files[i]);
-                                    }
-                                    $.ajax({
-                                        url: server_url + '/uploadFile',
-                                        type: 'POST',
-                                        data: fileData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (response) {
-                                            var metadata = {
-                                                name: response.name,
-                                                url: response.url,
-                                                uuid: response.uuid,
-                                                qtno: quotationId
-                                            };
-                                            sendFileMetadataToMainServer(metadata);
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            console.error('파일 업로드 실패:', textStatus, errorThrown);
-                                            alert('파일 업로드에 실패했습니다.');
-                                        }
-                                    });
-                                }
-
-                                // 메타데이터를 메인 서버로 전송하는 함수
-                                function sendFileMetadataToMainServer(metadata) {
-                                    $.ajax({
-                                        url: 'http://localhost:8080/quotationFile/save',
-                                        type: 'POST',
-                                        data: JSON.stringify(metadata),
-                                        contentType: 'application/json',
-                                        success: function (response) {
-                                            window.location.href = '/contractor/quolist';
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            console.error('파일 메타데이터 저장 실패:', textStatus, errorThrown);
-                                            alert('파일 메타데이터 저장에 실패했습니다.');
-                                        }
-                                    });
-                                }
-
-                                // 견적 자재 정보 저장 함수
-                                function saveQuotationMtrl(quotationMtrlData) {
-                                    $.ajax({
-                                        url: 'http://localhost:8080/quotationMtrl/save',
-                                        type: 'POST',
-                                        data: JSON.stringify(quotationMtrlData),
-                                        contentType: 'application/json',
-                                        success: function (response) {
-                                            console.log('견적 자재 정보 저장 성공:', response);
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            console.error('견적 자재 정보 저장 실패:', textStatus, errorThrown);
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
+                        <script src="/js/quoregister.js"></script>
                     </th:block>
                 </div>
             </div>
