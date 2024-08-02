@@ -3,9 +3,17 @@ package com.glkids.procurehub.dto;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Quotation;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class AgreementDTO {
 
     private Long grmno;
