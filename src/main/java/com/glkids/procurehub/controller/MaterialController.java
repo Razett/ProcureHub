@@ -9,6 +9,7 @@ import com.glkids.procurehub.repository.MaterialGroupRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import com.glkids.procurehub.service.MaterialService;
 import com.glkids.procurehub.service.MaterialServiceImpl;
+import com.glkids.procurehub.status.MaterialStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,7 +75,7 @@ public class MaterialController {
 
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
-        materialDTO.setStatus(0);
+        materialDTO.setStatus(MaterialStatus.OK);
         System.out.println(materialDTO);
         materialService.update(materialDTO);
 
@@ -108,7 +109,7 @@ public class MaterialController {
         System.out.println(materialGroup);
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
-        materialDTO.setStatus(0);
+        materialDTO.setStatus(MaterialStatus.OK);
         model.addAttribute("regist", materialService.register(materialDTO).getMtrlno());
 
         return "/material/list";

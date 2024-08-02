@@ -1,5 +1,6 @@
 package com.glkids.procurehub.entity;
 
+import com.glkids.procurehub.status.MaterialStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,6 +48,8 @@ public class Material extends BaseEntity {
     @JoinColumn(nullable = false)
     private MaterialWarehouse materialWarehouse;
 
+    @Builder.Default
+    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    private Integer status;
+    private MaterialStatus status = MaterialStatus.OK;
 }

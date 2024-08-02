@@ -2,6 +2,7 @@ package com.glkids.procurehub.dto;
 
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
+import com.glkids.procurehub.status.MaterialStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +35,7 @@ public class MaterialDTO {
     private Long quantity; //수량
     private MaterialGroup materialGroup; //자재 그룹
     private MaterialWarehouse materialWarehouse; //자재 창고 위치
-    private Integer status;
+    private MaterialStatus status;
     private LocalDateTime regdate;
     private LocalDateTime moddate;
 }
