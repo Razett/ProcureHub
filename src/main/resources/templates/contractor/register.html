@@ -1,137 +1,181 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/base/base::setContent(~{this::content})}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <title>Home</title>
-    <style>
-      #loader {
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        visibility: visible;
-        position: fixed;
-        height: 100vh;
-        width: 100%;
-        background: #fff;
-        z-index: 90000;
-      }
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <style>
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #fff;
+                z-index: 90000;
+            }
 
-      #loader.fadeOut {
-        opacity: 0;
-        visibility: hidden;
-      }
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
 
-      .spinner {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: calc(50% - 20px);
-        left: calc(50% - 20px);
-        background-color: #333;
-        border-radius: 100%;
-        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
-        animation: sk-scaleout 1.0s infinite ease-in-out;
-      }
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
 
-      @-webkit-keyframes sk-scaleout {
-        0% { -webkit-transform: scale(0) }
-        100% {
-          -webkit-transform: scale(1.0);
-          opacity: 0;
-        }
-      }
+            @-webkit-keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0)
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
 
-      @keyframes sk-scaleout {
-        0% {
-          -webkit-transform: scale(0);
-          transform: scale(0);
-        } 100% {
-          -webkit-transform: scale(1.0);
-          transform: scale(1.0);
-          opacity: 0;
-        }
-      }
-    </style>
-  <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
-  <body class="app">
+            @keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
     <div id="loader">
-      <div class="spinner"></div>
+        <div class="spinner"></div>
     </div>
     <script>
-      window.addEventListener('load', function load() {
-        const loader = document.getElementById('loader');
-        setTimeout(function() {
-            loader.classList.add('fadeOut');
-        }, 300);
-      });
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
     </script>
 
-      <!-- #Main ============================ -->
-      <div class="page-container">
-
+    <!-- #Main ============================ -->
+    <div class="page-container">
         <!-- ### $App Screen Content ### -->
         <main class="main-content bgc-grey-100">
-          <div id="mainContent">
-            <div class="full-container">
-              <th:block th:fragment="content">
-                  <form action="/contractor/register" method="post">
-                  <div class="bgc-white p-20 bd">
-                      <h4 class="c-grey-900 mT-10 mB-30">업체 등록</h4>
-                  <div>
-                    사업자 등록번호 <input type="text" name="corno"  class="form-control" placeholder="숫자 10자리를 - 구분하여 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    회사명 <input type="text" name="name"  class="form-control" placeholder="한글 또는 대/소문자 구분하여 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    전화번호 <input type="text" name="phone"  class="form-control" placeholder="숫자를 - 구분하여 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    도로명 주소 <input type="text" name="address1" class="form-control" placeholder="도로명 주소로 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    상세 주소 <input type="text" name="address2" class="form-control" placeholder="나머지 상세 주소를 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    담당자 성명 <input type="text" name="mngrName" class="form-control" placeholder="성명">
-                  </div>
-                  <br>
-                  <div>
-                    연락처 <input type="text" name="mngrPhone" class="form-control" placeholder="숫자를 - 구분하여 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    이메일 <input type="text" name="mngrAddress" class="form-control" placeholder="대/소문자 구분하여 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    은행명 <input type="text" name="bank" class="form-control" placeholder="띄어쓰기 없이 입력하시오">
-                  </div>
-                  <br>
-                  <div>
-                    계좌번호 <input type="text" name="accountNum" class="form-control" placeholder="숫자를 - 구분하여 입력하시오">
-                  </div>
-                  <br>
-                  <br>
-                      <input type="submit" class="btn cur-p btn-dark btn-color" value="등록하기">
-                  </div>
-                </form>
-              </th:block>
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <form action="/contractor/register" method="post">
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd h-100">
+                                        <h4 class="c-grey-900 mT-10 mB-30">업체 정보 입력</h4>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputCorno">사업자 등록번호</label>
+                                            <input type="number" name="corno" class="form-control" id="inputCorno"
+                                                   placeholder="사업자 등록번호 10자리를 입력하세요." required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputName">협력 업체명</label>
+                                            <input type="text" name="name" class="form-control" id="inputName"
+                                                   placeholder="협력 업체명을 입력하세요." required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputPhone">전화번호</label>
+                                            <input type="text" name="phone" id="inputPhone" class="form-control"
+                                                   placeholder="전화번호를 입력하세요" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label" for="inputAddress1">도로명 주소</label>
+                                            <input type="text" name="address1" id="inputAddress1" class="form-control"
+                                                   placeholder="경기도 수원시 영통구 영통로217번길 6" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputAddress2">상세 주소</label>
+                                            <input type="text" name="address2" id="inputAddress2" class="form-control"
+                                                   placeholder="나머지 상세 주소를 입력하세요.">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <div class="bgc-white p-20 bd">
+                                            <h4 class="c-grey-900 mT-10 mB-30">담당자 정보 입력</h4>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputMngrName">담당자 이름</label>
+                                                <input type="text" name="mngrName" id="inputMngrName"
+                                                       class="form-control"
+                                                       placeholder="담당자 이름을 입력하세요.">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputMngrPhone">연락처</label>
+                                                <input type="text" name="mngrPhone" id="inputMngrPhone"
+                                                       class="form-control"
+                                                       placeholder="담당자 연락처를 입력하세요.">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputMngrEmail1">이메일</label>
+                                                <input type="email" name="mngrAddress" id="inputMngrEmail1"
+                                                       class="form-control" placeholder="담당자 이메일을 입력하세요.">
+                                            </div>
+                                        </div>
+<!--                                        <div class="col-md-6">-->
+                                            <div class="bgc-white mT-20 p-20 bd">
+                                                <h4 class="c-grey-900 mT-10 mB-30">결제 정보 입력</h4>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="inputBank">은행명</label>
+                                                    <input type="text" name="bank" id="inputBank" class="form-control"
+                                                           placeholder="은행명을 입력하세요.">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="inputAccountNum">계좌번호</label>
+                                                    <input type="text" name="accountNum" id="inputAccountNum"
+                                                           class="form-control" placeholder="계좌번호를 입력하세요.">
+                                                </div>
+                                            </div>
+<!--                                        </div>-->
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-12">
+                                    <div class="bgc-white p-20 bd">
+                                        <button type="button" class="btn cur-p btn-secondary btn-color"
+                                                control-id="ControlID-2">취소
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-color md-1"
+                                                control-id="ControlID-4">등록하기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </th:block>
+                </div>
             </div>
-          </div>
         </main>
 
         <!-- ### $App Screen Footer ### -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-          <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
-      </div>
-  </body>
-  </th:block>
+    </div>
+    </body>
+</th:block>
 </html>
