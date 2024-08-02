@@ -29,6 +29,8 @@ public class ContractorController {
      */
     @GetMapping("/list")
     public String List(Model model, ContractorDTO contractorDTO) {
+        model.addAttribute("title", "업체 목록");
+
         model.addAttribute("contractorList", contractorService.list());
         return "/contractor/list";
     }
@@ -41,6 +43,8 @@ public class ContractorController {
      */
     @GetMapping("/read")
     public String read(Long corno, Model model) {
+        model.addAttribute("title", "업체 상세정보");
+
         model.addAttribute("contractorRead", contractorService.read(corno));
         return "/contractor/read";
     }
@@ -50,6 +54,7 @@ public class ContractorController {
      */
     @GetMapping("/register")
     public void getRegister(ContractorDTO contractorDTO, Model model) {
+        model.addAttribute("title", "업체 등록");
     }
 
     /**
@@ -66,6 +71,7 @@ public class ContractorController {
      */
     @GetMapping("/update")
     public String getUpdate(Long corno, Model model) {
+        model.addAttribute("title", "업체 수정");
 
         ContractorDTO dto = contractorService.read(corno);
         model.addAttribute("updateread", dto);
@@ -87,6 +93,8 @@ public class ContractorController {
      */
     @GetMapping("/quolist")
     public String quoList(Model model) {
+        model.addAttribute("title", "견적 목록");
+
         model.addAttribute("quotationList", contractorService.quoList());
         return "/contractor/quolist";
     }
@@ -96,6 +104,7 @@ public class ContractorController {
      */
     @GetMapping("/quoregister")
     public void getQuoRegister(Long corno, Model model) {
+        model.addAttribute("title", "견적 등록");
 
     }
 
@@ -113,6 +122,8 @@ public class ContractorController {
      */
     @GetMapping("/quoread")
     public String quodatail(Long qtno, Model model) {
+        model.addAttribute("title", "견적 상세정보");
+
         model.addAttribute("quoread", contractorService.quoread(qtno));
         return "/contractor/quoread";
     }
