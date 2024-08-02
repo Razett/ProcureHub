@@ -35,6 +35,8 @@ public class ContractorRestController {
     }
     @GetMapping("/contractor/search")
     public List<ContractorDTO> searchContractorByName(@RequestParam("name") String name) {
+        System.out.println(contractorService.findByNameContaining(name));
         return contractorService.findByNameContaining(name);
+
     }
 }
