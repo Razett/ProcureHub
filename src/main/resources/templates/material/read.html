@@ -5,7 +5,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
         <title>자재 상세보기</title>
-        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <style>
             #loader {
                 transition: all 0.3s ease-in-out;
@@ -36,7 +37,9 @@
             }
 
             @-webkit-keyframes sk-scaleout {
-                0% { -webkit-transform: scale(0) }
+                0% {
+                    -webkit-transform: scale(0)
+                }
                 100% {
                     -webkit-transform: scale(1.0);
                     opacity: 0;
@@ -47,14 +50,17 @@
                 0% {
                     -webkit-transform: scale(0);
                     transform: scale(0);
-                } 100% {
-                      -webkit-transform: scale(1.0);
-                      transform: scale(1.0);
-                      opacity: 0;
-                  }
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
             }
         </style>
-        <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
     <body class="app">
     <div id="loader">
         <div class="spinner"></div>
@@ -62,7 +68,7 @@
     <script>
         window.addEventListener('load', function load() {
             const loader = document.getElementById('loader');
-            setTimeout(function() {
+            setTimeout(function () {
                 loader.classList.add('fadeOut');
             }, 300);
         });
@@ -82,46 +88,57 @@
                                     <div class="d-flex justify-content-between">
                                         <h1 class="c-grey-900 mT-10 mB-30" th:text="${material.name}"></h1>
                                         <div class=" mT-10 mB-30">
-                                            <a th:href="@{/material/update(mtrlno=${material.mtrlno})}" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 수정">
+                                            <a th:href="@{/material/update(mtrlno=${material.mtrlno})}"
+                                               class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               data-bs-original-title="자재 수정">
                                                 <i class="c-grey-900 ti-pencil-alt fa-1-25x"></i>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="inputMtrlCode">자재 코드</label><br>
-                                        <span class="text-black fa-1-25x" id="inputMtrlCode" th:text="'MA' + ${#numbers.formatInteger(material.mtrlno, 6)}"></span>
+                                        <span class="text-black fa-1-25x" id="inputMtrlCode"
+                                              th:text="'MA' + ${#numbers.formatInteger(material.mtrlno, 6)}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">자재 그룹</label><br>
-                                            <div class="d-flex align-items-center">
-                                                <th:block th:each="materialGroup, i : ${materialGroupDirection}">
-                                                    <span class="text-black fa-1-25x" th:text="${materialGroup.name}"></span>
-                                                    <i th:if="${!i.last}" class="mx-2 c-grey-900 ti-angle-right fa-0-75x"></i>
-                                                </th:block>
-                                            </div>
+                                        <div class="d-flex align-items-center">
+                                            <th:block th:each="materialGroup, i : ${materialGroupDirection}">
+                                                <span class="text-black fa-1-25x"
+                                                      th:text="${materialGroup.name}"></span>
+                                                <i th:if="${!i.last}"
+                                                   class="mx-2 c-grey-900 ti-angle-right fa-0-75x"></i>
+                                            </th:block>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="inputMtrlStd">자재 규격</label><br>
-                                        <span class="text-black fa-1-25x" id="inputMtrlStd" th:text="${material.standard}"></span>
+                                        <span class="text-black fa-1-25x" id="inputMtrlStd"
+                                              th:text="${material.standard}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="inputMtrlQuantity">수량</label><br>
-                                        <span class="text-black fa-1-25x" id="inputMtrlQuantity" th:text="${material.quantity}"></span>
+                                        <span class="text-black fa-1-25x" id="inputMtrlQuantity"
+                                              th:text="${material.quantity}"></span>
                                     </div>
                                     <div class="mb-3 d-flex">
                                         <div>
                                             <label class="form-label" for="inputMtrlWrhscode">창고 코드</label><br>
-                                            <span class="text-black fa-1-25x" id="inputMtrlWrhscode" th:text="${material.materialWarehouse.wrhscode}"></span>
+                                            <span class="text-black fa-1-25x" id="inputMtrlWrhscode"
+                                                  th:text="${material.materialWarehouse.wrhscode}"></span>
                                         </div>
                                         <div class="ms-5">
                                             <label class="form-label" for="inputMtrlWrhsname">창고 이름</label><br>
-                                            <span class="text-black fa-1-25x" id="inputMtrlWrhsname" th:text="${material.materialWarehouse.name}"></span>
+                                            <span class="text-black fa-1-25x" id="inputMtrlWrhsname"
+                                                  th:text="${material.materialWarehouse.name}"></span>
                                         </div>
                                     </div>
-                                    <th:block th:if="${material.description != null and !material.description.isEmpty()}">
+                                    <th:block
+                                            th:if="${material.description != null and !material.description.isEmpty()}">
                                         <div class="mb-3">
                                             <label class="form-label" for="inputMtrldesc">세부 내용</label><br>
-                                            <span class="text-black fa-1-25x" id="inputMtrldesc" th:text="${material.description}"></span>
+                                            <span class="text-black fa-1-25x" id="inputMtrldesc"
+                                                  th:text="${material.description}"></span>
                                         </div>
                                     </th:block>
                                 </div>
@@ -131,7 +148,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h4 class="c-grey-900 mT-10 mB-30">도면</h4>
                                         <div th:if="${materialFile != null}" class=" mT-10 mB-30">
-                                            <a href="" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="다운로드">
+                                            <a href="" class="px-2 py-2" data-bs-toggle="tooltip"
+                                               data-bs-placement="top" data-bs-original-title="다운로드">
                                                 <i class="c-grey-900 ti-import fa-1-25x"></i>
                                             </a>
                                         </div>
@@ -142,8 +160,9 @@
                                         </div>
                                     </th:block>
                                     <th:block th:unless="${materialFile != null}">
-                                        <span class="text-black fa-1-25x" >추가된 도면이 없습니다...</span>
-                                        <a th:href="@{/material/update(mtrlno=${material.mtrlno})}" class="fa-1-25x" >도면 추가하기</a>
+                                        <span class="text-black fa-1-25x">추가된 도면이 없습니다...</span>
+                                        <a th:href="@{/material/update(mtrlno=${material.mtrlno})}" class="fa-1-25x">도면
+                                            추가하기</a>
                                     </th:block>
                                 </div>
                             </div>
@@ -155,7 +174,8 @@
 
         <!-- ### $App Screen Footer ### -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
     </div>
     </body>
