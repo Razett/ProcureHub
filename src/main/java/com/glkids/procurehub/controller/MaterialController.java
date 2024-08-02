@@ -30,6 +30,7 @@ public class MaterialController {
      */
     @GetMapping("/list")
     public String List(Material material, Model model) {
+        model.addAttribute("title", "자재 목록");
 
         model.addAttribute("materiallist", materialService.list());
         model.addAttribute("warehouses" , materialService.getWarehouses());
@@ -41,6 +42,7 @@ public class MaterialController {
      */
     @GetMapping("/read")
     public String read(Long mtrlno, Model model) {
+        model.addAttribute("title", "자재 상세정보");
 
         MaterialDTO materialDTO = materialService.read(mtrlno);
         model.addAttribute("material", materialDTO);
@@ -54,6 +56,7 @@ public class MaterialController {
      */
     @GetMapping("/update")
     public String getUpdate(Model model, Long mtrlno) {
+        model.addAttribute("title", "자재 수정");
 
         MaterialDTO dto = materialService.read(mtrlno);
         model.addAttribute("material", dto);
@@ -89,6 +92,8 @@ public class MaterialController {
      */
     @GetMapping("/register")
     public String getRegister(Model model) {
+        model.addAttribute("title", "자재 등록");
+
         model.addAttribute("warehouses",materialService.getWarehouses());
         model.addAttribute("topMaterialGroups", materialService.getMaterialGroupsByDepth(0));
         return "material/register";
@@ -132,6 +137,8 @@ public class MaterialController {
      */
     @GetMapping("/warehouselist")
     public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
+        model.addAttribute("title", "자재 창고 목록");
+
         model.addAttribute("warehouses", materialService.getWarehouses());
     }
 
@@ -151,6 +158,7 @@ public class MaterialController {
      */
     @GetMapping("/prcrlist")
     public String prcrList(Model model) {
+        model.addAttribute("title", "조달 계획 목록");
 
         return "/material/prcrlist";
     }
