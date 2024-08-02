@@ -9,6 +9,7 @@ import com.glkids.procurehub.repository.MaterialGroupRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import com.glkids.procurehub.service.MaterialService;
 import com.glkids.procurehub.service.MaterialServiceImpl;
+import com.glkids.procurehub.status.MaterialStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ public class MaterialController {
      */
     @GetMapping("/list")
     public String List(Material material, Model model) {
+        model.addAttribute("title", "자재 목록");
 
         model.addAttribute("materiallist", materialService.list());
         model.addAttribute("warehouses" , materialService.getWarehouses());
@@ -41,6 +43,7 @@ public class MaterialController {
      */
     @GetMapping("/read")
     public String read(Long mtrlno, Model model) {
+        model.addAttribute("title", "자재 상세정보");
 
         MaterialDTO materialDTO = materialService.read(mtrlno);
         model.addAttribute("material", materialDTO);
@@ -54,6 +57,7 @@ public class MaterialController {
      */
     @GetMapping("/update")
     public String getUpdate(Model model, Long mtrlno) {
+        model.addAttribute("title", "자재 수정");
 
         MaterialDTO dto = materialService.read(mtrlno);
         model.addAttribute("material", dto);
@@ -71,7 +75,7 @@ public class MaterialController {
 
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
-        materialDTO.setStatus(0);
+        materialDTO.setStatus(MaterialStatus.OK);
         System.out.println(materialDTO);
         materialService.update(materialDTO);
 
@@ -89,6 +93,8 @@ public class MaterialController {
      */
     @GetMapping("/register")
     public String getRegister(Model model) {
+        model.addAttribute("title", "자재 등록");
+
         model.addAttribute("warehouses",materialService.getWarehouses());
         model.addAttribute("topMaterialGroups", materialService.getMaterialGroupsByDepth(0));
         return "material/register";
@@ -103,7 +109,7 @@ public class MaterialController {
         System.out.println(materialGroup);
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
-        materialDTO.setStatus(0);
+        materialDTO.setStatus(MaterialStatus.OK);
         model.addAttribute("regist", materialService.register(materialDTO).getMtrlno());
 
         return "/material/list";
@@ -132,6 +138,8 @@ public class MaterialController {
      */
     @GetMapping("/warehouselist")
     public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
+        model.addAttribute("title", "자재 창고 목록");
+
         model.addAttribute("warehouses", materialService.getWarehouses());
     }
 
@@ -151,6 +159,7 @@ public class MaterialController {
      */
     @GetMapping("/prcrlist")
     public String prcrList(Model model) {
+        model.addAttribute("title", "조달 계획 목록");
 
         return "/material/prcrlist";
     }

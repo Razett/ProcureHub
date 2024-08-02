@@ -44,6 +44,7 @@ public class ContractorServiceImpl implements ContractorService {
 
     @Override
     public void update(ContractorDTO contractorDTO) {
+
         contractorRepository.save(contractorDtoToEntity(contractorDTO));
     }
 
