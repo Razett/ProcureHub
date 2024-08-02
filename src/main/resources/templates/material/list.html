@@ -29,29 +29,37 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <table class="table table-bordered">
-                            <h4 class="c-grey-900 mT-10 mB-30">자재 목록</h4>
-                            <thead>
-                            <tr>
-                                <th>자재코드</th>
-                                <th>그룹명</th>
-                                <th>자재명</th>
-                                <th>규격</th>
-                                <th>수량</th>
-                                <th>최종수정일</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="material : ${materiallist}" class="material" th:data-id="${material.mtrlno}">
-                                <td th:text="${material.mtrlno}"></td>
-                                <td th:text="${material.materialGroup.name}"></td>
-                                <td th:text="${material.name}"></td>
-                                <td th:text="${material.standard}"></td>
-                                <td th:text="${material.quantity}"></td>
-                                <td th:text="${#temporals.format(material.moddate, 'yyyy-MM-dd')}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-12">
+                                <div class="bgc-white p-20 bd">
+                                    <h4 class="c-grey-900 mT-10 mB-30">자재 목록</h4>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">자재 코드</th>
+                                            <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center d-none d-sm-table-cell">규격</th>
+                                            <th scope="col" class="text-center">수량</th>
+                                            <th scope="col" class="text-center">그룹명</th>
+                                            <th scope="col" class="text-center d-none d-sm-table-cell">창고명</th>
+                                            <th scope="col" class="text-center d-none d-sm-table-cell">최종 수정일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="material : ${materiallist}" class="material" th:data-id="${material.mtrlno}">
+                                            <td class="col-md-1 text-center" th:text="'MA' + ${#numbers.formatInteger(material.mtrlno, 6)}"></td>
+                                            <td class="text-center" th:text="${material.name}"></td>
+                                            <td class="text-center d-none d-sm-table-cell" th:text="${material.standard}"></td>
+                                            <td class="text-center" th:text="${material.quantity}"></td>
+                                            <td class="text-center d-none d-sm-table-cell" th:text="${material.materialGroup.name}"></td>
+                                            <td class="text-center" th:text="${material.materialWarehouse.name}"></td>
+                                            <td class="text-center d-none d-sm-table-cell" th:text="${#temporals.format(material.moddate, 'yyyy-MM-dd')}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                         <script>
                             $(document).ready(function () {
                                 console.log("Document ready");

@@ -88,7 +88,7 @@
                         </div>
                       </div>
                       <div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-hover">
                           <thead>
                           <tr>
                             <th scope="col" class="text-center">창고 코드</th>
@@ -101,7 +101,7 @@
                             <td class="col-md-3 text-center" th:text="${warehouse.wrhscode}"></td>
                             <td class="col-md-8 text-center" th:text="${warehouse.wrhsname}"></td>
                             <td class="col-md-1 text-center">
-                              <a href="#" class="px-2 py-2 wrhsUpdateButton" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="수정하기">
+                              <a th:if='${warehouse.wrhscode != "ETC"}' href="#" class="px-2 py-2 wrhsUpdateButton" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="수정하기">
                                 <i class="c-grey-900 ti-pencil-alt fa-1x"></i>
                               </a>
                             </td>
@@ -159,7 +159,7 @@
                           <button type="button" class="btn btn-outline-danger" id="deleteWrhsButton">삭제</button>
                         <div class="d-flex">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                          <button type="button" class="btn btn-primary btn-color disabled ms-2" id="updateWrhsSubmit">등록하기</button>
+                          <button type="button" class="btn btn-primary btn-color disabled ms-2" id="updateWrhsSubmit">수정하기</button>
                         </div>
                       </div>
                     </div>

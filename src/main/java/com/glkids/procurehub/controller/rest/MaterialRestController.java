@@ -54,12 +54,18 @@ public class MaterialRestController {
     public ResponseEntity<MaterialWarehouseDTO> updateWarehouse(@RequestBody MaterialWarehouseDTO materialWarehouseDTO) {
         materialWarehouseDTO.setWrhscode(materialWarehouseDTO.getWrhscode().trim().toUpperCase());
         materialWarehouseDTO.setWrhsname(materialWarehouseDTO.getWrhsname().trim().toUpperCase());
+        if (materialWarehouseDTO.getWrhscode().equals("ETC")) {
+            return ResponseEntity.ok(null);
+        }
         return ResponseEntity.ok(materialService.registerMaterialWarehouse(materialWarehouseDTO));
     }
 
     @PostMapping(value = "/warehousedelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deleteWarehouse(@RequestBody MaterialWarehouseDTO materialWarehouseDTO) {
         materialWarehouseDTO.setWrhscode(materialWarehouseDTO.getWrhscode().trim().toUpperCase());
+        if (materialWarehouseDTO.getWrhscode().equals("ETC")) {
+            return ResponseEntity.ok(false);
+        }
         return ResponseEntity.ok(materialService.deleteMaterialWarehouse(materialWarehouseDTO.getWrhscode()));
     }
 }

@@ -54,7 +54,7 @@
         }
       }
     </style>
-  <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+  <link href="css/style.css" rel="stylesheet"></head>
   <body class="app">
     <div id="loader">
       <div class="spinner"></div>
@@ -77,12 +77,14 @@
             <div class="full-container">
               <th:block th:fragment="content">
                 <div class="row gap-20 pos-r">
-                  <div class="bgc-white p-20 bd col-md-12">
-                    <h4 class="c-grey-900 mT-10 mB-30">업체 목록</h4>
-                    <div class="alert alert-light contractor" role="alert" th:each="contractor:${contractorList}" th:id="${contractor.corno}">
-                      <h5><b>[[${contractor.name}]]</b></h5>
-                      [[${contractor.address1}]]<br>
-                      TEL/FAX : [[${contractor.phone}]]
+                  <div class="col-md-12">
+                    <div class="bgc-white p-20 bd">
+                      <h4 class="c-grey-900 mT-10 mB-30">업체 목록</h4>
+                      <div class="alert alert-light contractor" role="alert" th:each="contractor:${contractorList}" th:id="${contractor.corno}">
+                        <h5><b>[[${contractor.name}]]</b></h5>
+                        [[${contractor.address1}]]<br>
+                        TEL/FAX : [[${contractor.phone}]]
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -105,6 +107,7 @@
           <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
       </div>
+    <script src="js/main.js"></script>
   </body>
   </th:block>
 </html>

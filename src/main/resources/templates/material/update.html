@@ -85,18 +85,22 @@
                         <div class="row gap-20 pos-r">
                             <div class="col-md-8">
                                 <div class="bgc-white p-20 bd">
-                                    <h4 class="c-grey-900 mT-10 mB-30">자재 수정</h4>
+                                    <h4 class="c-grey-900 mT-10 mB-5">자재 수정</h4>
+                                    <div class="mB-30 d-flex">
+                                        <span class="c-red-700 fa-1x">*</span>
+                                        <span class="fa-1x">표시는 필수 입력사항입니다.</span>
+                                    </div>
                                     <form action="/material/update" method="post">
                                         <input type="hidden" name="mtrlno" th:value="${material.mtrlno}">
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputMtrlName">자재 이름</label>
+                                            <label class="form-label" for="inputMtrlName">자재 이름<span class="c-red-700 fa-1x">*</span></label>
                                             <input type="text" name="name" class="form-control" id="inputMtrlName"
                                                    placeholder="자재 이름을 입력하세요" control-id="ControlID-1"
-                                                   th:value="${material.name}">
+                                                   th:value="${material.name}" required>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-9">
-                                                <label class="form-label" for="inputState">자재 그룹</label>
+                                                <label class="form-label" for="inputState">자재 그룹<span class="c-red-700 fa-1x">*</span></label>
                                                 <div class="row">
                                                     <div class="mb-2 col-md-4">
                                                         <select class="form-control" id="topGroup" name="topGrpcode"
@@ -130,7 +134,7 @@
                                                                 control-id="ControlID-10">
                                                             <option th:value="${material.materialGroup.grpcode}">...
                                                             </option>
-                                                            <th:block th:if="${materialGroupList.size() > 1}">
+                                                            <th:block th:if="${materialGroupList.size() > 2}">
                                                                 <th:block
                                                                         th:each="subGroup : ${materialGroupList.get(2).materialGroupLists}">
                                                                     <option th:value="${subGroup.getGrpcode()}"
@@ -143,7 +147,7 @@
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-3">
-                                                <label class="form-label" for="inputState">자재 창고</label>
+                                                <label class="form-label" for="inputState">자재 창고<span class="c-red-700 fa-1x">*</span></label>
                                                 <select id="inputState" class="form-control" name="wrhscode"
                                                         control-id="ControlID-10">
                                                     <th:block th:each="warehouse : ${warehouses}">
@@ -155,16 +159,16 @@
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputMtrlStd">규격</label>
+                                            <label class="form-label" for="inputMtrlStd">규격<span class="c-red-700 fa-1x">*</span></label>
                                             <input type="text" name="standard" class="form-control" id="inputMtrlStd"
                                                    placeholder="자재 규격을 입력히세요" control-id="ControlID-1"
-                                                   th:value="${material.standard}">
+                                                   th:value="${material.standard}" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputMtrlDescription">수량</label>
+                                            <label class="form-label" for="inputMtrlDescription">수량<span class="c-red-700 fa-1x">*</span></label>
                                             <input type="number" name="quantity" class="form-control"
                                                    id="inputMtrlDescription" placeholder="자재 수량을 입력하세요"
-                                                   control-id="ControlID-1" th:value="${material.quantity}">
+                                                   control-id="ControlID-1" th:value="${material.quantity}" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label" for="inputMtrlQuantity">세부내용</label>
