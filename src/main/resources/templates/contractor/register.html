@@ -89,29 +89,34 @@
                                             <span class="fa-1x">표시는 필수 입력사항입니다.</span>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputCorno">사업자 등록번호<span class="c-red-700 fa-1x">*</span></label>
-                                            <input type="number" name="corno" class="form-control" id="inputCorno"
+                                            <label class="form-label" for="inputCorno">사업자 등록번호<span
+                                                    class="c-red-700 fa-1x">*</span></label>
+                                            <input type="text" name="corno" class="form-control" id="inputCorno"
                                                    placeholder="사업자 등록번호 10자리를 입력하세요." required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputName">협력 업체명<span class="c-red-700 fa-1x">*</span></label>
+                                            <label class="form-label" for="inputName">협력 업체명<span
+                                                    class="c-red-700 fa-1x">*</span></label>
                                             <input type="text" name="name" class="form-control" id="inputName"
-                                                   placeholder="협력 업체명을 입력하세요." required>
+                                                   placeholder="협력 업체명을 입력하세요." maxlength="150" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputPhone">전화번호<span class="c-red-700 fa-1x">*</span></label>
-                                            <input type="text" name="phone" id="inputPhone" class="form-control"
+                                            <label class="form-label" for="inputPhone">내선번호<span
+                                                    class="c-red-700 fa-1x">*</span></label>
+                                            <input type="text" name="phone" id="inputPhone" maxlength="11"
+                                                   class="form-control"
                                                    placeholder="전화번호를 입력하세요" required>
                                         </div>
                                         <div class="mb-2">
-                                            <label class="form-label" for="inputAddress1">도로명 주소<span class="c-red-700 fa-1x">*</span></label>
+                                            <label class="form-label" for="inputAddress1">도로명 주소<span
+                                                    class="c-red-700 fa-1x">*</span></label>
                                             <input type="text" name="address1" id="inputAddress1" class="form-control"
-                                                   placeholder="경기도 수원시 영통구 영통로217번길 6" required>
+                                                   placeholder="경기도 수원시 영통구 영통로217번길 6" maxlength="100" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label" for="inputAddress2">상세 주소</label>
                                             <input type="text" name="address2" id="inputAddress2" class="form-control"
-                                                   placeholder="나머지 상세 주소를 입력하세요.">
+                                                   placeholder="나머지 상세 주소를 입력하세요." maxlength="100">
                                         </div>
                                     </div>
                                 </div>
@@ -123,35 +128,36 @@
                                                 <label class="form-label" for="inputMngrName">담당자 이름</label>
                                                 <input type="text" name="mngrName" id="inputMngrName"
                                                        class="form-control"
-                                                       placeholder="담당자 이름을 입력하세요.">
+                                                       placeholder="담당자 이름을 입력하세요." maxlength="12">
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label" for="inputMngrPhone">연락처</label>
+                                                <label class="form-label" for="inputMngrPhone">담당자 연락처</label>
                                                 <input type="text" name="mngrPhone" id="inputMngrPhone"
-                                                       class="form-control"
-                                                       placeholder="담당자 연락처를 입력하세요.">
+                                                       class="form-control" placeholder="담당자 연락처를 입력하세요."
+                                                       maxlength="11">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="inputMngrEmail1">이메일</label>
                                                 <input type="email" name="mngrAddress" id="inputMngrEmail1"
-                                                       class="form-control" placeholder="담당자 이메일을 입력하세요.">
+                                                       class="form-control" placeholder="담당자 이메일을 입력하세요."
+                                                       maxlength="50">
                                             </div>
                                         </div>
-<!--                                        <div class="col-md-6">-->
-                                            <div class="bgc-white mT-20 p-20 bd">
-                                                <h4 class="c-grey-900 mT-10 mB-30">결제 정보 입력</h4>
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="inputBank">은행명</label>
-                                                    <input type="text" name="bank" id="inputBank" class="form-control"
-                                                           placeholder="은행명을 입력하세요.">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="inputAccountNum">계좌번호</label>
-                                                    <input type="text" name="accountNum" id="inputAccountNum"
-                                                           class="form-control" placeholder="계좌번호를 입력하세요.">
-                                                </div>
+                                        <!--                                        <div class="col-md-6">-->
+                                        <div class="bgc-white mT-20 p-20 bd">
+                                            <h4 class="c-grey-900 mT-10 mB-30">결제 정보 입력</h4>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputBank">은행명</label>
+                                                <input type="text" name="bank" id="inputBank" class="form-control"
+                                                       placeholder="은행명을 입력하세요." maxlength="30">
                                             </div>
-<!--                                        </div>-->
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputAccountNum">계좌번호</label>
+                                                <input type="text" name="accountNum" id="inputAccountNum"
+                                                       class="form-control" placeholder="계좌번호를 입력하세요." maxlength="20">
+                                            </div>
+                                        </div>
+                                        <!--                                        </div>-->
                                     </div>
                                 </div>
 
@@ -169,6 +175,38 @@
                                 </div>
                             </div>
                         </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                                const inputMngrPhone = document.getElementById('inputMngrPhone');
+                                const inputPhone = document.getElementById('inputPhone');
+                                const inputCorno = document.getElementById('inputCorno');
+                                const inputAccountNum = document.getElementById('inputAccountNum');
+
+                                // 숫자만 허용하는 함수
+                                const enforceNumericInput = (input) => {
+                                    input.addEventListener('input', () => {
+                                        input.value = input.value.replace(/[^0-9]/g, '');
+                                    });
+                                };
+
+                                // 최대 길이를 제한하는 함수
+                                const enforceMaxLength = (input, maxLength) => {
+                                    input.addEventListener('input', () => {
+                                        if (input.value.length > maxLength) {
+                                            input.value = input.value.slice(0, maxLength);
+                                        }
+                                    });
+                                };
+
+                                // 각 입력 필드에 숫자만 입력되도록 설정
+                                enforceNumericInput(inputMngrPhone);
+                                enforceNumericInput(inputPhone);
+                                enforceNumericInput(inputCorno);
+                                enforceNumericInput(inputAccountNum);
+                                // 사업자 등록번호는 최대 10자리로 제한
+                                enforceMaxLength(inputCorno, 10);
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>

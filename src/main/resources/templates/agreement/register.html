@@ -74,7 +74,6 @@
 
     <!-- #Main ============================ -->
     <div class="page-container">
-
         <!-- ### $App Screen Content ### -->
         <main class="main-content bgc-grey-100">
             <div id="mainContent">
@@ -83,103 +82,115 @@
                         <div class="row gap-20 pos-r">
                             <div class="col-md-6">
                                 <div class="bgc-white p-20 bd">
-                                    <form id="quotationForm" enctype="multipart/form-data">
-                                        <form action="#" method="post">
-                                            <h1>계약등록</h1>
-                                            <style>
-                                                table {
-                                                    width: 100%;
-                                                    border-collapse: collapse;
-                                                }
+                                    <form id="quotationForm" action="/contractor/read" method="post" enctype="multipart/form-data">
+                                        <h1>계약등록</h1>
+                                        <style>
+                                            table {
+                                                width: 100%;
+                                                border-collapse: collapse;
+                                            }
 
-                                                th, td {
-                                                    border: 1px solid #ccc;
-                                                    padding: 8px;
-                                                    text-align: center;
-                                                }
+                                            th, td {
+                                                border: 1px solid #ccc;
+                                                padding: 8px;
+                                                text-align: center;
+                                            }
 
-                                                th {
-                                                    background-color: #f2f2f2;
-                                                }
+                                            th {
+                                                background-color: #f2f2f2;
+                                            }
 
-                                                .button-container {
-                                                    text-align: center;
-                                                    margin-top: 20px;
-                                                }
+                                            .button-container {
+                                                text-align: center;
+                                                margin-top: 20px;
+                                            }
 
-                                                .btn {
-                                                    display: inline-block;
-                                                    margin: 5px;
-                                                }
-
-                                            </style>
-                                            </head>
-                                            <body>
-                                            <table>
-                                                <thead>
-                                                <tr>
-                                                    <th>회사명</th>
-                                                    <th>사업자 등록번호</th>
-                                                    <th>견적 제목</th>
-                                                    <th>견적 생성일</th>
-                                                    <th>견적 금액</th>
-                                                    <th>자재명</th>
-                                                    <th>자재코드</th>
-                                                    <th>수량</th>
-                                                    <th>단가</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>A 회사</td>
-                                                    <td>123-45-67890</td>
-                                                    <td>title</td>
-                                                    <td>2024/07/30</td>
-                                                    <td>3,000,000</td>
-                                                    <td>프레임</td>
-                                                    <td>MA0001</td>
-                                                    <td>10000</td>
-                                                    <td>300</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            .btn {
+                                                display: inline-block;
+                                                margin: 5px;
+                                            }
+                                        </style>
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>회사명</th>
+                                                <th>사업자 등록번호</th>
+                                                <th>견적 제목</th>
+                                                <th>견적 생성일</th>
+                                                <th>견적 금액</th>
+                                                <th>자재명</th>
+                                                <th>자재코드</th>
+                                                <th>수량</th>
+                                                <th>단가</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>A 회사</td>
+                                                <td>123-45-67890</td>
+                                                <td>title</td>
+                                                <td>2024/07/30</td>
+                                                <td>3,000,000</td>
+                                                <td></td>
+                                                <td>MA0001</td>
+                                                <td>10000</td>
+                                                <td>300</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <div>
+                                            계약명 <input type="text" class="form-control" placeholder="제목을 입력하시오" maxlength="60">
                                             <br>
-                                            <div>
-                                                계약명 <input type="text" class="form-control" placeholder="제목을 입력하시오">
-                                                <br>
-                                                <br>
-                                                계약일 <input type="text" class="form-control" placeholder="ex)20240715">
-                                                <br>
-                                                <br>
-                                                만료일 <input type="text" class="form-control" placeholder="ex)20240716">
-                                                <br>
-                                                <br>
-                                                계약 진행 상태 <input type="text" class="form-control"
-                                                                placeholder="ex)20240715">
-                                                <br>
-                                                <br>
-                                                견적파일 <input type="file">
-                                            </div>
-                                            <div class="button-container">
-                                                <input type="button" value="취소" id="cancle"
-                                                       class="btn cur-p btn-danger btn-color">
-                                                <input type="submit" value="등록하기" id="register"
-                                                       class="btn cur-p btn-dark btn-color">
-                                            </div>
-                                            </body>
-                                        </form>
+                                        </div>
+                                        <div>
+                                            계약일 <input type="text" class="form-control" id="contractDate" placeholder="ex)20240715">
+                                            <br>
+                                        </div>
+                                        <div>
+                                            만료일 <input type="text" class="form-control" id="expiryDate" placeholder="ex)20240716">
+                                            <br>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="agreement" class="form-label">견적 상태</label>
+                                            <select name="agr" id="agreement" class="form-control">
+                                                <option value="done">항목을 선택하시오</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            견적파일 <input type="file">
+                                        </div>
+                                        <div class="button-container">
+                                            <input type="button" value="취소" id="cancle" class="btn cur-p btn-danger btn-color">
+                                            <input type="submit" value="등록하기" id="register" class="btn cur-p btn-dark btn-color">
+                                        </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                                const contractDateInput = document.getElementById('contractDate');
+                                const expiryDateInput = document.getElementById('expiryDate');
+
+                                // 숫자만 허용하는 함수
+                                const enforceNumericInput = (input) => {
+                                    input.addEventListener('input', () => {
+                                        input.value = input.value.replace(/[^0-9]/g, '');
+                                    });
+                                };
+
+                                enforceNumericInput(contractDateInput);
+                                enforceNumericInput(expiryDateInput);
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>
         </main>
         <!-- ### $App Screen Footer ### -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
-                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
     </div>
     <script src="js/main.js"></script>

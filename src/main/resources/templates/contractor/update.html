@@ -91,38 +91,39 @@
                                         </div>
                                         <br>
                                         <div>
-                                            회사명 <input class="form-control" type="text" name="name"
-                                                       th:value="${updateread.name}">
-                                        </div>
-                                        <br>
-                                        <div>
-                                            기본 주소 <input class="form-control" type="text" name="address1"
-                                                         th:value="${updateread.address1}">
-                                        </div>
-                                        <br>
-                                        <div>
-                                            상세 주소 <input class="form-control" type="text" name="address2"
-                                                         th:value="${updateread.address2}">
+                                            협력 업체명 <input class="form-control" type="text" name="name"
+                                                          th:value="${updateread.name}" maxlength="150">
                                         </div>
                                         <br>
                                         <div>
                                             내선번호 <input class="form-control" type="text" name="phone"
-                                                        th:value="${updateread.phone}">
+                                                        id="inputPhone" th:value="${updateread.phone}" maxlength="11">
                                         </div>
                                         <br>
                                         <div>
-                                            담당자 성명 <input class="form-control" type="text" name="mngrName"
-                                                          th:value="${updateread.mngrName}">
+                                            기본 주소 <input class="form-control" type="text" name="address1"
+                                                         th:value="${updateread.address1}" maxlength="100">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            상세 주소 <input class="form-control" type="text" name="address2"
+                                                         th:value="${updateread.address2}" maxlength="100">
+                                        </div>
+                                        <br>
+                                        <div>
+                                            담당자 이름 <input class="form-control" type="text" name="mngrName"
+                                                          th:value="${updateread.mngrName}" maxlength="12">
                                         </div>
                                         <br>
                                         <div>
                                             담당자 연락처 <input class="form-control" type="text" name="mngrPhone"
-                                                           th:value="${updateread.mngrPhone}">
+                                                           id="inputMngrPhone"
+                                                           th:value="${updateread.mngrPhone}" maxlength="11">
                                         </div>
                                         <br>
                                         <div>
                                             이메일 <input class="form-control" type="text" name="mngrAddress"
-                                                       th:value="${updateread.mngrAddress}">
+                                                       th:value="${updateread.mngrAddress}" maxlength="50">
                                         </div>
                                         <br>
                                         <br>
@@ -131,6 +132,34 @@
                                         </button>
                                         <input class="btn cur-p btn-dark btn-color" type="submit" value="수정하기">
                                     </form>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', (event) => {
+                                            const inputMngrPhone = document.getElementById('inputMngrPhone');
+                                            const inputPhone = document.getElementById('inputPhone');
+
+                                            // 숫자만 허용하는 함수
+                                            const enforceNumericInput = (input) => {
+                                                input.addEventListener('input', () => {
+                                                    input.value = input.value.replace(/[^0-9]/g, '');
+                                                });
+                                            };
+
+                                            // 최대 길이를 제한하는 함수
+                                            const enforceMaxLength = (input, maxLength) => {
+                                                input.addEventListener('input', () => {
+                                                    if (input.value.length > maxLength) {
+                                                        input.value = input.value.slice(0, maxLength);
+                                                    }
+                                                });
+                                            };
+
+                                            // 담당자 연락처와 내선번호는 최대 11자리로 제한
+                                            enforceNumericInput(inputMngrPhone);
+                                            enforceNumericInput(inputPhone);
+                                            enforceMaxLength(inputMngrPhone, 11);
+                                            enforceMaxLength(inputPhone, 11);
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -140,8 +169,8 @@
         </main>
         <!-- ### $App Screen Footer ### -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
-                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
+        <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                              title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
     </div>
     </body>
