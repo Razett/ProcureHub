@@ -3,6 +3,8 @@ package com.glkids.procurehub.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * <b>제품</b>
  *
@@ -23,4 +25,7 @@ public class Prdc {
 
     @Column(length = 100, nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "prdc",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    List<PrdcMtrl> prdcmtrls;
 }

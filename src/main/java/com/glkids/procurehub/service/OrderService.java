@@ -24,7 +24,7 @@ public interface OrderService {
 
     default Order orderDtoToEntity(OrderDTO orderDTO) {
         Order order=Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())
-                .orderdate(orderDTO.getOrderdate()).prcr(orderDTO.getPrcr()).quotation(orderDTO.getQuotation())
+                .orderdate(orderDTO.getOrderdate()).prcr(orderDTO.getPrcr()).material(orderDTO.getMaterial()).quotationmtrl(orderDTO.getQuotationmtrl())
                 .quantity(orderDTO.getQuantity()).trackingNo(orderDTO.getTrackingNo()).status(orderDTO.getStatus())
                 .build();
 
@@ -33,8 +33,8 @@ public interface OrderService {
 
     default OrderDTO orderEntityToDTO(Order entity) {
         return OrderDTO.builder().orderno(entity.getOrderno()).emp(entity.getEmp()).orderdate(entity.getOrderdate())
-                .prcr(entity.getPrcr()).quotation(entity.getQuotation()).quantity(entity.getQuantity())
-                .trackingNo(entity.getTrackingNo()).status(entity.getStatus()).build();
+                .prcr(entity.getPrcr()).material(entity.getMaterial()).quotationmtrl(entity.getQuotationmtrl()).quantity(entity.getQuantity())
+                .trackingNo(entity.getTrackingNo()).status(entity.getStatus()).regdate(entity.getRegdate()).moddate(entity.getModdate()).build();
 
     }
 }
