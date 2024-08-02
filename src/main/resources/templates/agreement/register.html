@@ -84,91 +84,95 @@
                             <div class="col-md-6">
                                 <div class="bgc-white p-20 bd">
                                     <form id="quotationForm" enctype="multipart/form-data">
-                        <form action="#" method="post">
-                            <h1>계약등록</h1>
-                            <style>
-                                table {
-                                    width: 100%;
-                                    border-collapse: collapse;
-                                }
+                                        <form action="#" method="post">
+                                            <h1>계약등록</h1>
+                                            <style>
+                                                table {
+                                                    width: 100%;
+                                                    border-collapse: collapse;
+                                                }
 
-                                th, td {
-                                    border: 1px solid #ccc;
-                                    padding: 8px;
-                                    text-align: center;
-                                }
+                                                th, td {
+                                                    border: 1px solid #ccc;
+                                                    padding: 8px;
+                                                    text-align: center;
+                                                }
 
-                                th {
-                                    background-color: #f2f2f2;
-                                }
-                                .button-container {
-                                    text-align: center;
-                                    margin-top: 20px;
-                                }
+                                                th {
+                                                    background-color: #f2f2f2;
+                                                }
 
-                                .btn {
-                                    display: inline-block;
-                                    margin: 5px;
-                                }
+                                                .button-container {
+                                                    text-align: center;
+                                                    margin-top: 20px;
+                                                }
 
-                            </style>
-                            </head>
-                            <body>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>회사명</th>
-                                    <th>사업자 등록번호</th>
-                                    <th>견적 제목</th>
-                                    <th>견적 생성일</th>
-                                    <th>견적 금액</th>
-                                    <th>자재명</th>
-                                    <th>자재코드</th>
-                                    <th>수량</th>
-                                    <th>단가</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>A 회사</td>
-                                    <td>123-45-67890</td>
-                                    <td>title</td>
-                                    <td>2024/07/30</td>
-                                    <td>3,000,000</td>
-                                    <td>프레임</td>
-                                    <td>MA0001</td>
-                                    <td>10000</td>
-                                    <td>300</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                            <div>
-                                계약명 <input type="text" class="form-control" placeholder="제목을 입력하시오">
-                                <br>
-                                <br>
-                                계약일 <input type="text" class="form-control" placeholder="ex)20240715">
-                                <br>
-                                <br>
-                                만료일 <input type="text" class="form-control" placeholder="ex)20240716">
-                                <br>
-                                <br>
-                                계약 진행 상태 <input type="text" class="form-control" placeholder="ex)20240715">
-                                <br>
-                                <br>
-                                견적파일 <input type="file">
-                            </div>
-                            <div class="button-container">
-                            <input type="button" value="취소" id="cancle" class="btn cur-p btn-danger btn-color">
-                            <input type="submit" value="등록하기" id="register" class="btn cur-p btn-dark btn-color">
-                            </div>
-                            </body>
-                        </form>
+                                                .btn {
+                                                    display: inline-block;
+                                                    margin: 5px;
+                                                }
+
+                                            </style>
+                                            </head>
+                                            <body>
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th>회사명</th>
+                                                    <th>사업자 등록번호</th>
+                                                    <th>견적 제목</th>
+                                                    <th>견적 생성일</th>
+                                                    <th>견적 금액</th>
+                                                    <th>자재명</th>
+                                                    <th>자재코드</th>
+                                                    <th>수량</th>
+                                                    <th>단가</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>A 회사</td>
+                                                    <td>123-45-67890</td>
+                                                    <td>title</td>
+                                                    <td>2024/07/30</td>
+                                                    <td>3,000,000</td>
+                                                    <td>프레임</td>
+                                                    <td>MA0001</td>
+                                                    <td>10000</td>
+                                                    <td>300</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            <div>
+                                                계약명 <input type="text" class="form-control" placeholder="제목을 입력하시오">
+                                                <br>
+                                                <br>
+                                                계약일 <input type="text" class="form-control" placeholder="ex)20240715">
+                                                <br>
+                                                <br>
+                                                만료일 <input type="text" class="form-control" placeholder="ex)20240716">
+                                                <br>
+                                                <br>
+                                                계약 진행 상태 <input type="text" class="form-control"
+                                                                placeholder="ex)20240715">
+                                                <br>
+                                                <br>
+                                                견적파일 <input type="file">
+                                            </div>
+                                            <div class="button-container">
+                                                <input type="button" value="취소" id="cancle"
+                                                       class="btn cur-p btn-danger btn-color">
+                                                <input type="submit" value="등록하기" id="register"
+                                                       class="btn cur-p btn-dark btn-color">
+                                            </div>
+                                            </body>
+                                        </form>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                                    </th:block>
+                    </th:block>
                 </div>
             </div>
         </main>
