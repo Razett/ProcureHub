@@ -26,7 +26,7 @@ public class MaterialRestController {
 
     // 자재 코드를 통해 자재 정보를 가져오는 API
     @GetMapping("/details")
-    public MaterialDTO getMaterialDetailsByCode(@RequestParam Long mtrlno) {
+    public MaterialDTO getMaterialDetailsByCode(@RequestParam("mtrlno") Long mtrlno) {
         System.out.println(mtrlno);
         return materialService.readByFetch(mtrlno);
     }
