@@ -62,9 +62,39 @@ var materialWarehouseService = (function (){
         });
     }
 
+    function updateWarehouse(wrhscode, wrhsname, callback) {
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/material/warehouseupdate',
+            contentType: 'application/json',
+            data: JSON.stringify({ wrhscode: wrhscode, wrhsname: wrhsname }),
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
+    function deleteWarehouse(wrhscode, callback) {
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/material/warehousedelete',
+            contentType: 'application/json',
+            data: JSON.stringify({ wrhscode: wrhscode }),
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
     return {
         verifyWrhscode: verifyWrhscode,
         validateWrhscode: validateWrhscode,
-        registerWarehouse: registerWarehouse
+        registerWarehouse: registerWarehouse,
+        updateWarehouse: updateWarehouse,
+        deleteWarehouse: deleteWarehouse
     };
 })();

@@ -4,9 +4,7 @@ import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialGroupDTO;
 import com.glkids.procurehub.dto.MaterialGroupListDTO;
 import com.glkids.procurehub.dto.MaterialWarehouseDTO;
-import com.glkids.procurehub.entity.Material;
-import com.glkids.procurehub.entity.MaterialGroup;
-import com.glkids.procurehub.entity.QMaterialGroup;
+import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.MaterialGroupRepository;
 import com.glkids.procurehub.repository.MaterialRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
@@ -92,6 +90,29 @@ public class MaterialServiceImpl implements MaterialService {
     public MaterialWarehouseDTO registerMaterialWarehouse(MaterialWarehouseDTO materialWarehouseDTO) {
         materialWarehouseRepository.save(warehouseDtoToEntity(materialWarehouseDTO));
         return materialWarehouseRepository.existsById(materialWarehouseDTO.getWrhscode()) ? materialWarehouseDTO : null;
+    }
+
+    @Override
+    public Boolean deleteMaterialWarehouse(String wrhscode) {
+        QMaterial qMaterial = QMaterial.material;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression eqWrhscodeExpr = qMaterial.materialWarehouse.eq(MaterialWarehouse.builder().wrhscode(wrhscode).build());
+
+        List<MaterialDTO> materialDtoList = new ArrayList<>();
+        List<Material> materialList = new ArrayList<>();
+        MaterialWarehouse materialWarehouse = MaterialWarehouse.builder().wrhscode("ETC").build();
+        materialRepository.findAll(builder.and(eqWrhscodeExpr)).forEach(x->materialDtoList.add(materialEntityToDTO(Optional.ofNullable(x))));
+
+        materialDtoList.forEach(x -> {
+            x.setMaterialWarehouse(materialWarehouse);
+            materialList.add(materialDTOToEntity(x));
+        });
+
+        materialRepository.saveAll(materialList);
+        materialWarehouseRepository.delete(MaterialWarehouse.builder().wrhscode(wrhscode).build());
+
+        return !materialWarehouseRepository.existsById(wrhscode);
     }
 
     /**

@@ -44,9 +44,22 @@ public class MaterialRestController {
     }
 
     @PostMapping(value = "/warehouseregister", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MaterialWarehouseDTO> registerWarehouser(@RequestBody MaterialWarehouseDTO materialWarehouseDTO) {
+    public ResponseEntity<MaterialWarehouseDTO> registerWarehouse(@RequestBody MaterialWarehouseDTO materialWarehouseDTO) {
         materialWarehouseDTO.setWrhscode(materialWarehouseDTO.getWrhscode().trim().toUpperCase());
         materialWarehouseDTO.setWrhsname(materialWarehouseDTO.getWrhsname().trim().toUpperCase());
         return ResponseEntity.ok(materialService.registerMaterialWarehouse(materialWarehouseDTO));
+    }
+
+    @PostMapping(value = "/warehouseupdate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MaterialWarehouseDTO> updateWarehouse(@RequestBody MaterialWarehouseDTO materialWarehouseDTO) {
+        materialWarehouseDTO.setWrhscode(materialWarehouseDTO.getWrhscode().trim().toUpperCase());
+        materialWarehouseDTO.setWrhsname(materialWarehouseDTO.getWrhsname().trim().toUpperCase());
+        return ResponseEntity.ok(materialService.registerMaterialWarehouse(materialWarehouseDTO));
+    }
+
+    @PostMapping(value = "/warehousedelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> deleteWarehouse(@RequestBody MaterialWarehouseDTO materialWarehouseDTO) {
+        materialWarehouseDTO.setWrhscode(materialWarehouseDTO.getWrhscode().trim().toUpperCase());
+        return ResponseEntity.ok(materialService.deleteMaterialWarehouse(materialWarehouseDTO.getWrhscode()));
     }
 }

@@ -29,6 +29,8 @@ public interface MaterialService {
 
     MaterialWarehouseDTO registerMaterialWarehouse(MaterialWarehouseDTO materialWarehouseDTO);
 
+    Boolean deleteMaterialWarehouse(String wrhscode);
+
     Boolean verifyWrhscode(String wrhscode);
 
     MaterialGroupDTO readMaterialGroup(String grpcode);
