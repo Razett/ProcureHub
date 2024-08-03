@@ -35,7 +35,7 @@ public class QuotationRepositoryTest {
                 if (array[1] instanceof QuotationMtrl quotationMtrl) {
                     System.out.println(quotationMtrl.getQtmtno());
                 }
-                if (array[2] instanceof Integer agreementCount) {
+                if (array[2] instanceof Long agreementCount) {
                     System.out.println(agreementCount);
                 }
                 System.out.println();

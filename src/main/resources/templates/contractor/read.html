@@ -125,8 +125,28 @@
                                                 <i class="c-grey-900 ti-plus fa-1-25x"></i>
                                             </a>
                                         </div>
-                                        <span th:text="${quotationList}"></span>
                                     </div>
+                                    <th:block th:if="${!quotationList.isEmpty()}">
+                                        <th:block th:each="quotation : ${quotationList}">
+                                            <div class="alert alert-light contractor" role="alert">
+                                                <h5><b th:text="${quotation.title}"></b></h5>
+                                                <br>
+                                                <span th:text="${quotation.regdate}"></span><br>
+                                                <th:block th:if="${quotation.quotationMtrlList.size() > 0}">
+                                                    <span th:text="'MA' + ${#numbers.formatInteger(quotation.quotationMtrlList.get(0).material.mtrlno, 6)}"></span>
+                                                    <span th:text="${quotation.quotationMtrlList.get(0).material.name}"></span>
+                                                    <span th:if="${quotation.quotationMtrlList.size() > 1}" th:text="' 외 ' + ${quotation.quotationMtrlList.size() - 1} + '개 자재 포함됨.'"></span><br>
+                                                </th:block>
+                                                <span>계약 수: </span>
+                                                <span th:text="${quotation.agreementCount}"></span>
+                                            </div>
+                                        </th:block>
+                                    </th:block>
+                                    <th:block th:unless="${!quotationList.isEmpty()}">
+                                        <span class="text-black fa-1x">추가된 견적이 없습니다...</span>
+                                        <a th:href="@{/contractor/quoregister(corno=${contractorRead.corno})}" class="fa-1x">견적
+                                            추가하기</a>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>
