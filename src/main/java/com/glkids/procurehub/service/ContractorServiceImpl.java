@@ -3,13 +3,17 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
-import com.glkids.procurehub.entity.Contractor;
-import com.glkids.procurehub.entity.Quotation;
-import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ContractorRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
+import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,6 +64,34 @@ public class ContractorServiceImpl implements ContractorService {
         List<QuotationDTO> quoDTOList = new ArrayList<>();
         quotation.forEach(x -> quoDTOList.add(quotationEntityToDTO(x)));
         return quoDTOList;
+    }
+
+    @Override
+    public List<QuotationDTO> quoListByContractor(Long corno, Integer pageNum) {
+        List<QuotationDTO> list = new ArrayList<>();
+
+        Pageable pageable = PageRequest.of(pageNum, 50, Sort.by(Sort.Direction.DESC, "regdate"));
+        Page<Object[]> pageObject = quotationRepository.findQuotationByCorno(corno, pageable);
+        pageObject.getContent().forEach(object -> {
+            Object[] array = object;
+            if (array.length == 3) {
+                QuotationDTO quotationDTO = new QuotationDTO();
+                if (array[0] instanceof Quotation quotation) {
+//                    System.out.println(quotation);
+                    quotationDTO = quotationEntityToDTO(quotation);
+                }
+                if (array[1] instanceof QuotationMtrl quotationMtrl) {
+//                    System.out.println(quotationMtrl);
+                    quotationDTO.setQuotationMtrlDTO(quotationMtrlEntityToDTO(quotationMtrl));
+                }
+                if (array[2] instanceof Integer agreementCount) {
+//                    System.out.println(agreementCount);
+                    quotationDTO.setAgreementCount(agreementCount);
+                }
+                list.add(quotationDTO);
+            }
+        });
+        return list;
     }
 
     @Override

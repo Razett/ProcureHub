@@ -2,6 +2,7 @@ package com.glkids.procurehub.dto;
 
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
+import com.glkids.procurehub.entity.QuotationMtrl;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -30,4 +31,6 @@ public class QuotationDTO {
     private Integer status; //견적 상태 코드
     private LocalDateTime moddate; // 수정날짜
     private LocalDateTime regdate; // 추가날짜
+    private QuotationMtrlDTO quotationMtrlDTO;
+    private Integer agreementCount; // 계약 개수
 }

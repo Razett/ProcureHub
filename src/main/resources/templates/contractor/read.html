@@ -79,20 +79,53 @@
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.corno}"></span>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">전화번호</label><br>
+                                        <label class="form-label">내선번호</label><br>
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.phone}"></span>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">담당자 성명</label><br>
-                                        <span class="text-black fa-1-25x" th:text="${contractorRead.mngrName}"></span>
+                                        <label class="form-label">주소</label><br>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.address1}"></span> <br>
+                                        <span class="text-black fa-1-25x" th:if="${contractorRead.address2 != null and !contractorRead.address2.isEmpty()}" th:text="${contractorRead.address2}"></span>
+                                    </div>
+                                </div>
+                                <div class="bgc-white p-20 bd mT-20">
+                                    <h4 class="c-grey-900 mT-10 mB-30">담당자</h4>
+                                    <div class="mb-3">
+                                        <label class="form-label">이름</label><br>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.mngrName != null and !contractorRead.mngrName.isEmpty() ? contractorRead.mngrName : 'N/A'}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">연락처</label><br>
-                                        <span class="text-black fa-1-25x" th:text="${contractorRead.mngrPhone}"></span>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.mngrPhone != null and !contractorRead.mngrPhone.isEmpty() ? contractorRead.mngrPhone : 'N/A'}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">이메일</label><br>
-                                        <span class="text-black fa-1-25x" th:text="${contractorRead.mngrAddress}"></span>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.mngrAddress != null and !contractorRead.mngrAddress.isEmpty() ? contractorRead.mngrAddress : 'N/A'}"></span>
+                                    </div>
+                                </div>
+                                <div class="bgc-white p-20 bd mT-20">
+                                    <h4 class="c-grey-900 mT-10 mB-30">결제 정보</h4>
+                                    <div class="mb-3">
+                                        <label class="form-label">은행</label><br>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.bank != null and !contractorRead.bank.isEmpty() ? contractorRead.bank : 'N/A'}"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">계좌번호</label><br>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.accountNum != null and !contractorRead.accountNum.isEmpty() ? contractorRead.accountNum : 'N/A'}"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="bgc-white p-20 bd">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30">견적 목록</h4>
+                                        <div class=" mT-10 mB-30">
+                                            <a th:href="@{/contractor/quoregister(corno=${contractorRead.corno})}" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="견적 추가">
+                                                <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                                            </a>
+                                        </div>
+                                        <span th:text="${quotationList}"></span>
                                     </div>
                                 </div>
                             </div>
