@@ -92,7 +92,7 @@
                                         <span class="ti-download"></span><span class="icon-name"></span>&nbsp;Download
                                     </button>
                                 </div>
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>발주코드</th>
@@ -102,12 +102,21 @@
                                         <th>자재코드</th>
                                         <th>회사명</th>
                                         <th>등록날짜</th>
+                                        <th>발주수량</th>
                                         <th>발주상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="ordertotallist : ${orderTotalList}">
                                         <td th:text="${ordertotallist.orderno}"></td>
+                                        <td th:text="${#temporals.format(ordertotallist.orderdate,'yyyy-MM-dd')}"></td>
+                                        <td th:text="${ordertotallist.prcr != null ? ordertotallist.prcr.getPrcrno() : 'N/A'}"></td>
+                                        <td th:text="${ordertotallist.prcr != null ? ordertotallist.prcr.getReqdate() : 'N/A'}"></td>
+                                        <td th:text="${ordertotallist.material != null ? ordertotallist.material.getMtrlno() : 'N/A'}"></td>
+                                        <td th:text="${ordertotallist.quotationmtrl.quotation != null && ordertotallist.quotationmtrl.quotation.contractor != null ? ordertotallist.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
+                                        <td th:text="${#temporals.format(ordertotallist.getRegdate(), 'yyyy-MM-dd')}">
+                                        <td th:text="${ordertotallist.quantity}"></td>
+                                        <td th:text="${ordertotallist.status}">
                                     </tr>
                                     </tbody>
                                 </table>

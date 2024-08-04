@@ -58,6 +58,28 @@
                     opacity: 0;
                 }
             }
+
+            .table-wrapper {
+                max-height: 300px; /* 높이는 적절히 조정 */
+                overflow: hidden; /* 기본적으로 스크롤 숨기기 */
+                position: relative; /* 자식 요소의 위치를 기준으로 설정 */
+            }
+
+            .table-wrapper.show-scroll {
+                overflow: auto; /* 마우스가 올라왔을 때 스크롤 보이기 */
+            }
+
+            .table {
+                width: 100%;
+                border-collapse: collapse; /* 테이블 셀 간 경계선 제거 */
+            }
+
+            .table th, .table td {
+                padding: 8px; /* 셀 내 여백 */
+                border: 1px solid #ddd; /* 셀 테두리 색상 */
+                text-align: left; /* 텍스트 정렬 */
+            }
+
         </style>
         <script defer="defer" src="js/main.js"></script>
         <link href="css/style.css" rel="stylesheet">
@@ -83,13 +105,12 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <h4 class="c-grey-900 mT-10 mB-30">발주 현황</h4>
+<!--                        <h4 class="c-grey-900 mT-10 mB-30">발주 현황</h4>-->
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">대기 현황</h4>
                                     <div class="d-flex flex-column align-items-end">
-                                        <input type="text" class="form-control bdrs-10em m-0" style="margin-bottom: 100px; width: 200px; margin-right: 10px;">
                                         <div class="d-flex align-items-center" style="margin-bottom: 15px;">
                                             <button type="button" class="btn cur-p btn-outline-secondary"
                                                     style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
@@ -101,42 +122,50 @@
                                                     <span class="ti-pencil-alt"></span><span class="icon-name"></span>&nbsp;수정
                                                 </a>
                                             </button>
-                                            <button type="button" class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
-                                                <a th:href="@{#}" style="text-decoration: none; color: inherit; text-align: center;">발주 실행</a>
+                                            <button type="button" id="execute-orders-btn" class="btn cur-p btn-outline-secondary" style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;" onclick="executeOrders()">
+                                                <a href="#" style="text-decoration: none; color: inherit; text-align: center;">발주 실행</a>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>발주코드</th>
-                                        <th>조달계획코드</th>
-                                        <th>납기일</th>
-                                        <th>자재코드</th>
-                                        <th>회사명</th>
-                                        <th>L/T</th>
-                                        <th>등록날짜</th>
-                                        <th>발주서 발행</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="order : ${orderList}">
-                                        <td th:text="${order.orderno}"></td>
-                                        <td th:text="${order.prcr != null ? order.prcr.getPrcrno() : 'N/A'}"></td>
-                                        <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
-                                        <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
-                                        <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
-                                        <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getLeadtime() : 'N/A'}">
-                                        <td th:text="${#temporals.format(order.getRegdate(), 'yyyy-MM-dd')}">
-                                        <td class="col-md-1 text-center"><span class="ti-download"></span><span
-                                                class="icon-name"></span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-wrapper" id="tableWrapper">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <label>
+                                                    <input type="checkbox" id="order-code" onclick="toggleCheckboxes(this)">
+                                                    발주코드
+                                                </label>
+                                            </th>
+                                            <th>조달계획코드</th>
+                                            <th>납기일</th>
+                                            <th>자재코드</th>
+                                            <th>회사명</th>
+                                            <th>L/T</th>
+                                            <th>등록날짜</th>
+                                            <th>발주서 발행</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                        <tr th:each="order : ${orderList}">
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" id="order-${order.orderno}">
+                                                    <span th:text="${order.orderno}"></span>
+                                                </label>
+                                            </td>
+                                            <td th:text="${order.prcr != null ? order.prcr.getPrcrno() : 'N/A'}"></td>
+                                            <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
+                                            <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
+                                            <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
+                                            <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getLeadtime() : 'N/A'}"></td>
+                                            <td th:text="${#temporals.format(order.getRegdate(), 'yyyy-MM-dd')}"></td>
+                                            <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <br>
@@ -144,7 +173,7 @@
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
                                 <h4 class="c-grey-900 mT-10 mB-30">진행 현황</h4>
-                                <table class="table table-bordered">
+                                <table id="target-table" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>발주코드</th>
@@ -160,20 +189,60 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="order : ${orderList}">
-                                        <td th:text="${order.orderno}"></td>
-                                        <td th:text="${#temporals.format(order.orderdate, 'yyyy-MM-dd')}"></td>
-                                        <td th:text="${order.prcr != null ? order.prcr.getPrcrno() : 'N/A'}"></td>
-                                        <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
-                                        <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
-                                        <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
-                                        <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getLeadtime() : 'N/A'}">
-                                        <td th:text="${#temporals.format(order.getRegdate(), 'yyyy-MM-dd')}">
-                                        <td th:text="${order.status}">
+<!--                                        <td th:text="${order.orderno}"></td>-->
+<!--                                        <td th:text="${#temporals.format(order.orderdate, 'yyyy-MM-dd')}"></td>-->
+<!--                                        <td th:text="${order.prcr != null ? order.prcr.getPrcrno() : 'N/A'}"></td>-->
+<!--                                        <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>-->
+<!--                                        <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>-->
+<!--                                        <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>-->
+<!--                                        <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getLeadtime() : 'N/A'}">-->
+<!--                                        <td th:text="${#temporals.format(order.getRegdate(), 'yyyy-MM-dd')}">-->
+<!--                                        <td th:text="${order.status}">-->
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        <script>
+                            function toggleCheckboxes(source) {
+                                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+                                checkboxes.forEach(checkbox => {
+                                    checkbox.checked = source.checked;
+                                });
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const tableWrapper = document.getElementById('tableWrapper');
+
+                                tableWrapper.addEventListener('mouseover', function() {
+                                    tableWrapper.classList.add('show-scroll'); // 마우스가 올라왔을 때
+                                });
+
+                                tableWrapper.addEventListener('mouseout', function() {
+                                    tableWrapper.classList.remove('show-scroll'); // 마우스가 벗어났을 때
+                                });
+                            });
+
+                            function executeOrders() {
+                                const checkedBoxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+                                const targetTableBody = document.querySelector('#target-table tbody');
+
+                                checkedBoxes.forEach(checkbox => {
+                                    const row = checkbox.closest('tr').cloneNode(true);
+                                    targetTableBody.appendChild(row);
+                                    checkbox.checked = false;
+
+                                    const orderCodeCheckbox = document.getElementById('order-code');
+                                    if (orderCodeCheckbox) {
+                                        orderCodeCheckbox.checked = false;
+                                    }
+
+                                    const executeBtn = document.getElementById('execute-orders-btn');
+                                    executeBtn.classList.remove('btn-disabled');
+                                    executeBtn.innerHTML = '<a href="#" style="text-decoration: none; color: inherit; text-align: center;">발주 실행</a>';
+                                });
+                            }
+                        </script>
                     </th:block>
                 </div>
             </div>
