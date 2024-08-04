@@ -117,16 +117,47 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="bgc-white p-20 bd">
-                                    <div class="d-flex justify-content-between">
-                                        <h4 class="c-grey-900 mT-10 mB-30">견적 목록</h4>
-                                        <div class=" mT-10 mB-30">
+                                <div class="bgc-white p-20 bd h-100">
+                                    <div class="d-flex justify-content-between mT-10 mB-30">
+                                        <div class="d-flex align-items-baseline">
+                                            <h4 class="c-grey-900">견적 목록</h4>
+                                            <span class="ms-1" th:text="'(' + ${quotationList.size()} + ')'"></span>
+                                        </div>
+                                        <div>
                                             <a th:href="@{/contractor/quoregister(corno=${contractorRead.corno})}" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="견적 추가">
                                                 <i class="c-grey-900 ti-plus fa-1-25x"></i>
                                             </a>
                                         </div>
-                                        <span th:text="${quotationList}"></span>
                                     </div>
+                                    <th:block th:if="${!quotationList.isEmpty()}">
+                                        <div class="overflow-x-hidden overflow-y-auto vh-100">
+                                            <div class="list-group">
+                                                <th:block th:each="quotation : ${quotationList}">
+                                                        <a th:href="@{/contractor/quoread(qtno=${quotation.qtno})}" class="list-group-item list-group-item-action">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h5 class="mb-2" th:text="${quotation.title}"></h5>
+                                                                <small class="text-body-secondary" th:text="${quotation.status}"></small>
+                                                            </div>
+                                                            <th:block th:if="${quotation.quotationMtrlList.size() > 0}">
+                                                                <span class="mb-1" th:text="'MA' + ${#numbers.formatInteger(quotation.quotationMtrlList.get(0).material.mtrlno, 6)}"></span>
+                                                                <span class="mb-1" th:text="${quotation.quotationMtrlList.get(0).material.name}"></span>
+                                                                <span class="mb-1" th:if="${quotation.quotationMtrlList.size() > 1}" th:text="' 외 ' + ${quotation.quotationMtrlList.size() - 1} + '개 자재 포함됨.'"></span><br>
+                                                            </th:block>
+                                                            <th:block th:unless="${quotation.quotationMtrlList.size() > 0}">
+                                                                <span class="mb-1">추가된 자재 없음.</span><br>
+                                                            </th:block>
+                                                            <small class="text-body-secondary" th:text="'계약 ' + ${quotation.agreementCount} + '건, '"></small>
+                                                            <small class="text-body-secondary" th:text="${#temporals.format(quotation.regdate, 'yyyy-MM-dd a hh:mm')}"></small>
+                                                        </a>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:unless="${!quotationList.isEmpty()}">
+                                        <span class="text-black fa-1x">추가된 견적이 없습니다...</span>
+                                        <a th:href="@{/contractor/quoregister(corno=${contractorRead.corno})}" class="fa-1x">견적
+                                            추가하기</a>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>

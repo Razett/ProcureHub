@@ -13,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class QuotationServiceImpl implements QuotationService {
@@ -40,5 +44,23 @@ public class QuotationServiceImpl implements QuotationService {
     public QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO) {
         QuotationFile quotationFile = quotationFileDtoToEntity(quotationFileDTO);
         return quotationFileRepository.save(quotationFile);
+    }
+
+    @Override
+    public List<QuotationMtrlDTO> quotationMtrlList() {
+        List<QuotationMtrl> quotationMtrls = quotationMtrlRepository.findAll();
+        List<QuotationMtrlDTO> quotationMtrlDTO = new ArrayList<>();
+        quotationMtrls.forEach(x-> quotationMtrlDTO.add(quotationMtrlEntityToDTO(x)));
+
+        return  quotationMtrlDTO;
+    }
+
+    @Override
+    public QuotationDTO read(Long qutno) {
+        Optional<Quotation> opquo = quotationRepository.findById(qutno);
+        if(opquo.isPresent()){
+            return quotationEntityToDTO(opquo.get());
+        }
+        return null;
     }
 }

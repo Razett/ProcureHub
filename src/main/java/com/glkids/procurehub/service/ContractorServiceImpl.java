@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,23 +73,32 @@ public class ContractorServiceImpl implements ContractorService {
 
         Pageable pageable = PageRequest.of(pageNum, 50, Sort.by(Sort.Direction.DESC, "regdate"));
         Page<Object[]> pageObject = quotationRepository.findQuotationByCorno(corno, pageable);
+
         pageObject.getContent().forEach(object -> {
             Object[] array = object;
             if (array.length == 3) {
-                QuotationDTO quotationDTO = new QuotationDTO();
                 if (array[0] instanceof Quotation quotation) {
-//                    System.out.println(quotation);
-                    quotationDTO = quotationEntityToDTO(quotation);
+                    QuotationDTO quotationDTO = quotationEntityToDTO(quotation);
+                    if (list.isEmpty()) {
+                        list.add(quotationDTO);
+                    }
+                    if (list.get(list.size() - 1).getQtno().longValue() != quotationDTO.getQtno().longValue()) {
+                        if (array[1] instanceof QuotationMtrl quotationMtrl) {
+                            quotationDTO.getQuotationMtrlList().add(quotationMtrlEntityToDTO(quotationMtrl));
+                        }
+                        if (array[2] instanceof Long agreementCount) {
+                            quotationDTO.setAgreementCount(agreementCount);
+                        }
+                        list.add(quotationDTO);
+                    } else {
+                        if (array[1] instanceof QuotationMtrl quotationMtrl) {
+                            list.get(list.size() - 1).getQuotationMtrlList().add(quotationMtrlEntityToDTO(quotationMtrl));
+                        }
+                        if (array[2] instanceof Long agreementCount) {
+                            list.get(list.size() - 1).setAgreementCount(agreementCount);
+                        }
+                    }
                 }
-                if (array[1] instanceof QuotationMtrl quotationMtrl) {
-//                    System.out.println(quotationMtrl);
-                    quotationDTO.setQuotationMtrlDTO(quotationMtrlEntityToDTO(quotationMtrl));
-                }
-                if (array[2] instanceof Integer agreementCount) {
-//                    System.out.println(agreementCount);
-                    quotationDTO.setAgreementCount(agreementCount);
-                }
-                list.add(quotationDTO);
             }
         });
         return list;

@@ -82,7 +82,10 @@ public interface ContractorService {
     // QuotationMtrl Entity to DTO 변환 메서드
     default QuotationMtrlDTO quotationMtrlEntityToDTO(QuotationMtrl entity) {
         return QuotationMtrlDTO.builder()
+                .qtmtno(entity.getQtmtno())
+                .quotation(entity.getQuotation())
                 .quotationId(entity.getQuotation().getQtno())
+                .material(entity.getMaterial())
                 .materialId(entity.getMaterial().getMtrlno())
                 .quantity(entity.getQuantity())
                 .unitprice(entity.getUnitprice())

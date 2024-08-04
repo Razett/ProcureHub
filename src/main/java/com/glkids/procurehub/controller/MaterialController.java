@@ -43,7 +43,7 @@ public class MaterialController {
      */
     @GetMapping("/read")
     public String read(Long mtrlno, Model model) {
-        model.addAttribute("title", "자재 상세정보");
+        model.addAttribute("title", "자재 정보");
 
         MaterialDTO materialDTO = materialService.read(mtrlno);
         model.addAttribute("material", materialDTO);
@@ -138,7 +138,7 @@ public class MaterialController {
      */
     @GetMapping("/warehouselist")
     public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
-        model.addAttribute("title", "자재 창고 목록");
+        model.addAttribute("title", "자재 창고");
 
         model.addAttribute("warehouses", materialService.getWarehouses());
     }
@@ -159,7 +159,7 @@ public class MaterialController {
      */
     @GetMapping("/prcrlist")
     public String prcrList(Model model) {
-        model.addAttribute("title", "조달 계획 목록");
+        model.addAttribute("title", "조달 계획");
 
         return "/material/prcrlist";
     }

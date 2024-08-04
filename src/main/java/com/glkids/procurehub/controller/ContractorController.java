@@ -4,6 +4,7 @@ import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.service.AgreementService;
 import com.glkids.procurehub.service.ContractorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ContractorController {
 
     private final ContractorService contractorService;
-
+    private final AgreementService agreementservice;
     /**
      * 업체 목록
      */
@@ -32,6 +33,8 @@ public class ContractorController {
         model.addAttribute("title", "업체 목록");
 
         model.addAttribute("contractorList", contractorService.list());
+
+
         return "/contractor/list";
     }
 
@@ -43,7 +46,7 @@ public class ContractorController {
      */
     @GetMapping("/read")
     public String read(Long corno, Integer quotationPage, Model model) {
-        model.addAttribute("title", "업체 상세정보");
+        model.addAttribute("title", "업체 정보");
 
         model.addAttribute("contractorRead", contractorService.read(corno));
         model.addAttribute("quotationList", contractorService.quoListByContractor(corno, 0));
@@ -123,9 +126,11 @@ public class ContractorController {
      */
     @GetMapping("/quoread")
     public String quodatail(Long qtno, Model model) {
-        model.addAttribute("title", "견적 상세정보");
+        model.addAttribute("title", "견적 정보");
 
         model.addAttribute("quoread", contractorService.quoread(qtno));
+
         return "/contractor/quoread";
     }
+
 }

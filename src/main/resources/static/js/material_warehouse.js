@@ -5,7 +5,10 @@ $(document).ready(function () {
     var wrhscode = '';
     var wrhsname = '';
 
-    const alertModal = $('#alertModal');
+    var typingTimer; // Timer identifier
+    var doneTypingInterval = 1500; // Time in milliseconds (1.5 seconds)
+    var addWrhsSubmitButton = $('#addWrhsSubmit');
+    var subWrhscode = $('#subWrhscode');
 
     $('#warehouseAddBtn').on('click', function (e) {
         e.preventDefault();
@@ -14,12 +17,18 @@ $(document).ready(function () {
         wrhsnameVerified = false;
 
         $("#warehouseAddModal").modal('show');
-    });
 
-    var typingTimer; // Timer identifier
-    var doneTypingInterval = 1500; // Time in milliseconds (1.5 seconds)
-    var addWrhsSubmitButton = $('#addWrhsSubmit');
-    var subWrhscode = $('#subWrhscode');
+        $('#inputWrhscode').val(null);
+        $('#inputWrhsname').val(null);
+        if (!addWrhsSubmitButton.hasClass('disabled')) {
+            addWrhsSubmitButton.addClass('disabled');
+        }
+        subWrhscode.text('창고 코드는 5자리 이상 30자리 미만의 영문자, 숫자, -만 입력 가능합니다.');
+        if (!subWrhscode.hasClass('c-grey-700')) {
+            subWrhscode.addClass('c-grey-700');
+        }
+        subWrhscode.removeClass('c-green-800').removeClass('c-red-700');
+    });
 
     $('#inputWrhscode').on('input', function () {
         wrhscodeVerified = false;
@@ -97,14 +106,12 @@ $(document).ready(function () {
                     '</tr>';
                 $('#warehouse_tbody').append(newRow);
                 $('#warehouseAddModal').modal('hide');
-                $('#alertModalContent').text('자재 창고가 등록되었습니다.');
-                alertModal.modal('show');
+                toastService.printToast('자재 창고가 등록되었습니다.');
             } else {
                 $('#warehouseAddModal').modal('hide');
-                $('#alertModalContent').text('자재 창고가 등록에 실패하였습니다. 관리자에게 문의하세요');
-                alertModal.modal('show');
+                toastService.printToast('자재 창고 등록에 실패하였습니다. 관리자에게 문의하세요.');
             }
-        })
+        });
     });
 
     var currentWrhscode = '';
@@ -208,12 +215,10 @@ $(document).ready(function () {
                 $tr.find('td').eq(1).text(data.wrhsname);
 
                 $('#warehouseUpdateModal').modal('hide');
-                $('#alertModalContent').text('자재 창고가 수정되었습니다.');
-                alertModal.modal('show');
+                toastService.printToast('자재 창고가 수정되었습니다.');
             } else {
                 $('#warehouseUpdateModal').modal('hide');
-                $('#alertModalContent').text('자재 창고가 등록에 실패하였습니다. 관리자에게 문의하세요');
-                alertModal.modal('show');
+                toastService.printToast('자재 창고 수정에 실패하였습니다. 관리자에게 문의하세요');
             }
         })
     });
@@ -239,12 +244,11 @@ $(document).ready(function () {
             if (data) {
                 $tr.remove();
                 $('#deleteModal').modal('hide');
-                $('#alertModalContent').text('삭제되었습니다.');
-                alertModal.modal('show');
+                toastService.printToast('자재 창고가 삭제되었습니다.');
+
             } else {
                 $('#deleteModal').modal('hide');
-                $('#alertModalContent').text('삭제에 실패하였습니다. 관리자에게 문의하세요.');
-                alertModal.modal('show');
+                toastService.printToast('자재 창고 삭제에 실패하였습니다. 관리자에게 문의하세요.');
             }
         });
     });
@@ -252,4 +256,5 @@ $(document).ready(function () {
     function enableAddWrhsUsbmitButton(verified1, verified2) {
         return verified1 && verified2;
     }
+
 });

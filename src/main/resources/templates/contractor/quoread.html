@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
         <title>자재 상세보기</title>
         <link href="css/style.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <style>
             #loader {
                 transition: all 0.3s ease-in-out;
@@ -36,7 +37,9 @@
             }
 
             @keyframes sk-scaleout {
-                0% { transform: scale(0); }
+                0% {
+                    transform: scale(0);
+                }
                 100% {
                     transform: scale(1.0);
                     opacity: 0;
@@ -49,9 +52,9 @@
         <div class="spinner"></div>
     </div>
     <script>
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             const loader = document.getElementById('loader');
-            setTimeout(function() {
+            setTimeout(function () {
                 loader.classList.add('fadeOut');
             }, 300);
         });
@@ -66,33 +69,42 @@
                         <div class="row gap-20 pos-r">
                             <div class="col-md-6">
                                 <div class="bgc-white p-20 bd">
-                                     <div class="d-flex justify-content-between">
-                                    <h1 class="c-grey-900 mT-10 mB-30" th:text="${quoread.title + ' 견적'}"></h1>
-                                    <div>
-                                        <button class="btn cur-p btn-dark btn-color" id="update">수정</button>
-                                        <button class="btn cur-p btn-dark btn-color" id="add">계약추가</button>
-                                        <script>
-                                            $(document).ready(function () {
-                                                console.log("Document ready");
-                                                $('#add').on('click', function () {
-                                                    console.log("Row clicked");
-                                                    var url = '/agreement/register'
-                                                    console.log("Navigating to: " + url);
-                                                    window.location.href = url;
+                                    <div class="d-flex justify-content-between">
+                                        <h1 class="c-grey-900 mT-10 mB-30" th:text="${quoread.title + ' 견적'}"></h1>
+                                        <div>
+                                            <button class="btn cur-p btn-dark btn-color" id="update">수정</button>
+                                            <button class="btn cur-p btn-dark btn-color" id="add">계약추가</button>
+                                            <div id="dataContainer" th:data-qtno="${quoread.qtno}"></div>
+
+                                            <script>
+                                                $(document).ready(function () {
+                                                    console.log("Document ready");
+
+                                                    // 'add' 버튼 클릭 이벤트
+                                                    $('#add').on('click', function () {
+                                                        console.log("Row clicked");
+                                                        var qtno = $('#dataContainer').data('qtno');
+                                                        if (qtno) {
+                                                            var url = '/agreement/register?qtno=' + qtno;
+                                                            console.log("Navigating to: " + url);
+                                                            window.location.href = url;
+                                                        } else {
+                                                            console.log("qtno is not defined");
+                                                        }
+                                                    });
+
+                                                    // 'update' 버튼 클릭 이벤트
+                                                    $('#update').on('click', function () {
+                                                        console.log("Row clicked");
+                                                        var url = '/contractor/update';
+                                                        console.log("Navigating to: " + url);
+                                                        window.location.href = url;
+                                                    });
                                                 });
-                                            });
-                                            $(document).ready(function () {
-                                                console.log("Document ready");
-                                                $('#update').on('click', function () {
-                                                    console.log("Row clicked");
-                                                    var url = '/contractor/update'
-                                                    console.log("Navigating to: " + url);
-                                                    window.location.href = url;
-                                                });
-                                            });
-                                        </script>
+                                            </script>
+
+                                        </div>
                                     </div>
-                                </div>
                                     <div class="mb-3" style="display: flex; gap: 30px; align-items: center;">
                                         <label class="form-label">회사명</label>
                                         <span class="text-black fa-1-25x" th:text="흠"></span>
@@ -122,7 +134,8 @@
                                     </div>
                                     <div class="mb-3" style="display: flex; gap: 10px; align-items: center;">
                                         <label class="form-label">등록일</label>
-                                        <span class="text-black fa-1-25x" th:text="${#temporals.format(quoread.moddate , 'yyyy-MM-dd')}"></span>
+                                        <span class="text-black fa-1-25x"
+                                              th:text="${#temporals.format(quoread.moddate , 'yyyy-MM-dd')}"></span>
                                         <label class="form-label">견적서 파일명</label><br>
                                         <span class="text-black fa-1-25x" th:text="장여니"></span>
                                     </div>
@@ -136,19 +149,25 @@
                                 <div class="d-flex justify-content-end mb-3">
                                     <button class="btn cur-p btn-dark btn-color">Print</button>
                                 </div>
-                        <div class="col-md-6">
-                            <div class="bgc-white p-20 bd" style="margin-top: 10px;">
-                                <div class="d-flex justify-content-between">
-                                    <h4 class="c-grey-900 mT-10 mB-30">견적서 사진 자리</h4>
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd" style="margin-top: 10px;">
+                                        <div class="d-flex justify-content-between">
+                                            <h4 class="c-grey-900 mT-10 mB-30">견적서 사진 자리</h4>
 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </th:block>
+                </div>
+            </div>
         </main>
 
         <!-- Footer -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
     </div>
 
