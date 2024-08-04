@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class AgreementDTO {
 
     private Long grmno;
-    private Contractor contractor; //협력 회사
+    private Contractor contractor; //회사
     private Quotation quotation ;// 견적
     private Emp emp; // 등록 사원
     private String title;// 계약 제목
