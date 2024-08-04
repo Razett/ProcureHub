@@ -130,21 +130,27 @@
                                         </div>
                                     </div>
                                     <th:block th:if="${!quotationList.isEmpty()}">
-                                        <div class="overflow-auto vh-100">
-                                            <th:block th:each="quotation : ${quotationList}">
-                                                <div class="alert alert-light contractor" role="alert">
-                                                    <h5><b th:text="${quotation.title}"></b></h5>
-                                                    <br>
-                                                    <span th:text="${quotation.regdate}"></span><br>
-                                                    <th:block th:if="${quotation.quotationMtrlList.size() > 0}">
-                                                        <span th:text="'MA' + ${#numbers.formatInteger(quotation.quotationMtrlList.get(0).material.mtrlno, 6)}"></span>
-                                                        <span th:text="${quotation.quotationMtrlList.get(0).material.name}"></span>
-                                                        <span th:if="${quotation.quotationMtrlList.size() > 1}" th:text="' 외 ' + ${quotation.quotationMtrlList.size() - 1} + '개 자재 포함됨.'"></span><br>
-                                                    </th:block>
-                                                    <span>계약 수: </span>
-                                                    <span th:text="${quotation.agreementCount}"></span>
-                                                </div>
-                                            </th:block>
+                                        <div class="overflow-x-hidden overflow-y-auto vh-100">
+                                            <div class="list-group">
+                                                <th:block th:each="quotation : ${quotationList}">
+                                                        <a th:href="@{/contractor/quoread(qtno=${quotation.qtno})}" class="list-group-item list-group-item-action">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h5 class="mb-2" th:text="${quotation.title}"></h5>
+                                                                <small class="text-body-secondary" th:text="${quotation.status}"></small>
+                                                            </div>
+                                                            <th:block th:if="${quotation.quotationMtrlList.size() > 0}">
+                                                                <span class="mb-1" th:text="'MA' + ${#numbers.formatInteger(quotation.quotationMtrlList.get(0).material.mtrlno, 6)}"></span>
+                                                                <span class="mb-1" th:text="${quotation.quotationMtrlList.get(0).material.name}"></span>
+                                                                <span class="mb-1" th:if="${quotation.quotationMtrlList.size() > 1}" th:text="' 외 ' + ${quotation.quotationMtrlList.size() - 1} + '개 자재 포함됨.'"></span><br>
+                                                            </th:block>
+                                                            <th:block th:unless="${quotation.quotationMtrlList.size() > 0}">
+                                                                <span class="mb-1">추가된 자재 없음.</span><br>
+                                                            </th:block>
+                                                            <small class="text-body-secondary" th:text="'계약 ' + ${quotation.agreementCount} + '건, '"></small>
+                                                            <small class="text-body-secondary" th:text="${#temporals.format(quotation.regdate, 'yyyy-MM-dd a hh:mm')}"></small>
+                                                        </a>
+                                                </th:block>
+                                            </div>
                                         </div>
                                     </th:block>
                                     <th:block th:unless="${!quotationList.isEmpty()}">

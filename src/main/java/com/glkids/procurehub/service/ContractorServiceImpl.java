@@ -94,6 +94,9 @@ public class ContractorServiceImpl implements ContractorService {
                         if (array[1] instanceof QuotationMtrl quotationMtrl) {
                             list.get(list.size() - 1).getQuotationMtrlList().add(quotationMtrlEntityToDTO(quotationMtrl));
                         }
+                        if (array[2] instanceof Long agreementCount) {
+                            list.get(list.size() - 1).setAgreementCount(agreementCount);
+                        }
                     }
                 }
             }
