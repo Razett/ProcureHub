@@ -4,10 +4,10 @@ var toastService = (function (){
 
     function printToast(content) {
         var toastHtml = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">\n' +
-            '                        <div class="toast-header">\n' +
+            '                        <div class="toast-header text-bg-secondary">\n' +
             '                          <strong class="me-auto">알림</strong>\n' +
-            '                          <small class="text-body-secondary">' + formatTime() + '</small>\n' +
-            '                          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>\n' +
+            '                          <small class="text-body-primary">' + formatTime() + '</small>\n' +
+            '                          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>\n' +
             '                        </div>\n' +
             '                        <div class="toast-body">\n' +
             '                          ' + content + '\n' +
