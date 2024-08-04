@@ -5,6 +5,8 @@ import com.glkids.procurehub.dto.QuotationFileDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
 import com.glkids.procurehub.entity.*;
 
+import java.util.List;
+
 public interface QuotationService {
 
     Quotation saveQuotation(QuotationDTO quotationDTO);
@@ -12,6 +14,10 @@ public interface QuotationService {
     QuotationMtrl saveQuotationMtrl(QuotationMtrlDTO quotationMtrlDTO);
 
     QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO);
+
+    List<QuotationMtrlDTO> quotationMtrlList(); // 계약 추가화면
+
+    QuotationDTO read(Long qutno);
 
     // DTO to Entity 변환 메서드
     default Quotation quotationDtoToEntity(QuotationDTO quotationDTO) {
@@ -35,6 +41,7 @@ public interface QuotationService {
                 .content(entity.getContent())
                 .status(entity.getStatus())
                 .moddate(entity.getModdate())
+                .regdate(entity.getRegdate())
                 .build();
     }
 
@@ -82,4 +89,5 @@ public interface QuotationService {
                 .url(entity.getUrl())
                 .build();
     }
+
 }

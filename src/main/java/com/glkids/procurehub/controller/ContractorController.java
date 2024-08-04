@@ -4,6 +4,7 @@ import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.service.AgreementService;
 import com.glkids.procurehub.service.ContractorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ContractorController {
 
     private final ContractorService contractorService;
-
+    private final AgreementService agreementservice;
     /**
      * 업체 목록
      */
@@ -32,6 +33,8 @@ public class ContractorController {
         model.addAttribute("title", "업체 목록");
 
         model.addAttribute("contractorList", contractorService.list());
+
+
         return "/contractor/list";
     }
 
@@ -126,6 +129,8 @@ public class ContractorController {
         model.addAttribute("title", "견적 상세정보");
 
         model.addAttribute("quoread", contractorService.quoread(qtno));
+
         return "/contractor/quoread";
     }
+
 }
