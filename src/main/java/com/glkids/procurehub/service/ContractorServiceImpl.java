@@ -3,17 +3,22 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
-import com.glkids.procurehub.entity.Contractor;
-import com.glkids.procurehub.entity.Quotation;
-import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ContractorRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
+import com.querydsl.jpa.JPQLQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -60,6 +65,40 @@ public class ContractorServiceImpl implements ContractorService {
         List<QuotationDTO> quoDTOList = new ArrayList<>();
         quotation.forEach(x -> quoDTOList.add(quotationEntityToDTO(x)));
         return quoDTOList;
+    }
+
+    @Override
+    public List<QuotationDTO> quoListByContractor(Long corno, Integer pageNum) {
+        List<QuotationDTO> list = new ArrayList<>();
+
+        Pageable pageable = PageRequest.of(pageNum, 50, Sort.by(Sort.Direction.DESC, "regdate"));
+        Page<Object[]> pageObject = quotationRepository.findQuotationByCorno(corno, pageable);
+
+        pageObject.getContent().forEach(object -> {
+            Object[] array = object;
+            if (array.length == 3) {
+                if (array[0] instanceof Quotation quotation) {
+                    QuotationDTO quotationDTO = quotationEntityToDTO(quotation);
+                    if (list.isEmpty()) {
+                        list.add(quotationDTO);
+                    }
+                    if (list.get(list.size() - 1).getQtno().longValue() != quotationDTO.getQtno().longValue()) {
+                        if (array[1] instanceof QuotationMtrl quotationMtrl) {
+                            quotationDTO.getQuotationMtrlList().add(quotationMtrlEntityToDTO(quotationMtrl));
+                        }
+                        if (array[2] instanceof Long agreementCount) {
+                            quotationDTO.setAgreementCount(agreementCount);
+                        }
+                        list.add(quotationDTO);
+                    } else {
+                        if (array[1] instanceof QuotationMtrl quotationMtrl) {
+                            list.get(list.size() - 1).getQuotationMtrlList().add(quotationMtrlEntityToDTO(quotationMtrl));
+                        }
+                    }
+                }
+            }
+        });
+        return list;
     }
 
     @Override

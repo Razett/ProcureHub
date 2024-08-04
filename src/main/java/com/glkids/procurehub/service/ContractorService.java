@@ -1,9 +1,16 @@
 package com.glkids.procurehub.service;
 
+import com.glkids.procurehub.dto.AgreementDTO;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
+import com.glkids.procurehub.dto.QuotationMtrlDTO;
+import com.glkids.procurehub.entity.Agreement;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Quotation;
+import com.glkids.procurehub.entity.QuotationMtrl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -23,6 +30,8 @@ public interface ContractorService {
 
     //5. 견적 목록
     List<QuotationDTO> quoList();
+
+    List<QuotationDTO> quoListByContractor(Long corno, Integer pageNum);
 
     //6. 견적 등록
     void quoRegister(QuotationDTO quotationDTO);
@@ -68,5 +77,33 @@ public interface ContractorService {
                 .emp(entity.getEmp()).title(entity.getTitle()).content(entity.getContent())
                 .status(entity.getStatus()).regdate(entity.getRegdate()).moddate(entity.getModdate()).build();
 
+    }
+
+    // QuotationMtrl Entity to DTO 변환 메서드
+    default QuotationMtrlDTO quotationMtrlEntityToDTO(QuotationMtrl entity) {
+        return QuotationMtrlDTO.builder()
+                .qtmtno(entity.getQtmtno())
+                .quotation(entity.getQuotation())
+                .quotationId(entity.getQuotation().getQtno())
+                .material(entity.getMaterial())
+                .materialId(entity.getMaterial().getMtrlno())
+                .quantity(entity.getQuantity())
+                .unitprice(entity.getUnitprice())
+                .totalprice(entity.getTotalprice())
+                .leadtime(entity.getLeadtime())
+                .build();
+    }
+
+    default AgreementDTO agreementEntityToDTO(Agreement agreement) {
+        return AgreementDTO.builder().grmno(agreement.getGrmno())
+                .contractor(agreement.getContractor())
+                .quotation(agreement.getQuotation())
+                .emp(agreement.getEmp())
+                .title(agreement.getTitle())
+                .content(agreement.getContent())
+                .startdate(agreement.getStartdate())
+                .enddate(agreement.getEnddate())
+                .regdate(agreement.getRegdate())
+                .modedate(agreement.getModdate()).build();
     }
 }

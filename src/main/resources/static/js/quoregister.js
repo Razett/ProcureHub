@@ -43,41 +43,25 @@ $(document).ready(function () {
     }
 
     // 자재명 자동완성 요청을 보내는 함수
-    function fetchMaterialSuggestions(query) {
+    function fetchMaterialSuggestions(mtrlno) {
         $.ajax({
-            url: '/rest/material/searchMaterialByName',
+            url: '/rest/material/search',
             type: 'GET',
-            data: {name: query},
+            data: {mtrlno: mtrlno},
             success: function (data) {
                 var suggestions = $('#autocomplete-suggestions2');
                 suggestions.empty(); // 이전 검색 결과 비우기
                 selectedSuggestionIndex = -1; // 초기화
 
-                if (data.length > 0) {
-                    var filteredData = data.filter(function (item) {
-                        return item.name.charAt(0).toLowerCase() === query.charAt(0).toLowerCase();
-                    });
-
-                    if (filteredData.length > 0) {
-                        filteredData.sort(function (a, b) {
-                            return a.name.localeCompare(b.name, undefined, {sensitivity: 'case'});
-                        });
-
-                        filteredData.reverse().forEach(function (item) {
-                            var suggestion = $('<div class="autocomplete-suggestion2"></div>')
-                                .html(`자재이름: ${item.name} 자재그룹명: ${item.materialGroup.name}`);
-                            suggestion.on('click', function () {
+                        data.reverse().forEach(function (item) {
+                            var suggestion2 = $('<div class="autocomplete-suggestion2"></div>')
+                                .html(`자재코드 : ${item.mtrlno} 자재이름: ${item.name} 자재그룹명:${item.materialWarehouse.name}`);
+                            suggestion2.on('click', function () {
                                 selectMaterialSuggestion(item);
                             });
-                            suggestions.append(suggestion);
+                            suggestions.append(suggestion2);
                         });
                         suggestions.show();
-                    } else {
-                        suggestions.hide();
-                    }
-                } else {
-                    suggestions.hide();
-                }
             }
         });
     }
@@ -104,14 +88,18 @@ $(document).ready(function () {
 
     // 자재 정보를 화면에 표시하는 함수
     function displayMaterialDetails(material) {
-        $('#materialDetail').val(`자재코드: ${material.mtrlno}, 자재명: ${material.name}, 그룹명: ${material.materialGroup.name}`);
+        console.log(material);
+        $('#materialDetail').val(`자재코드: ${material.mtrlno}, 자재명: ${material.name}, 그룹명: ${material.materialGroup.name}, 수량: ${material.quantity}, 규격:${material.standard}`);
     }
 
     // 회사명 제안 항목 선택 시 동작하는 함수
     function selectSuggestion(item) {
         $('#contractorName').val(item.name);
         $('#corno').val(item.corno);
-        $('#address').val(item.address || '');
+        var address1 = (item.address1);
+        var address2 = (item.address2);
+        var address = address1 + address2;
+        $('#address').val(address || '');
         $('#phone').val(item.phone || '');
         $('#mngrName').val(item.mngrName || '');
         $('#mngrPhone').val(item.mngrPhone || '');
@@ -122,7 +110,7 @@ $(document).ready(function () {
     // 자재명 제안 항목 선택 시 동작하는 함수
     function selectMaterialSuggestion(item) {
         $('#materialCode').val(item.mtrlno);
-        $('#materialDetail').val(`자재코드: ${item.mtrlno}, 자재명: ${item.name}, 그룹명: ${item.materialGroup.name}`);
+        $('#materialDetail').val(`자재코드: ${item.mtrlno}, 자재명: ${item.name}, 그룹명: `);
         $('#autocomplete-suggestions2').empty().hide();
     }
 

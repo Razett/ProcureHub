@@ -45,10 +45,11 @@ public class ContractorController {
      * @return /contractor/get 을 요청하여 업체 상세페이지를 표시합니다.
      */
     @GetMapping("/read")
-    public String read(Long corno, Model model) {
+    public String read(Long corno, Integer quotationPage, Model model) {
         model.addAttribute("title", "업체 상세정보");
 
         model.addAttribute("contractorRead", contractorService.read(corno));
+        model.addAttribute("quotationList", contractorService.quoListByContractor(corno, 0));
         return "/contractor/read";
     }
 

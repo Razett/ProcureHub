@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,14 @@ public class MaterialRestController {
         return materialService.readByFetch(mtrlno);
     }
 
+    @GetMapping("/search")
+    public List<MaterialDTO> search(@RequestParam("mtrlno") Long mtrlno) {
+        return Collections.singletonList(materialService.readByFetch(mtrlno));
+    }
+
     /**
      * 자재 창고 코드의 중복 검사를 수행
+     *
      * @param wrhscode 중복 검사를 수행할 창고코드
      * @return 중복 시 false, 사용가능 시 true.
      */
@@ -69,3 +76,4 @@ public class MaterialRestController {
         return ResponseEntity.ok(materialService.deleteMaterialWarehouse(materialWarehouseDTO.getWrhscode()));
     }
 }
+
