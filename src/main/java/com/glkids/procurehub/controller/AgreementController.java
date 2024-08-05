@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,8 +31,14 @@ public class AgreementController {
     public String register(Model model, @RequestParam("qtno") Long qtno ) {
 
         model.addAttribute("qtno", quotationService.read(qtno));
-        model.addAttribute("qtnomtrl", quotationService.quotationMtrlList());
+        model.addAttribute("qtnomtrl", quotationService.quotationMtrlList(qtno));
         model.addAttribute("material", materialService.list());
         return "agreement/register";
+    }
+
+    @PostMapping("proregister")
+    public String proregister(AgreementDTO agreementDTO){
+        agreementService.register(agreementDTO);
+        return "redirect:/contractor/list";
     }
 }

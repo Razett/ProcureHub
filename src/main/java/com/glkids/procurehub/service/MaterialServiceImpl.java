@@ -1,10 +1,8 @@
 package com.glkids.procurehub.service;
 
-import com.glkids.procurehub.dto.MaterialDTO;
-import com.glkids.procurehub.dto.MaterialGroupDTO;
-import com.glkids.procurehub.dto.MaterialGroupListDTO;
-import com.glkids.procurehub.dto.MaterialWarehouseDTO;
+import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.*;
+import com.glkids.procurehub.repository.MaterialFileRepository;
 import com.glkids.procurehub.repository.MaterialGroupRepository;
 import com.glkids.procurehub.repository.MaterialRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
@@ -29,6 +27,7 @@ public class MaterialServiceImpl implements MaterialService {
     private final MaterialRepository materialRepository;
     private final MaterialGroupRepository materialGroupRepository;
     private final MaterialWarehouseRepository materialWarehouseRepository;
+    private final MaterialFileRepository materialFileRepository;
 
     @Override
     public List<MaterialDTO> list() {
@@ -224,5 +223,24 @@ public class MaterialServiceImpl implements MaterialService {
         }
         Collections.reverse(direction);
         return direction;
+    }
+
+    @Override
+    public MaterialFile saveMaterialFile(MaterialFileDTO materialFileDTO) {
+        MaterialFile materialFile = materialFileDTOToEntity(materialFileDTO);
+        return materialFileRepository.save(materialFile).getMtrlfno() != null ? materialFile : null;
+    }
+
+    @Override
+    public List<MaterialFileDTO> materialFileList(Long mtrlno) {
+        List<MaterialFileDTO> materialFileDTOList = new ArrayList<>();
+
+        QMaterialFile qMaterialFile = QMaterialFile.materialFile;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression mtrlExp = qMaterialFile.material.mtrlno.eq(mtrlno);
+
+        materialFileRepository.findAll(builder.and(mtrlExp)).forEach(x -> materialFileDTOList.add(materialFileEntityToDTO(x)));
+        return materialFileDTOList;
     }
 }

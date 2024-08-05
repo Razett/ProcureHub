@@ -1,13 +1,12 @@
 package com.glkids.procurehub.controller.rest;
 
-import com.glkids.procurehub.dto.MaterialDTO;
-import com.glkids.procurehub.dto.MaterialGroupDTO;
-import com.glkids.procurehub.dto.MaterialWarehouseDTO;
+import com.glkids.procurehub.dto.*;
+import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.entity.MaterialFile;
 import com.glkids.procurehub.service.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -74,6 +73,13 @@ public class MaterialRestController {
             return ResponseEntity.ok(false);
         }
         return ResponseEntity.ok(materialService.deleteMaterialWarehouse(materialWarehouseDTO.getWrhscode()));
+    }
+
+    @PostMapping(value = "/materialFile/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MaterialFile> saveQuotationFile(@RequestBody MaterialFileDTO materialFileDTO) {
+        materialFileDTO.setMaterial(Material.builder().mtrlno(materialFileDTO.getMtrlno()).build());
+        MaterialFile materialFile = materialService.saveMaterialFile(materialFileDTO);
+        return ResponseEntity.ok(materialFile);
     }
 }
 

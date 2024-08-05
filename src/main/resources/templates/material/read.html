@@ -58,8 +58,8 @@
                 }
             }
         </style>
-        <script defer="defer" src="js/main.js"></script>
         <link href="css/style.css" rel="stylesheet">
+    </head>
     </head>
     <body class="app">
     <div id="loader">
@@ -154,19 +154,122 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <th:block th:if="${materialFile != null}">
+                                    <th:block th:if="${materialFileList.size() != 0}">
                                         <div>
+                                            <span th:text="${materialFileList}"></span>
                                             도면 파일
                                         </div>
                                     </th:block>
-                                    <th:block th:unless="${materialFile != null}">
+                                    <th:block th:unless="${materialFileList.size() != 0}">
                                         <span class="text-black fa-1x">추가된 도면이 없습니다...</span>
-                                        <a th:href="@{/material/update(mtrlno=${material.mtrlno})}" class="fa-1x">도면
-                                            추가하기</a>
+                                        <a id="inputMaterialFile" href="#" class="fa-1x">도면 추가하기</a>
                                     </th:block>
                                 </div>
                             </div>
                         </div>
+                        <div class="modal fade" id="materialModal" tabindex="-1"
+                             aria-labelledby="warehouseAddModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="materialFile">도면 등록</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputFile">파일 선택</label>
+                                            <input type="file" name="file" class="form-control" id="inputFile">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                id="cancle">취소
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-color disabled" id="uploadButton">
+                                            등록하기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="mtrlno" value="${material.mtrlno}">
+                        <script>
+                            $(document).ready(function () {
+                                const server_url = 'http://192.168.1.25:8081';
+
+                                var fileData = new FormData();
+                                var file;
+
+                                $('#inputMaterialFile').on("click", function (e) {
+                                    e.preventDefault();
+                                    console.log("모달나온다.")
+                                    $('#materialModal').modal("show");
+                                    $('#inputFile').val(null);
+                                });
+                                $('#inputFile').on("input", function (e) {
+                                    file = $(this)[0].files;
+                                    console.log(file)
+                                    if (file) {
+                                        $('#uploadButton').removeClass("disabled");
+                                    }
+                                })
+                                $('#uploadButton').on("click", function (e) {
+                                    e.preventDefault();
+                                    for (var i = 0; i < file.length; i++) {
+                                        fileData.append('file', file[i]);
+                                    }
+                                    $.ajax({
+                                        url: server_url + '/uploadFile',
+                                        type: 'POST',
+                                        data: fileData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: function (response) {
+                                            var metadata = {
+                                                name: response.name,
+                                                url: response.url,
+                                                uuid: response.uuid,
+                                                mtrlno: [[${material.mtrlno}]]
+                                            };
+                                            console.log(metadata);
+                                            registerMaterialFile(metadata)
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.error('파일 업로드 실패:', textStatus, errorThrown);
+                                            alert('파일 업로드에 실패했습니다.');
+                                            $('#materialModal').modal("hide");
+                                        }
+                                    });
+                                });
+
+                                function registerMaterialFile(metadata) {
+                                    $.ajax({
+                                        url: '/rest/material/materialFile/save',
+                                        type: 'POST',
+                                        data: JSON.stringify(metadata),
+                                        processData: false,
+                                        contentType: 'application/json',
+                                        success: function (response) {
+                                            if(response) {
+
+                                                console.log(response);
+                                                toastService.printToast("파일 업로드 완료 !><")
+                                                $('#materialModal').modal("hide");
+                                            }else {
+                                                console.log("에러에러~")
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.error('파일 업로드 실패:', textStatus, errorThrown);
+                                            alert('디비 저장실패 ㅡㅡ');
+                                            $('#materialModal').modal("hide");
+                                        }
+
+                                    });
+                                }
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>
@@ -178,6 +281,8 @@
                                                   title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
     </div>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </th:block>
 </html>

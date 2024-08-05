@@ -3,6 +3,7 @@ package com.glkids.procurehub.controller;
 import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialGroupDTO;
 import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.entity.MaterialFile;
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
 import com.glkids.procurehub.repository.MaterialGroupRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -48,7 +50,7 @@ public class MaterialController {
         MaterialDTO materialDTO = materialService.read(mtrlno);
         model.addAttribute("material", materialDTO);
         model.addAttribute("materialGroupDirection", materialService.getMaterialGroupDirection(materialDTO.getMaterialGroup()));
-        model.addAttribute("materialFile", null);
+        model.addAttribute("materialFileList", materialService.materialFileList(mtrlno));
         return "material/read";
     }
 

@@ -1,10 +1,8 @@
 package com.glkids.procurehub.service;
 
-import com.glkids.procurehub.dto.MaterialDTO;
-import com.glkids.procurehub.dto.MaterialGroupListDTO;
-import com.glkids.procurehub.dto.MaterialWarehouseDTO;
-import com.glkids.procurehub.dto.MaterialGroupDTO;
+import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.entity.MaterialFile;
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
 
@@ -42,6 +40,10 @@ public interface MaterialService {
     List<MaterialGroupListDTO> getMaterialGroupLists(MaterialGroup materialGroup);
 
     List<MaterialGroupDTO> getMaterialGroupDirection(MaterialGroup materialGroup);
+
+    MaterialFile saveMaterialFile(MaterialFileDTO materialFileDTO);
+
+    List<MaterialFileDTO> materialFileList(Long mtrlno);
 
     default MaterialDTO materialEntityToDTO(Optional<Material> opt) {
         if (opt.isPresent()) {
@@ -88,4 +90,22 @@ public interface MaterialService {
                 .depth(materialGroup.getDepth()).build();
     }
 
-}
+    default MaterialFileDTO materialFileEntityToDTO(MaterialFile entity) {
+        return MaterialFileDTO.builder()
+                .mtrlfno(entity.getMtrlfno())
+                .material(entity.getMaterial())
+                .uuid(entity.getUuid())
+                .name(entity.getName())
+                .url(entity.getUrl())
+                .build();
+
+    }
+        default MaterialFile materialFileDTOToEntity (MaterialFileDTO materialFileDTO){
+            return MaterialFile.builder()
+                    .material(materialFileDTO.getMaterial())
+                    .uuid(materialFileDTO.getUuid())
+                    .name(materialFileDTO.getName())
+                    .url(materialFileDTO.getUrl())
+                    .build();
+        }
+    }
