@@ -36,8 +36,8 @@ public class AgreementController {
         return "agreement/register";
     }
 
-    @PostMapping("proregister")
-    public String proregister(AgreementDTO agreementDTO){
+    @PostMapping("/updatepro")
+    public String proregister(AgreementDTO agreementDTO ){
         agreementService.register(agreementDTO);
         return "redirect:/contractor/list";
     }
