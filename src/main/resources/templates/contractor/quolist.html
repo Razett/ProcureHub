@@ -77,7 +77,7 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <table class="table table-bordered">
+                        <table class="table table-hover">
                             <h4 class="c-grey-900 mT-10 mB-30">견적 목록</h4>
                             <thead>
                             <tr>
@@ -104,7 +104,11 @@
                                 <td>조</td>
                                 <td>인</td>
                                 <td th:text="${quotationlist.status}"></td>
-                                <td>지</td>
+                                <td class="px-2 py-2">
+                                    <a th:href="@{'/agreement/register?qtno=' + ${quotationlist.qtno}}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="계약등록">
+                                        <i class="c-grey-900 ti-pencil-alt fa-1-25x"></i>
+                                    </a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
