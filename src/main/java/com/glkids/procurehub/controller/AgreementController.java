@@ -34,7 +34,7 @@ public class AgreementController {
     public String register(Model model, @RequestParam("qtno") Long qtno ) {
 
         model.addAttribute("qtno", quotationService.read(qtno));
-        model.addAttribute("qtnomtrl", quotationService.quotationMtrlList(qtno));
+        model.addAttribute("qtnomtrl", quotationService.readQuotationMtrlList(qtno));
 
         return "agreement/register";
     }
