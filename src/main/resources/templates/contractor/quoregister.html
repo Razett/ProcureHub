@@ -80,290 +80,172 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <div class="row gap-20 pos-r">
-                            <div class="col-md-6">
-                                <div class="bgc-white p-20 bd">
-                                    <form id="quotationForm" enctype="multipart/form-data">
-                                        <header><h1>견적등록</h1></header>
-                                        <style>
-                                            .bgc-white.p-20.bd {
-                                                margin-top: 70px; /* 상단 여백 추가 */
-                                            }
+                        <style>
+                            .autocomplete-suggestions {
+                                border: 1px solid #ccc;
+                                max-height: 200px;
+                                overflow-y: auto;
+                                position: absolute;
+                                background-color: white;
+                                z-index: 1000;
+                                width: 40%;
+                                display: none; /* 기본적으로 숨김 */
+                            }
 
-                                            .autocomplete-suggestions {
-                                                border: 1px solid #ccc;
-                                                max-height: 200px;
-                                                overflow-y: auto;
-                                                position: absolute;
-                                                background-color: white;
-                                                z-index: 1000;
-                                                width: 100%;
-                                                display: none; /* 기본적으로 숨김 */
-                                            }
+                            .autocomplete-suggestion {
+                                padding: 10px;
+                                cursor: pointer;
+                            }
 
-                                            .autocomplete-suggestion {
-                                                padding: 10px;
-                                                cursor: pointer;
-                                            }
+                            .autocomplete-suggestion:hover,
+                            .autocomplete-suggestion.selected {
+                                background-color: #ddd;
+                            }
+                            .autocomplete-suggestions2 {
+                                border: 1px solid #ccc;
+                                max-height: 200px;
+                                overflow-y: auto;
+                                position: absolute;
+                                background-color: white;
+                                z-index: 1000;
+                                width: 100%;
+                                display: none; /* 기본적으로 숨김 */
+                            }
 
-                                            .autocomplete-suggestion:hover,
-                                            .autocomplete-suggestion.selected {
-                                                background-color: #ddd;
-                                            }
-                                            .autocomplete-suggestions2 {
-                                                border: 1px solid #ccc;
-                                                max-height: 200px;
-                                                overflow-y: auto;
-                                                position: absolute;
-                                                background-color: white;
-                                                z-index: 1000;
-                                                width: 100%;
-                                                display: none; /* 기본적으로 숨김 */
-                                            }
+                            .autocomplete-suggestion2 {
+                                padding: 10px;
+                                cursor: pointer;
+                            }
 
-                                            .autocomplete-suggestion2 {
-                                                padding: 10px;
-                                                cursor: pointer;
-                                            }
-
-                                            .autocomplete-suggestion2:hover,
-                                            .autocomplete-suggestion2.selected {
-                                                background-color: #ddd;
-                                            }
-
-                                            .form-container {
-                                                display: flex;
-                                                flex-wrap: wrap;
-                                                gap: 20px;
-                                            }
-
-                                            .form-group {
-                                                display: flex;
-                                                flex-direction: column;
-                                                margin-bottom: 10px;
-                                                width: 300px; /* 적절한 너비 설정 */
-                                            }
-
-                                            .form-group label {
-                                                margin-bottom: 5px;
-                                                font-weight: bold;
-                                            }
-
-                                            .form-group input {
-                                                padding: 5px;
-                                                border: 1px solid #ccc;
-                                                border-radius: 4px;
-                                            }
-
-                                            .btn {
-                                                display: inline-block;
-                                                padding: 8px 15px;
-                                                font-size: 14px;
-                                                font-weight: bold;
-                                                color: #fff;
-                                                text-align: center;
-                                                border: none;
-                                                border-radius: 4px;
-                                                cursor: pointer;
-                                            }
-
-                                            .btn-primary {
-                                                background-color: #007bff;
-                                            }
-
-                                            .btn-primary:hover {
-                                                background-color: #0056b3;
-                                            }
-
-                                            .btn-danger {
-                                                background-color: #dc3545;
-                                            }
-
-                                            .btn-danger:hover {
-                                                background-color: #c82333;
-                                            }
-
-                                            .btn-dark {
-                                                background-color: #343a40;
-                                            }
-
-                                            .btn-dark:hover {
-                                                background-color: #23272b;
-                                            }
-
-                                            .app {
-                                                font-family: Arial, sans-serif;
-                                            }
-
-                                            .main-content {
-                                                padding: 20px;
-                                            }
-
-                                            .bgc-grey-100 {
-                                                background-color: #f8f9fa;
-                                            }
-
-                                            .bgc-white {
-                                                background-color: #fff;
-                                            }
-
-                                            .p-20 {
-                                                padding: 20px;
-                                            }
-
-                                            .bd {
-                                                border: 1px solid #ddd;
-                                            }
-
-                                            .spinner {
-                                                border: 4px solid rgba(0, 0, 0, 0.1);
-                                                border-radius: 50%;
-                                                border-top: 4px solid #007bff;
-                                                width: 40px;
-                                                height: 40px;
-                                                animation: spin 1s linear infinite;
-                                            }
-
-                                            @keyframes spin {
-                                                0% {
-                                                    transform: rotate(0deg);
-                                                }
-                                                100% {
-                                                    transform: rotate(360deg);
-                                                }
-                                            }
-
-                                            .fadeOut {
-                                                opacity: 0;
-                                                transition: opacity 0.5s ease-out;
-                                            }
-
-                                            .ta-c {
-                                                text-align: center;
-                                            }
-
-                                            .fsz-sm {
-                                                font-size: 0.875rem;
-                                            }
-
-                                            .c-grey-600 {
-                                                color: #6c757d;
-                                            }
-
-                                            @keyframes spin {
-                                                0% {
-                                                    transform: rotate(0deg);
-                                                }
-                                                100% {
-                                                    transform: rotate(360deg);
-                                                }
-                                            }
-                                        </style>
-                                        <div style="font-size: 15px; position: relative;">
-                                            &nbsp 회사명<br><br>
-                                            <input class="form-control" type="text" name="contractorName"
-                                                   id="contractorName" placeholder="회사명을 입력하시오" autocomplete="off">
-                                            <div id="autocomplete-suggestions"
-                                                 class="autocomplete-suggestions"></div>
+                            .autocomplete-suggestion2:hover,
+                            .autocomplete-suggestion2.selected {
+                                background-color: #ddd;
+                            }
+                        </style>
+                        <form id="quotationForm" enctype="multipart/form-data">
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd h-100">
+                                        <h4 class="c-grey-900 mT-10 mB-5">견적 정보 입력</h4>
+                                        <div class="mB-30 d-flex">
+                                            <span class="c-red-700 fa-1x">*</span>
+                                            <span class="fa-1x">표시는 필수 입력사항입니다.</span>
                                         </div>
-                                        <br>
-                                        <fieldset>
-                                            <div class="form-container">
-                                                <div class="form-group">
-                                                    <label>사업자 등록번호</label>
-                                                    <input type="text" name="corno" id="corno" placeholder="자동작성"
-                                                           readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>주소</label>
-                                                    <input type="text" name="address" id="address"
-                                                           placeholder="자동작성" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>전화번호</label>
-                                                    <input type="text" name="phone" id="phone" placeholder="자동작성"
-                                                           readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>담당자 성명</label>
-                                                    <input type="text" name="mngrName" id="mngrName"
-                                                           placeholder="자동작성" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>연락처</label>
-                                                    <input type="text" name="mngrPhone" id="mngrPhone"
-                                                           placeholder="자동작성" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>이메일</label>
-                                                    <input type="text" name="mngrAddress" id="mngrAddress"
-                                                           placeholder="자동작성" readonly>
-                                                </div>
-                                            </div>
-                                            <br>
-                                        </fieldset>
-                                        <div style="font-size: 15px">
-                                            견적제목 <br><br>
-                                            <input type="text" class="form-control" name="title"
-                                                   placeholder="title">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="quotationTitle">견적 제목<span
+                                                    class="c-red-700 fa-1x">*</span></label>
+                                            <input type="text" name="title" class="form-control"
+                                                   id="quotationTitle" placeholder="견적 제목을 입력하세요"
+                                                   control-id="ControlID-1" max="30" required>
                                         </div>
-                                        <br>
-                                        <div style="font-size: 15px">
-                                            견적내용 <br><br>
-                                            <input type="text" class="form-control" name="content"
-                                                   placeholder="content">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="quotationContent">세부내용</label>
+                                            <textarea type="text" name="content" class="form-control h-25" rows="6"
+                                                      id="quotationContent" placeholder="세부내용을 입력하세요."
+                                                      control-id="ControlID-1" maxlength="1024"></textarea>
                                         </div>
-                                        <br>
-                                        <div style="font-size: 15px; position: relative;">
-                                            &nbsp 자재 코드<br><br>
-                                            <input class="form-control" type="text" name="materialCode"
-                                                   id="materialCode" placeholder="코드입력" autocomplete="off">
-                                            <div id="autocomplete-suggestions2"
-                                                 class="autocomplete-suggestions2"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd">
+                                        <h4 class="c-grey-900 mT-10 mB-5">업체 정보 입력</h4>
+                                        <div class="mB-30 d-flex">
+                                            <span class="c-red-700 fa-1x"></span>
+                                            <span class="fa-1x">업체명을 입력하여 검색하세요.</span>
                                         </div>
-                                        <br>
-                                        <div>
-                                            <input type="text" class="form-control" name="materialDetail"
-                                                   id="materialDetail" placeholder="자재명, 재고수량, 규격, 창고명" readonly>
-                                        </div>
-                                        <br>
-                                        <div class="form-container">
-                                            <div class="form-group">
-                                                <label>수량</label>
-                                                <input type="text" name="quantity" placeholder="숫자만 입력하시오 ex) 1">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>단가</label>
-                                                <input type="text" name="unitPrice" placeholder="숫자만 입력하시오">
-                                            </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="contractorName">업체명</label>
+                                            <input type="text" name="contractorName" class="form-control"
+                                                   id="contractorName" placeholder="업체명을 입력하세요."
+                                                   control-id="ControlID-1" max="30" autocomplete="off" required>
+                                            <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
                                         </div>
                                         <div class="form-container">
-                                            <div class="form-group">
-                                                <label>총금액</label>
-                                                <input type="text" name="totalPrice" placeholder="숫자만 입력하시오">
+                                            <div class="mb-3">
+                                                <label class="form-label">사업자 등록번호</label>
+                                                <input type="text" name="corno" class="form-control bgc-grey-100" id="corno"
+                                                       placeholder="" readonly>
                                             </div>
-                                            <div class="form-group">
-                                                <label>L/T</label>
-                                                <input type="text" name="leadTime" placeholder="1~11">
+                                            <div class="mb-3">
+                                                <label>내선번호</label>
+                                                <input type="text" name="phone" class="form-control" id="phone"
+                                                       placeholder="" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">주소</label>
+                                                <input type="text" name="address" class="form-control" id="address"
+                                                       placeholder="" readonly>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div>
-                                            견적서 파일 <input type="file" name="file" multiple>
-                                        </div>
-                                        <br>
-                                        <!-- Hidden input for empNo -->
-                                        <input type="hidden" name="empno" id="empno" value="201758030">
-
-                                        <button type="button" class="btn cur-p btn-danger btn-color" id="cancel">
-                                            취소
-                                        </button>
-                                        <input type="submit" class="btn cur-p btn-dark btn-color" value="등록하기">
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-12">
+                                    <div class="bgc-white p-20 bd">
+                                        <div class="d-flex justify-content-between">
+                                            <h4 class="c-grey-900 mT-10 mB-5">자재 정보 입력</h4>
+                                            <div class="mT-10 mB-5">
+                                                <a href="#" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 추가">
+                                                    <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mB-30 d-flex">
+                                            <span class="c-red-700 fa-1x"></span>
+                                            <span class="fa-1x">자재코드를 입력하여 검색하세요.</span>
+                                        </div>
+                                        <div class="vh-25 overflow-y-auto">
+                                            <table class="table table-bordered table-hover" id="quotationMtrlTable">
+                                                <thead class="position-sticky top-0 border-1">
+                                                <tr>
+                                                    <th class="col text-center">자재 코드</th>
+                                                    <th class="col text-center">자재명</th>
+                                                    <th class="col text-center">규격</th>
+                                                    <th class="col text-center">현 재고 수량</th>
+                                                    <th class="col text-center">월 납품 수량</th>
+                                                    <th class="col text-center">단가</th>
+                                                    <th class="col text-center">총 금액</th>
+                                                    <th class="col text-center">L/T</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="quotationMtrlTbody">
+                                                    <td><input class="form-control" type="text" name="materialCode"
+                                                               id="materialCode" placeholder="자재 코드를 입력하세요." autocomplete="off">
+                                                        <div id="autocomplete-suggestions2" class="autocomplete-suggestions2"></div>
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input type="number" name="quantity" class="form-control"
+                                                               placeholder="월 단위 납품 수량을 입력하세요."></td>
+                                                    <td><input type="number" name="unitPrice" class="form-control"
+                                                               placeholder="단가를 입력하세요."></td>
+                                                    <td><input type="number" name="totalPrice" class="form-control"
+                                                               placeholder="총 금액을 입력하세요."></td>
+                                                    <td><input type="number" name="leadTime" class="form-control"
+                                                               placeholder="일 단위 L/T을 입력하세요."></td>
+                                                </tbody>
+                                            </table>
+                                            <input type="text" class="form-control" name="materialDetail"
+                                                   id="materialDetail" placeholder="자재 선택 시, 정보가 표시됩니다." readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">견적서 파일 </label>
+                                            <input type="file" name="file" class="form-control" multiple>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="hidden" name="empno" id="empno" value="201758030">
+                                            <button type="button" class="btn cur-p btn-danger btn-color" id="cancel">
+                                                취소
+                                            </button>
+                                            <input type="submit" class="btn cur-p btn-dark btn-color" value="등록하기">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <script src="/js/quoregister.js"></script>
+                        </form>
                     </th:block>
                 </div>
             </div>
