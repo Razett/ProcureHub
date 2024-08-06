@@ -19,6 +19,7 @@ public class QuotationMtrlDTO {
     private Long materialId;   // Material 엔티티의 ID
     private Material material;
     private Long quantity;
+    private Long emp;
     private Integer unitprice;
     private Integer totalprice;
     private Integer leadtime;
