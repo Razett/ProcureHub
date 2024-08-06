@@ -15,7 +15,7 @@ public interface QuotationService {
 
     QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO);
 
-    List<QuotationMtrlDTO> quotationMtrlList(Long qtno); // 계약 추가화면
+    List<QuotationMtrlDTO> readQuotationMtrlList(Long qtno); // 계약 추가화면
 
     QuotationDTO read(Long qutno);
 

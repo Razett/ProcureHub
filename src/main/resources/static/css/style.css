@@ -8100,6 +8100,82 @@ textarea.form-control-lg {
   max-height: 100% !important;
 }
 
+.vh-5 {
+    height: 5vh !important;
+}
+
+.vh-10 {
+    height: 10vh !important;
+}
+
+.vh-15 {
+    height: 15vh !important;
+}
+
+.vh-20 {
+    height: 20vh !important;
+}
+
+.vh-25 {
+    height: 25vh !important;
+}
+
+.vh-30 {
+    height: 30vh !important;
+}
+
+.vh-35 {
+    height: 35vh !important;
+}
+
+.vh-40 {
+    height: 40vh !important;
+}
+
+.vh-45 {
+    height: 45vh !important;
+}
+
+.vh-50 {
+    height: 50vh !important;
+}
+
+.vh-55 {
+    height: 55vh !important;
+}
+
+.vh-60 {
+    height: 60vh !important;
+}
+
+.vh-65 {
+    height: 65vh !important;
+}
+
+.vh-70 {
+    height: 70vh !important;
+}
+
+.vh-75 {
+    height: 75vh !important;
+}
+
+.vh-80 {
+    height: 80vh !important;
+}
+
+.vh-85 {
+    height: 85vh !important;
+}
+
+.vh-90 {
+    height: 90vh !important;
+}
+
+.vh-95 {
+    height: 95vh !important;
+}
+
 .vh-100 {
   height: 100vh !important;
 }
@@ -56842,6 +56918,26 @@ footer {
 
 .h-6r, .sz-6r {
   height: 6rem;
+}
+
+.h-13\/2r, .sz-13\/2r {
+    height: 6.5rem;
+}
+
+.h-7r, .sz-7r {
+    height: 7rem;
+}
+
+.h-15\/2r, .sz-15\/2r {
+    height: 7.5rem;
+}
+
+.h-8r, .sz-8r {
+    height: 8rem;
+}
+
+.h-17\/2r, .sz-17\/2r {
+    height: 8.5rem;
 }
 
 @media screen and (min-width: 1440px) {

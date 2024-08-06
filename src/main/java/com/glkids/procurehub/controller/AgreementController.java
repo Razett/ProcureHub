@@ -1,9 +1,7 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.*;
-import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.service.*;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +29,7 @@ public class AgreementController {
     public String register(Model model, @RequestParam("qtno") Long qtno ) {
 
         model.addAttribute("qtno", quotationService.read(qtno));
-        model.addAttribute("qtnomtrl", quotationService.quotationMtrlList(qtno));
+        model.addAttribute("qtnomtrl", quotationService.readQuotationMtrlList(qtno));
         model.addAttribute("material", materialService.list());
         return "agreement/register";
     }
