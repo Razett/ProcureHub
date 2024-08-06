@@ -209,38 +209,44 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="vh-25 overflow-y-auto">
-                                        <table class="table table-bordered table-hover" id="quotationMtrlTable">
-                                            <thead class="position-sticky top-0 border-1">
-                                            <tr>
-                                                <th class="col text-center d-none d-sm-table-cell"></th>
-                                                <th class="col text-center d-none d-sm-table-cell">자재 코드</th>
-                                                <th class="col text-center">자재명</th>
-                                                <th class="col text-center d-none d-sm-table-cell">규격</th>
-                                                <th class="col text-center d-none d-sm-table-cell">현 재고 수량</th>
-                                                <th class="col text-center text-break">월 납품 수량</th>
-                                                <th class="col text-center">단가</th>
-                                                <th class="col text-center">총 금액</th>
-                                                <th class="col text-center">L/T</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="quotationMtrlTbody">
-                                            <th:block th:each="quotationMtrl, i : ${quotationMtrlList}">
+                                    <th:block th:if="${quotationMtrlList.size() == 0}">
+                                        <span class="text-black fa-1x">추가된 자재가 없습니다...</span>
+                                        <a id="inputMaterialFile" th:href="@{/contractor/quoupdate(qtno=${quotation.qtno})}" class="fa-1x">견적 수정하기</a>
+                                    </th:block>
+                                    <th:block th:unless="${quotationMtrlList.size() == 0}">
+                                        <div class="vh-25 overflow-y-auto">
+                                            <table class="table table-bordered table-hover" id="quotationMtrlTable">
+                                                <thead class="position-sticky top-0 border-1">
                                                 <tr>
-                                                    <td class="text-center d-none d-sm-table-cell" th:text="${i.index + 1}"></td>
-                                                    <td class="text-center d-none d-sm-table-cell" th:id="${quotationMtrl.material.mtrlno}" th:text="'MA' + ${#numbers.formatInteger(quotationMtrl.material.mtrlno, 6)}"></td>
-                                                    <td class="text-center" th:text="${quotationMtrl.material.name}"></td>
-                                                    <td class="text-center d-none d-sm-table-cell" th:text="${quotationMtrl.material.standard}"></td>
-                                                    <td class="text-end d-none d-sm-table-cell" th:text="${quotationMtrl.material.quantity}"></td>
-                                                    <td class="text-end" th:text="${quotationMtrl.quantity}"></td>
-                                                    <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.unitprice, 0 , 'COMMA')}"></td>
-                                                    <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
-                                                    <td class="text-end" th:text="${quotationMtrl.leadtime} + '일'"></td>
+                                                    <th class="col text-center d-none d-sm-table-cell"></th>
+                                                    <th class="col text-center d-none d-sm-table-cell">자재 코드</th>
+                                                    <th class="col text-center">자재명</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">규격</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">현 재고 수량</th>
+                                                    <th class="col text-center text-break">월 납품 수량</th>
+                                                    <th class="col text-center">단가</th>
+                                                    <th class="col text-center">총 금액</th>
+                                                    <th class="col text-center">L/T</th>
                                                 </tr>
-                                            </th:block>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </thead>
+                                                <tbody class="quotationMtrlTbody">
+                                                <th:block th:each="quotationMtrl, i : ${quotationMtrlList}">
+                                                    <tr>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${i.index + 1}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:id="${quotationMtrl.material.mtrlno}" th:text="'MA' + ${#numbers.formatInteger(quotationMtrl.material.mtrlno, 6)}"></td>
+                                                        <td class="text-center" th:text="${quotationMtrl.material.name}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${quotationMtrl.material.standard}"></td>
+                                                        <td class="text-end d-none d-sm-table-cell" th:text="${quotationMtrl.material.quantity}"></td>
+                                                        <td class="text-end" th:text="${quotationMtrl.quantity}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.unitprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${quotationMtrl.leadtime} + '일'"></td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>
