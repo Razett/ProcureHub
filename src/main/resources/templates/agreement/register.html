@@ -80,7 +80,8 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <form th:action="updatepro" method="post">
+                        <form th:action="@{/agreement/register}" method="post">
+                            <input type="hidden" name="qtno" th:value="${qtno.qtno}">
                             <div class="row gap-20 pos-r">
                                 <div class="col-md-6">
                                     <div class="bgc-white p-20 bd h-100">
@@ -88,16 +89,16 @@
                                         <h4 class="c-grey-900 mT-10 mB-5">회사정보</h4>
 
                                         <div class="mb-3">
-                                            <label class="form-label">회사명<span
+                                            <label class="form-label">사업자 등록번호<span
                                                     class="c-red-700 fa-1x"></span></label>
-                                            <input th:value="${qtno.contractor.name}" type="text" name="corno"
+                                            <input th:value="${qtno.contractor.corno}" type="text" name="corno"
                                                    class="form-control"
                                                    readonly>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="inputName">사업자 등록번호<span
-                                                    class="c-red-700 fa-1x"></span></label>
-                                            <input th:value="${qtno.contractor.corno}" type="text" name="name"
+                                            <label class="form-label" for="inputName"><span
+                                                    class="c-red-700 fa-1x"></span>회사명</label>
+                                            <input th:value="${qtno.contractor.name}" type="text" name="name"
                                                    class="form-control" id="inputName"
                                                    maxlength="150" readonly>
                                         </div>
@@ -117,24 +118,36 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">계약명</label>
-                                            <input type="text" name="title" class="form-control"
-                                                   placeholder="제목을 입력하시오." maxlength="30">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">계약일</label>
-                                            <input type="text" name="startdate"
-                                                   class="form-control" placeholder="ex)20240706" maxlength="20">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">만료일</label>
-                                            <input type="text" name="enddata"
-                                                   class="form-control" placeholder="ex)20240707" maxlength="20">
+                                            <input type="text" name="title"
+                                                   class="form-control" placeholder="계약명을 입력하시오" maxlength="20">
                                         </div>
                                         <div class="mb-3">
                                             <label for="statusSelect" class="form-label">견적 상태</label>
-                                            <select name="agr" id="statusSelect" class="form-control">
-                                                <option value="done">항목을 선택하시오</option>
+                                            <select name="status" id="statusSelect" class="form-control">
+                                                <option value="0" selected>항목을 선택하세요</option>
                                             </select>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label fw-500">계약일</label>
+                                            <div class="timepicker-input input-icon mb-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-text bgc-white bd bdwR-0">
+                                                        <i class="ti-calendar"></i>
+                                                    </div>
+                                                    <input type="text" name="startdateText" class="form-control bdc-grey-200 start-date" placeholder="Datepicker">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label fw-500">종료일</label>
+                                            <div class="timepicker-input input-icon mb-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-text bgc-white bd bdwR-0">
+                                                        <i class="ti-calendar"></i>
+                                                    </div>
+                                                    <input type="text" name="enddateText" class="form-control bdc-grey-200 start-date" placeholder="Datepicker">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

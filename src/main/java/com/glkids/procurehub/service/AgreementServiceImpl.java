@@ -2,7 +2,9 @@ package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.AgreementDTO;
 import com.glkids.procurehub.entity.Agreement;
+import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.repository.AgreementRepository;
+import com.glkids.procurehub.repository.ContractorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class AgreementServiceImpl implements AgreementService {
 
     private final AgreementRepository agreementRepository;
+    private final ContractorRepository contractorRepository;
 
 
     @Override

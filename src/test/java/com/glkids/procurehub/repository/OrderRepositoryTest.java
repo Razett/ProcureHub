@@ -17,10 +17,9 @@ public class OrderRepositoryTest {
     public void initSave() {
         Quotation quotation = Quotation.builder().qtno(32L).build();
         QuotationMtrl quotationMtrl = QuotationMtrl.builder().quotation(quotation).qtmtno(7L).build();
-        orderRepository.save(Order.builder().emp(Emp.builder().empno(201758030L).build())
+        orderRepository.save(Order.builder().emp(Emp.builder().build())
                         .material(Material.builder().mtrlno(1L).build())
                         .quotationmtrl(quotationMtrl)
-                        .orderdate(LocalDateTime.now())
                         .quantity(10L)
                         .status(0).build());
     }

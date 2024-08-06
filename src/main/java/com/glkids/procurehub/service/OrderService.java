@@ -22,8 +22,11 @@ public interface OrderService {
     //5. 발주 전체 내역 목록
     List<OrderDTO> totalList();
 
+    //6.발주 실행
+//    List<OrderDTO> orderExecute(List<Long> orderno);
+
     default Order orderDtoToEntity(OrderDTO orderDTO) {
-        Order order=Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())
+        Order order = Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())
                 .orderdate(orderDTO.getOrderdate()).prcr(orderDTO.getPrcr()).material(orderDTO.getMaterial()).quotationmtrl(orderDTO.getQuotationmtrl())
                 .quantity(orderDTO.getQuantity()).trackingNo(orderDTO.getTrackingNo()).status(orderDTO.getStatus())
                 .build();
@@ -37,4 +40,5 @@ public interface OrderService {
                 .trackingNo(entity.getTrackingNo()).status(entity.getStatus()).regdate(entity.getRegdate()).moddate(entity.getModdate()).build();
 
     }
+
 }
