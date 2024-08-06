@@ -67,98 +67,201 @@
                 <div class="full-container">
                     <th:block th:fragment="content">
                         <div class="row gap-20 pos-r">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="bgc-white p-20 bd">
                                     <div class="d-flex justify-content-between">
-                                        <h1 class="c-grey-900 mT-10 mB-30" th:text="${quoread.title + ' 견적'}"></h1>
-                                        <div>
-                                            <button class="btn cur-p btn-dark btn-color" id="update">수정</button>
-                                            <button class="btn cur-p btn-dark btn-color" id="add">계약추가</button>
-                                            <div id="dataContainer" th:data-qtno="${quoread.qtno}"></div>
-
-                                            <script>
-                                                $(document).ready(function () {
-                                                    console.log("Document ready");
-
-                                                    // 'add' 버튼 클릭 이벤트
-                                                    $('#add').on('click', function () {
-                                                        console.log("Row clicked");
-                                                        var qtno = $('#dataContainer').data('qtno');
-                                                        if (qtno) {
-                                                            var url = '/agreement/register?qtno=' + qtno;
-                                                            console.log("Navigating to: " + url);
-                                                            window.location.href = url;
-                                                        } else {
-                                                            console.log("qtno is not defined");
-                                                        }
-                                                    });
-
-                                                    // 'update' 버튼 클릭 이벤트
-                                                    $('#update').on('click', function () {
-                                                        console.log("Row clicked");
-                                                        var url = '/contractor/update';
-                                                        console.log("Navigating to: " + url);
-                                                        window.location.href = url;
-                                                    });
-                                                });
-                                            </script>
-
+                                        <h4 class="c-grey-900 mT-10 mB-30" th:text="${quotation.title}"></h4>
+                                        <div class=" mT-10 mB-30">
+                                            <a th:href="@{/contractor/quoupdate(qtno=${quotation.qtno})}"
+                                               class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               data-bs-original-title="견적 수정">
+                                                <i class="c-grey-900 ti-pencil-alt fa-1-25x"></i>
+                                            </a>
+                                            <a th:href="@{/agreement/register(qtno=${quotation.qtno})}"
+                                               class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               data-bs-original-title="계약 추가">
+                                                <i class="c-grey-900 ti-stamp fa-1-25x"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="mb-3" style="display: flex; gap: 30px; align-items: center;">
-                                        <label class="form-label">회사명</label>
-                                        <span class="text-black fa-1-25x" th:text="흠"></span>
-                                        <label class="form-label">연락처</label>
-                                        <span class="text-black fa-1-25x" th:text="조"></span>
-                                        <label class="form-label">자재코드</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
-                                        <label class="form-label">자재명</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
+                                    <div class="d-flex mb-3">
+                                        <div>
+                                            <label class="form-label">견적 코드</label><br>
+                                            <span class="text-black fa-1-25x" th:text="'QT' + ${#numbers.formatInteger(quotation.qtno, 6)}"></span><br>
+                                        </div>
+                                        <div class="ms-5">
+                                            <label class="form-label">상태</label><br>
+                                            <span class="text-black fa-1-25x" th:text="${quotation.status}"></span><br>
+                                        </div>
                                     </div>
-
-                                    <div class="mb-3" style="display: flex; gap: 20px; align-items: center;">
-                                        <label class="form-label">주소</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
-                                        <label class="form-label">수량</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
-                                        <label class="form-label">단가</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
-                                        <label class="form-label">총금액</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
-                                        <label class="form-label">L/T</label>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
+                                    <div class="d-flex mb-3">
+                                        <div>
+                                            <label class="form-label">등록일</label><br>
+                                            <span class="text-black fa-1-25x" th:text="${#temporals.format(quotation.regdate , 'yyyy-MM-dd')}"></span><br>
+                                        </div>
+                                        <div class="ms-5">
+                                            <label class="form-label">최근 수정일</label><br>
+                                            <span class="text-black fa-1-25x"
+                                                  th:text="${#temporals.format(quotation.moddate , 'yyyy-MM-dd')}"></span><br>
+                                        </div>
+                                    </div>
+                                    <th:block th:if="${quotation.content != null and !quotation.content.isEmpty()}">
+                                        <div class="mb-3">
+                                            <label class="form-label">세부 내용</label><br>
+                                            <div class="mb-3 overflow-y-auto overflow-x-hidden h-11/2r">
+                                                <span class="text-black fa-1-25x" th:text="${quotation.content}"></span>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="bgc-white p-20 bd h-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30">업체 정보</h4>
+                                        <div class=" mT-10 mB-30">
+                                            <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"
+                                               class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               data-bs-original-title="업체 상세 정보">
+                                                <i class="c-grey-900 ti-arrow-right fa-1-25x"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">내용</label><br>
-                                        <span class="text-black fa-1-25x" th:text="${quoread.content}"></span>
+                                        <label class="form-label">업체명</label><br>
+                                        <span class="text-black fa-1-25x" th:text="${quotation.contractor.name}"></span>
                                     </div>
-                                    <div class="mb-3" style="display: flex; gap: 10px; align-items: center;">
-                                        <label class="form-label">등록일</label>
+                                    <div class="mb-3">
+                                        <label class="form-label">사업자 등록번호</label><br>
                                         <span class="text-black fa-1-25x"
-                                              th:text="${#temporals.format(quoread.moddate , 'yyyy-MM-dd')}"></span>
-                                        <label class="form-label">견적서 파일명</label><br>
-                                        <span class="text-black fa-1-25x" th:text="장여니"></span>
+                                              th:text="${quotation.contractor.corno}"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">내선번호</label><br>
+                                        <span class="text-black fa-1-25x"
+                                              th:text="${quotation.contractor.phone}"></span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="col-md-6">
-                            <div class="bgc-white p-20 bd" style="margin-top: 30px;">
-                                <div class="d-flex justify-content-end mb-3">
-                                    <button class="btn cur-p btn-dark btn-color">Print</button>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="bgc-white p-20 bd" style="margin-top: 10px;">
-                                        <div class="d-flex justify-content-between">
-                                            <h4 class="c-grey-900 mT-10 mB-30">견적서 사진 자리</h4>
-
+                            <div class="col-md-4">
+                                <div class="bgc-white p-20 bd h-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30">견적서 파일</h4>
+                                        <div class="d-flex">
+                                            <div class=" mT-10 mB-30">
+                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"
+                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                   data-bs-original-title="견적서 생성 및 출력">
+                                                    <i class="c-grey-900 ti-printer fa-1-25x"></i>
+                                                </a>
+                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"
+                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                   data-bs-original-title="파일 추가">
+                                                    <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="overflow-x-hidden overflow-y-auto vh-25">
+                                        <div class="mb-3">
+                                            <label class="form-label">파일명</label><br>
+                                            <span class="text-black fa-1-25x">파일1</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">등록일</label><br>
+                                            <span class="text-black fa-1-25x"
+                                                  th:text="${quotation.contractor.corno}"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">파일명</label><br>
+                                            <span class="text-black fa-1-25x">파일1</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">등록일</label><br>
+                                            <span class="text-black fa-1-25x"
+                                                  th:text="${quotation.contractor.corno}"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">파일명</label><br>
+                                            <span class="text-black fa-1-25x">파일1</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">등록일</label><br>
+                                            <span class="text-black fa-1-25x"
+                                                  th:text="${quotation.contractor.corno}"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-12">
+                                <div class="bgc-white p-20 bd">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30">자재</h4>
+                                        <div class="d-flex">
+                                            <div class=" mT-10 mB-30">
+<!--                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"-->
+<!--                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"-->
+<!--                                                   data-bs-original-title="견적서 생성 및 출력">-->
+<!--                                                    <i class="c-grey-900 ti-printer fa-1-25x"></i>-->
+<!--                                                </a>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <th:block th:if="${quotationMtrlList.size() == 0}">
+                                        <span class="text-black fa-1x">추가된 자재가 없습니다...</span>
+                                        <a id="inputMaterialFile" th:href="@{/contractor/quoupdate(qtno=${quotation.qtno})}" class="fa-1x">견적 수정하기</a>
+                                    </th:block>
+                                    <th:block th:unless="${quotationMtrlList.size() == 0}">
+                                        <div class="vh-25 overflow-y-auto">
+                                            <table class="table table-bordered table-hover" id="quotationMtrlTable">
+                                                <thead class="position-sticky top-0 border-1">
+                                                <tr>
+                                                    <th class="col text-center d-none d-sm-table-cell"></th>
+                                                    <th class="col text-center d-none d-sm-table-cell">자재 코드</th>
+                                                    <th class="col text-center">자재명</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">규격</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">현 재고 수량</th>
+                                                    <th class="col text-center text-break">월 납품 수량</th>
+                                                    <th class="col text-center">단가</th>
+                                                    <th class="col text-center">총 금액</th>
+                                                    <th class="col text-center">L/T</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="quotationMtrlTbody">
+                                                <th:block th:each="quotationMtrl, i : ${quotationMtrlList}">
+                                                    <tr>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${i.index + 1}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:id="${quotationMtrl.material.mtrlno}" th:text="'MA' + ${#numbers.formatInteger(quotationMtrl.material.mtrlno, 6)}"></td>
+                                                        <td class="text-center" th:text="${quotationMtrl.material.name}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${quotationMtrl.material.standard}"></td>
+                                                        <td class="text-end d-none d-sm-table-cell" th:text="${quotationMtrl.material.quantity}"></td>
+                                                        <td class="text-end" th:text="${quotationMtrl.quantity}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.unitprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${quotationMtrl.leadtime} + '일'"></td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            $(document).ready(function () {
+                                $('.quotationMtrlTbody').on('click', 'tr', function () {
+                                    var row = $(this);
+                                    var mtrlno = row.find('td').eq(1).attr('id');
+                                    console.log(mtrlno);
+                                    if (mtrlno) {
+                                        $(location).attr('href', '/material/read?mtrlno=' + mtrlno);
+                                    }
+                                });
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>
@@ -171,7 +274,7 @@
         </footer>
     </div>
 
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js"></script>
     </body>
 </th:block>
 </html>

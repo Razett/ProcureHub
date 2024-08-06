@@ -6,6 +6,7 @@ import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.service.AgreementService;
 import com.glkids.procurehub.service.ContractorService;
+import com.glkids.procurehub.service.QuotationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ContractorController {
 
     private final ContractorService contractorService;
+    private final QuotationService quotationService;
     private final AgreementService agreementservice;
     /**
      * 업체 목록
@@ -128,7 +130,8 @@ public class ContractorController {
     public String quodatail(Long qtno, Model model) {
         model.addAttribute("title", "견적 정보");
 
-        model.addAttribute("quoread", contractorService.quoread(qtno));
+        model.addAttribute("quotation", contractorService.quoread(qtno));
+        model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
 
         return "/contractor/quoread";
     }

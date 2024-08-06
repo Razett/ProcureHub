@@ -50,7 +50,7 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
-    public List<QuotationMtrlDTO> quotationMtrlList(Long qtno) {
+    public List<QuotationMtrlDTO> readQuotationMtrlList(Long qtno) {
         List<QuotationMtrlDTO> quotationMtrlDTOList = new ArrayList<>();
 
         QQuotationMtrl qQuotationMtrl = QQuotationMtrl.quotationMtrl;

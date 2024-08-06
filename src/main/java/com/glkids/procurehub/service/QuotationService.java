@@ -15,7 +15,7 @@ public interface QuotationService {
 
     QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO);
 
-    List<QuotationMtrlDTO> quotationMtrlList(Long qtno); // 계약 추가화면
+    List<QuotationMtrlDTO> readQuotationMtrlList(Long qtno); // 계약 추가화면
 
     QuotationDTO read(Long qutno);
 
@@ -45,43 +45,6 @@ public interface QuotationService {
                 .build();
     }
 
-    // QuotationMtrl DTO to Entity 변환 메서드
-    default QuotationMtrl quotationMtrlDtoToEntity(QuotationMtrlDTO quotationMtrlDTO) {
-        return QuotationMtrl.builder()
-                .quotation(Quotation.builder()
-                        .qtno(quotationMtrlDTO.getQuotationId())
-                        .contractor(quotationMtrlDTO.getQuotation().getContractor())
-                        .emp(quotationMtrlDTO.getQuotation().getEmp())
-                        .title(quotationMtrlDTO.getQuotation().getTitle())
-                        .content(quotationMtrlDTO.getQuotation().getContent())
-                        .status(quotationMtrlDTO.getQuotation().getStatus())
-                        .build())
-                .material(Material.builder()
-                        .mtrlno(quotationMtrlDTO.getMaterialId())
-                        .name(quotationMtrlDTO.getMaterial().getName())
-                        .build())
-                        .quantity(quotationMtrlDTO.getQuantity())
-                        .unitprice(quotationMtrlDTO.getUnitprice())
-                        .totalprice(quotationMtrlDTO.getTotalprice())
-                        .leadtime(quotationMtrlDTO.getLeadtime())
-                        .build();
-    }
-
-    // QuotationMtrl Entity to DTO 변환 메서드
-    default QuotationMtrlDTO quotationMtrlEntityToDTO(QuotationMtrl entity) {
-        return QuotationMtrlDTO.builder()
-                .qtmtno(entity.getQtmtno())
-                .quotationId(entity.getQuotation().getQtno())
-                .quotation(entity.getQuotation())
-                .materialId(entity.getMaterial().getMtrlno())
-                .material(entity.getMaterial())
-                .quantity(entity.getQuantity())
-                .unitprice(entity.getUnitprice())
-                .totalprice(entity.getTotalprice())
-                .leadtime(entity.getLeadtime())
-                .build();
-    }
-
     // QuotationFile DTO to Entity 변환 메서드
     default QuotationFile quotationFileDtoToEntity(QuotationFileDTO quotationFileDTO) {
         return QuotationFile.builder()
@@ -101,5 +64,34 @@ public interface QuotationService {
                 .url(entity.getUrl())
                 .build();
     }
-
+    // QuotationMtrl DTO to Entity 변환 메서드
+    default QuotationMtrl quotationMtrlDtoToEntity(QuotationMtrlDTO quotationMtrlDTO) {
+        return QuotationMtrl.builder()
+                .quotation(Quotation.builder()
+                        .qtno(quotationMtrlDTO.getQuotationId())
+                        .build())
+                .material(Material.builder()
+                        .mtrlno(quotationMtrlDTO.getMaterialId())
+                        .build())
+                .emp(Emp.builder().empno(201758030L).build())
+                .quantity(quotationMtrlDTO.getQuantity())
+                .unitprice(quotationMtrlDTO.getUnitprice())
+                .totalprice(quotationMtrlDTO.getTotalprice())
+                .leadtime(quotationMtrlDTO.getLeadtime())
+                .build();
+    }
+    // QuotationMtrl Entity to DTO 변환 메서드
+    default QuotationMtrlDTO quotationMtrlEntityToDTO(QuotationMtrl entity) {
+        return QuotationMtrlDTO.builder()
+                .qtmtno(entity.getQtmtno())
+                .quotationId(entity.getQuotation().getQtno())
+                .quotation(entity.getQuotation())
+                .materialId(entity.getMaterial().getMtrlno())
+                .material(entity.getMaterial())
+                .quantity(entity.getQuantity())
+                .unitprice(entity.getUnitprice())
+                .totalprice(entity.getTotalprice())
+                .leadtime(entity.getLeadtime())
+                .build();
+    }
 }
