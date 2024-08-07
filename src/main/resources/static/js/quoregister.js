@@ -1,5 +1,108 @@
 $(document).ready(function () {
     var selectedSuggestionIndex = -1;
+    var materialAcount = 1;
+
+    // 자재 추가 버튼 클릭 이벤트 리스너
+    $('#add-material').on('click', function (event) {
+        event.preventDefault();
+
+        // 새로운 자재 입력 행 생성
+        var newRow = `<tr class="material-row" id="materialDetail${materialAcount}" name="materialDetail${materialAcount}">
+                <td><input class="form-control materialCode" id="materialCode${materialAcount}" type="text" name="materialCode${materialAcount}"
+                           placeholder="자재 코드를 입력하세요." autocomplete="off">
+                    <div id="autocomplete-suggestions${materialAcount}" class="autocomplete-suggestions2"></div>
+                </td>
+                <td><input class="form-control materialName" id="materialName${materialAcount}" type="text" name="materialName${materialAcount}" placeholder="자재명" readonly></td>
+                <td><input class="form-control materialSpec" id="materialSpec${materialAcount}" type="text" name="materialSpec${materialAcount}" placeholder="규격" readonly></td>
+                <td><input class="form-control materialStock" id="materialStock${materialAcount}" type="number" name="materialStock${materialAcount}" placeholder="현 재고 수량" readonly></td>
+                <td><input type="number" name="quantity${materialAcount}" id="quantity${materialAcount}" class="form-control" placeholder="월 단위 납품 수량을 입력하세요."></td>
+                <td><input type="number" name="unitPrice${materialAcount}" id="unitPrice${materialAcount}" class="form-control" placeholder="단가를 입력하세요."></td>
+                <td><input type="number" name="totalPrice${materialAcount}" id="totalPrice${materialAcount}" class="form-control" placeholder="총 금액을 입력하세요."></td>
+                <td><input type="number" name="leadTime${materialAcount}" id="leadTime${materialAcount}" class="form-control" placeholder="일 단위 L/T을 입력하세요."></td>
+            </tr>`;
+
+        // 행을 10개까지만 추가
+        if (materialAcount <= 10) {
+            $('#quotationMtrlTable .quotationMtrlTbody').append(newRow);
+            materialAcount++;
+        } else {
+            alert('최대 10개의 자재만 추가할 수 있습니다.');
+        }
+    });
+
+    // 자재코드 자동완성 요청을 보내는 함수
+    function fetchMaterialSuggestions(mtrlno, inputElement) {
+        $.ajax({
+            url: '/rest/material/search',
+            type: 'GET',
+            data: { mtrlno: mtrlno },
+            success: function (data) {
+                var suggestions = $(inputElement).siblings('.autocomplete-suggestions2');
+                suggestions.empty();
+                selectedSuggestionIndex = -1;
+
+                if (data.length > 0) {
+                    data.forEach(function (item) {
+                        var suggestion = $('<div class="autocomplete-suggestion"></div>')
+                            .html(`자재코드 : ${item.mtrlno} 자재이름: ${item.name} 자재그룹명:${item.materialGroup.name}`);
+                        suggestion.on('click', function () {
+                            selectMaterialSuggestion(item, inputElement);
+                        });
+                        suggestions.append(suggestion);
+                    });
+                    suggestions.show();
+                } else {
+                    suggestions.hide();
+                }
+            }
+        });
+    }
+
+    // 자재명 제안 항목 선택 시 동작하는 함수
+    function selectMaterialSuggestion(item, inputElement) {
+        var idSuffix = $(inputElement).attr('id').replace('materialCode', '');
+        $(inputElement).val(item.mtrlno);
+        $('#materialName' + idSuffix).val(item.name);
+        $('#materialSpec' + idSuffix).val(item.standard);
+        $('#materialStock' + idSuffix).val(item.quantity);
+        $('#materialDetail').val(`자재코드: ${item.mtrlno}, 자재명: ${item.name}, 그룹명: ${item.materialGroup.name}`);
+        $(inputElement).siblings('.autocomplete-suggestions2').empty().hide();
+    }
+
+    // 자재코드 입력 필드에 입력 이벤트 리스너 추가
+    $(document).on('input', '.materialCode', function () {
+        var query = $(this).val();
+        if (query.length > 0) {
+            fetchMaterialSuggestions(query, this);
+        } else {
+            $(this).siblings('.autocomplete-suggestions2').empty().hide();
+        }
+    });
+
+    // 엔터 및 방향키 이벤트 리스너 추가
+    $(document).on('keydown', '.materialCode', function (event) {
+        var suggestions = $(this).siblings('.autocomplete-suggestions2').children('.autocomplete-suggestion');
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < suggestions.length) {
+                suggestions.eq(selectedSuggestionIndex).click();
+            }
+        } else if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            if (selectedSuggestionIndex < suggestions.length - 1) {
+                selectedSuggestionIndex++;
+                suggestions.removeClass('selected');
+                suggestions.eq(selectedSuggestionIndex).addClass('selected');
+            }
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            if (selectedSuggestionIndex > 0) {
+                selectedSuggestionIndex--;
+                suggestions.removeClass('selected');
+                suggestions.eq(selectedSuggestionIndex).addClass('selected');
+            }
+        }
+    });
 
     // 회사명 자동완성 요청을 보내는 함수
     function fetchSuggestions(query) {
@@ -69,35 +172,7 @@ $(document).ready(function () {
         });
     }
 
-    // 자재코드 자동완성 요청을 보내는 함수
-    function fetchMaterialSuggestions(mtrlno) {
-        $.ajax({
-            url: '/rest/material/search',
-            type: 'GET',
-            data: { mtrlno: mtrlno },
-            success: function (data) {
-                var suggestions = $('#autocomplete-suggestions2');
-                suggestions.empty();
-                selectedSuggestionIndex = -1;
-
-                if (data.length > 0) {
-                    data.forEach(function (item) {
-                        var suggestion = $('<div class="autocomplete-suggestion"></div>')
-                            .html(`자재코드 : ${item.mtrlno} 자재이름: ${item.name} 자재그룹명:${item.materialGroup.name}`);
-                        suggestion.on('click', function () {
-                            selectMaterialSuggestion(item);
-                        });
-                        suggestions.append(suggestion);
-                    });
-                    suggestions.show();
-                } else {
-                    suggestions.hide();
-                }
-            }
-        });
-    }
-
-// 회사명 제안 항목 선택 시 동작하는 함수
+    // 회사명 제안 항목 선택 시 동작하는 함수
     function selectSuggestion(item) {
         $('#contractorName').val(item.name);
         $('#corno').val(item.corno);
@@ -109,7 +184,7 @@ $(document).ready(function () {
         $('#autocomplete-suggestions').empty().hide();
     }
 
-// 사업자 등록번호 제안 항목 선택 시 동작하는 함수
+    // 사업자 등록번호 제안 항목 선택 시 동작하는 함수
     function selectConNumSuggestion(item) {
         $('#corno').val(item.corno);
         $('#contractorName').val(item.name);
@@ -119,13 +194,6 @@ $(document).ready(function () {
         $('#address').val(address);
         $('#phone').val(item.phone || '');
         $('#autocomplete-suggestionsConNums').empty().hide();
-    }
-
-    // 자재명 제안 항목 선택 시 동작하는 함수
-    function selectMaterialSuggestion(item) {
-        $('#materialCode').val(item.mtrlno);
-        $('#materialDetail').val(`자재코드: ${item.mtrlno}, 자재명: ${item.name}, 그룹명: ${item.materialGroup.name}`);
-        $('#autocomplete-suggestions2').empty().hide();
     }
 
     // corno 입력 필드에 입력 이벤트 리스너 추가
@@ -145,16 +213,6 @@ $(document).ready(function () {
             fetchSuggestions(query);
         } else {
             $('#autocomplete-suggestions').empty().hide();
-        }
-    });
-
-    // 자재코드 입력 필드에 입력 이벤트 리스너 추가
-    $('#materialCode').on('input', function () {
-        var query = $(this).val();
-        if (query.length > 0) {
-            fetchMaterialSuggestions(query);
-        } else {
-            $('#autocomplete-suggestions2').empty().hide();
         }
     });
 
@@ -207,35 +265,13 @@ $(document).ready(function () {
         }
     });
 
-    $('#materialCode').on('keydown', function (event) {
-        var suggestions = $('#autocomplete-suggestions2 .autocomplete-suggestion');
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < suggestions.length) {
-                suggestions.eq(selectedSuggestionIndex).click();
-            }
-        } else if (event.key === 'ArrowDown') {
-            event.preventDefault();
-            if (selectedSuggestionIndex < suggestions.length - 1) {
-                selectedSuggestionIndex++;
-                suggestions.removeClass('selected');
-                suggestions.eq(selectedSuggestionIndex).addClass('selected');
-            }
-        } else if (event.key === 'ArrowUp') {
-            event.preventDefault();
-            if (selectedSuggestionIndex > 0) {
-                selectedSuggestionIndex--;
-                suggestions.removeClass('selected');
-                suggestions.eq(selectedSuggestionIndex).addClass('selected');
-            }
-        }
-    });
-
-    // 자재코드 엔터 이벤트 리스너
-    $('#materialCode').on('keydown', function (event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            fetchMaterialDetails($(this).val());
+    // 자재코드 입력 필드에 입력 이벤트 리스너 추가
+    $(document).on('input', '.materialCode', function () {
+        var query = $(this).val();
+        if (query.length > 0) {
+            fetchMaterialSuggestions(query, this);
+        } else {
+            $(this).siblings('.autocomplete-suggestions2').empty().hide();
         }
     });
 
@@ -247,8 +283,8 @@ $(document).ready(function () {
         if (!$(event.target).closest('#corno').length && !$(event.target).closest('#autocomplete-suggestionsConNums').length) {
             $('#autocomplete-suggestionsConNums').empty().hide();
         }
-        if (!$(event.target).closest('#materialCode').length && !$(event.target).closest('#autocomplete-suggestions2').length) {
-            $('#autocomplete-suggestions2').empty().hide();
+        if (!$(event.target).closest('.materialCode').length && !$(event.target).closest('.autocomplete-suggestions2').length) {
+            $('.autocomplete-suggestions2').empty().hide();
         }
     });
 
@@ -258,13 +294,9 @@ $(document).ready(function () {
 
         var title = $('input[name="title"]').val();
         var content = $('textarea[name="content"]').val();
-        var quantity = $('input[name="quantity"]').val();
-        var unitPrice = $('input[name="unitPrice"]').val();
-        var totalPrice = $('input[name="totalPrice"]').val();
-        var leadTime = $('input[name="leadTime"]').val();
 
-        if (!title || !quantity || !unitPrice || !totalPrice || !leadTime) {
-            alert('모든 필수 항목을 입력해주세요.');
+        if (!title) {
+            alert('견적 제목을 입력하세요.');
             return;
         }
 
@@ -279,6 +311,7 @@ $(document).ready(function () {
                 empno: $('input[name="empno"]').val()
             }
         };
+
         $.ajax({
             url: 'http://localhost:8080/quotation/save',
             type: 'POST',
@@ -292,16 +325,36 @@ $(document).ready(function () {
                     uploadFilesWithQuotationId(quotationId);
                 }
 
-                var materialId = $('#materialCode').val();
-                var quotationMtrlData = {
-                    quotationId: quotationId,
-                    materialId: materialId,
-                    quantity: quantity,
-                    unitprice: unitPrice,
-                    totalprice: totalPrice,
-                    leadtime: leadTime
-                };
-                saveQuotationMtrl(quotationMtrlData);
+                var materialRows = $('#quotationMtrlTable .quotationMtrlTbody tr');
+                var quotationMtrlDataArray = [];
+
+                materialRows.each(function () {
+                    var rowId = $(this).attr('id').replace('materialDetail', '');
+                    var materialId = $('#materialCode' + rowId).val();
+                    var quantity = $('#quantity' + rowId).val();
+                    var unitPrice = $('#unitPrice' + rowId).val();
+                    var totalPrice = $('#totalPrice' + rowId).val();
+                    var leadTime = $('#leadTime' + rowId).val();
+
+                    if (materialId && quantity && unitPrice && totalPrice && leadTime) {
+                        var quotationMtrlData = {
+                            quotationId: quotationId,
+                            materialId: materialId,
+                            quantity: quantity,
+                            unitprice: unitPrice,
+                            totalprice: totalPrice,
+                            leadtime: leadTime
+                        };
+                        quotationMtrlDataArray.push(quotationMtrlData);
+                    }
+                });
+
+                if (quotationMtrlDataArray.length > 0) {
+                    saveQuotationMtrl(quotationMtrlDataArray);
+                } else {
+                    alert('자재 정보를 입력하세요.');
+                }
+
                 window.location.href = '/contractor/quolist';
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -320,7 +373,7 @@ $(document).ready(function () {
             fileData.append('file', files[i]);
         }
         $.ajax({
-            url: 'http://localhost:8080/uploadFile',
+            url: 'http://localhost:8081/uploadFile',
             type: 'POST',
             data: fileData,
             processData: false,
@@ -359,11 +412,11 @@ $(document).ready(function () {
     }
 
     // 견적 자재 정보 저장 함수
-    function saveQuotationMtrl(quotationMtrlData) {
+    function saveQuotationMtrl(quotationMtrlDataArray) {
         $.ajax({
             url: 'http://localhost:8080/quotationMtrl/save',
             type: 'POST',
-            data: JSON.stringify(quotationMtrlData),
+            data: JSON.stringify(quotationMtrlDataArray),
             contentType: 'application/json',
             success: function (response) {
                 console.log('견적 자재 정보 저장 성공:', response);
