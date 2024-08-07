@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContractorService {
 
@@ -42,8 +43,11 @@ public interface ContractorService {
     //8. 회사명 자동완성 기능검색
     List<ContractorDTO> findByNameContaining(String name);
 
-    // 견적상세보기
+    //9. 견적상세보기
      QuotationDTO quoread(Long qtno);
+
+    //10. 견적 수정하기
+    void quoupdate(QuotationDTO quotationDTO);
 
     default Contractor contractorDtoToEntity(ContractorDTO contractorDTO) {
         Contractor contractor=Contractor.builder().corno(contractorDTO.getCorno())
@@ -106,4 +110,5 @@ public interface ContractorService {
                 .regdate(agreement.getRegdate())
                 .modedate(agreement.getModdate()).build();
     }
+
 }

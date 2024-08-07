@@ -121,81 +121,56 @@
                             .autocomplete-suggestion2.selected {
                                 background-color: #ddd;
                             }
-                            .autocomplete-suggestionsConNums {
-                                border: 1px solid #ccc;
-                                max-height: 200px;
-                                overflow-y: auto;
-                                position: absolute;
-                                background-color: white;
-                                z-index: 1000;
-                                width: 100%;
-                                display: none; /* 기본적으로 숨김 */
-                            }
-
-                            .autocomplete-suggestionsConNum {
-                                padding: 10px;
-                                cursor: pointer;
-                            }
-
-                            .autocomplete-suggestionsConNum:hover,
-                            .autocomplete-suggestionsConNum.selected {
-                                background-color: #ddd;
-                            }
                         </style>
-                        <form id="quotationForm" enctype="multipart/form-data">
+                        <form action="quoupdate" method="post">
+                            <input type="hidden" th:value="${updateread.qtno}" name="qtno">
+                            <input type="hidden" th:value="${updateread.status}" name="status">
                             <div class="row gap-20 pos-r">
                                 <div class="col-md-6">
                                     <div class="bgc-white p-20 bd h-100">
-                                        <h4 class="c-grey-900 mT-10 mB-5">견적 정보 입력</h4>
-                                        <div class="mB-30 d-flex">
-                                            <span class="c-red-700 fa-1x">*</span>
-                                            <span class="fa-1x">표시는 필수 입력사항입니다.</span>
-                                        </div>
+                                        <h4 class="c-grey-900 mT-10 mB-5">견적 수정</h4>
                                         <div class="mb-3">
-                                            <label class="form-label" for="quotationTitle">견적 제목<span
-                                                    class="c-red-700 fa-1x">*</span></label>
-                                            <input type="text" name="title" class="form-control"
-                                                   id="quotationTitle" placeholder="견적 제목을 입력하세요"
+                                            <label class="form-label" >견적 제목</label>
+                                            <input type="text" name="title" class="form-control" th:value="${updateread.title}"
                                                    control-id="ControlID-1" max="30" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label" for="quotationContent">세부내용</label>
                                             <textarea type="text" name="content" class="form-control h-25" rows="6"
-                                                      id="quotationContent" placeholder="세부내용을 입력하세요."
+                                                      id="quotationContent" th:value="${updateread.content}"
                                                       control-id="ControlID-1" maxlength="1024"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="bgc-white p-20 bd">
-                                        <h4 class="c-grey-900 mT-10 mB-5">업체 정보 입력</h4>
-                                        <div class="mB-30 d-flex">
-                                            <span class="c-red-700 fa-1x"></span>
-                                            <span class="fa-1x">업체명을 입력하여 검색하세요.</span>
-                                        </div>
+                                        <h4 class="c-grey-900 mT-10 mB-5">업체 정보</h4>
                                         <div class="mb-3">
                                             <label class="form-label" for="contractorName">업체명</label>
-                                            <input type="text" name="contractorName" class="form-control"
-                                                   id="contractorName" placeholder="업체명을 입력하세요."
+                                            <input type="text" name="name" class="form-control"
+                                                   id="contractorName" th:value="${updateread.contractor.name}"
                                                    control-id="ControlID-1" max="30" autocomplete="off" required>
                                             <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
                                         </div>
                                         <div class="form-container">
                                             <div class="mb-3">
                                                 <label class="form-label">사업자 등록번호</label>
-                                                <input type="text" name="corno" class="form-control" id="corno"
-                                                       placeholder="">
-                                                <div id="autocomplete-suggestionsConNums" class="autocomplete-suggestionsConNums"></div>
+                                                <input type="text" name="corno" class="form-control bgc-grey-100" id="corno"
+                                                       th:value="${updateread.contractor.corno}"
+                                                       placeholder="" readonly>
                                             </div>
                                             <div class="mb-3">
                                                 <label>내선번호</label>
-                                                <input type="text" name="phone" class="form-control bgc-grey-100" id="phone"
-                                                       placeholder="" readonly>
+                                                <input type="text" name="phone" class="form-control" id="phone"
+                                                       th:value="${updateread.contractor.phone}" >
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">주소</label>
-                                                <input type="text" name="address" class="form-control bgc-grey-100" id="address"
-                                                       placeholder="" readonly>
+                                                <label class="form-label">도로명주소</label>
+                                                <input type="text" name="address1" class="form-control" id="address1"
+                                                      th:value="${updateread.contractor.address1}" >
+                                                <label class="form-label">상세주소</label>
+                                                <input type="text" name="address2" class="form-control" id="address2"
+                                                       th:value="${updateread.contractor.address2}" >
                                             </div>
                                         </div>
                                     </div>
@@ -205,54 +180,44 @@
                                 <div class="col-md-12">
                                     <div class="bgc-white p-20 bd">
                                         <div class="d-flex justify-content-between">
-                                            <h4 class="c-grey-900 mT-10 mB-5">자재 정보 입력</h4>
+                                            <h4 class="c-grey-900 mT-10 mB-5">자재 정보</h4>
                                             <div class="mT-10 mB-5">
-                                                <a href="#" id="add-material" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 추가">
+                                                <a href="#" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 추가">
                                                     <i class="c-grey-900 ti-plus fa-1-25x"></i>
                                                 </a>
                                             </div>
-                                        </div>
-                                        <div class="mB-30 d-flex">
-                                            <span class="c-red-700 fa-1x"></span>
-                                            <span class="fa-1x">자재코드를 입력하여 검색하세요.</span>
                                         </div>
                                         <div class="vh-25 overflow-y-auto">
                                             <table class="table table-bordered table-hover" id="quotationMtrlTable">
                                                 <thead class="position-sticky top-0 border-1">
                                                 <tr>
-                                                    <th class="col text-center">자재 코드</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">자재 코드</th>
                                                     <th class="col text-center">자재명</th>
-                                                    <th class="col text-center">규격</th>
-                                                    <th class="col text-center">현 재고 수량</th>
-                                                    <th class="col text-center">월 납품 수량</th>
+                                                    <th class="col text-center">상태</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">규격</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">현 재고 수량</th>
+                                                    <th class="col text-center text-break">월 납품 수량</th>
                                                     <th class="col text-center">단가</th>
                                                     <th class="col text-center">총 금액</th>
                                                     <th class="col text-center">L/T</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody class="quotationMtrlTbody">
-                                                <td><input class="form-control" type="text" name="materialCode"
-                                                           id="materialCode" placeholder="자재 코드를 입력하세요." autocomplete="off">
-                                                    <div id="autocomplete-suggestions2" class="autocomplete-suggestions2"></div>
-                                                </td>
-                                                <td><input class="form-control" type="text" name="materialName"
-                                                           id="materialName" placeholder="자재 명를 입력하세요." autocomplete="off">
-                                                    <div id="autocomplete-suggestionsMtrlName" class="autocomplete-suggestionsMtrlName"></div>
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><input type="number" name="quantity" class="form-control"
-                                                           placeholder="월 단위 납품 수량을 입력하세요."></td>
-                                                <td><input type="number" name="unitPrice" class="form-control"
-                                                           placeholder="단가를 입력하세요."></td>
-                                                <td><input type="number" name="totalPrice" class="form-control"
-                                                           placeholder="총 금액을 입력하세요."></td>
-                                                <td><input type="number" name="leadTime" class="form-control"
-                                                           placeholder="일 단위 L/T을 입력하세요."></td>
+                                                <th:block th:each="list, i : ${materialupdate}">
+                                                    <tr>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${i.index + 1}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:id="${list.material.mtrlno}" th:text="'MA' + ${#numbers.formatInteger(list.material.mtrlno, 6)}"></td>
+                                                        <td class="text-center" th:text="${list.material.name}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${list.material.standard}"></td>
+                                                        <td class="text-end d-none d-sm-table-cell" th:text="${list.material.quantity}"></td>
+                                                        <td class="text-end" th:text="${list.quantity}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(list.unitprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(list.totalprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${list.leadtime} + '일'"></td>
+                                                    </tr>
+                                                </th:block>
                                                 </tbody>
                                             </table>
-                                            <input type="text" class="form-control" name="materialDetail"
-                                                   id="materialDetail" placeholder="자재 선택 시, 정보가 표시됩니다." readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">견적서 파일 </label>
@@ -263,7 +228,7 @@
                                             <button type="button" class="btn cur-p btn-danger btn-color" id="cancel">
                                                 취소
                                             </button>
-                                            <input type="submit" class="btn cur-p btn-dark btn-color" value="등록하기">
+                                            <input type="submit" class="btn cur-p btn-dark btn-color" value="수정하기">
                                         </div>
                                     </div>
                                 </div>
