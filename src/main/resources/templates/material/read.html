@@ -155,10 +155,26 @@
                                         </div>
                                     </div>
                                     <th:block th:if="${materialFileList.size() != 0}">
-                                        <div>
-                                            <span th:text="${materialFileList}"></span>
-                                            도면 파일
-                                        </div>
+                                        <th:block th:each="file, iterStat : ${materialFileList}">
+                                            <div>
+                                                <div class="col-md-4">
+                                                    <p>
+                                                        <button class="btn btn-primary" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                th:attr="data-bs-target='#collapseExample' + ${iterStat.index}, aria-controls='collapseExample' + ${iterStat.index}"
+                                                                aria-expanded="false"
+                                                                th:text="${file.name}"></button>
+                                                    </p>
+                                                    <div class="collapse" th:id="'collapseExample' + ${iterStat.index}">
+                                                        <div class="card card-body">
+                                                            <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
+                                                                 class="card-img-top mb-3" alt="Image"
+                                                                 style="height: 180px; object-fit: cover;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </th:block>
                                     </th:block>
                                     <th:block th:unless="${materialFileList.size() != 0}">
                                         <span class="text-black fa-1x">추가된 도면이 없습니다...</span>
