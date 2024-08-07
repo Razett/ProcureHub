@@ -32,7 +32,7 @@ public class MaterialController {
      * 자재 목록
      */
     @GetMapping("/list")
-    public String List(@RequestParam("inputSearch") String inputSearch, Model model) {
+    public String List(String inputSearch, Model model) {
         System.out.println(inputSearch);
         model.addAttribute("title", "자재 목록");
 
