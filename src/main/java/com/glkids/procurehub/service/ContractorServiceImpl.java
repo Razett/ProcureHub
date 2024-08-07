@@ -138,6 +138,8 @@ public class ContractorServiceImpl implements ContractorService {
                 .map(this::contractorEntityToDTO)
                 .collect(Collectors.toList());
     }
+
+
     private int compareNames(String name1, String name2, String query) {
         int index1 = getIndexOfQuery(name1, query);
         int index2 = getIndexOfQuery(name2, query);
