@@ -42,8 +42,11 @@ public interface ContractorService {
     //8. 회사명 자동완성 기능검색
     List<ContractorDTO> findByNameContaining(String name);
 
-    // 견적상세보기
+    //9. 견적상세보기
      QuotationDTO quoread(Long qtno);
+
+    //10. 견적 수정하기
+    void quoupdate(QuotationDTO quotationDTO);
 
     default Contractor contractorDtoToEntity(ContractorDTO contractorDTO) {
         Contractor contractor=Contractor.builder().corno(contractorDTO.getCorno())
