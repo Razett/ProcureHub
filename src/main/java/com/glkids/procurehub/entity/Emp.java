@@ -16,6 +16,7 @@ import lombok.*;
 @Builder
 @ToString
 @Getter
+@Setter
 @Entity
 public class Emp extends BaseEntity {
 

@@ -1,11 +1,17 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
+import com.glkids.procurehub.entity.QOrder;
+import com.glkids.procurehub.repository.EmpRepository;
 import com.glkids.procurehub.repository.OrderRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +21,31 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final EmpRepository empRepository;
 
     @Override
-    public List<OrderDTO> list() {
-        List<Order> orders = orderRepository.findAll();
+    public List<OrderDTO> getOrderListBefore() {
         List<OrderDTO> orderDTOList = new ArrayList<>();
-        orders.forEach(x -> orderDTOList.add(orderEntityToDTO(x)));
+
+        QOrder qOrder = QOrder.order;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression statusExp = qOrder.status.eq(0);
+
+        orderRepository.findAll(builder.and(statusExp)).forEach(x -> orderDTOList.add(orderEntityToDTO(x)));
+        return orderDTOList;
+    }
+
+    @Override
+    public List<OrderDTO> getOrderListAfter() {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+
+        QOrder qOrder = QOrder.order;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression statusExp = qOrder.status.eq(1);
+
+        orderRepository.findAll(builder.and(statusExp)).forEach(x -> orderDTOList.add(orderEntityToDTO(x)));
         return orderDTOList;
     }
 
@@ -49,11 +74,31 @@ public class OrderServiceImpl implements OrderService {
         return totalList;
     }
 
-//    @Override
-//    public List<OrderDTO> orderExecute(List<Long> orderno) {
-//        List<Order> orders = orderRepository.orderExecute(orderno);
-//        List<OrderDTO> executeList = new ArrayList<>();
-//        orders.forEach(x -> executeList.add(orderEntityToDTO(x)));
-//        return executeList;
-//    }
+    @Override
+    public List<OrderDTO> orderExecute(List<Long> ordernos) {
+        List<OrderDTO> executeList = new ArrayList<>();
+
+        // 업데이트할 Emp 객체를 조회
+        Emp emp = Emp.builder().empno(201758030L).build();
+
+        for (Long orderno : ordernos) {
+            Optional<Order> orderOptional = orderRepository.findById(orderno);
+            if (orderOptional.isPresent()) {
+                Order order = orderOptional.get();
+
+                // Emp 및 상태 업데이트
+                order.setEmp(emp);
+                order.setOrderdate(LocalDateTime.now());
+                order.setStatus(1); // 상태를 적절히 설정
+
+                Order updatedOrder = orderRepository.save(order); // 업데이트된 주문을 저장합니다.
+
+                if (updatedOrder.getOrderdate().equals(order.getOrderdate())) {
+                    executeList.add(orderEntityToDTO(order)); // DTO로 변환하여 리스트에 추가합니다.
+                }
+            }
+        }
+
+        return executeList;
+    }
 }
