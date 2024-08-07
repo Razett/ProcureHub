@@ -104,8 +104,7 @@
                                             </button>
                                             <button type="button" id="execute-orders-btn"
                                                     class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
-                                                    onclick="executeOrders()">
+                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
                                                 <a href="#" id="order-link"
                                                    style="text-decoration: none; color: inherit; text-align: center;">발주
                                                     실행</a>
@@ -137,26 +136,26 @@
                                         </tr>
                                         </thead>
                                         <tbody id="tableBody">
-                                        <tr th:each="order : ${orderList}">
-                                            <td>
-                                                <label>
-                                                    <input type="checkbox" id="order-${order.orderno}"
-                                                           value="${order.orderno}">
-                                                    <span th:text="${order.orderno}"></span>
-                                                </label>
-                                            </td>
-                                            <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
-                                            <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
-                                            <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
-                                            <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}"></td>
-                                            <td th:text="${order.quantity}">
-                                            <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
-                                            <td th:text="${order.quotationmtrl.unitprice}">
-                                            <td th:text="${order.quotationmtrl.totalprice}">
-                                            <td th:text="${order.status}">
-                                            <td class="col-md-1 text-center"><span class="ti-download"></span><span
-                                                    class="icon-name"></span></td>
-                                        </tr>
+                                            <tr th:each="order : ${orderBeforeList}">
+                                                <td>
+                                                    <label>
+                                                        <input type="checkbox" class="ordernoCheckbox"
+                                                               th:value="${order.orderno}">
+                                                        <span th:text="${order.orderno}"></span>
+                                                    </label>
+                                                </td>
+                                                <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
+                                                <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
+                                                <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
+                                                <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}"></td>
+                                                <td th:text="${order.quantity}">
+                                                <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
+                                                <td th:text="${order.quotationmtrl.unitprice}">
+                                                <td th:text="${order.quotationmtrl.totalprice}">
+                                                <td th:text="${order.status}">
+                                                <td class="col-md-1 text-center"><span class="ti-download"></span><span
+                                                        class="icon-name"></span></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -180,76 +179,105 @@
                                         <th>단가</th>
                                         <th>총금액</th>
                                         <th>발주 상태</th>
-                                        <th>발주서 발행</th>
+                                        <th>발주 날짜</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="conTbody">
                                     <!-- 이곳에 JavaScript로 데이터를 추가할 것입니다 -->
+                                        <tr th:each="order : ${orderAfterList}">
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" class="ordernoCheckbox"
+                                                           th:value="${order.orderno}">
+                                                    <span th:text="${order.orderno}"></span>
+                                                </label>
+                                            </td>
+                                            <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
+                                            <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
+                                            <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
+                                            <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}"></td>
+                                            <td th:text="${order.quantity}">
+                                            <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
+                                            <td th:text="${order.quotationmtrl.unitprice}">
+                                            <td th:text="${order.quotationmtrl.totalprice}">
+                                            <td th:text="${order.status}">
+                                            <td class="col-md-1 text-center" th:text="${#temporals.format(order.orderdate, 'yyyy-MM-dd a hh:mm')}"></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <script>
-                            function toggleCheckboxes(source) {
-                                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-                                checkboxes.forEach(checkbox => {
-                                    checkbox.checked = source.checked;
-                                });
-                            }
+                            $(document).ready(function () {
 
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const tableWrapper = document.getElementById('tableWrapper');
-                            });
+                                function getOrderno() {
+                                    var orderno = [];
 
-                            function executeOrders() {
-                                const checkedBoxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
-                                const orderIds = Array.from(checkedBoxes).map(checkbox => checkbox.value);
+                                    $('.ordernoCheckbox:checked').each(function () {
+                                        orderno.push($(this).val());
+                                    });
 
-                                $.ajax({
-                                    url: '/rest/order/list',
-                                    type: 'POST',
-                                    contentType: 'application/json',
-                                    data: JSON.stringify(orderno),
-                                    success: function (response) {
-                                        const targetTableBody = document.querySelector('#target-table tbody');
-                                        targetTableBody.innerHTML = ''; // 기존 내용을 지우고
+                                    return orderno;
+                                }
 
-                                        response.forEach(order => {
-                                            const row = document.createElement('tr');
-                                            row.innerHTML = `
-                                            <td>${order.orderno}</td>
-                                            <td>${order.reqdate || 'N/A'}</td>
-                                            <td>${order.material ? order.material.mtrlno : 'N/A'}</td>
-                                            <td>${order.material ? order.material.name : 'N/A'}</td>
-                                            <td>${order.material ? order.material.quantity : 'N/A'}</td>
-                                            <td>${order.quantity}</td>
-                                            <td>${order.quotationmtrl && order.quotationmtrl.quotation && order.quotationmtrl.quotation.contractor ? order.quotationmtrl.quotation.contractor.name : 'N/A'}</td>
-                                            <td>${order.quotationmtrl ? order.quotationmtrl.unitprice : 'N/A'}</td>
-                                            <td>${order.quotationmtrl ? order.quotationmtrl.totalprice : 'N/A'}</td>
-                                            <td>${order.status}</td>
-                                            <td>${order.orderdate || 'N/A'}</td>
-                                             `;
-                                            targetTableBody.appendChild(row);
-                                        });
+                                $('#execute-orders-btn').on('click', function (e) {
+                                    e.preventDefault();
 
-                                        checkedBoxes.forEach(checkbox => {
-                                            checkbox.checked = false;
-                                        });
+                                    console.log(getOrderno());
 
-                                        const orderCodeCheckbox = document.getElementById('order-code');
-                                        if (orderCodeCheckbox) {
-                                            orderCodeCheckbox.checked = false;
+                                    $.ajax({
+                                        url: '/rest/order/list',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(getOrderno()),
+                                        success: function (response) {
+                                            console.log(response);
+
+                                            var ordernos = response.map(order => order.orderno);
+                                            console.log(ordernos)
+
+                                            $('#tableBody tr').each(function () {
+                                                const checkbox = $(this).find('.ordernoCheckbox');
+                                                if (checkbox.length && ordernos.includes(parseInt(checkbox.val(), 10))) {
+                                                    $(this).remove();
+                                                }
+                                            });
+
+                                            response.forEach(order => {
+                                                // Create a new <tr> element
+                                                const newRow = `
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" class="ordernoCheckbox" value="${order.orderno}">
+                                        <span>${order.orderno}</span>
+                                    </label>
+                                </td>
+                                <td>${order.prcr != null ? order.prcr.reqdate : 'N/A'}</td>
+                                <td>${order.material != null ? order.material.mtrlno : 'N/A'}</td>
+                                <td>${order.material != null ? order.material.name : 'N/A'}</td>
+                                <td>${order.material != null ? order.material.quantity : 'N/A'}</td>
+                                <td>${order.quantity}</td>
+                                <td>${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}</td>
+                                <td>${order.quotationmtrl.unitprice}</td>
+                                <td>${order.quotationmtrl.totalprice}</td>
+                                <td>${order.status}</td>
+                                <td class="col-md-1 text-center">${order.orderdate}</td>
+                            </tr>
+                        `;
+
+                                                // Append the new row to the <tbody>
+                                                $('#conTbody').append(newRow);
+                                            });
+
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error(error);
+                                            // Handle any errors
                                         }
-
-                                        const executeBtn = document.getElementById('execute-orders-btn');
-                                        executeBtn.classList.remove('btn-disabled');
-                                        executeBtn.innerHTML = '<a href="#" style="text-decoration: none; color: inherit; text-align: center;">발주 실행</a>';
-                                    },
-                                    error: function (error) {
-                                        console.log('Error:', error);
-                                    }
+                                    });
                                 });
-                            }
+                            });
                         </script>
                     </th:block>
                 </div>

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface MaterialService {
 
-    List<MaterialDTO> list();
+    List<MaterialDTO> list(String input);
 
     MaterialDTO read(Long mtrlno);
 
@@ -59,6 +59,31 @@ public interface MaterialService {
                     .status(material.getStatus())
                     .regdate(material.getRegdate())
                     .moddate(material.getModdate()).build();
+        } else {
+            return null;
+        }
+    }
+
+    default MaterialDTO materialObjectToDto(Object entityObject) {
+        MaterialDTO dto = new MaterialDTO();
+        if (entityObject instanceof Object[] objectArray) {
+            for (Object object : objectArray) {
+                if (object instanceof Material material) {
+                    dto.setMtrlno(material.getMtrlno());
+                    dto.setName(material.getName());
+                    dto.setDescription(material.getDescription());
+                    dto.setStandard(material.getStandard());
+                    dto.setQuantity(material.getQuantity());
+                    dto.setStatus(material.getStatus());
+                    dto.setRegdate(material.getRegdate());
+                    dto.setModdate(material.getModdate());
+                } else if (object instanceof MaterialGroup materialGroup) {
+                    dto.setMaterialGroup(materialGroup);
+                } else if (object instanceof MaterialWarehouse materialWarehouse) {
+                    dto.setMaterialWarehouse(materialWarehouse);
+                }
+            }
+            return dto;
         } else {
             return null;
         }
