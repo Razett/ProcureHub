@@ -32,11 +32,11 @@ public class MaterialController {
      * 자재 목록
      */
     @GetMapping("/list")
-    public String List(Material material, Model model) {
+    public String List(@RequestParam("inputSearch") String inputSearch, Model model) {
+        System.out.println(inputSearch);
         model.addAttribute("title", "자재 목록");
 
-        model.addAttribute("materiallist", materialService.list());
-        model.addAttribute("warehouses" , materialService.getWarehouses());
+        model.addAttribute("materiallist", materialService.list(inputSearch));
         return "/material/list";
     }
 

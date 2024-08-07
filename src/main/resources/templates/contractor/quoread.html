@@ -68,7 +68,7 @@
                     <th:block th:fragment="content">
                         <div class="row gap-20 pos-r">
                             <div class="col-md-5">
-                                <div class="bgc-white p-20 bd">
+                                <div class="bgc-white p-20 bd h-100">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="c-grey-900 mT-10 mB-30" th:text="${quotation.title}"></h4>
                                         <div class=" mT-10 mB-30">
@@ -78,7 +78,7 @@
                                                 <i class="c-grey-900 ti-pencil-alt fa-1-25x"></i>
                                             </a>
                                             <a th:href="@{/agreement/register(qtno=${quotation.qtno})}"
-                                               class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               class="px-2 py-2 ms-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                data-bs-original-title="계약 추가">
                                                 <i class="c-grey-900 ti-stamp fa-1-25x"></i>
                                             </a>

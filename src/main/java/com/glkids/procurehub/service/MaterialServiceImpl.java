@@ -12,6 +12,9 @@ import com.querydsl.jpa.JPQLQuery;
 import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +33,14 @@ public class MaterialServiceImpl implements MaterialService {
     private final MaterialFileRepository materialFileRepository;
 
     @Override
-    public List<MaterialDTO> list() {
-
+    public List<MaterialDTO> list(String input) {
         List<MaterialDTO> materialDTOList = new ArrayList<>();
-        materialRepository.findAll().forEach(material -> {materialDTOList.add(materialEntityToDTO(Optional.ofNullable(material)));});
+//        materialRepository.findAll().forEach(material -> {materialDTOList.add(materialEntityToDTO(Optional.ofNullable(material)));});
 
+        Page<Object[]> result = materialRepository.searchMaterial(input, PageRequest.of(0, 50, Sort.by(Sort.Direction.ASC, "mtrlno")));
+        result.getContent().forEach(object -> {
+            materialDTOList.add(materialObjectToDto(object));
+        });
         return materialDTOList;
     }
 
