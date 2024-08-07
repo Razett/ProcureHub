@@ -36,4 +36,5 @@ public class QuotationDTO {
     @Builder.Default
     private List<QuotationMtrlDTO> quotationMtrlList = new ArrayList<>();
     private Long agreementCount; // 계약 개수
+    private Long corno;
 }

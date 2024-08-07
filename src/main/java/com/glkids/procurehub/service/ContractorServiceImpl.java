@@ -167,4 +167,9 @@ public class ContractorServiceImpl implements ContractorService {
             return null;
         }
     }
+
+    @Override
+    public void quoupdate(QuotationDTO quotationDTO) {
+        quotationRepository.save(quotationDtoToEntity(quotationDTO));
+    }
 }

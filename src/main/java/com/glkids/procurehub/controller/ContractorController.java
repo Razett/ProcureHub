@@ -3,10 +3,12 @@ package com.glkids.procurehub.controller;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.entity.Contractor;
+import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.service.AgreementService;
 import com.glkids.procurehub.service.ContractorService;
 import com.glkids.procurehub.service.QuotationService;
+import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -134,6 +136,27 @@ public class ContractorController {
         model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
 
         return "/contractor/quoread";
+    }
+
+    @GetMapping("/quoupdate")
+    public String quoupdate(Long qtno, Model model){
+        QuotationDTO dto = contractorService.quoread(qtno);
+        model.addAttribute("updateread", dto);
+
+        model.addAttribute("materialupdate", quotationService.readQuotationMtrlList(qtno));
+
+        return "/contractor/quoupdate";
+    }
+
+    @PostMapping("/quoupdate")
+    public String Postquoupdate(@ModelAttribute QuotationDTO quotationDTO){
+
+
+        quotationDTO.setContractor(Contractor.builder().corno(quotationDTO.getCorno()).build());
+        quotationDTO.setEmp(Emp.builder().empno(201758030L).build());
+        contractorService.quoupdate(quotationDTO);
+
+        return "redirect:/contractor/quoread?qtno=" + quotationDTO.getQtno();
     }
 
 }

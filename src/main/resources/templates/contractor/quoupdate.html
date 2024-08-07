@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <style>
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #fff;
+                z-index: 90000;
+            }
+
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
+
+            @-webkit-keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0)
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
+    </script>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <style>
+                            .autocomplete-suggestions {
+                                border: 1px solid #ccc;
+                                max-height: 200px;
+                                overflow-y: auto;
+                                position: absolute;
+                                background-color: white;
+                                z-index: 1000;
+                                width: 40%;
+                                display: none; /* 기본적으로 숨김 */
+                            }
+
+                            .autocomplete-suggestion {
+                                padding: 10px;
+                                cursor: pointer;
+                            }
+
+                            .autocomplete-suggestion:hover,
+                            .autocomplete-suggestion.selected {
+                                background-color: #ddd;
+                            }
+                            .autocomplete-suggestions2 {
+                                border: 1px solid #ccc;
+                                max-height: 200px;
+                                overflow-y: auto;
+                                position: absolute;
+                                background-color: white;
+                                z-index: 1000;
+                                width: 100%;
+                                display: none; /* 기본적으로 숨김 */
+                            }
+
+                            .autocomplete-suggestion2 {
+                                padding: 10px;
+                                cursor: pointer;
+                            }
+
+                            .autocomplete-suggestion2:hover,
+                            .autocomplete-suggestion2.selected {
+                                background-color: #ddd;
+                            }
+                        </style>
+                        <form action="quoupdate" method="post">
+                            <input type="hidden" th:value="${updateread.qtno}" name="qtno">
+                            <input type="hidden" th:value="${updateread.status}" name="status">
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd h-100">
+                                        <h4 class="c-grey-900 mT-10 mB-5">견적 수정</h4>
+                                        <div class="mb-3">
+                                            <label class="form-label" >견적 제목</label>
+                                            <input type="text" name="title" class="form-control" th:value="${updateread.title}"
+                                                   control-id="ControlID-1" max="30" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="quotationContent">세부내용</label>
+                                            <textarea type="text" name="content" class="form-control h-25" rows="6"
+                                                      id="quotationContent" th:value="${updateread.content}"
+                                                      control-id="ControlID-1" maxlength="1024"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd">
+                                        <h4 class="c-grey-900 mT-10 mB-5">업체 정보</h4>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="contractorName">업체명</label>
+                                            <input type="text" name="name" class="form-control"
+                                                   id="contractorName" th:value="${updateread.contractor.name}"
+                                                   control-id="ControlID-1" max="30" autocomplete="off" required>
+                                            <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+                                        </div>
+                                        <div class="form-container">
+                                            <div class="mb-3">
+                                                <label class="form-label">사업자 등록번호</label>
+                                                <input type="text" name="corno" class="form-control bgc-grey-100" id="corno"
+                                                       th:value="${updateread.contractor.corno}"
+                                                       placeholder="" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label>내선번호</label>
+                                                <input type="text" name="phone" class="form-control" id="phone"
+                                                       th:value="${updateread.contractor.phone}" >
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">도로명주소</label>
+                                                <input type="text" name="address1" class="form-control" id="address1"
+                                                      th:value="${updateread.contractor.address1}" >
+                                                <label class="form-label">상세주소</label>
+                                                <input type="text" name="address2" class="form-control" id="address2"
+                                                       th:value="${updateread.contractor.address2}" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-12">
+                                    <div class="bgc-white p-20 bd">
+                                        <div class="d-flex justify-content-between">
+                                            <h4 class="c-grey-900 mT-10 mB-5">자재 정보</h4>
+                                            <div class="mT-10 mB-5">
+                                                <a href="#" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 추가">
+                                                    <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="vh-25 overflow-y-auto">
+                                            <table class="table table-bordered table-hover" id="quotationMtrlTable">
+                                                <thead class="position-sticky top-0 border-1">
+                                                <tr>
+                                                    <th class="col text-center d-none d-sm-table-cell">자재 코드</th>
+                                                    <th class="col text-center">자재명</th>
+                                                    <th class="col text-center">상태</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">규격</th>
+                                                    <th class="col text-center d-none d-sm-table-cell">현 재고 수량</th>
+                                                    <th class="col text-center text-break">월 납품 수량</th>
+                                                    <th class="col text-center">단가</th>
+                                                    <th class="col text-center">총 금액</th>
+                                                    <th class="col text-center">L/T</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="quotationMtrlTbody">
+                                                <th:block th:each="list, i : ${materialupdate}">
+                                                    <tr>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${i.index + 1}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:id="${list.material.mtrlno}" th:text="'MA' + ${#numbers.formatInteger(list.material.mtrlno, 6)}"></td>
+                                                        <td class="text-center" th:text="${list.material.name}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell" th:text="${list.material.standard}"></td>
+                                                        <td class="text-end d-none d-sm-table-cell" th:text="${list.material.quantity}"></td>
+                                                        <td class="text-end" th:text="${list.quantity}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(list.unitprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${#numbers.formatInteger(list.totalprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end" th:text="${list.leadtime} + '일'"></td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">견적서 파일 </label>
+                                            <input type="file" name="file" class="form-control" multiple>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="hidden" name="empno" id="empno" value="201758030">
+                                            <button type="button" class="btn cur-p btn-danger btn-color" id="cancel">
+                                                취소
+                                            </button>
+                                            <input type="submit" class="btn cur-p btn-dark btn-color" value="수정하기">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script src="/js/quoregister.js"></script>
+                        </form>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+    </div>
+    </body>
+</th:block>
+</html>
