@@ -84,7 +84,7 @@
                     <th:block th:fragment="content">
                         <div class="row gap-20 pos-r">
                             <div class="col-md-6">
-                                <div class="bgc-white p-20 bd">
+                                <div class="bgc-white p-20 bd h-100">
                                     <div class="d-flex justify-content-between">
                                         <h1 class="c-grey-900 mT-10 mB-30" th:text="${material.name}"></h1>
                                         <div class=" mT-10 mB-30">
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="bgc-white p-20 bd">
+                                <div class="bgc-white p-20 bd h-100">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="c-grey-900 mT-10 mB-30">도면</h4>
                                         <div th:if="${materialFile != null}" class=" mT-10 mB-30">
@@ -155,26 +155,46 @@
                                         </div>
                                     </div>
                                     <th:block th:if="${materialFileList.size() != 0}">
-                                        <th:block th:each="file, iterStat : ${materialFileList}">
-                                            <div>
-                                                <div class="col-md-4">
-                                                    <p>
-                                                        <button class="btn btn-primary" type="button"
-                                                                data-bs-toggle="collapse"
-                                                                th:attr="data-bs-target='#collapseExample' + ${iterStat.index}, aria-controls='collapseExample' + ${iterStat.index}"
-                                                                aria-expanded="false"
-                                                                th:text="${file.name}"></button>
-                                                    </p>
-                                                    <div class="collapse" th:id="'collapseExample' + ${iterStat.index}">
-                                                        <div class="card card-body">
-                                                            <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
-                                                                 class="card-img-top mb-3" alt="Image"
-                                                                 style="height: 180px; object-fit: cover;">
+                                        <div class="accordion" id="materialFileAccordion">
+                                            <th:block th:each="file, iterStat : ${materialFileList}">
+                                                <th:block th:if="${iterStat.first}">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" th:attr="data-bs-toggle='collapse', data-bs-target='#collapse' + ${iterStat.index}, aria-controls='collapse' + ${iterStat.index}, aria-expanded='true'">
+                                                                <span th:text="${file.name}"></span>
+                                                            </button>
+                                                        </h2>
+                                                        <div th:id="'collapse'+${iterStat.index}" class="accordion-collapse collapse show" data-bs-parent="#materialFileAccordion">
+                                                            <div class="accordion-body">
+                                                                <a th:href="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}" target="_blank">
+                                                                    <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
+                                                                         class="card-img-top mb-3" th:alt="'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}"
+                                                                         style="height: 180px; object-fit: cover;">
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </th:block>
+                                                </th:block>
+                                                <th:block th:unless="${iterStat.first}">
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:attr="data-bs-toggle='collapse', data-bs-target='#collapse' + ${iterStat.index}, aria-controls='collapse' + ${iterStat.index}, aria-expanded='false'">
+                                                                <span th:text="${file.name}"></span>
+                                                            </button>
+                                                        </h2>
+                                                        <div th:id="'collapse'+${iterStat.index}" class="accordion-collapse collapse" data-bs-parent="#materialFileAccordion">
+                                                            <div class="accordion-body">
+                                                                <a th:href="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}" target="_blank">
+                                                                    <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
+                                                                         class="card-img-top mb-3" th:alt="'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}"
+                                                                         style="height: 180px; object-fit: cover;">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </th:block>
+                                        </div>
                                     </th:block>
                                     <th:block th:unless="${materialFileList.size() != 0}">
                                         <span class="text-black fa-1x">추가된 도면이 없습니다...</span>
