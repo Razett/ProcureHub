@@ -8,8 +8,9 @@ import java.util.List;
 public interface OrderService {
 
     //1. 발주 현황 목록
+    //1-1. 발주 실행 전 대기 현황
     List<OrderDTO> getOrderListBefore();
-
+    //1-2. 발주 실행 후 진행 현황
     List<OrderDTO> getOrderListAfter();
 
     //2. 발주 수동 추가

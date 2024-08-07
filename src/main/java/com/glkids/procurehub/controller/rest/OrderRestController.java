@@ -21,10 +21,6 @@ public class OrderRestController {
 
     @PostMapping(value = "/list", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<OrderDTO>> orderExecute(@RequestBody List<Long> orderno) {
-        System.out.println(orderno);
-        if (orderno == null || orderno.isEmpty() || orderno.contains(null)) {
-            throw new IllegalArgumentException("Order keys must not be null or empty and must contain valid IDs");
-        }
         return ResponseEntity.ok(orderService.orderExecute(orderno));
     }
 

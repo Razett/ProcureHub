@@ -19,7 +19,4 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
     @Modifying
     @Query("UPDATE Order o SET o.emp = :emp, o.orderdate = :orderdate, o.status = :status WHERE o.orderno = :orderno")
     void orderExecute(@Param("orderno") Long orderno, @Param("emp") Emp emp, @Param("orderdate") LocalDateTime orderdate, @Param("status") Integer status);
-
-//    @Query("SELECT o FROM Order o JOIN FETCH o.quotationmtrl JOIN FETCH o.material WHERE o.orderno = :orderno")
-//    Optional<Order> findByIdFetch(@Param("orderno") Long orderno);
 }

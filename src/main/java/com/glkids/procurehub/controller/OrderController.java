@@ -26,7 +26,6 @@ public class OrderController {
     @GetMapping("/list")
     public String list(Model model, OrderDTO orderDTO) {
         model.addAttribute("title", "발주 현황");
-
         model.addAttribute("orderBeforeList", orderService.getOrderListBefore());
         model.addAttribute("orderAfterList", orderService.getOrderListAfter());
         return "order/list";

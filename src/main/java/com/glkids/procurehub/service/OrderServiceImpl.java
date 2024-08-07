@@ -78,7 +78,6 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> orderExecute(List<Long> ordernos) {
         List<OrderDTO> executeList = new ArrayList<>();
 
-        // 업데이트할 Emp 객체를 조회
         Emp emp = Emp.builder().empno(201758030L).build();
 
         for (Long orderno : ordernos) {
@@ -86,15 +85,14 @@ public class OrderServiceImpl implements OrderService {
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
 
-                // Emp 및 상태 업데이트
                 order.setEmp(emp);
                 order.setOrderdate(LocalDateTime.now());
-                order.setStatus(1); // 상태를 적절히 설정
+                order.setStatus(1);
 
-                Order updatedOrder = orderRepository.save(order); // 업데이트된 주문을 저장합니다.
+                Order updatedOrder = orderRepository.save(order);
 
                 if (updatedOrder.getOrderdate().equals(order.getOrderdate())) {
-                    executeList.add(orderEntityToDTO(order)); // DTO로 변환하여 리스트에 추가합니다.
+                    executeList.add(orderEntityToDTO(order));
                 }
             }
         }
