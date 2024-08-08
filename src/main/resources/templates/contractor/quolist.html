@@ -160,10 +160,10 @@
                                                         th:text="${quotation.quotationMtrlList.get(0).quantity}">수량
                                                     </td>
                                                     <td class="text-end"
-                                                        th:text="${quotation.quotationMtrlList.get(0).unitprice}">단가
+                                                        th:text="${#numbers.formatInteger(quotation.quotationMtrlList.get(0).unitprice, 0 , 'COMMA')}">단가
                                                     </td>
                                                     <td class="text-end"
-                                                        th:text="${quotation.quotationMtrlList.get(0).totalprice}">총 금액
+                                                        th:text="${#numbers.formatInteger(quotation.quotationMtrlList.get(0).totalprice, 0 , 'COMMA')}">총 금액
                                                     </td>
                                                 </th:block>
                                                 <th:block th:unless="${quotation.quotationMtrlCount > 0}">
