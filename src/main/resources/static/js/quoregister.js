@@ -14,15 +14,14 @@ $(document).ready(function () {
         $('#corno').val(corno);
         fetchContractorDetailsByCorno(corno);
     }
-
     function fetchContractorDetailsByCorno(corno) {
         $.ajax({
             url: `/contractor/details?corno=${corno}`,
             method: 'GET',
             success: function (item) {
                 if (item) {
-                    $('#contractorName').val(item.name);
-                    $('#corno').val(item.corno);
+                    $('#contractorName').val(item.name).prop('readonly', true).addClass('bgc-grey-100'); // readonly 속성 추가
+                    $('#corno').val(item.corno).prop('readonly', true).addClass('bgc-grey-100'); // readonly 속성 추가
                     var address1 = item.address1 || '';
                     var address2 = item.address2 || '';
                     var address = address1 + ' ' + address2; // 주소1과 주소2를 결합
