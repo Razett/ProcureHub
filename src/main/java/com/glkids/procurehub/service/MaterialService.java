@@ -45,6 +45,8 @@ public interface MaterialService {
 
     List<MaterialFileDTO> materialFileList(Long mtrlno);
 
+    List<Material> findByNameContaining(String name);
+
     default MaterialDTO materialEntityToDTO(Optional<Material> opt) {
         if (opt.isPresent()) {
             Material material = opt.get();
