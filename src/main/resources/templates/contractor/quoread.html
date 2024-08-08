@@ -87,7 +87,8 @@
                                     <div class="d-flex mb-3">
                                         <div>
                                             <label class="form-label">견적 코드</label><br>
-                                            <span class="text-black fa-1-25x" th:text="'QT' + ${#numbers.formatInteger(quotation.qtno, 6)}"></span><br>
+                                            <span class="text-black fa-1-25x"
+                                                  th:text="'QT' + ${#numbers.formatInteger(quotation.qtno, 6)}"></span><br>
                                         </div>
                                         <div class="ms-5">
                                             <label class="form-label">상태</label><br>
@@ -97,7 +98,8 @@
                                     <div class="d-flex mb-3">
                                         <div>
                                             <label class="form-label">등록일</label><br>
-                                            <span class="text-black fa-1-25x" th:text="${#temporals.format(quotation.regdate , 'yyyy-MM-dd')}"></span><br>
+                                            <span class="text-black fa-1-25x"
+                                                  th:text="${#temporals.format(quotation.regdate , 'yyyy-MM-dd')}"></span><br>
                                         </div>
                                         <div class="ms-5">
                                             <label class="form-label">최근 수정일</label><br>
@@ -144,24 +146,26 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="bgc-white p-20 bd h-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h4 class="c-grey-900 mT-10 mB-30">견적서 파일</h4>
-                                        <div class="d-flex">
-                                            <div class=" mT-10 mB-30">
-                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"
-                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                   data-bs-original-title="견적서 생성 및 출력">
-                                                    <i class="c-grey-900 ti-printer fa-1-25x"></i>
-                                                </a>
-                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"
-                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                   data-bs-original-title="파일 추가">
-                                                    <i class="c-grey-900 ti-plus fa-1-25x"></i>
-                                                </a>
+                                <div class="bgc-white p-20 bd h-100" >
+                                        <div class="d-flex justify-content-between" >
+                                            <h4 class="c-grey-900 mT-10 mB-30">견적서 파일</h4>
+                                            <div class="d-flex">
+                                                <div class=" mT-10 mB-30">
+                                                    <a th:href="@{/contractor/quotationForm(qtno=${quotation.qtno})}"
+                                                       class="px-2 py-2" data-bs-toggle="tooltip"
+                                                       data-bs-placement="top"
+                                                       data-bs-original-title="견적서 생성 및 출력">
+                                                        <i class="c-grey-900 ti-printer fa-1-25x"></i>
+                                                    </a>
+                                                    <a id="inputQuoFile"
+                                                       class="px-2 py-2" data-bs-toggle="tooltip"
+                                                       data-bs-placement="top"
+                                                       data-bs-original-title="파일 추가">
+                                                        <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     <div class="overflow-x-hidden overflow-y-auto vh-25">
                                         <th:block th:if="${quoFileList.size() != 0}">
                                             <th:block th:each="file, iterStat : ${quoFileList}">
@@ -174,7 +178,8 @@
                                                                     aria-expanded="false"
                                                                     th:text="${file.name}"></button>
                                                         </p>
-                                                        <div class="collapse" th:id="'collapseExample' + ${iterStat.index}">
+                                                        <div class="collapse"
+                                                             th:id="'collapseExample' + ${iterStat.index}">
                                                             <div class="card card-body">
                                                                 <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
                                                                      class="card-img-top mb-3" alt="Image"
@@ -196,17 +201,19 @@
                                         <h4 class="c-grey-900 mT-10 mB-30">자재</h4>
                                         <div class="d-flex">
                                             <div class=" mT-10 mB-30">
-<!--                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"-->
-<!--                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"-->
-<!--                                                   data-bs-original-title="견적서 생성 및 출력">-->
-<!--                                                    <i class="c-grey-900 ti-printer fa-1-25x"></i>-->
-<!--                                                </a>-->
+                                                <!--                                                <a th:href="@{/contractor/read(corno=${quotation.contractor.corno})}"-->
+                                                <!--                                                   class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"-->
+                                                <!--                                                   data-bs-original-title="견적서 생성 및 출력">-->
+                                                <!--                                                    <i class="c-grey-900 ti-printer fa-1-25x"></i>-->
+                                                <!--                                                </a>-->
                                             </div>
                                         </div>
                                     </div>
                                     <th:block th:if="${quotationMtrlList.size() == 0}">
                                         <span class="text-black fa-1x">추가된 자재가 없습니다...</span>
-                                        <a id="inputMaterialFile" th:href="@{/contractor/quoupdate(qtno=${quotation.qtno})}" class="fa-1x">견적 수정하기</a>
+                                        <a id="inputMaterialFile"
+                                           th:href="@{/contractor/quoupdate(qtno=${quotation.qtno})}" class="fa-1x">견적
+                                            수정하기</a>
                                     </th:block>
                                     <th:block th:unless="${quotationMtrlList.size() == 0}">
                                         <div class="vh-25 overflow-y-auto">
@@ -227,15 +234,24 @@
                                                 <tbody class="quotationMtrlTbody">
                                                 <th:block th:each="quotationMtrl, i : ${quotationMtrlList}">
                                                     <tr>
-                                                        <td class="text-center d-none d-sm-table-cell" th:text="${i.index + 1}"></td>
-                                                        <td class="text-center d-none d-sm-table-cell" th:id="${quotationMtrl.material.mtrlno}" th:text="'MA' + ${#numbers.formatInteger(quotationMtrl.material.mtrlno, 6)}"></td>
-                                                        <td class="text-center" th:text="${quotationMtrl.material.name}"></td>
-                                                        <td class="text-center d-none d-sm-table-cell" th:text="${quotationMtrl.material.standard}"></td>
-                                                        <td class="text-end d-none d-sm-table-cell" th:text="${quotationMtrl.material.quantity}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell"
+                                                            th:text="${i.index + 1}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell"
+                                                            th:id="${quotationMtrl.material.mtrlno}"
+                                                            th:text="'MA' + ${#numbers.formatInteger(quotationMtrl.material.mtrlno, 6)}"></td>
+                                                        <td class="text-center"
+                                                            th:text="${quotationMtrl.material.name}"></td>
+                                                        <td class="text-center d-none d-sm-table-cell"
+                                                            th:text="${quotationMtrl.material.standard}"></td>
+                                                        <td class="text-end d-none d-sm-table-cell"
+                                                            th:text="${quotationMtrl.material.quantity}"></td>
                                                         <td class="text-end" th:text="${quotationMtrl.quantity}"></td>
-                                                        <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.unitprice, 0 , 'COMMA')}"></td>
-                                                        <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
-                                                        <td class="text-end" th:text="${quotationMtrl.leadtime} + '일'"></td>
+                                                        <td class="text-end"
+                                                            th:text="${#numbers.formatInteger(quotationMtrl.unitprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end"
+                                                            th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
+                                                        <td class="text-end"
+                                                            th:text="${quotationMtrl.leadtime} + '일'"></td>
                                                     </tr>
                                                 </th:block>
                                                 <th:block th:if="${quoFileList.size() == 1}">
@@ -248,16 +264,106 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="modal fade" id="quoModal" tabindex="-1"
+                             aria-labelledby="warehouseAddModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="quoFile">견적서 파일 등록</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputFile">파일 선택</label>
+                                            <input type="file" name="file" class="form-control" id="inputFile">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                id="cancle">취소
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-color disabled" id="uploadButton">
+                                            등록하기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <script>
                             $(document).ready(function () {
-                                $('.quotationMtrlTbody').on('click', 'tr', function () {
-                                    var row = $(this);
-                                    var mtrlno = row.find('td').eq(1).attr('id');
-                                    console.log(mtrlno);
-                                    if (mtrlno) {
-                                        $(location).attr('href', '/material/read?mtrlno=' + mtrlno);
-                                    }
+                                const server_url = 'http://192.168.1.25:8081';
+
+                                var fileData = new FormData();
+                                var file;
+
+                                $('#inputQuoFile').on("click", function (e) {
+                                    e.preventDefault();
+                                    console.log("모달나온다.")
+                                    $('#quoModal').modal("show");
+                                    $('#inputFile').val(null);
                                 });
+                                $('#inputFile').on("input", function (e) {
+                                    file = $(this)[0].files;
+                                    console.log(file);
+                                    if (file) {
+                                        $('#uploadButton').removeClass("disabled");
+                                    }
+                                })
+                                $('#uploadButton').on("click", function (e) {
+                                    e.preventDefault();
+                                    for (var i = 0; i < file.length; i++) {
+                                        fileData.append('file', file[i]);
+                                    }
+                                    $.ajax({
+                                        url: server_url + '/uploadFile',
+                                        type: 'POST',
+                                        data: fileData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: function (response) {
+                                            var metadata = {
+                                                name: response.name,
+                                                url: response.url,
+                                                uuid: response.uuid,
+                                                qtno: [[${quotation.qtno}]]
+                                            };
+                                            console.log(metadata);
+                                            registerMaterialFile(metadata)
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.error('파일 업로드 실패:', textStatus, errorThrown);
+                                            alert('파일 업로드에 실패했습니다.');
+                                            $('#quoModal').modal("hide");
+                                        }
+                                    });
+                                });
+
+                                function registerMaterialFile(metadata) {
+                                    $.ajax({
+                                        url: '/quotationFile/save',
+                                        type: 'POST',
+                                        data: JSON.stringify(metadata),
+                                        processData: false,
+                                        contentType: 'application/json',
+                                        success: function (response) {
+                                            if(response) {
+
+                                                console.log(response);
+                                                toastService.printToast("견적서 파일 업로드 완료 !><")
+                                                $('#quoModal').modal("hide");
+                                            }else {
+                                                console.log("에러에러~")
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.error('파일 업로드 실패:', textStatus, errorThrown);
+                                            alert('디비 저장실패 ㅡㅡ');
+                                            $('#quoModal').modal("hide");
+                                        }
+
+                                    });
+                                }
                             });
                         </script>
                     </th:block>

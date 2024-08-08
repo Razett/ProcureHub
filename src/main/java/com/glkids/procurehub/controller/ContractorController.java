@@ -5,10 +5,7 @@ import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.QuotationMtrl;
-import com.glkids.procurehub.service.AgreementService;
-import com.glkids.procurehub.service.ContractorService;
-import com.glkids.procurehub.service.MaterialServiceImpl;
-import com.glkids.procurehub.service.QuotationService;
+import com.glkids.procurehub.service.*;
 import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +28,7 @@ public class ContractorController {
     private final QuotationService quotationService;
     private final AgreementService agreementservice;
     private final MaterialServiceImpl materialServiceImpl;
+    private final MaterialService materialService;
 
     /**
      * 업체 목록
@@ -162,6 +160,14 @@ public class ContractorController {
         contractorService.quoupdate(quotationDTO);
 
         return "redirect:/contractor/quoread?qtno=" + quotationDTO.getQtno();
+    }
+
+    @GetMapping("/quotationForm")
+    public String quotationForm(Model model, Long qtno){
+        model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
+
+        model.addAttribute("quotation" ,contractorService.quoread(qtno));
+        return "/contractor/quotationForm";
     }
 
 }
