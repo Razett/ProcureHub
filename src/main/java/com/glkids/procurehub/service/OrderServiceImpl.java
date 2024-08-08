@@ -50,14 +50,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void register(OrderDTO orderDTO) {
-        Order orEntity = orderDtoToEntity(orderDTO);
-        orderRepository.save(orEntity);
+    public List<OrderDTO> update(List<OrderDTO> updateOrderList) {
+        return List.of();
     }
 
     @Override
-    public void update(OrderDTO orderDTO) {
-        orderRepository.save(orderDtoToEntity(orderDTO));
+    public void register(OrderDTO orderDTO) {
+        Order orEntity = orderDtoToEntity(orderDTO);
+        orderRepository.save(orEntity);
     }
 
     @Override

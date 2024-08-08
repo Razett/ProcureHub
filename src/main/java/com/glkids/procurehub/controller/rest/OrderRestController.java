@@ -24,4 +24,6 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.orderExecute(orderno));
     }
 
+//    @PostMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+
 }

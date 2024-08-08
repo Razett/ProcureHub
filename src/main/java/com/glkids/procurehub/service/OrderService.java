@@ -10,14 +10,15 @@ public interface OrderService {
     //1. 발주 현황 목록
     //1-1. 발주 실행 전 대기 현황
     List<OrderDTO> getOrderListBefore();
+
     //1-2. 발주 실행 후 진행 현황
     List<OrderDTO> getOrderListAfter();
 
+    //1-3. 대기 현황 수정
+    List<OrderDTO> update(List<OrderDTO> updateOrderList);
+
     //2. 발주 수동 추가
     void register(OrderDTO orderDTO);
-
-    //3. 발주 진행 수정
-    void update(OrderDTO orderDTO);
 
     //4. 발주 상세 정보
     OrderDTO read(Long orderno);

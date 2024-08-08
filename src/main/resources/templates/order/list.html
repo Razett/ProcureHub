@@ -89,25 +89,38 @@
                                     <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">대기 현황</h4>
                                     <div class="d-flex flex-column align-items-end">
                                         <div class="d-flex align-items-center" style="margin-bottom: 15px;">
-                                            <button type="button" class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
+                                            <button type="button" class="btn cur-p btn-outline-secondary ms-2">
                                                 <a th:href="@{/order/add}"
                                                    style="text-decoration: none; color: inherit; text-align: center;">
                                                     발주 추가
                                                 </a>
                                             </button>
                                             <button type="button" id="update-orders-btn"
-                                                    class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
+                                                    class="btn cur-p btn-outline-secondary ms-2">
                                                 <a href="#"
                                                    style="text-decoration: none; color: inherit; text-align: center;">
                                                     <span class="ti-pencil-alt"></span><span class="icon-name"></span>
                                                     &nbsp;수정
                                                 </a>
                                             </button>
+                                            <button type="button" id="save-orders-btn"
+                                                    class="btn cur-p btn-outline-secondary ms-2 d-none">
+                                                <a href="#"
+                                                   style="text-decoration: none; color: inherit; text-align: center;">
+                                                    <span class="ti-save"></span><span class="icon-name"></span>
+                                                    &nbsp;저장
+                                                </a>
+                                            </button>
+                                            <button type="button" id="cancel-orders-btn"
+                                                    class="btn btn-outline-danger ms-2 d-none">
+                                                <a href="#"
+                                                   style="text-decoration: none; color: inherit; text-align: center;">
+                                                    <span class="ti-trash"></span><span class="icon-name"></span>
+                                                    &nbsp;발주 취소
+                                                </a>
+                                            </button>
                                             <button type="button" id="execute-orders-btn"
-                                                    class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
+                                                    class="btn cur-p btn-outline-secondary ms-2">
                                                 <a href="#"
                                                    style="text-decoration: none; color: inherit; text-align: center;">
                                                     발주 실행
@@ -183,7 +196,7 @@
                                         <th>단가</th>
                                         <th>총금액</th>
                                         <th>발주 상태</th>
-                                        <th>발주 날짜</th>
+                                        <th scope="col" class="col-md-2">발주 날짜</th>
                                     </tr>
                                     </thead>
                                     <tbody id="conTbody">
@@ -199,8 +212,8 @@
                                             <td th:text="${order.quotationmtrl.unitprice}">
                                             <td th:text="${order.quotationmtrl.totalprice}">
                                             <td th:text="${order.status}">
-                                            <td class="col-md-1 text-center">
-                                                <span th:text="${#temporals.format(order.orderdate, 'yyyy-MM-dd')}"></span><br>
+                                            <td class="col-md-2 text-center">
+                                                <span th:text="${#temporals.format(order.orderdate, 'yyyy-MM-dd')}"></span>
                                                 <span th:text="${#temporals.format(order.orderdate, 'a hh:mm')}"></span>
                                             </td>
                                         </tr>
@@ -209,20 +222,28 @@
                             </div>
                         </div>
                             <script>
-                                $(document).ready(function () {
+                                function toggleCheckboxes(masterCheckbox) {
+                                    const isChecked = $(masterCheckbox).is(':checked');
+                                    $('.ordernoCheckbox').prop('checked', isChecked);
+                                }
 
+                                $(document).ready(function () {
                                     function getOrderno() {
-                                        var orderno = [];
+                                        var executeOrderno = [];
 
                                         $('.ordernoCheckbox:checked').each(function () {
-                                            orderno.push($(this).val());
+                                            executeOrderno.push($(this).val());
                                         });
 
-                                        return orderno;
+                                        return executeOrderno;
                                     }
 
+                                    // "발주 실행" 버튼 클릭 시
                                     $('#execute-orders-btn').on('click', function (e) {
                                         e.preventDefault();
+
+                                        $('#order-code').prop('checked', false);
+                                        $('.ordernoCheckbox').prop('checked', false);
 
                                         console.log(getOrderno());
 
@@ -272,41 +293,90 @@
                                         });
                                     });
 
+                                    // "수정" 버튼 클릭 시
                                     $('#update-orders-btn').on('click', function () {
-                                        const buttonText = $(this).find('a').text().trim();
+                                        $(this).addClass("d-none");
+                                        $('#save-orders-btn').removeClass("d-none");
+                                        $('#cancel-orders-btn').removeClass("d-none");
 
-                                        if (buttonText === '수정') {
-                                            // 텍스트 변경
-                                            $(this).find('a').html('<span class="ti-save"></span>&nbsp; 저장');
+                                        var updateOrderno = [];
+                                        var prev_quantity = [];
+                                        var prev_quotationmtrl =[];
 
-                                            // "발주 취소" 버튼 생성 및 삽입
-                                            const cancelButton = `
-                                                <button type="button" id="cancel-order-btn" class="btn btn-outline-danger"
-                                                style="width: 112px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
-                                                    <span class="ti-trash"></span>&nbsp; 발주 취소
-                                                </button>
-                                                `;
-                                            $(this).after(cancelButton); // "발주 실행" 버튼과 사이에 추가
+                                        $('#tableBody tr').each(function () {
+                                            updateOrderno.push($(this).find('.ordernoCheckbox').val());
+                                            prev_quantity.push($(this).find('td').eq(5).text().trim());
+                                            prev_quotationmtrl.push($(this).find('td').eq(6).text().trim());
+                                        });
 
-                                            // Change cells to inputs
-                                            $('#tableBody tr').each(function () {
+                                        // inputBox로 바꾸기
+                                        $('#tableBody tr').each(function () {
+                                            const quantityCell = $(this).find('td').eq(5);
+                                            const contractorCell = $(this).find('td').eq(6);
 
-                                                const quantityCell = $(this).find('td').eq(5);
-                                                const contractorCell = $(this).find('td').eq(6);
+                                            const orderQuantity = quantityCell.text().trim();
+                                            const contractorName = contractorCell.text().trim();
 
-                                                const orderQuantity = quantityCell.text().trim();
-                                                const contractorName = contractorCell.text().trim();
+                                            quantityCell.html(`
+                                                <input type="number" class="form-control quantity-input" value="${orderQuantity}"/>
+                                            `);
+                                            contractorCell.html(`
+                                                <input type="text" class="form-control company-input" value="${contractorName}"/>
+                                            `);
+                                        });
 
-                                                quantityCell.html(`
-                                                        <input type="number" class="form-control quantity-input"
-                                                               value="${orderQuantity}"/>
-                                                    `);
-                                                contractorCell.html(`
-                                                        <input type="text" class="form-control company-input"
-                                                               value="${contractorName}"/>
-                                                    `);
-                                            });
+                                    // "저장" 버튼 누를 시
+                                    $('#save-orders-btn').on('click', function () {
+                                        $(this).addClass("d-none");
+                                        $('#cancel-orders-btn').addClass("d-none");
+                                        $('#update-orders-btn').removeClass("d-none");
+
+                                        var next_quantity = [];
+                                        var next_quotationmtrl = [];
+
+                                        $('#tableBody tr').each(function () {
+                                            next_quantity.push($(this).find('.quantity-input').val());
+                                            next_quotationmtrl.push($(this).find('.contractor-input').val());
+                                        });
+
+                                        var jsonArray = [];
+                                        var jsonObj = new Object();
+                                        for (i=0;i<updateOrderno.length;i++){
+                                            if (prev_quantity[i] != next_quantity[i] || prev_quotationmtrl[i] != next_quotationmtrl[i]){
+                                                jsonObj = {
+                                                    orderno: updateOrderno[i],
+                                                    quantity: next_quantity[i],
+                                                    qtmtno: next_quotationmtrl[i]
+                                                };
+                                                jsonArray.push(jsonObj);
+                                            }
                                         }
+
+                                        $.ajax({
+                                            url: '/rest/order/update',
+                                            type: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(jsonArray),
+                                            success: function (response) {
+                                                console.log(response);
+                                                // 성공적인 응답 후 처리
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error(error);
+                                            }
+                                        });
+
+                                    });
+
+                                    // "발주 취소" 버튼 누를 시
+                                    $('#cancel-orders-btn').on('click', function () {
+                                        $(this).addClass("d-none");
+                                        $('#save-orders-btn').addClass("d-none");
+                                        $('#update-orders-btn').removeClass("d-none");
+
+                                    });
+
+
                                     });
                                 });
                             </script>

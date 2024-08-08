@@ -16,8 +16,8 @@ public class OrderRepositoryTest {
     @Test
     public void initSave() {
         Quotation quotation = Quotation.builder().qtno(32L).build();
-        QuotationMtrl quotationMtrl = QuotationMtrl.builder().quotation(quotation).qtmtno(7L).build();
-        orderRepository.save(Order.builder().emp(Emp.builder().build())
+        QuotationMtrl quotationMtrl = QuotationMtrl.builder().quotation(quotation).build();
+        orderRepository.save(Order.builder()
                         .material(Material.builder().mtrlno(1L).build())
                         .quotationmtrl(quotationMtrl)
                         .quantity(10L)

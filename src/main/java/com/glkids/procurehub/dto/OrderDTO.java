@@ -40,4 +40,5 @@ public class OrderDTO {
     private Integer status; //발주 상태
     private LocalDateTime regdate; //DB에 생성된 날짜
     private LocalDateTime moddate; //마지막 수정된 날짜
+    private Long qtmtno;
 }
