@@ -259,6 +259,7 @@ $(document).ready(function () {
                 selectedSuggestionIndex++;
                 suggestions.removeClass('active');
                 suggestions.eq(selectedSuggestionIndex).addClass('active');
+                suggestions.eq(selectedSuggestionIndex)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
@@ -266,6 +267,7 @@ $(document).ready(function () {
                 selectedSuggestionIndex--;
                 suggestions.removeClass('active');
                 suggestions.eq(selectedSuggestionIndex).addClass('active');
+                suggestions.eq(selectedSuggestionIndex)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
     });
@@ -283,6 +285,7 @@ $(document).ready(function () {
                 selectedSuggestionIndex++;
                 suggestions.removeClass('active');
                 suggestions.eq(selectedSuggestionIndex).addClass('active');
+                suggestions.eq(selectedSuggestionIndex)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
@@ -290,6 +293,7 @@ $(document).ready(function () {
                 selectedSuggestionIndex--;
                 suggestions.removeClass('active');
                 suggestions.eq(selectedSuggestionIndex).addClass('active');
+                suggestions.eq(selectedSuggestionIndex)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
     });
@@ -307,6 +311,7 @@ $(document).ready(function () {
                 selectedSuggestionIndex++;
                 suggestions.removeClass('active');
                 suggestions.eq(selectedSuggestionIndex).addClass('active');
+                suggestions.eq(selectedSuggestionIndex)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
@@ -314,6 +319,7 @@ $(document).ready(function () {
                 selectedSuggestionIndex--;
                 suggestions.removeClass('active');
                 suggestions.eq(selectedSuggestionIndex).addClass('active');
+                suggestions.eq(selectedSuggestionIndex)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
     });
