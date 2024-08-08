@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class QuotationRestController {
 
@@ -31,8 +33,7 @@ public class QuotationRestController {
     }
 
     @PostMapping("/quotationMtrl/save")
-    public ResponseEntity<String> saveQuotationMtrl(@RequestBody QuotationMtrlDTO quotationMtrlDTO) {
-        quotationService.saveQuotationMtrl(quotationMtrlDTO);
-        return ResponseEntity.ok("견적서 자재 저장 성공.");
+    public Boolean saveQuotationMtrl(@RequestBody List<QuotationMtrlDTO> quotationMtrlDTO) {
+        return quotationService.saveQuotationMtrl(quotationMtrlDTO);
     }
 }

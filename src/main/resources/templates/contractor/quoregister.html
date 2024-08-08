@@ -55,6 +55,69 @@
                     opacity: 0;
                 }
             }
+
+            .autocomplete-suggestions {
+                border: 1px solid #ccc;
+                max-height: 200px;
+                overflow-y: auto;
+                position: absolute;
+                background-color: white;
+                z-index: 1000;
+                width: 40%;
+                display: none;
+            }
+
+            .autocomplete-suggestion {
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .autocomplete-suggestion:hover,
+            .autocomplete-suggestion.selected {
+                background-color: #ddd;
+            }
+
+            .autocomplete-suggestions2 {
+                border: 1px solid #ccc;
+                max-height: 200px;
+                overflow-y: auto;
+                position: absolute;
+                background-color: white;
+                z-index: 1000;
+                width: 100%;
+                display: none;
+            }
+
+            .autocomplete-suggestion2 {
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .autocomplete-suggestion2:hover,
+            .autocomplete-suggestion2.selected {
+                background-color: #ddd;
+            }
+
+            .autocomplete-suggestionsConNums {
+                border: 1px solid #ccc;
+                max-height: 200px;
+                overflow-y: auto;
+                position: absolute;
+                background-color: white;
+                z-index: 1000;
+                width: 100%;
+                display: none;
+            }
+
+            .autocomplete-suggestionsConNum {
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .autocomplete-suggestionsConNum:hover,
+            .autocomplete-suggestionsConNum.selected {
+                background-color: #ddd;
+            }
         </style>
         <script defer="defer" src="js/main.js"></script>
         <link href="css/style.css" rel="stylesheet">
@@ -80,68 +143,6 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <style>
-                            .autocomplete-suggestions {
-                                border: 1px solid #ccc;
-                                max-height: 200px;
-                                overflow-y: auto;
-                                position: absolute;
-                                background-color: white;
-                                z-index: 1000;
-                                width: 40%;
-                                display: none; /* 기본적으로 숨김 */
-                            }
-
-                            .autocomplete-suggestion {
-                                padding: 10px;
-                                cursor: pointer;
-                            }
-
-                            .autocomplete-suggestion:hover,
-                            .autocomplete-suggestion.selected {
-                                background-color: #ddd;
-                            }
-                            .autocomplete-suggestions2 {
-                                border: 1px solid #ccc;
-                                max-height: 200px;
-                                overflow-y: auto;
-                                position: absolute;
-                                background-color: white;
-                                z-index: 1000;
-                                width: 100%;
-                                display: none; /* 기본적으로 숨김 */
-                            }
-
-                            .autocomplete-suggestion2 {
-                                padding: 10px;
-                                cursor: pointer;
-                            }
-
-                            .autocomplete-suggestion2:hover,
-                            .autocomplete-suggestion2.selected {
-                                background-color: #ddd;
-                            }
-                            .autocomplete-suggestionsConNums {
-                                border: 1px solid #ccc;
-                                max-height: 200px;
-                                overflow-y: auto;
-                                position: absolute;
-                                background-color: white;
-                                z-index: 1000;
-                                width: 100%;
-                                display: none; /* 기본적으로 숨김 */
-                            }
-
-                            .autocomplete-suggestionsConNum {
-                                padding: 10px;
-                                cursor: pointer;
-                            }
-
-                            .autocomplete-suggestionsConNum:hover,
-                            .autocomplete-suggestionsConNum.selected {
-                                background-color: #ddd;
-                            }
-                        </style>
                         <form id="quotationForm" enctype="multipart/form-data">
                             <div class="row gap-20 pos-r">
                                 <div class="col-md-6">
@@ -207,7 +208,8 @@
                                         <div class="d-flex justify-content-between">
                                             <h4 class="c-grey-900 mT-10 mB-5">자재 정보 입력</h4>
                                             <div class="mT-10 mB-5">
-                                                <a href="#" id="add-material" class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="자재 추가">
+                                                <a href="#" id="add-material" class="px-2 py-2" data-bs-toggle="tooltip"
+                                                   data-bs-placement="top" data-bs-original-title="자재 추가">
                                                     <i class="c-grey-900 ti-plus fa-1-25x"></i>
                                                 </a>
                                             </div>
@@ -231,28 +233,9 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="quotationMtrlTbody">
-                                                <td><input class="form-control" type="text" name="materialCode"
-                                                           id="materialCode" placeholder="자재 코드를 입력하세요." autocomplete="off">
-                                                    <div id="autocomplete-suggestions2" class="autocomplete-suggestions2"></div>
-                                                </td>
-                                                <td><input class="form-control" type="text" name="materialName"
-                                                           id="materialName" placeholder="자재 명를 입력하세요." autocomplete="off">
-                                                    <div id="autocomplete-suggestionsMtrlName" class="autocomplete-suggestionsMtrlName"></div>
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><input type="number" name="quantity" class="form-control"
-                                                           placeholder="월 단위 납품 수량을 입력하세요."></td>
-                                                <td><input type="number" name="unitPrice" class="form-control"
-                                                           placeholder="단가를 입력하세요."></td>
-                                                <td><input type="number" name="totalPrice" class="form-control"
-                                                           placeholder="총 금액을 입력하세요."></td>
-                                                <td><input type="number" name="leadTime" class="form-control"
-                                                           placeholder="일 단위 L/T을 입력하세요."></td>
+                                                <!-- 자재 입력 행이 추가될 부분 -->
                                                 </tbody>
                                             </table>
-                                            <input type="text" class="form-control" name="materialDetail"
-                                                   id="materialDetail" placeholder="자재 선택 시, 정보가 표시됩니다." readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">견적서 파일 </label>
@@ -275,6 +258,7 @@
             </div>
         </main>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </body>
 </th:block>
 </html>

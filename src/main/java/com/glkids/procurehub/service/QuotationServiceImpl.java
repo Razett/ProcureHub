@@ -34,9 +34,18 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @Transactional
-    public QuotationMtrl saveQuotationMtrl(QuotationMtrlDTO quotationMtrlDTO) {
-        QuotationMtrl quotationMtrl = quotationMtrlDtoToEntity(quotationMtrlDTO);
-        return quotationMtrlRepository.save(quotationMtrl);
+    public Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList) {
+        List<QuotationMtrl> quotationMtrlList = new ArrayList<>();
+        for(QuotationMtrlDTO quotationMtrlDTO : quotationMtrlDTOList) {
+            QuotationMtrl quotationMtrl = quotationMtrlDtoToEntity(quotationMtrlDTO);
+            if (quotationMtrlRepository.save(quotationMtrl).getQtmtno()!=null){
+                quotationMtrlList.add(quotationMtrl);
+            }
+            else{
+                return null;
+            }
+        }
+        return true;
     }
 
     @Override

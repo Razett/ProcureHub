@@ -11,7 +11,7 @@ public interface QuotationService {
 
     Quotation saveQuotation(QuotationDTO quotationDTO);
 
-    QuotationMtrl saveQuotationMtrl(QuotationMtrlDTO quotationMtrlDTO);
+    Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList);
 
     QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO);
 

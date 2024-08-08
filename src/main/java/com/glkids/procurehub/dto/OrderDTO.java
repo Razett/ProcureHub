@@ -1,5 +1,6 @@
 package com.glkids.procurehub.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.glkids.procurehub.entity.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

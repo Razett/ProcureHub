@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @Getter
+@Setter
 @Entity
 @Table(name = "`Order`")
 public class Order extends BaseEntity {

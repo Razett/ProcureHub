@@ -40,21 +40,14 @@
                                                 <i class="c-grey-900 ti-search fa-1-25x"></i>
                                             </a>
                                             <div class="dropdown">
-                                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Dropdown link
+                                                <a class="px-2 py-2 ms-2" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
                                                 </a>
-
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                    <li><a class="dropdown-item" href="">셀에서 자재 추가</a></li>
+                                                    <li><a class="dropdown-item" href="">셀 서식으로 다운로드</a></li>
                                                 </ul>
                                             </div>
-                                            <a href="#"
-                                               class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
-                                               data-bs-original-title="더보기">
-                                                <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
-                                            </a>
                                         </div>
                                     </div>
                                     <div class="row collapse" id="searchGroup">
@@ -105,6 +98,18 @@
                                     var url = '/material/read?mtrlno=' + mtrlno;
                                     window.location.href = url;
                                 });
+
+                                $('#searchButton').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var input = $('#searchInput').val();
+
+                                    if (input) {
+                                        window.location.href = "/material/list?inputSearch=" + input;
+                                    } else {
+                                        toastService.printToast("검색어를 입력하세요.")
+                                    }
+                                })
                             });
                         </script>
                     </th:block>

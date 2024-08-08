@@ -8,7 +8,10 @@ import java.util.List;
 public interface OrderService {
 
     //1. 발주 현황 목록
-    List<OrderDTO> list();
+    //1-1. 발주 실행 전 대기 현황
+    List<OrderDTO> getOrderListBefore();
+    //1-2. 발주 실행 후 진행 현황
+    List<OrderDTO> getOrderListAfter();
 
     //2. 발주 수동 추가
     void register(OrderDTO orderDTO);
@@ -23,7 +26,7 @@ public interface OrderService {
     List<OrderDTO> totalList();
 
     //6.발주 실행
-//    List<OrderDTO> orderExecute(List<Long> orderno);
+    List<OrderDTO> orderExecute(List<Long> ordernos);
 
     default Order orderDtoToEntity(OrderDTO orderDTO) {
         Order order = Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())
