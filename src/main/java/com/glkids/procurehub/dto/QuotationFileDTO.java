@@ -15,4 +15,5 @@ public class QuotationFileDTO {
     private String url;
     private String uuid;
     private Long qtno;
+    private Long qtfno;
 }

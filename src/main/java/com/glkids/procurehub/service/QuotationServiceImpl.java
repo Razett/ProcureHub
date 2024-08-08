@@ -3,10 +3,7 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationFileDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
-import com.glkids.procurehub.entity.QQuotationMtrl;
-import com.glkids.procurehub.entity.Quotation;
-import com.glkids.procurehub.entity.QuotationFile;
-import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.QuotationFileRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
@@ -79,5 +76,18 @@ public class QuotationServiceImpl implements QuotationService {
             return quotationEntityToDTO(opquo.get());
         }
         return null;
+    }
+
+    @Override
+    public List<QuotationFileDTO> quotationFileList(Long qtno) {
+        List<QuotationFileDTO> quotationFileDTOList = new ArrayList<>();
+
+        QQuotationFile qQuotationFile = QQuotationFile.quotationFile;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression quotationExp = qQuotationFile.quotation.qtno.eq(qtno)
+;
+        quotationFileRepository.findAll(builder.and(quotationExp)).forEach(x -> quotationFileDTOList.add(quotationFileEntityToDTO(x)));
+        return quotationFileDTOList;
     }
 }

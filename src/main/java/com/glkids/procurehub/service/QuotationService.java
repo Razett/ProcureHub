@@ -19,6 +19,8 @@ public interface QuotationService {
 
     QuotationDTO read(Long qutno);
 
+    List<QuotationFileDTO> quotationFileList(Long qtno);
+
     // DTO to Entity 변환 메서드
     default Quotation quotationDtoToEntity(QuotationDTO quotationDTO) {
         return Quotation.builder()
@@ -52,6 +54,7 @@ public interface QuotationService {
                 .uuid(quotationFileDTO.getUuid())
                 .name(quotationFileDTO.getName())
                 .url(quotationFileDTO.getUrl())
+                .qtfno(quotationFileDTO.getQtfno())
                 .build();
     }
 
@@ -59,6 +62,7 @@ public interface QuotationService {
     default QuotationFileDTO quotationFileEntityToDTO(QuotationFile entity) {
         return QuotationFileDTO.builder()
                 .qtno(entity.getQuotation().getQtno())
+                .qtfno(entity.getQtfno())
                 .uuid(entity.getUuid())
                 .name(entity.getName())
                 .url(entity.getUrl())
