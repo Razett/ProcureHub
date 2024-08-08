@@ -163,33 +163,28 @@
                                         </div>
                                     </div>
                                     <div class="overflow-x-hidden overflow-y-auto vh-25">
-                                        <div class="mb-3">
-                                            <label class="form-label">파일명</label><br>
-                                            <span class="text-black fa-1-25x">파일1</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">등록일</label><br>
-                                            <span class="text-black fa-1-25x"
-                                                  th:text="${quotation.contractor.corno}"></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">파일명</label><br>
-                                            <span class="text-black fa-1-25x">파일1</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">등록일</label><br>
-                                            <span class="text-black fa-1-25x"
-                                                  th:text="${quotation.contractor.corno}"></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">파일명</label><br>
-                                            <span class="text-black fa-1-25x">파일1</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">등록일</label><br>
-                                            <span class="text-black fa-1-25x"
-                                                  th:text="${quotation.contractor.corno}"></span>
-                                        </div>
+                                        <th:block th:if="${quoFileList.size() != 0}">
+                                            <th:block th:each="file, iterStat : ${quoFileList}">
+                                                <div>
+                                                    <div class="col-md-4">
+                                                        <p>
+                                                            <button class="btn btn-primary" type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    th:attr="data-bs-target='#collapseExample' + ${iterStat.index}, aria-controls='collapseExample' + ${iterStat.index}"
+                                                                    aria-expanded="false"
+                                                                    th:text="${file.name}"></button>
+                                                        </p>
+                                                        <div class="collapse" th:id="'collapseExample' + ${iterStat.index}">
+                                                            <div class="card card-body">
+                                                                <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
+                                                                     class="card-img-top mb-3" alt="Image"
+                                                                     style="height: 180px; object-fit: cover;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th:block>
+                                        </th:block>
                                     </div>
                                 </div>
                             </div>
@@ -242,6 +237,9 @@
                                                         <td class="text-end" th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
                                                         <td class="text-end" th:text="${quotationMtrl.leadtime} + '일'"></td>
                                                     </tr>
+                                                </th:block>
+                                                <th:block th:if="${quoFileList.size() == 1}">
+                                                    <span th:text="${quoFileList}"></span>
                                                 </th:block>
                                                 </tbody>
                                             </table>

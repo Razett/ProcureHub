@@ -7,6 +7,7 @@ import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.service.AgreementService;
 import com.glkids.procurehub.service.ContractorService;
+import com.glkids.procurehub.service.MaterialServiceImpl;
 import com.glkids.procurehub.service.QuotationService;
 import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class ContractorController {
     private final ContractorService contractorService;
     private final QuotationService quotationService;
     private final AgreementService agreementservice;
+    private final MaterialServiceImpl materialServiceImpl;
+
     /**
      * 업체 목록
      */
@@ -134,6 +137,8 @@ public class ContractorController {
 
         model.addAttribute("quotation", contractorService.quoread(qtno));
         model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
+        model.addAttribute("quoFileList", quotationService.quotationFileList(qtno));
+        model.addAttribute("materialFileList", materialServiceImpl.materialFileList(qtno));
 
         return "/contractor/quoread";
     }

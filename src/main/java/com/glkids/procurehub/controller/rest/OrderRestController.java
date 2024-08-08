@@ -1,13 +1,13 @@
 package com.glkids.procurehub.controller.rest;
 
+import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.service.MaterialService;
 import com.glkids.procurehub.service.OrderService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -16,13 +16,23 @@ public class OrderRestController {
 
     private final OrderService orderService;
 
-    public OrderRestController(OrderService orderService) {
+    private final MaterialService materialService;
+
+    public OrderRestController(OrderService orderService, MaterialService materialService) {
         this.orderService = orderService;
+        this.materialService = materialService;
     }
 
-//    @PostMapping(value = "/list", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public List<OrderDTO> orderExecute(@RequestBody List<String> orderKey) {
-//        return orderService.orderExecute(orderKey);
-//    }
+    @GetMapping("/add")
+    public List<MaterialDTO> search(@RequestParam("mtrlno") Long mtrlno) {
+        return Collections.singletonList(materialService.readByFetch(mtrlno));
+    }
+
+    // 자재 코드를 통해 자재 정보를 가져오는 API
+    @GetMapping("/getMaterialDetailCode")
+    public MaterialDTO getMaterialDetailsByCode(@RequestParam("mtrlno") Long mtrlno) {
+        System.out.println(mtrlno);
+        return materialService.readByFetch(mtrlno);
+    }
 }
 

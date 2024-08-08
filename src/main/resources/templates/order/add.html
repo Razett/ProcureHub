@@ -54,7 +54,9 @@
                   }
             }
         </style>
-        <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
     <body class="app">
     <div id="loader">
         <div class="spinner"></div>
@@ -83,8 +85,9 @@
                                     <form action="/order/add" method="post">
                                         <div class="mb-3">
                                             <label>자재코드</label>
-                                            <input type="text" class="form-control" placeholder="자재 코드를 입력하세요" control-id="ControlID-1">
+                                            <input type="text" class="form-control" placeholder="자재 코드를 입력하세요" id="materialInput" control-id="ControlID-1">
                                         </div>
+                                        <div id="autocomplete-suggestions2" class="autocomplete-suggestions2"></div>
                                         <div class="mb-3">
                                             <label>회사명</label>
                                             <input type="text" class="form-control" placeholder="회사를 선택하세요" control-id="ControlID-1" id="contractorName">
@@ -118,6 +121,79 @@
                             </div>
                         </div>
                         <script>
+                            // 자재명 자동완성 요청을 보내는 함수
+                            function fetchMaterialSuggestions(mtrlno) {
+                                $.ajax({
+                                    url: '/rest/order/add',
+                                    type: 'GET',
+                                    data: { mtrlno: mtrlno },
+                                    success: function (data) {
+                                        var suggestions = $('#autocomplete-suggestions2');
+                                        suggestions.empty(); // 이전 검색 결과 비우기
+                                        selectedSuggestionIndex = -1; // 초기화
+
+                                        // 검색 결과를 역순으로 반복하여 표시
+                                        data.reverse().forEach(function (item) {
+                                            var suggestion2 = $('<div class="autocomplete-suggestion2"></div>')
+                                                .html(`자재코드: ${item.mtrlno} 자재이름: ${item.name} 자재그룹명: ${item.materialWarehouse.name}`);
+                                            suggestion2.on('click', function () {
+                                                selectMaterialSuggestion(item);
+                                            });
+                                            suggestions.append(suggestion2);
+                                        });
+                                        suggestions.show();
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        console.error('자재 제안을 가져오는 데 실패했습니다:', textStatus, errorThrown);
+                                        alert('자재 제안을 가져오는 데 실패했습니다.');
+                                    }
+                                });
+                            }
+
+                            // 자재 정보를 가져오는 함수
+                            function fetchMaterialDetails(mtrlno) {
+                                $.ajax({
+                                    url: '/rest/material/getMaterialDetailCode',
+                                    type: 'GET',
+                                    data: { mtrlno: mtrlno },
+                                    success: function (data) {
+                                        if (data) {
+                                            displayMaterialDetails(data);
+                                        } else {
+                                            alert('자재 정보를 찾을 수 없습니다.');
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        console.error('자재 정보를 가져오는 데 실패했습니다:', textStatus, errorThrown);
+                                        alert('자재 정보를 가져오는 데 실패했습니다.');
+                                    }
+                                });
+                            }
+
+                            // 자재 정보를 화면에 표시하는 함수
+                            function displayMaterialDetails(material) {
+                                console.log(material);
+                                $('#materialDetail').val(`자재명: ${material.name}, 재고수량: ${material.quantity}, 규격: ${material.standard}, 창고명: ${material.wrhscode.name}`);
+                            }
+
+                            // 자재 제안 선택 시 호출되는 함수
+                            function selectMaterialSuggestion(item) {
+                                // 자재 제안 클릭 시 자재 상세 정보를 가져와서 표시
+                                fetchMaterialDetails(item.mtrlno);
+                                // 제안 목록 숨기기
+                                $('#autocomplete-suggestions2').hide();
+                            }
+
+                            // 이벤트 핸들러 예시 (적절한 이벤트에 따라 호출)
+                            $('#materialInput').on('input', function () {
+                                var mtrlno = $(this).val();
+                                if (mtrlno) {
+                                    fetchMaterialSuggestions(mtrlno);
+                                } else {
+                                    $('#autocomplete-suggestions2').empty().hide();
+                                }
+                            });
+
                         </script>
                     </th:block>
                 </div>
