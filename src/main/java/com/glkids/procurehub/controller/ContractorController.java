@@ -115,7 +115,7 @@ public class ContractorController {
     @GetMapping("/quoregister")
     public void getQuoRegister(Long corno, Model model) {
         model.addAttribute("title", "견적 등록");
-
+        model.addAttribute("ContractNum", corno);
     }
 
     /**
@@ -143,7 +143,6 @@ public class ContractorController {
         model.addAttribute("quotation", quotationDTO);
         model.addAttribute("quotationMtrlList", quotationMtrlList);
         model.addAttribute("quoFileList", quotationService.quotationFileList(qtno));
-
         return "/contractor/quoread";
     }
 

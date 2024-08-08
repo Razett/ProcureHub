@@ -3,6 +3,42 @@ $(document).ready(function () {
     var materialAcount = 2;
     var totalMaterial = 1;
 
+    // URL 쿼리 파라미터 가져오기 함수
+    function getQueryParam(param) {
+        let urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    let corno = getQueryParam('corno');
+    if (corno) {
+        $('#corno').val(corno);
+        fetchContractorDetailsByCorno(corno);
+    }
+
+    function fetchContractorDetailsByCorno(corno) {
+        $.ajax({
+            url: `/contractor/details?corno=${corno}`,
+            method: 'GET',
+            success: function (item) {
+                if (item) {
+                    $('#contractorName').val(item.name);
+                    $('#corno').val(item.corno);
+                    var address1 = item.address1 || '';
+                    var address2 = item.address2 || '';
+                    var address = address1 + ' ' + address2; // 주소1과 주소2를 결합
+                    $('#address').val(address);
+                    $('#phone').val(item.phone || '');
+                } else {
+                    console.error('Empty response');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('업체 정보를 불러오는 데 실패했습니다.', textStatus, errorThrown);
+                alert('업체 정보를 불러오는 데 실패했습니다.');
+            }
+        });
+    }
+
     // 자재 추가 버튼 클릭 이벤트 리스너
     $('#add-material').on('click', function (event) {
         event.preventDefault();

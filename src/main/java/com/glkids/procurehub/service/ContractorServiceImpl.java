@@ -163,6 +163,10 @@ public class ContractorServiceImpl implements ContractorService {
         }
         return index;
     }
+    public List<Contractor> findByCorno(Contractor contractor) {
+        List<Contractor> contractorFindByCorno = contractorRepository.findByCorno(contractor.getCorno());
+        return contractorFindByCorno;
+    }
 
     @Override
     public QuotationDTO quoread(Long qtno) {
