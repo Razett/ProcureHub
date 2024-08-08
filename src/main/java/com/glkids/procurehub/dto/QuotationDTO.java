@@ -3,6 +3,7 @@ package com.glkids.procurehub.dto;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.status.QuotationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -36,5 +37,18 @@ public class QuotationDTO {
     @Builder.Default
     private List<QuotationMtrlDTO> quotationMtrlList = new ArrayList<>();
     private Long agreementCount; // 계약 개수
+    private Long quotationMtrlCount;
     private Long corno;
+    private QuotationStatus quotationStatus;
+
+    public String getQuotationStatusString() {
+        if (status != null) {
+            for (QuotationStatus quotationStatus : QuotationStatus.values()) {
+                if (quotationStatus.ordinal() == status) {
+                    return quotationStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

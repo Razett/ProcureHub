@@ -7,7 +7,9 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ContractorRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
+import com.glkids.procurehub.status.QuotationStatus;
 import com.querydsl.jpa.JPQLQuery;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,10 +62,14 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
-    public List<QuotationDTO> quoList() {
-        List<Quotation> quotation = quotationRepository.findAll();
+    public List<QuotationDTO> quoList(String type, String input) {
         List<QuotationDTO> quoDTOList = new ArrayList<>();
-        quotation.forEach(x -> quoDTOList.add(quotationEntityToDTO(x)));
+
+        Page<Object[]> result = quotationRepository.searchQuotation(type ,input, PageRequest.of(0, 500, Sort.by(Sort.Direction.DESC, "regdate")));
+
+        result.getContent().forEach(object -> {
+            quoDTOList.add(quotationObjectToDTO(object));
+        });
         return quoDTOList;
     }
 
@@ -171,5 +177,11 @@ public class ContractorServiceImpl implements ContractorService {
     @Override
     public void quoupdate(QuotationDTO quotationDTO) {
         quotationRepository.save(quotationDtoToEntity(quotationDTO));
+    }
+
+    @Transactional
+    @Override
+    public void quoStatusNoMtrl(Long qtno) {
+        quotationRepository.changeStatus(qtno, QuotationStatus.NEED_MATERIAL.ordinal());
     }
 }

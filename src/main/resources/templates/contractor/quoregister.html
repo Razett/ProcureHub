@@ -174,8 +174,8 @@
                                             <span class="c-red-700 fa-1x"></span>
                                             <span class="fa-1x">자재코드를 입력하여 검색하세요.</span>
                                         </div>
-                                        <div class="vh-25 overflow-y-auto">
-                                            <table class="table table-bordered table-hover" id="quotationMtrlTable">
+                                        <div class="vh-35 overflow-y-auto overflow-x-auto">
+                                            <table class="table table-bordered table-hover" id="quotationMtrlTable" style="min-width: 1200px;">
                                                 <thead class="position-sticky top-0 border-1">
                                                 <tr>
                                                     <th class="col text-center">자재 코드</th>
@@ -191,33 +191,40 @@
                                                 <tbody class="quotationMtrlTbody">
                                                 <tr class="material-row" id="materialDetail1" name="materialDetail1">
                                                     <td><input class="form-control materialCode" id="materialCode1" type="text" name="materialCode1"
-                                                               placeholder="자재 코드를 입력하세요." autocomplete="off" required>
+                                                               placeholder="자재 코드" autocomplete="off" required>
                                                         <div id="autocomplete-suggestions1" class="list-group"></div>
                                                     </td>
                                                     <td><input class="form-control materialName" id="materialName1" type="text" name="materialName1" placeholder="자재명" autocomplete="off">
                                                         <div id="autocomplete-suggestions-name1" class="list-group"></div>
                                                     </td>
-                                                    <td><input class="form-control materialSpec" id="materialSpec1" type="text" name="materialSpec1" placeholder="규격" readonly></td>
-                                                    <td><input class="form-control materialStock" id="materialStock1" type="number" name="materialStock1" placeholder="현 재고 수량" readonly></td>
-                                                    <td><input type="number" name="quantity1" id="quantity1" class="form-control" placeholder="월 단위 납품 수량을 입력하세요." required></td>
-                                                    <td><input type="number" name="unitPrice1" id="unitPrice1" class="form-control" placeholder="단가를 입력하세요." required></td>
-                                                    <td><input type="number" name="totalPrice1" id="totalPrice1" class="form-control" placeholder="총 금액을 입력하세요." required></td>
-                                                    <td><input type="number" name="leadTime1" id="leadTime1" class="form-control" placeholder="일 단위 L/T을 입력하세요." required></td>
-                                                    <td></td>
+                                                    <td><input class="form-control materialSpec bgc-grey-100" id="materialSpec1" type="text" name="materialSpec1" placeholder="규격" readonly></td>
+                                                    <td><input class="form-control materialStock bgc-grey-100" id="materialStock1" type="number" name="materialStock1" placeholder="현 재고 수량" readonly></td>
+                                                    <td><input type="number" name="quantity1" id="quantity1" class="form-control" placeholder="월 납품 수량" required></td>
+                                                    <td><input type="number" name="unitPrice1" id="unitPrice1" class="form-control" placeholder="단가" required></td>
+                                                    <td><input type="number" name="totalPrice1" id="totalPrice1" class="form-control" placeholder="총 금액" required></td>
+                                                    <td><input type="number" name="leadTime1" id="leadTime1" class="form-control" placeholder="일 단위 L/T" required></td>
+                                                    <td><a href="#quotationMtrlTable" class="form-control bgc-grey-100 disabled" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="삭제"><i class="c-grey-500 ti-trash fa-1-25x"></i></a></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-12">
+                                    <div class="bgc-white p-20 bd">
+                                        <h4 class="c-grey-900 mT-10 mB-30">견적서 파일 추가</h4>
                                         <div class="mb-3">
-                                            <label class="form-label">견적서 파일 </label>
+                                            <label class="form-label">견적서 파일</label>
                                             <input type="file" name="file" class="form-control" multiple>
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mt-3">
                                             <input type="hidden" name="empno" id="empno" value="201758030">
-                                            <button type="button" class="btn cur-p btn-danger btn-color" id="cancel">
+                                            <button type="button" class="btn cur-p btn-secondary" id="cancel">
                                                 취소
                                             </button>
-                                            <input type="submit" class="btn cur-p btn-dark btn-color" value="등록하기">
+                                            <input type="submit" class="btn cur-p btn-primary c-white" value="등록하기">
                                         </div>
                                     </div>
                                 </div>

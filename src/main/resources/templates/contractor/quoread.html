@@ -92,19 +92,19 @@
                                         </div>
                                         <div class="ms-5">
                                             <label class="form-label">상태</label><br>
-                                            <span class="text-black fa-1-25x" th:text="${quotation.status}"></span><br>
+                                            <span class="text-black fa-1-25x" th:text="${quotation.getQuotationStatusString()}"></span><br>
                                         </div>
                                     </div>
                                     <div class="d-flex mb-3">
                                         <div>
                                             <label class="form-label">등록일</label><br>
                                             <span class="text-black fa-1-25x"
-                                                  th:text="${#temporals.format(quotation.regdate , 'yyyy-MM-dd')}"></span><br>
+                                                  th:text="${#temporals.format(quotation.regdate , 'yyyy-MM-dd a hh:mm')}"></span><br>
                                         </div>
                                         <div class="ms-5">
                                             <label class="form-label">최근 수정일</label><br>
                                             <span class="text-black fa-1-25x"
-                                                  th:text="${#temporals.format(quotation.moddate , 'yyyy-MM-dd')}"></span><br>
+                                                  th:text="${#temporals.format(quotation.moddate , 'yyyy-MM-dd a hh:mm')}"></span><br>
                                         </div>
                                     </div>
                                     <th:block th:if="${quotation.content != null and !quotation.content.isEmpty()}">
@@ -216,15 +216,15 @@
                                             수정하기</a>
                                     </th:block>
                                     <th:block th:unless="${quotationMtrlList.size() == 0}">
-                                        <div class="vh-25 overflow-y-auto">
-                                            <table class="table table-bordered table-hover" id="quotationMtrlTable">
+                                        <div class="vh-25 overflow-y-auto overflow-x-auto">
+                                            <table class="table table-bordered table-hover" id="quotationMtrlTable" style="min-width: 1200px">
                                                 <thead class="position-sticky top-0 border-1">
                                                 <tr>
-                                                    <th class="col text-center d-none d-sm-table-cell"></th>
-                                                    <th class="col text-center d-none d-sm-table-cell">자재 코드</th>
+                                                    <th class="col text-center"></th>
+                                                    <th class="col text-center">자재 코드</th>
                                                     <th class="col text-center">자재명</th>
-                                                    <th class="col text-center d-none d-sm-table-cell">규격</th>
-                                                    <th class="col text-center d-none d-sm-table-cell">현 재고 수량</th>
+                                                    <th class="col text-center">규격</th>
+                                                    <th class="col text-center">현 재고 수량</th>
                                                     <th class="col text-center text-break">월 납품 수량</th>
                                                     <th class="col text-center">단가</th>
                                                     <th class="col text-center">총 금액</th>
@@ -234,16 +234,16 @@
                                                 <tbody class="quotationMtrlTbody">
                                                 <th:block th:each="quotationMtrl, i : ${quotationMtrlList}">
                                                     <tr>
-                                                        <td class="text-center d-none d-sm-table-cell"
+                                                        <td class="text-center"
                                                             th:text="${i.index + 1}"></td>
-                                                        <td class="text-center d-none d-sm-table-cell"
+                                                        <td class="text-center"
                                                             th:id="${quotationMtrl.material.mtrlno}"
                                                             th:text="'MA' + ${#numbers.formatInteger(quotationMtrl.material.mtrlno, 6)}"></td>
                                                         <td class="text-center"
                                                             th:text="${quotationMtrl.material.name}"></td>
-                                                        <td class="text-center d-none d-sm-table-cell"
+                                                        <td class="text-center"
                                                             th:text="${quotationMtrl.material.standard}"></td>
-                                                        <td class="text-end d-none d-sm-table-cell"
+                                                        <td class="text-end"
                                                             th:text="${quotationMtrl.material.quantity}"></td>
                                                         <td class="text-end" th:text="${quotationMtrl.quantity}"></td>
                                                         <td class="text-end"

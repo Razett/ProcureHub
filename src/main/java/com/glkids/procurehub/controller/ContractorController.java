@@ -2,11 +2,12 @@ package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
+import com.glkids.procurehub.dto.QuotationMtrlDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.service.*;
-import jdk.jshell.Snippet;
+import com.glkids.procurehub.status.QuotationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 
 /**
@@ -27,8 +30,6 @@ public class ContractorController {
     private final ContractorService contractorService;
     private final QuotationService quotationService;
     private final AgreementService agreementservice;
-    private final MaterialServiceImpl materialServiceImpl;
-    private final MaterialService materialService;
 
     /**
      * 업체 목록
@@ -101,10 +102,10 @@ public class ContractorController {
      * 견적 목록
      */
     @GetMapping("/quolist")
-    public String quoList(Model model) {
+    public String quoList(String type, String input ,Model model) {
         model.addAttribute("title", "견적 목록");
 
-        model.addAttribute("quotationList", contractorService.quoList());
+        model.addAttribute("quotationList", contractorService.quoList(type, input));
         return "/contractor/quolist";
     }
 
@@ -133,10 +134,15 @@ public class ContractorController {
     public String quodatail(Long qtno, Model model) {
         model.addAttribute("title", "견적 정보");
 
-        model.addAttribute("quotation", contractorService.quoread(qtno));
-        model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
+        QuotationDTO quotationDTO = contractorService.quoread(qtno);
+        List<QuotationMtrlDTO> quotationMtrlList = quotationService.readQuotationMtrlList(qtno);
+        if (quotationMtrlList.isEmpty() && quotationDTO.getStatus() != QuotationStatus.NEED_MATERIAL.ordinal()) {
+            contractorService.quoStatusNoMtrl(qtno);
+            quotationDTO.setStatus(QuotationStatus.NEED_MATERIAL.ordinal());
+        }
+        model.addAttribute("quotation", quotationDTO);
+        model.addAttribute("quotationMtrlList", quotationMtrlList);
         model.addAttribute("quoFileList", quotationService.quotationFileList(qtno));
-        model.addAttribute("materialFileList", materialServiceImpl.materialFileList(qtno));
 
         return "/contractor/quoread";
     }

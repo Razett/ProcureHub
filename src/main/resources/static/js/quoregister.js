@@ -10,19 +10,19 @@ $(document).ready(function () {
         // 새로운 자재 입력 행 생성
         var newRow = `<tr class="material-row" id="materialDetail${materialAcount}" name="materialDetail${materialAcount}">
                 <td><input class="form-control materialCode" id="materialCode${materialAcount}" type="text" name="materialCode${materialAcount}"
-                           placeholder="자재 코드를 입력하세요." autocomplete="off" required>
+                           placeholder="자재 코드" autocomplete="off" required>
                     <div id="autocomplete-suggestions${materialAcount}" class="list-group"></div>
                 </td>
                 <td><input class="form-control materialName" id="materialName${materialAcount}" type="text" name="materialName${materialAcount}" placeholder="자재명" autocomplete="off">
                     <div id="autocomplete-suggestions-name${materialAcount}" class="list-group"></div>
                 </td>
-                <td><input class="form-control materialSpec" id="materialSpec${materialAcount}" type="text" name="materialSpec${materialAcount}" placeholder="규격" readonly></td>
-                <td><input class="form-control materialStock" id="materialStock${materialAcount}" type="number" name="materialStock${materialAcount}" placeholder="현 재고 수량" readonly></td>
-                <td><input type="number" name="quantity${materialAcount}" id="quantity${materialAcount}" class="form-control" placeholder="월 단위 납품 수량을 입력하세요." required></td>
-                <td><input type="number" name="unitPrice${materialAcount}" id="unitPrice${materialAcount}" class="form-control" placeholder="단가를 입력하세요." required></td>
-                <td><input type="number" name="totalPrice${materialAcount}" id="totalPrice${materialAcount}" class="form-control" placeholder="총 금액을 입력하세요." required></td>
-                <td><input type="number" name="leadTime${materialAcount}" id="leadTime${materialAcount}" class="form-control" placeholder="일 단위 L/T을 입력하세요." required></td>
-                <td><button type="button" class="badge text-bg-secondary remove-material" id="remove-material${materialAcount}" name="remove-material${materialAcount}"><i class="fa fa-trash"></i> 삭제</button></td>
+                <td><input class="form-control materialSpec bgc-grey-100" id="materialSpec${materialAcount}" type="text" name="materialSpec${materialAcount}" placeholder="규격" readonly></td>
+                <td><input class="form-control materialStock bgc-grey-100" id="materialStock${materialAcount}" type="number" name="materialStock${materialAcount}" placeholder="현 재고 수량" readonly></td>
+                <td><input type="number" name="quantity${materialAcount}" id="quantity${materialAcount}" class="form-control" placeholder="월 납품 수량" required></td>
+                <td><input type="number" name="unitPrice${materialAcount}" id="unitPrice${materialAcount}" class="form-control" placeholder="단가" required></td>
+                <td><input type="number" name="totalPrice${materialAcount}" id="totalPrice${materialAcount}" class="form-control" placeholder="총 금액" required></td>
+                <td><input type="number" name="leadTime${materialAcount}" id="leadTime${materialAcount}" class="form-control" placeholder="일 단위 L/T" required></td>
+                <td><a href="#" id="remove-material${materialAcount}" class="remove-material form-control bgc-grey-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="삭제"><i class="c-red-700 ti-trash fa-1-25x"></i></a></td>
             </tr>`;
 
         // 행을 10개까지만 추가

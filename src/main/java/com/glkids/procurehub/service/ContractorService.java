@@ -4,10 +4,7 @@ import com.glkids.procurehub.dto.AgreementDTO;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
-import com.glkids.procurehub.entity.Agreement;
-import com.glkids.procurehub.entity.Contractor;
-import com.glkids.procurehub.entity.Quotation;
-import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.entity.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,7 +27,7 @@ public interface ContractorService {
     void register(ContractorDTO contractorDTO);
 
     //5. 견적 목록
-    List<QuotationDTO> quoList();
+    List<QuotationDTO> quoList(String type, String input);
 
     List<QuotationDTO> quoListByContractor(Long corno, Integer pageNum);
 
@@ -44,10 +41,15 @@ public interface ContractorService {
     List<ContractorDTO> findByNameContaining(String name);
 
     //9. 견적상세보기
-     QuotationDTO quoread(Long qtno);
+    QuotationDTO quoread(Long qtno);
 
     //10. 견적 수정하기
     void quoupdate(QuotationDTO quotationDTO);
+
+    /**
+     * 견적에 추가된 자재가 없으면 상태를 {@code QuotationStatus.NEED_MATERIAL}로 변경합니다.
+     */
+    void quoStatusNoMtrl(Long qtno);
 
     default Contractor contractorDtoToEntity(ContractorDTO contractorDTO) {
         Contractor contractor=Contractor.builder().corno(contractorDTO.getCorno())
@@ -109,6 +111,31 @@ public interface ContractorService {
                 .enddate(agreement.getEnddate())
                 .regdate(agreement.getRegdate())
                 .modedate(agreement.getModdate()).build();
+    }
+
+    default QuotationDTO quotationObjectToDTO(Object entityObject) {
+        QuotationDTO dto = new QuotationDTO();
+        if (entityObject instanceof Object[] objectArray) {
+            for (Object object : objectArray) {
+                if (object instanceof Quotation quotation) {
+                    dto.setQtno(quotation.getQtno());
+                    dto.setTitle(quotation.getTitle());
+                    dto.setContent(quotation.getContent());
+                    dto.setStatus(quotation.getStatus());
+                    dto.setRegdate(quotation.getRegdate());
+                    dto.setModdate(quotation.getModdate());
+                } else if (object instanceof QuotationMtrl quotationMtrl) {
+                    dto.getQuotationMtrlList().add(quotationMtrlEntityToDTO(quotationMtrl));
+                } else if (object instanceof Contractor contractor) {
+                    dto.setContractor(contractor);
+                } else if (object instanceof Long quotationMtrlCount) {
+                    dto.setQuotationMtrlCount(quotationMtrlCount);
+                }
+            }
+            return dto;
+        } else {
+            return null;
+        }
     }
 
 }

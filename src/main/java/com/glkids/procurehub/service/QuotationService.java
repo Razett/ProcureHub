@@ -1,5 +1,6 @@
 package com.glkids.procurehub.service;
 
+import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationFileDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
@@ -17,7 +18,7 @@ public interface QuotationService {
 
     List<QuotationMtrlDTO> readQuotationMtrlList(Long qtno); // 계약 추가화면
 
-    QuotationDTO read(Long qutno);
+    QuotationDTO read(Long qtno);
 
     List<QuotationFileDTO> quotationFileList(Long qtno);
 

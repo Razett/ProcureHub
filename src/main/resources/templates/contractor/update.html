@@ -74,103 +74,147 @@
 
     <!-- #Main ============================ -->
     <div class="page-container">
-
         <!-- ### $App Screen Content ### -->
         <main class="main-content bgc-grey-100">
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <div class="row gap-20 pos-r">
-                            <div class="col-md-6">
-                                <div class="bgc-white p-20 bd">
-                                    <form action="/contractor/update" method="post">
-                                        <header><h1>업체 수정</h1></header>
-                                        <div>
-                                            사업자 등록번호 <input class="form-control" type="text" name="corno"
-                                                            th:value="${updateread.corno}" readonly>
+                        <form action="/contractor/update" method="post">
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd h-100">
+                                        <h4 class="c-grey-900 mT-10 mB-5">업체 정보 수정</h4>
+                                        <div class="mB-30 d-flex">
+                                            <span class="c-red-700 fa-1x">*</span>
+                                            <span class="fa-1x">표시는 필수 입력사항입니다.</span>
                                         </div>
-                                        <br>
-                                        <div>
-                                            협력 업체명 <input class="form-control" type="text" name="name"
-                                                          th:value="${updateread.name}" maxlength="150">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputCorno">사업자 등록번호</label>
+                                            <input type="text" name="corno" class="form-control bgc-grey-100" id="inputCorno"
+                                                   placeholder="사업자 등록번호 10자리를 입력하세요." th:value="${updateread.corno}" readonly required>
                                         </div>
-                                        <br>
-                                        <div>
-                                            내선번호 <input class="form-control" type="text" name="phone"
-                                                        id="inputPhone" th:value="${updateread.phone}" maxlength="11">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputName">협력 업체명<span
+                                                    class="c-red-700 fa-1x">*</span></label>
+                                            <input type="text" name="name" class="form-control" id="inputName"
+                                                   placeholder="협력 업체명을 입력하세요." maxlength="150" th:value="${updateread.name}" required>
                                         </div>
-                                        <br>
-                                        <div>
-                                            기본 주소 <input class="form-control" type="text" name="address1"
-                                                         th:value="${updateread.address1}" maxlength="100">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputPhone">내선번호<span
+                                                    class="c-red-700 fa-1x">*</span></label>
+                                            <input type="text" name="phone" id="inputPhone" maxlength="11"
+                                                   class="form-control"
+                                                   placeholder="전화번호를 입력하세요" th:value="${updateread.phone}" required>
                                         </div>
-                                        <br>
-                                        <div>
-                                            상세 주소 <input class="form-control" type="text" name="address2"
-                                                         th:value="${updateread.address2}" maxlength="100">
+                                        <div class="mb-2">
+                                            <label class="form-label" for="inputAddress1">도로명 주소<span
+                                                    class="c-red-700 fa-1x">*</span></label>
+                                            <input type="text" name="address1" id="inputAddress1" class="form-control"
+                                                   placeholder="경기도 수원시 영통구 영통로217번길 6" th:value="${updateread.address1}" maxlength="100" required>
                                         </div>
-                                        <br>
-                                        <div>
-                                            담당자 이름 <input class="form-control" type="text" name="mngrName"
-                                                          th:value="${updateread.mngrName}" maxlength="12">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="inputAddress2">상세 주소</label>
+                                            <input type="text" name="address2" id="inputAddress2" class="form-control"
+                                                   placeholder="나머지 상세 주소를 입력하세요." th:value="${updateread.address2}" maxlength="100">
                                         </div>
-                                        <br>
-                                        <div>
-                                            담당자 연락처 <input class="form-control" type="text" name="mngrPhone"
-                                                           id="inputMngrPhone"
-                                                           th:value="${updateread.mngrPhone}" maxlength="11">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <div class="bgc-white p-20 bd">
+                                            <h4 class="c-grey-900 mT-10 mB-30">담당자 정보 수정</h4>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputMngrName">담당자 이름</label>
+                                                <input type="text" name="mngrName" id="inputMngrName"
+                                                       class="form-control" th:value="${updateread.mngrName}"
+                                                       placeholder="담당자 이름을 입력하세요." maxlength="12">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputMngrPhone">담당자 연락처</label>
+                                                <input type="text" name="mngrPhone" id="inputMngrPhone"
+                                                       class="form-control" th:value="${updateread.mngrPhone}" placeholder="담당자 연락처를 입력하세요."
+                                                       maxlength="11">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputMngrEmail1">이메일</label>
+                                                <input type="email" name="mngrAddress" id="inputMngrEmail1"
+                                                       class="form-control" th:value="${updateread.mngrAddress}" placeholder="담당자 이메일을 입력하세요."
+                                                       maxlength="50">
+                                            </div>
                                         </div>
-                                        <br>
-                                        <div>
-                                            이메일 <input class="form-control" type="text" name="mngrAddress"
-                                                       th:value="${updateread.mngrAddress}" maxlength="50">
+<!--                                                                                <div class="col-md-6">-->
+                                        <div class="bgc-white mT-20 p-20 bd">
+                                            <h4 class="c-grey-900 mT-10 mB-30">결제 정보 수정</h4>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputBank">은행명</label>
+                                                <input type="text" name="bank" id="inputBank" class="form-control"
+                                                       placeholder="은행명을 입력하세요." th:value="${updateread.bank}" maxlength="30">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="inputAccountNum">계좌번호</label>
+                                                <input type="text" name="accountNum" id="inputAccountNum"
+                                                       class="form-control" placeholder="계좌번호를 입력하세요." th:value="${updateread.accountNum}" maxlength="20">
+                                            </div>
                                         </div>
-                                        <br>
-                                        <br>
-                                        <button class="btn cur-p btn-danger btn-color" type="button"
-                                                onclick="location.href='#'">삭제
+<!--                                                                                </div>-->
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-12">
+                                    <div class="bgc-white p-20 bd">
+                                        <button type="button" class="btn cur-p btn-secondary btn-color"
+                                                control-id="ControlID-2">취소
                                         </button>
-                                        <input class="btn cur-p btn-dark btn-color" type="submit" value="수정하기">
-                                    </form>
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', (event) => {
-                                            const inputMngrPhone = document.getElementById('inputMngrPhone');
-                                            const inputPhone = document.getElementById('inputPhone');
-
-                                            // 숫자만 허용하는 함수
-                                            const enforceNumericInput = (input) => {
-                                                input.addEventListener('input', () => {
-                                                    input.value = input.value.replace(/[^0-9]/g, '');
-                                                });
-                                            };
-
-                                            // 최대 길이를 제한하는 함수
-                                            const enforceMaxLength = (input, maxLength) => {
-                                                input.addEventListener('input', () => {
-                                                    if (input.value.length > maxLength) {
-                                                        input.value = input.value.slice(0, maxLength);
-                                                    }
-                                                });
-                                            };
-
-                                            // 담당자 연락처와 내선번호는 최대 11자리로 제한
-                                            enforceNumericInput(inputMngrPhone);
-                                            enforceNumericInput(inputPhone);
-                                            enforceMaxLength(inputMngrPhone, 11);
-                                            enforceMaxLength(inputPhone, 11);
-                                        });
-                                    </script>
+                                        <button type="submit" class="btn btn-primary btn-color md-1"
+                                                control-id="ControlID-4">수정하기
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                                const inputMngrPhone = document.getElementById('inputMngrPhone');
+                                const inputPhone = document.getElementById('inputPhone');
+                                const inputCorno = document.getElementById('inputCorno');
+                                const inputAccountNum = document.getElementById('inputAccountNum');
+
+                                // 숫자만 허용하는 함수
+                                const enforceNumericInput = (input) => {
+                                    input.addEventListener('input', () => {
+                                        input.value = input.value.replace(/[^0-9]/g, '');
+                                    });
+                                };
+
+                                // 최대 길이를 제한하는 함수
+                                const enforceMaxLength = (input, maxLength) => {
+                                    input.addEventListener('input', () => {
+                                        if (input.value.length > maxLength) {
+                                            input.value = input.value.slice(0, maxLength);
+                                        }
+                                    });
+                                };
+
+                                // 각 입력 필드에 숫자만 입력되도록 설정
+                                enforceNumericInput(inputMngrPhone);
+                                enforceNumericInput(inputPhone);
+                                enforceNumericInput(inputCorno);
+                                enforceNumericInput(inputAccountNum);
+                                // 사업자 등록번호는 최대 10자리로 제한
+                                enforceMaxLength(inputCorno, 10);
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>
         </main>
+
         <!-- ### $App Screen Footer ### -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-        <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
-                                              title="Colorlib">Colorlib</a>. All rights reserved.</span>
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
         </footer>
     </div>
     </body>

@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum MaterialStatus {
-    OK(0),
-    EXPIRED(1);
+    OK("정상"),
+    EXPIRED("만료됨");
 
-    private final int value;
+    private final String value;
 }
