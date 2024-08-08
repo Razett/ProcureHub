@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>견적서</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header img {
+      max-width: 150px;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #333;
+    }
+    .header p {
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .details, .items {
+      margin-bottom: 20px;
+    }
+    .details h2, .items h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: #333;
+      border-bottom: 2px solid #333;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+    .details table, .items table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .details table td, .items table th, .items table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+    .details table td {
+      width: 50%;
+    }
+    .items table th {
+      background-color: #f4f4f4;
+      text-align: left;
+    }
+    .items table td {
+      text-align: right;
+    }
+    .items table td:first-child {
+      text-align: left;
+    }
+    .total {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>견적서</h1>
+  </div>
+  <div class="details">
+    <h2>Golden Child</h2>
+    <table>
+      <tr>
+        <td><strong>회사명:</strong> Golden Child</td>
+        <td><strong>사업자 번호:</strong>301-30-13013</td>
+      </tr>
+      <tr>
+        <td><strong>주소:</strong> 경기도 수원시 영통구 망포동 MIT 301호</td>
+        <td><strong>견적 날짜:</strong><span th:text="${#temporals.format(quotation.contractor.regdate, 'yyyy-MM-dd')}"/></td>
+      </tr>
+      <tr>
+        <td><strong>전화:</strong> 031-301-3013</td>
+        <td><strong>유효 기간:</strong><span th:text="${#temporals.format(quotation.contractor.moddate, 'yyyy-MM-dd')}"></span></td>
+      </tr>
+    </table>
+    <br>
+  </div>
+  <div class="details">
+    <h2>협력 회사 정보 (공급자)</h2>
+    <table>
+      <tr>
+        <td><strong>회사명:</strong><span th:text="${quotation.contractor.name}"></span></td>
+        <td><strong>사업자 번호:</strong><span th:text="${quotation.contractor.corno}"></span></td>
+      </tr>
+      <tr>
+        <td><strong>주소:</strong><span th:text="${quotation.contractor.address1}"></span><span th:text="${quotation.contractor.address2}"></span> </td>
+        <td><strong>견적 날짜:</strong><span th:text="${#temporals.format(quotation.contractor.regdate, 'yyyy-MM-dd')}"></span></td>
+      </tr>
+      <tr>
+        <td><strong>전화:</strong><span th:text="${quotation.contractor.phone}"></span></td>
+        <td><strong>유효 기간:</strong> <span th:text="${#temporals.format(quotation.contractor.moddate, 'yyyy-MM-dd')}"></span> </td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <div class="items">
+    <h2>자재 목록</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>자재명</th>
+        <th>수량</th>
+        <th>단가</th>
+        <th>총금액</th>
+        <th>L/T</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each=" list : ${quotationMtrlList}">
+        <td th:text="${list.material.name}"></td>
+        <td th:text="${list.material.quantity}"></td>
+        <td th:text="${list.unitprice}"></td>
+        <td th:text="${list.totalprice}"></td>
+        <td th:text="${list.leadtime}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

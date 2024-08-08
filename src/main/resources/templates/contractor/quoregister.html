@@ -56,71 +56,21 @@
                 }
             }
 
-            .autocomplete-suggestions {
-                border: 1px solid #ccc;
-                max-height: 200px;
-                overflow-y: auto;
-                position: absolute;
-                background-color: white;
-                z-index: 1000;
-                width: 40%;
-                display: none;
-            }
-
-            .autocomplete-suggestion {
+            .list-group-item {
+                position: fixed; /* 고정된 검색창 아래에 위치하도록 설정 */
                 padding: 10px;
                 cursor: pointer;
+                max-height: 200px; /* 자동완성 목록의 최대 높이 설정 */
+                overflow-y: auto; /* 스크롤 가능하도록 설정 */
             }
 
-            .autocomplete-suggestion:hover,
-            .autocomplete-suggestion.selected {
-                background-color: #ddd;
-            }
-
-            .autocomplete-suggestions2 {
-                border: 1px solid #ccc;
-                max-height: 200px;
-                overflow-y: auto;
-                position: absolute;
-                background-color: white;
-                z-index: 1000;
-                width: 100%;
-                display: none;
-            }
-
-            .autocomplete-suggestion2 {
-                padding: 10px;
-                cursor: pointer;
-            }
-
-            .autocomplete-suggestion2:hover,
-            .autocomplete-suggestion2.selected {
-                background-color: #ddd;
-            }
-
-            .autocomplete-suggestionsConNums {
-                border: 1px solid #ccc;
-                max-height: 200px;
-                overflow-y: auto;
-                position: absolute;
-                background-color: white;
-                z-index: 1000;
-                width: 100%;
-                display: none;
-            }
-
-            .autocomplete-suggestionsConNum {
-                padding: 10px;
-                cursor: pointer;
-            }
-
-            .autocomplete-suggestionsConNum:hover,
-            .autocomplete-suggestionsConNum.selected {
+            .list-group-item:hover,
+            .list-group-item.active {
                 background-color: #ddd;
             }
         </style>
-        <script defer="defer" src="js/main.js"></script>
-        <link href="css/style.css" rel="stylesheet">
+        <script defer="defer" src="/js/main.js"></script>
+        <link href="/css/style.css" rel="stylesheet">
     </head>
     <body class="app">
     <div id="loader">
@@ -179,14 +129,14 @@
                                             <input type="text" name="contractorName" class="form-control"
                                                    id="contractorName" placeholder="업체명을 입력하세요."
                                                    control-id="ControlID-1" max="30" autocomplete="off" required>
-                                            <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+                                            <div id="autocomplete-suggestions" class="list-group"></div>
                                         </div>
                                         <div class="form-container">
                                             <div class="mb-3">
                                                 <label class="form-label">사업자 등록번호</label>
                                                 <input type="text" name="corno" class="form-control" id="corno"
-                                                       placeholder="">
-                                                <div id="autocomplete-suggestionsConNums" class="autocomplete-suggestionsConNums"></div>
+                                                       placeholder="" required>
+                                                <div id="autocomplete-suggestionsConNums" class="list-group"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label>내선번호</label>
