@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var selectedSuggestionIndex = -1;
-    var materialAcount = 1;
+    var materialAcount = 2;
+    var totalMaterial = 1;
 
     // 자재 추가 버튼 클릭 이벤트 리스너
     $('#add-material').on('click', function (event) {
@@ -25,9 +26,10 @@ $(document).ready(function () {
             </tr>`;
 
         // 행을 10개까지만 추가
-        if (materialAcount <= 10) {
+        if (totalMaterial <= 10) {
             $('#quotationMtrlTable .quotationMtrlTbody').append(newRow);
             materialAcount++;
+            totalMaterial++;
         } else {
             alert('최대 10개의 자재만 추가할 수 있습니다.');
         }
@@ -36,7 +38,7 @@ $(document).ready(function () {
     // 자재 삭제 버튼 클릭 이벤트 리스너
     $(document).on('click', '.remove-material', function () {
         $(this).closest('tr').remove();
-        materialAcount--;
+        totalMaterial--;
     });
 
     // 회사명 자동완성 요청을 보내는 함수
