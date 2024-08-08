@@ -22,7 +22,7 @@ $(document).ready(function () {
                 <td><input type="number" name="unitPrice${materialAcount}" id="unitPrice${materialAcount}" class="form-control" placeholder="단가" required></td>
                 <td><input type="number" name="totalPrice${materialAcount}" id="totalPrice${materialAcount}" class="form-control" placeholder="총 금액" required></td>
                 <td><input type="number" name="leadTime${materialAcount}" id="leadTime${materialAcount}" class="form-control" placeholder="일 단위 L/T" required></td>
-                <td><a href="#" id="remove-material${materialAcount}" class="remove-material form-control bgc-grey-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="삭제"><i class="c-red-700 ti-trash fa-1-25x"></i></a></td>
+                <td><a href="#quotationMtrlTable" id="remove-material${materialAcount}" class="remove-material form-control bgc-grey-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="삭제"><i class="c-red-700 ti-trash fa-1-25x"></i></a></td>
             </tr>`;
 
         // 행을 10개까지만 추가
