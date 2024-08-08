@@ -42,4 +42,11 @@ public class ContractorRestController {
     public List<Contractor> findByCornoContaining(@RequestParam("corno") String corno) {
         return contractorRepository.findByCornoContaining(corno);
     }
+
+    @GetMapping("/contractor/details")
+    public Contractor getContractorDetails(@RequestParam Long corno) {
+        Contractor contractor = contractorRepository.findByCorno(corno).stream().findFirst().orElse(null);
+        System.out.println(contractor);
+        return contractor;
+    }
 }
