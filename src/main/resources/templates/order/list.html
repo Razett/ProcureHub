@@ -290,47 +290,23 @@
 
                                             // Change cells to inputs
                                             $('#tableBody tr').each(function () {
-                                                const checkbox = $(this).find('.ordernoCheckbox');
-                                                if (checkbox.is(':checked')) {
-                                                    const quantityCell = $(this).find('td').eq(5);
-                                                    const contractorCell = $(this).find('td').eq(6);
 
-                                                    const orderQuantity = quantityCell.text().trim();
-                                                    const contractorName = contractorCell.text().trim();
+                                                const quantityCell = $(this).find('td').eq(5);
+                                                const contractorCell = $(this).find('td').eq(6);
 
-                                                    quantityCell.html(`
+                                                const orderQuantity = quantityCell.text().trim();
+                                                const contractorName = contractorCell.text().trim();
+
+                                                quantityCell.html(`
                                                         <input type="number" class="form-control quantity-input"
                                                                value="${orderQuantity}"/>
                                                     `);
-                                                    contractorCell.html(`
+                                                contractorCell.html(`
                                                         <input type="text" class="form-control company-input"
                                                                value="${contractorName}"/>
                                                     `);
-                                                }
                                             });
-
-                                        } else {
-                                            // 텍스트 변경
-                                            $(this).find('a').html('<span class="ti-pencil-alt"></span>&nbsp; 수정');
-
-                                            // "발주 취소" 버튼 제거
-                                            $('#cancel-order-btn').remove();
-
-                                            // Revert input fields to text
-                                            $('#tableBody tr').each(function () {
-                                                const checkbox = $(this).find('.ordernoCheckbox');
-                                                if (checkbox.is(':checked')) {
-                                                    const quantityCell = $(this).find('td').eq(5);
-                                                    const contractorCell = $(this).find('td').eq(6);
-
-                                                    const orderQuantity = quantityCell.find('input').val();
-                                                    const contractorName = contractorCell.find('input').val();
-
-                                                    quantityCell.text(orderQuantity);
-                                                    contractorCell.text(contractorName);
-                                                }
-                                            });
-                                         }
+                                        }
                                     });
                                 });
                             </script>
