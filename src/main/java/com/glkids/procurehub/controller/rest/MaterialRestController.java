@@ -4,6 +4,7 @@ import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.MaterialFile;
 import com.glkids.procurehub.service.MaterialService;
+import com.glkids.procurehub.service.MaterialServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MaterialRestController {
 
     private final MaterialService materialService;
+    private final MaterialServiceImpl materialServiceImpl;
 
     @GetMapping("/childgroup")
     public List<MaterialGroupDTO> getChildGroupList(String grpcode) {
@@ -36,6 +38,10 @@ public class MaterialRestController {
         return Collections.singletonList(materialService.readByFetch(mtrlno));
     }
 
+    @GetMapping("/searchByName")
+    public List<Material> searchByName(@RequestParam("name") String name) {
+        return materialService.findByNameContaining(name);
+    }
     /**
      * 자재 창고 코드의 중복 검사를 수행
      *

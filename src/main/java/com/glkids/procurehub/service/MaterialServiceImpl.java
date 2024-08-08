@@ -55,6 +55,12 @@ public class MaterialServiceImpl implements MaterialService {
         return materialEntityToDTO(materialOpt);
     }
 
+    // 자재명을 검색하는 서비스 메서드 추가
+    @Override
+    public List<Material> findByNameContaining(String name) {
+        return materialRepository.findByMtrlContaining(name);
+    }
+
     @Override
     public Material register(MaterialDTO materialDTO) {
         return materialRepository.save(materialDTOToEntity(materialDTO));
