@@ -3,6 +3,11 @@ $(document).ready(function () {
     var materialAcount = 2;
     var totalMaterial = 1;
 
+    if (existMaterialCount) {
+        materialAcount = existMaterialCount + 1;
+        totalMaterial = existMaterialCount;
+    }
+
     // URL 쿼리 파라미터 가져오기 함수
     function getQueryParam(param) {
         let urlParams = new URLSearchParams(window.location.search);
@@ -44,7 +49,9 @@ $(document).ready(function () {
 
         // 새로운 자재 입력 행 생성
         var newRow = `<tr class="material-row" id="materialDetail${materialAcount}" name="materialDetail${materialAcount}">
-                <td><input class="form-control materialCode" id="materialCode${materialAcount}" type="text" name="materialCode${materialAcount}"
+                <td><input class="form-control materialCode" id="qtmtCode${materialAcount}" type="hidden" name="qtmtCode${materialAcount}"
+                           placeholder="자재 코드" autocomplete="off" required>
+                <input class="form-control materialCode" id="materialCode${materialAcount}" type="text" name="materialCode${materialAcount}"
                            placeholder="자재 코드" autocomplete="off" required>
                     <div id="autocomplete-suggestions${materialAcount}" class="list-group"></div>
                 </td>
@@ -390,6 +397,7 @@ $(document).ready(function () {
         }
 
         var quotationData = {
+            qtno: exist_qtno,
             title: title,
             content: content,
             status: 0,
@@ -419,6 +427,7 @@ $(document).ready(function () {
 
                 materialRows.each(function () {
                     var rowId = $(this).attr('id').replace('materialDetail', '');
+                    var qtmtno = $('#qtmtCode' + rowId).val();
                     var materialId = $('#materialCode' + rowId).val();
                     var quantity = $('#quantity' + rowId).val();
                     var unitPrice = $('#unitPrice' + rowId).val();
@@ -427,6 +436,7 @@ $(document).ready(function () {
 
                     if (materialId && quantity && unitPrice && totalPrice && leadTime) {
                         var quotationMtrlData = {
+                            qtmtno: qtmtno,
                             quotationId: quotationId,
                             materialId: materialId,
                             quantity: quantity,
@@ -502,6 +512,7 @@ $(document).ready(function () {
 
     // 견적 자재 정보 저장 함수
     function saveQuotationMtrl(quotationMtrlDataArray) {
+        console.log(JSON.stringify(quotationMtrlDataArray))
         $.ajax({
             url: 'http://localhost:8080/quotationMtrl/save',
             type: 'POST',

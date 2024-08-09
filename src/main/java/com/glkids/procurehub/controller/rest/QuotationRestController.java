@@ -22,6 +22,7 @@ public class QuotationRestController {
 
     @PostMapping(value = "/quotation/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> saveQuotation(@RequestBody QuotationDTO quotationDTO) {
+        System.out.println(quotationDTO);
         Quotation savedQuotation = quotationService.saveQuotation(quotationDTO);
         return ResponseEntity.ok(savedQuotation.getQtno());
     }

@@ -25,7 +25,7 @@ public class ContractorRestController {
 
     /**
      * 회사명을 통해 회사 정보를 가져오는 메서드
-     * @param contractorName 회사명
+     * @param name 회사명
      * @return 회사 정보 DTO
      */
 

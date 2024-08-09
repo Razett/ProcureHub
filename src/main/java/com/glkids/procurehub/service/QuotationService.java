@@ -72,6 +72,7 @@ public interface QuotationService {
     // QuotationMtrl DTO to Entity 변환 메서드
     default QuotationMtrl quotationMtrlDtoToEntity(QuotationMtrlDTO quotationMtrlDTO) {
         return QuotationMtrl.builder()
+                .qtmtno(quotationMtrlDTO.getQtmtno())
                 .quotation(Quotation.builder()
                         .qtno(quotationMtrlDTO.getQuotationId())
                         .build())

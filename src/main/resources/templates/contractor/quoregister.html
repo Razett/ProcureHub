@@ -190,7 +190,9 @@
                                                 </thead>
                                                 <tbody class="quotationMtrlTbody">
                                                 <tr class="material-row" id="materialDetail1" name="materialDetail1">
-                                                    <td><input class="form-control materialCode" id="materialCode1" type="text" name="materialCode1"
+                                                    <td><input class="form-control materialCode bgc-grey-100" id="qtmtCode1" type="hidden" name="qtmtCode1"
+                                                               placeholder="견적 자재 코드" autocomplete="off" value="" readonly>
+                                                        <input class="form-control materialCode" id="materialCode1" type="text" name="materialCode1"
                                                                placeholder="자재 코드" autocomplete="off" required>
                                                         <div id="autocomplete-suggestions1" class="list-group"></div>
                                                     </td>
@@ -229,6 +231,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                                const existMaterialCount = null;
+                                const exist_qtno = null;
+                            </script>
                             <script src="/js/quoregister.js"></script>
                         </form>
                     </th:block>
