@@ -22,8 +22,8 @@ public class SpringSecurityControllerConfig {
         return "login"; // login.html (Thymeleaf 템플릿)
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String homePage() {
-        return "home"; // home.html (로그인 후의 홈 페이지)
+        return "index"; // home.html (로그인 후의 홈 페이지)
     }
 }
