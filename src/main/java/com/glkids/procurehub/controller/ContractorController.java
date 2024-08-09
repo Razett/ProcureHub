@@ -9,6 +9,8 @@ import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.service.*;
 import com.glkids.procurehub.status.QuotationStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,8 +115,9 @@ public class ContractorController {
      * 견적 등록
      */
     @GetMapping("/quoregister")
-    public void getQuoRegister(Long corno, Model model) {
+    public void getQuoRegister(@AuthenticationPrincipal UserDetails userDetails, Long corno, Model model) {
         model.addAttribute("title", "견적 등록");
+        model.addAttribute("emp" , userDetails.getUsername());
         model.addAttribute("ContractNum", corno);
     }
 
