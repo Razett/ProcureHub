@@ -30,6 +30,6 @@ public class Emp extends BaseEntity {
     @JoinColumn(nullable = false)
     private Dept dept;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 61, nullable = false)
     private String pw;
 }
