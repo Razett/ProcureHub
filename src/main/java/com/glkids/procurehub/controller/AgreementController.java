@@ -5,6 +5,7 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.service.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -31,7 +32,8 @@ public class AgreementController {
 
 
     @GetMapping("/register")
-    public String register(Model model, @RequestParam("qtno") Long qtno ) {
+    public String register(@AuthenticationPrincipal UserDTO userDTO, Model model, @RequestParam("qtno") Long qtno ) {
+        model.addAttribute("user", userDTO);
 
         model.addAttribute("qtno", quotationService.read(qtno));
         model.addAttribute("qtnomtrl", quotationService.readQuotationMtrlList(qtno));

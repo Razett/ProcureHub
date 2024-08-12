@@ -3,6 +3,7 @@ package com.glkids.procurehub.controller;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
+import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.QuotationMtrl;
@@ -37,7 +38,8 @@ public class ContractorController {
      * 업체 목록
      */
     @GetMapping("/list")
-    public String List(Model model, ContractorDTO contractorDTO) {
+    public String List(@AuthenticationPrincipal UserDTO userDTO, Model model, ContractorDTO contractorDTO) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "업체 목록");
 
         model.addAttribute("contractorList", contractorService.list());
@@ -53,7 +55,8 @@ public class ContractorController {
      * @return /contractor/get 을 요청하여 업체 상세페이지를 표시합니다.
      */
     @GetMapping("/read")
-    public String read(Long corno, Integer quotationPage, Model model) {
+    public String read(@AuthenticationPrincipal UserDTO userDTO, Long corno, Integer quotationPage, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "업체 정보");
 
         model.addAttribute("contractorRead", contractorService.read(corno));
@@ -65,7 +68,8 @@ public class ContractorController {
      * 업체 등록 화면
      */
     @GetMapping("/register")
-    public void getRegister(ContractorDTO contractorDTO, Model model) {
+    public void getRegister(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "업체 등록");
     }
 
@@ -82,7 +86,8 @@ public class ContractorController {
      * 업체 수정 화면
      */
     @GetMapping("/update")
-    public String getUpdate(Long corno, Model model) {
+    public String getUpdate(@AuthenticationPrincipal UserDTO userDTO, Long corno, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "업체 수정");
 
         ContractorDTO dto = contractorService.read(corno);
@@ -104,7 +109,8 @@ public class ContractorController {
      * 견적 목록
      */
     @GetMapping("/quolist")
-    public String quoList(String type, String input ,Model model) {
+    public String quoList(@AuthenticationPrincipal UserDTO userDTO, String type, String input ,Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "견적 목록");
 
         model.addAttribute("quotationList", contractorService.quoList(type, input));
@@ -115,9 +121,10 @@ public class ContractorController {
      * 견적 등록
      */
     @GetMapping("/quoregister")
-    public void getQuoRegister(@AuthenticationPrincipal UserDetails userDetails, Long corno, Model model) {
+    public void getQuoRegister(@AuthenticationPrincipal UserDTO userDTO, Long corno, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "견적 등록");
-        model.addAttribute("emp" , userDetails.getUsername());
+        model.addAttribute("emp" , userDTO.getEmp().getEmpno());
         model.addAttribute("ContractNum", corno);
     }
 
@@ -134,7 +141,8 @@ public class ContractorController {
      * 견적 상세보기
      */
     @GetMapping("/quoread")
-    public String quodatail(Long qtno, Model model) {
+    public String quodatail(@AuthenticationPrincipal UserDTO userDTO, Long qtno, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "견적 정보");
 
         QuotationDTO quotationDTO = contractorService.quoread(qtno);
@@ -150,7 +158,10 @@ public class ContractorController {
     }
 
     @GetMapping("/quoupdate")
-    public String quoupdate(Long qtno, Model model){
+    public String quoupdate(@AuthenticationPrincipal UserDTO userDTO, Long qtno, Model model){
+        model.addAttribute("user", userDTO);
+        model.addAttribute("title", "견적 수정");
+
         QuotationDTO dto = contractorService.quoread(qtno);
         model.addAttribute("updateread", dto);
 
@@ -171,7 +182,8 @@ public class ContractorController {
     }
 
     @GetMapping("/quotationForm")
-    public String quotationForm(Model model, Long qtno){
+    public String quotationForm(@AuthenticationPrincipal UserDTO userDTO, Model model, Long qtno){
+        model.addAttribute("user", userDTO);
         model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
 
         model.addAttribute("quotation" ,contractorService.quoread(qtno));

@@ -2,6 +2,7 @@ package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialGroupDTO;
+import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.MaterialFile;
 import com.glkids.procurehub.entity.MaterialGroup;
@@ -12,6 +13,7 @@ import com.glkids.procurehub.service.MaterialService;
 import com.glkids.procurehub.service.MaterialServiceImpl;
 import com.glkids.procurehub.status.MaterialStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,8 @@ public class MaterialController {
      * 자재 목록
      */
     @GetMapping("/list")
-    public String List(String inputSearch, Model model) {
-        System.out.println(inputSearch);
+    public String List(@AuthenticationPrincipal UserDTO userDTO, String inputSearch, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 목록");
 
         model.addAttribute("materiallist", materialService.list(inputSearch));
@@ -44,7 +46,8 @@ public class MaterialController {
      * 자재상세보기 화면
      */
     @GetMapping("/read")
-    public String read(Long mtrlno, Model model) {
+    public String read(@AuthenticationPrincipal UserDTO userDTO, Long mtrlno, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 정보");
 
         MaterialDTO materialDTO = materialService.read(mtrlno);
@@ -58,7 +61,8 @@ public class MaterialController {
      * 자재 수정
      */
     @GetMapping("/update")
-    public String getUpdate(Model model, Long mtrlno) {
+    public String getUpdate(@AuthenticationPrincipal UserDTO userDTO, Model model, Long mtrlno) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 수정");
 
         MaterialDTO dto = materialService.read(mtrlno);
@@ -94,7 +98,8 @@ public class MaterialController {
      * 자재 등록
      */
     @GetMapping("/register")
-    public String getRegister(Model model) {
+    public String getRegister(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 등록");
 
         model.addAttribute("warehouses",materialService.getWarehouses());
@@ -122,7 +127,10 @@ public class MaterialController {
      * 그룹 목록
      */
     @GetMapping("/grouplist")
-    public void groupList() {}
+    public void groupList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        model.addAttribute("user", userDTO);
+
+    }
 
     /**
      * @deprecated
@@ -139,7 +147,8 @@ public class MaterialController {
      * 창고 목록
      */
     @GetMapping("/warehouselist")
-    public void warehouseList(Model model , MaterialWarehouse materialWarehouse) {
+    public void warehouseList(@AuthenticationPrincipal UserDTO userDTO, Model model , MaterialWarehouse materialWarehouse) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 창고");
 
         model.addAttribute("warehouses", materialService.getWarehouses());
@@ -160,7 +169,8 @@ public class MaterialController {
      * 조달 계획 목록
      */
     @GetMapping("/prcrlist")
-    public String prcrList(Model model) {
+    public String prcrList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        model.addAttribute("user", userDTO);
         model.addAttribute("title", "조달 계획");
 
         return "/material/prcrlist";

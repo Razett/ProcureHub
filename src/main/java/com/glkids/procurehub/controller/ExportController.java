@@ -1,6 +1,9 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.UserDTO;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,7 +18,9 @@ public class ExportController {
      * 출고 현황
      */
     @GetMapping("/list")
-    public String list() {
+    public String list(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        model.addAttribute("user", userDTO);
+        model.addAttribute("title", "출고 현황");
         return "/export/list";
     }
 
@@ -23,7 +28,9 @@ public class ExportController {
      * 출고 전체 내역
      */
     @GetMapping("/totallist")
-    public String totalList() {
+    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+        model.addAttribute("user", userDTO);
+        model.addAttribute("title", "출고 전체");
         return "/export/totallist";
     }
 }

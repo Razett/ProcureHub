@@ -12,11 +12,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+/**
+ * 사원번호와 비밀번호만 접근할 수 있는 객체를 리턴하기에 더 이상 사용되지 않습니다.
+ */
+@Deprecated
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
     private EmpRepository empRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 

@@ -26,7 +26,7 @@ public class Emp extends BaseEntity {
     @Column(length = 12, nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Dept dept;
 
