@@ -1,5 +1,6 @@
 package com.glkids.procurehub.dto;
 
+import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.Order;
@@ -38,4 +39,5 @@ public class ImportDTO {
     private LocalDateTime approvedate;
     private Emp approver;
     private Integer status;
+
 }
