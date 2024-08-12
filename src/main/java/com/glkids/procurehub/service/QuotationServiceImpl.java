@@ -3,6 +3,7 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationFileDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
+import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.QuotationFileRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
@@ -34,9 +35,10 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @Transactional
-    public Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList) {
+    public Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList , UserDTO userDTO) {
         List<QuotationMtrl> quotationMtrlList = new ArrayList<>();
         for(QuotationMtrlDTO quotationMtrlDTO : quotationMtrlDTOList) {
+            quotationMtrlDTO.setEmp(userDTO.getEmp().getEmpno());
             QuotationMtrl quotationMtrl = quotationMtrlDtoToEntity(quotationMtrlDTO);
             if (quotationMtrlRepository.save(quotationMtrl).getQtmtno()!=null){
                 quotationMtrlList.add(quotationMtrl);

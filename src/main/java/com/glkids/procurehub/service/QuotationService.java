@@ -1,9 +1,6 @@
 package com.glkids.procurehub.service;
 
-import com.glkids.procurehub.dto.MaterialDTO;
-import com.glkids.procurehub.dto.QuotationDTO;
-import com.glkids.procurehub.dto.QuotationFileDTO;
-import com.glkids.procurehub.dto.QuotationMtrlDTO;
+import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.*;
 
 import java.util.List;
@@ -12,7 +9,7 @@ public interface QuotationService {
 
     Quotation saveQuotation(QuotationDTO quotationDTO);
 
-    Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList);
+    Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList , UserDTO userDTO);
 
     QuotationFile saveQuotationFile(QuotationFileDTO quotationFileDTO);
 
@@ -79,7 +76,7 @@ public interface QuotationService {
                 .material(Material.builder()
                         .mtrlno(quotationMtrlDTO.getMaterialId())
                         .build())
-                .emp(Emp.builder().empno(201758030L).build())
+                .emp(Emp.builder().empno(quotationMtrlDTO.getEmp()).build())
                 .quantity(quotationMtrlDTO.getQuantity())
                 .unitprice(quotationMtrlDTO.getUnitprice())
                 .totalprice(quotationMtrlDTO.getTotalprice())
