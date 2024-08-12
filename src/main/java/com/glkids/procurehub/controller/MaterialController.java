@@ -77,20 +77,22 @@ public class MaterialController {
      * 자재 수정 처리
      */
     @PostMapping("/update")
-    public String postUpdate(@ModelAttribute MaterialDTO materialDTO, Model model, @RequestParam("wrhscode") MaterialWarehouse materialWarehouse, @RequestParam("grpcode") MaterialGroup materialGroup) {
+    public String postUpdate(@ModelAttribute MaterialDTO materialDTO, Model model, @RequestParam("wrhscode") MaterialWarehouse materialWarehouse, @RequestParam("grpcode") MaterialGroup materialGroup, RedirectAttributes redirectAttributes) {
 
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
         materialDTO.setStatus(MaterialStatus.OK);
         System.out.println(materialDTO);
         materialService.update(materialDTO);
+        redirectAttributes.addFlashAttribute("msg", "수정되었습니다.");
 
         return "redirect:read?mtrlno=" + materialDTO.getMtrlno();
     }
 
     @PostMapping("/delete")
-    public String delete(Long mtrlno) {
+    public String delete(Long mtrlno, RedirectAttributes redirectAttributes) {
         materialService.delete(mtrlno);
+        redirectAttributes.addFlashAttribute("msg", "삭제되었습니다.");
         return "redirect:material/list" ;
     }
 
@@ -111,15 +113,20 @@ public class MaterialController {
      * 자재 등록 버튼 클릭 시 목록 화면으로
      */
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute MaterialDTO materialDTO, @RequestParam("wrhscode") MaterialWarehouse materialWarehouse, @RequestParam("grpcode") MaterialGroup materialGroup, Model model) {
+    public String postRegister(@ModelAttribute MaterialDTO materialDTO, @RequestParam("wrhscode") MaterialWarehouse materialWarehouse, @RequestParam("grpcode") MaterialGroup materialGroup, RedirectAttributes redirectAttributes) {
 
         System.out.println(materialGroup);
         materialDTO.setMaterialGroup(materialGroup);
         materialDTO.setMaterialWarehouse(materialWarehouse);
         materialDTO.setStatus(MaterialStatus.OK);
-        model.addAttribute("regist", materialService.register(materialDTO).getMtrlno());
+        Long mtrlno = materialService.register(materialDTO).getMtrlno();
 
-        return "/material/list";
+        if (mtrlno != null) {
+            redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "등록에 실패하였습니다.");
+        }
+        return "redirect:/material/list";
     }
 
 

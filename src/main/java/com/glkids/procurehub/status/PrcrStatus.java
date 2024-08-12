@@ -5,10 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum MaterialStatus {
+public enum PrcrStatus {
     OK("정상"),
-    EXPIRED("만료됨"),
-    DELETED("삭제됨");
+    EXPIRED("만료됨");
 
     private final String value;
 }
