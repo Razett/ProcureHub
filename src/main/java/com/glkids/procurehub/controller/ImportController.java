@@ -1,6 +1,8 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.UserDTO;
+import com.glkids.procurehub.entity.Contractor;
+import com.glkids.procurehub.service.ContractorService;
 import com.glkids.procurehub.service.ImportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDateTime;
 
 /**
  * 입고 관리 메뉴 컨트롤러
@@ -20,6 +25,7 @@ import org.springframework.ui.Model;
 public class ImportController {
 
     private final ImportService importService;
+    private final ContractorService contractorService;
 
     /**
      * 입고 현황
@@ -71,6 +77,15 @@ public class ImportController {
         model.addAttribute("importList", importService.list());
 
         return "import/totallist";
+    }
+
+    @GetMapping("/importForm")
+    public String importForm(@AuthenticationPrincipal UserDTO userDTO, Model model, @RequestParam("importno") Long importno) {
+        model.addAttribute("user", userDTO);
+        model.addAttribute("importread", importService.readImportForm(importno));
+        model.addAttribute("nowTime" , LocalDateTime.now());
+
+        return "/import/importForm";
     }
 
     /**

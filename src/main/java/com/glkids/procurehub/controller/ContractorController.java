@@ -196,7 +196,6 @@ public class ContractorController {
     public String quotationForm(@AuthenticationPrincipal UserDTO userDTO, Model model, Long qtno){
         model.addAttribute("user", userDTO);
         model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
-
         model.addAttribute("quotation" ,contractorService.quoread(qtno));
         return "/contractor/quotationForm";
     }

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>거래명세서</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin-top: 20px;
+            color: #333;
+            font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+        }
+        .invoice-header {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-bottom: 2px solid #007bff;
+        }
+        .invoice-header .logo {
+            font-size: 30px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .invoice-details {
+            margin-top: 20px;
+        }
+        .invoice-details th {
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        .invoice-details th,
+        .invoice-details td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+        .invoice-summary {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .invoice-summary h5 {
+            margin-bottom: 0;
+            color: #007bff;
+        }
+        .invoice-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+    <script defer="defer" src="/js/main.js"></script>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body onload="calculateTotal()">
+
+<div class="container">
+    <!-- Invoice Header -->
+    <div class="invoice-header row">
+        <div class="col-md-6">
+            <div class="logo">디지이노</div>
+            <br>
+            <p>
+                대표: 김창덕 <br>
+                주소: 경기도 과천시 과천대로7길 33, 디테크타워 B동 1504호(갈현동)<br>
+                이메일: dginnocompany.com<br>
+                전화: 02-6569-0068 <br>
+                사업자 번호:301-30-130130
+            </p>
+        </div>
+        <div class="col-md-6 text-right">
+            <h3>거래명세서</h3>
+            <p>
+                발행일: <span th:text="${#temporals.format(nowTime, 'yyyy-MM-dd')}"></span>
+            </p>
+        </div>
+    </div>
+    <br>
+    <!-- Invoice Details -->
+    <div class="invoice-details row">
+        <div class="col-md-6">
+            <th:block th:if="${importread.size() > 0}">
+                <h5><span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.name}" ></span>(협력사) 정보:</h5>
+                <p>
+                    담장자명: <span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.mngrName}" ></span>
+                    <br>
+                    주소: <span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.address1}"></span><span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.address2}"></span> <br>
+                    이메일: <span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.mngrAddress}"></span> <br>
+                    전화: <span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.mngrPhone}"></span> <br>
+                    사업자 번호: <span th:text="${importread.get(0).order.quotationmtrl.quotation.contractor.corno}"></span>
+                </p>
+
+            </th:block>
+        </div>
+    </div>
+
+    <th:block th:if="${importread.size() > 0}">
+        <table class="table table-bordered invoice-details">
+            <thead>
+            <tr>
+                <th>자재명</th>
+                <th>규격</th>
+                <th>수량</th>
+                <th>단가</th>
+                <th>금액</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="importMtrl : ${importread}">
+                <td th:text="${importMtrl.order.quotationmtrl.material.name}"></td>
+                <td th:text="${importMtrl.order.quotationmtrl.material.standard}" ></td>
+                <td th:text="${importMtrl.quantity}" class="quantity"></td>
+                <td th:text="${importMtrl.order.quotationmtrl.unitprice}" class="unitprice"></td>
+                <td class="amount"></td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </th:block>
+    <!-- Invoice Table -->
+    <div class="invoice-summary">
+        <h5><strong>총합계:</strong> ₩<span id="totalAmount">0</span></h5>
+    </div>
+
+    <!-- Invoice Footer -->
+    <div class="invoice-footer">
+        <p>거래해 주셔서 감사합니다!</p>
+    </div>
+</div>
+
+<script>
+    function calculateTotal() {
+        var total = 0;
+        var rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(function(row) {
+            var quantity = parseFloat(row.querySelector(".quantity").innerText);
+            var unitprice = parseFloat(row.querySelector(".unitprice").innerText);
+            var amount = quantity * unitprice;
+            row.querySelector(".amount").innerText = amount.toLocaleString(); // 금액을 표시
+            total += amount;
+        });
+
+        document.getElementById("totalAmount").innerText = total.toLocaleString();
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>
