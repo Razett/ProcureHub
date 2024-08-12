@@ -129,7 +129,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="overflow:auto; width:1792px; height:230px;">
+                                <div style="width:1792px; height:230px;">
                                     <table class="table table-bordered table-hover" style="width: 100%; text-align: center;">
                                         <thead>
                                         <tr>
@@ -165,7 +165,14 @@
                                                 <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
                                                 <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}"></td>
                                                 <td th:text="${order.quantity}">
-                                                <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
+                                                <td>
+                                                    <span th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></span>
+                                                    <select class="form-control contractor-select d-none">
+                                                        <option th:each="order : ${orderBeforeList}"
+                                                                th:value="${quotationmtrl}"
+                                                                th:text="${order.quotationmtrl.quotation.contractor.name}"></option>
+                                                    </select>
+                                                </td>
                                                 <td th:text="${order.quotationmtrl.unitprice}">
                                                 <td th:text="${order.quotationmtrl.totalprice}">
                                                 <td th:text="${order.status}">
@@ -301,7 +308,7 @@
 
                                         var updateOrderno = [];
                                         var prev_quantity = [];
-                                        var prev_quotationmtrl =[];
+                                        var prev_quotationmtrl = [];
 
                                         $('#tableBody tr').each(function () {
                                             updateOrderno.push($(this).find('.ordernoCheckbox').val());
@@ -321,9 +328,25 @@
                                                 <input type="number" class="form-control quantity-input" value="${orderQuantity}"/>
                                             `);
                                             contractorCell.html(`
-                                                <input type="text" class="form-control company-input" value="${contractorName}"/>
+                                                <select class="form-control contractor-select" size="1">
+                                                    <option value="${contractorName}" selected>${contractorName}</option>
+                                                    <option value="Contractor 1">Contractor 1</option>
+                                                    <option value="Contractor 2">Contractor 2</option>
+                                                    <option value="Contractor 3">Contractor 3</option>
+                                                    <option value="Contractor 4">Contractor 4</option>
+                                                    <option value="Contractor 5">Contractor 5</option>
+                                                    <option value="Contractor 6">Contractor 6</option>
+                                                </select>
                                             `);
                                         });
+
+                                        // 클릭 시 모든 옵션 표시
+                                        $('.contractor-select').on('focus', function () {
+                                            $(this).attr('size', $(this).find('option').length);
+                                        }).on('blur', function () {
+                                            $(this).attr('size', 1);
+                                        });
+                                    });
 
                                     // "저장" 버튼 누를 시
                                     $('#save-orders-btn').on('click', function () {
@@ -341,8 +364,8 @@
 
                                         var jsonArray = [];
                                         var jsonObj = new Object();
-                                        for (i=0;i<updateOrderno.length;i++){
-                                            if (prev_quantity[i] != next_quantity[i] || prev_quotationmtrl[i] != next_quotationmtrl[i]){
+                                        for (i = 0; i < updateOrderno.length; i++) {
+                                            if (prev_quantity[i] != next_quantity[i] || prev_quotationmtrl[i] != next_quotationmtrl[i]) {
                                                 jsonObj = {
                                                     orderno: updateOrderno[i],
                                                     quantity: next_quantity[i],
@@ -373,10 +396,6 @@
                                         $(this).addClass("d-none");
                                         $('#save-orders-btn').addClass("d-none");
                                         $('#update-orders-btn').removeClass("d-none");
-
-                                    });
-
-
                                     });
                                 });
                             </script>
