@@ -50,8 +50,6 @@ public class MaterialRestController {
      */
     @GetMapping(value = "/verify/wrhscode", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> verifyWrhsCode(@RequestParam String wrhscode) {
-        System.out.println(wrhscode.trim().toUpperCase());
-        System.out.println(materialService.verifyWrhscode(wrhscode.trim().toUpperCase()));
         return materialService.verifyWrhscode(wrhscode.trim().toUpperCase()) ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
     }
 
@@ -86,6 +84,38 @@ public class MaterialRestController {
         materialFileDTO.setMaterial(Material.builder().mtrlno(materialFileDTO.getMtrlno()).build());
         MaterialFile materialFile = materialService.saveMaterialFile(materialFileDTO);
         return ResponseEntity.ok(materialFile);
+    }
+
+    /**
+     * 자재 그룹 코드의 중복 검사를 수행
+     *
+     * @param grpcode 중복 검사를 수행할 그룹코드
+     * @return 중복 시 false, 사용가능 시 true.
+     */
+    @GetMapping(value = "/verify/grpcode", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> verifyGrpcode(@RequestParam String grpcode) {
+        return materialService.verifyGrpcode(grpcode.trim().toUpperCase()) ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
+    }
+
+    @PostMapping(value = "/groupregister", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> registerMaterialGroup(@RequestBody MaterialGroupDTO materialGroupDTO) {
+        materialGroupDTO.setGrpcode(materialGroupDTO.getGrpcode().trim().toUpperCase());
+        materialGroupDTO.setName(materialGroupDTO.getName().trim().toUpperCase());
+        if (materialGroupDTO.getGrpcode().contains("ETC") || materialGroupDTO.getName().isEmpty()) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(materialService.registerMaterialGroup(materialGroupDTO));
+    }
+
+    @PostMapping(value = "/groupupdate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> updateMaterialGroup(@RequestBody MaterialGroupDTO materialGroupDTO) {
+        System.out.println(materialGroupDTO);
+        materialGroupDTO.setGrpcode(materialGroupDTO.getGrpcode().trim().toUpperCase());
+        materialGroupDTO.setName(materialGroupDTO.getName().trim().toUpperCase());
+        if (materialGroupDTO.getGrpcode().contains("ETC") || materialGroupDTO.getName().isEmpty()) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(materialService.updateMaterialGroup(materialGroupDTO));
     }
 }
 

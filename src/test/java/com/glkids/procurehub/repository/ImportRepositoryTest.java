@@ -14,6 +14,6 @@ public class ImportRepositoryTest {
 
     @Test
     public void initSave() {
-        importRepository.save(Import.builder().order(Order.builder().orderno(1L).build()).quantity(10L).status(0).build());
+        importRepository.save(Import.builder().order(Order.builder().orderno(2L).build()).quantity(15L).status(0).build());
     }
 }

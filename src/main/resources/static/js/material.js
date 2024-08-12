@@ -23,8 +23,52 @@ var materialGroupService = (function (){
         });
     }
 
+    function verifyGrpcode(grpcode, callback) {
+        $.ajax({
+            method: 'get',
+            url: url + '/rest/material/verify/grpcode?grpcode=' + grpcode,
+            contentType: 'application/json',
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
+    function registerGroup(grpcode, gname, pGrpcode, callback) {
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/material/groupregister',
+            contentType: 'application/json',
+            data: JSON.stringify({ grpcode: grpcode, pgrpcode: pGrpcode, name: gname }),
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
+    function updateGroupname(grpcode, name, callback) {
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/material/groupupdate',
+            contentType: 'application/json',
+            data: JSON.stringify({ grpcode: grpcode, name: name }),
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
     return {
-        getChildGroup:getChildGroup
+        getChildGroup:getChildGroup,
+        verifyGrpcode:verifyGrpcode,
+        registerGroup:registerGroup,
+        updateGroupname:updateGroupname
     };
 })();
 
@@ -44,7 +88,7 @@ var materialWarehouseService = (function (){
     }
 
     function validateWrhscode(wrhscode) {
-        var regex = /^[a-zA-Z0-9\-]{5,30}$/;
+        var regex = /^[a-zA-Z0-9\-]{1,30}$/;
         return regex.test(wrhscode);
     }
 

@@ -31,6 +31,8 @@ public interface MaterialService {
 
     Boolean verifyWrhscode(String wrhscode);
 
+    Boolean verifyGrpcode(String grpcode);
+
     MaterialGroupDTO readMaterialGroup(String grpcode);
 
     List<MaterialGroupDTO> getMaterialGroupsByDepth(Integer depth);
@@ -40,6 +42,12 @@ public interface MaterialService {
     List<MaterialGroupListDTO> getMaterialGroupLists(MaterialGroup materialGroup);
 
     List<MaterialGroupDTO> getMaterialGroupDirection(MaterialGroup materialGroup);
+
+    List<MaterialGroupNode> getAllMaterialGroups();
+
+    Boolean registerMaterialGroup(MaterialGroupDTO materialGroupDTO);
+
+    Boolean updateMaterialGroup(MaterialGroupDTO materialGroupDTO);
 
     MaterialFile saveMaterialFile(MaterialFileDTO materialFileDTO);
 
@@ -115,6 +123,13 @@ public interface MaterialService {
                 .name(materialGroup.getName())
                 .pGrpcode(materialGroup.getPGrpcode())
                 .depth(materialGroup.getDepth()).build();
+    }
+
+    default MaterialGroup groupDTOToEntity(MaterialGroupDTO materialGroupDTO) {
+        return MaterialGroup.builder().grpcode(materialGroupDTO.getGrpcode())
+                .name(materialGroupDTO.getName())
+                .pGrpcode(materialGroupDTO.getPGrpcode())
+                .depth(materialGroupDTO.getDepth()).build();
     }
 
     default MaterialFileDTO materialFileEntityToDTO(MaterialFile entity) {

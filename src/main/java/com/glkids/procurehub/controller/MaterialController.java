@@ -136,6 +136,9 @@ public class MaterialController {
     @GetMapping("/grouplist")
     public void groupList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         model.addAttribute("user", userDTO);
+        model.addAttribute("title", "자재 그룹");
+
+        model.addAttribute("materialGroups", materialService.getAllMaterialGroups());
 
     }
 

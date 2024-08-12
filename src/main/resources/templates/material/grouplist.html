@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <title>Home</title>
+    <style>
+      #loader {
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        visibility: visible;
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        background: #fff;
+        z-index: 90000;
+      }
+
+      #loader.fadeOut {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+        background-color: #333;
+        border-radius: 100%;
+        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+        animation: sk-scaleout 1.0s infinite ease-in-out;
+      }
+
+      @-webkit-keyframes sk-scaleout {
+        0% { -webkit-transform: scale(0) }
+        100% {
+          -webkit-transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes sk-scaleout {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        } 100% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+    </style>
+  <script defer="defer" src="js/main.js"></script><link href="css/style.css" rel="stylesheet"></head>
+  <body class="app">
+    <div id="loader">
+      <div class="spinner"></div>
+    </div>
+    <script>
+      window.addEventListener('load', function load() {
+        const loader = document.getElementById('loader');
+        setTimeout(function() {
+            loader.classList.add('fadeOut');
+        }, 300);
+      });
+    </script>
+
+      <!-- #Main ============================ -->
+      <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+          <div id="mainContent">
+            <div class="full-container">
+              <th:block th:fragment="content">
+                <div class="row gap-20 pos-r">
+                  <th:block th:each="groupNode, i : ${materialGroups}">
+                    <div class="col-md-3">
+                      <div class="bgc-white p-20 bd">
+                        <div class="d-flex justify-content-between">
+                          <div class="d-flex align-items-baseline">
+                            <a th:href="@{/material/list(inputSearch=${groupNode.group.grpcode})}" class="link-dark"><h4 class="c-grey-900 mT-10 mB-30" th:text="${groupNode.group.name}"></h4></a>
+                            <a href="#" th:if="${!groupNode.group.grpcode.contains('ETC')}"
+                               class="px-2 py-2 modNameBtn" th:id="${groupNode.group.grpcode}" data-bs-toggle="tooltip" data-bs-placement="top"
+                               data-bs-original-title="그룹 명 수정">
+                              <i class="c-grey-900 ti-pencil-alt fa-1x"></i>
+                            </a>
+                          </div>
+                          <div class="mT-10 mB-30">
+                            <a href="#"
+                               class="px-2 py-2 addSubGroupBtn" th:id="${groupNode.group.grpcode}" data-bs-toggle="tooltip" data-bs-placement="top"
+                               data-bs-original-title="하위 그룹 추가">
+                              <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <th:block th:if="${groupNode.children.size() > 0}">
+                            <li th:each="childNode, j : ${groupNode.children}" class="list-group-item">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-baseline">
+                                  <a th:href="@{/material/list(inputSearch=${childNode.group.grpcode})}" class="link-dark"><h5 th:text="${childNode.group.name}">자식 그룹명</h5></a>
+                                  <a href="#" th:if="${!childNode.group.grpcode.contains('ETC')}"
+                                     class="px-2 py-2 modNameBtn" th:id="${childNode.group.grpcode}" data-bs-toggle="tooltip" data-bs-placement="top"
+                                     data-bs-original-title="그룹 명 수정">
+                                    <i class="c-grey-900 ti-pencil-alt fa-0-75x"></i>
+                                  </a>
+                                </div>
+                                <a href="#"
+                                   class="px-2 py-2 mb-2 addSubGroupBtn" th:id="${childNode.group.grpcode}" data-bs-toggle="tooltip" data-bs-placement="top"
+                                   data-bs-original-title="하위 그룹 추가">
+                                  <i class="c-grey-900 ti-plus fa-1x"></i>
+                                </a>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <th:block th:if="${childNode.children.size() > 0}">
+                                  <!-- 재귀적으로 자식 그룹 출력 -->
+                                  <li th:each="grandChildNode, k : ${childNode.children}" class="list-group-item">
+                                    <div class="d-flex align-items-baseline">
+                                      <a th:href="@{/material/list(inputSearch=${grandChildNode.group.grpcode})}" class="c-grey-900"><span th:text="${grandChildNode.group.name}">손자 그룹명</span></a>
+                                      <a href="#" th:if="${!grandChildNode.group.grpcode.contains('ETC')}"
+                                         class="px-2 py-2 modNameBtn" th:id="${grandChildNode.group.grpcode}" data-bs-toggle="tooltip" data-bs-placement="top"
+                                         data-bs-original-title="그룹 명 수정">
+                                        <i class="c-grey-900 ti-pencil-alt fa-0-75x"></i>
+                                      </a>
+                                    </div>
+                                      <!-- 계속 자식 그룹 출력 가능 -->
+                                  </li>
+                                </th:block>
+                              </ul>
+                            </li>
+                          </th:block>
+                        </ul>
+                      </div>
+                    </div>
+                  </th:block>
+                  <div class="col-md-3">
+                    <div class="bgc-white p-20 bd">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="c-grey-900 mT-10 mB-30">새 그룹 추가</h4>
+                        <div class="mT-10 mB-30">
+                          <a href="#"
+                             class="px-2 py-2 addSubGroupBtn" id="" data-bs-toggle="tooltip" data-bs-placement="top"
+                             data-bs-original-title="새 그룹 추가">
+                            <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="groupAddModal" tabindex="-1" aria-labelledby="groupAddModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="groupAddModalLabel">그룹 등록</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label class="form-label" for="inputAddGrpcode">그룹 코드</label>
+                          <input type="text" name="quantity" class="form-control" id="inputAddGrpcode" placeholder="그룹 코드를 입력하세요." control-id="ControlID-1">
+                          <span class="ps-1 pt-1 c-grey-700" id="subGroupcode">그룹 코드는 5자리 이상 30자리 미만의 영문자, 숫자, -만 입력 가능합니다.</span>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="inputAddgroupname">그룹 이름</label>
+                          <input type="text" name="quantity" class="form-control" id="inputAddgroupname" placeholder="그룹 이름를 입력하세요." control-id="ControlID-1">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary btn-color disabled" id="addgroupSubmit">등록하기</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="groupUpdateModal" tabindex="-1" aria-labelledby="grooupUpdateModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="grooupUpdateModalLabel">그룹명 수정</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label class="form-label" for="inputUpdateGrpname">그룹 이름</label>
+                          <input type="text" name="quantity" class="form-control" id="inputUpdateGrpname" placeholder="그룹 이름를 입력하세요." control-id="ControlID-1">
+                        </div>
+                      </div>
+                      <div class="modal-footer justify-content-end">
+                        <button type="button" class="btn btn-outline-danger d-none" id="deleteGroupButton">삭제</button>
+                        <div class="d-flex">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                          <button type="button" class="btn btn-primary btn-color ms-2" id="updateGroupSubmit">수정하기</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">알림</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <span class="c-grey-900 fa-1x" id="deleteModalContent">삭제하시겠습니까? 삭제된 내용은 복구되지 않습니다.</span>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="deleteModalCancel">취소</button>
+                        <button type="button" class="btn btn-danger btn-color" id="deleteModalSubmit">삭제</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script src="/js/material.js"></script>
+                <script>
+                  $(document).ready(function () {
+                    var addModal = $('#groupAddModal')
+                    var updateModal = $('#groupUpdateModal');
+                    var deleteModal = $('#deleteModal');
+
+                    var inputUpdateGroupname = $('#inputUpdateGrpname');
+                    var updateGroupSubmit = $('#updateGroupSubmit');
+                    var deleteGroupButton = $('#deleteGroupButton');
+
+                    var deleteCancelButton = $('#deleteModalCancel');
+                    var deleteSubmitButton = $('#deleteModalSubmit');
+
+                    var modGroupId = "";
+                    var modGroupName = "";
+
+                    $('.modNameBtn').on('click', function (e) {
+                      e.preventDefault();
+
+                      modGroupId = $(this).attr('id');
+
+                      modGroupName = $(this).closest('div').find('h5, h4, span').first().text();
+
+                      inputUpdateGroupname.val(modGroupName);
+                      updateModal.modal('show');
+                    });
+
+                    updateGroupSubmit.on('click', function (e) {
+                      e.preventDefault();
+
+                      modGroupName = inputUpdateGroupname.val();
+                      materialGroupService.updateGroupname(modGroupId, modGroupName, function (data) {
+                        if (data) {
+                          toastService.printToast("그룹명이 수정되었습니다.");
+                        } else {
+                          toastService.printToast("그룹명 수정에 실패하였습니다.");
+                        }
+                        updateModal.modal('hide');
+                      });
+                    });
+
+                    var pGrpcode = "";
+                    var newGrpcode = "";
+                    var newGroupname = "";
+
+                    var grpcodeVerified = false;
+                    var groupnameVerified = false;
+
+                    var addGroupBtn = $('#addgroupSubmit');
+
+                    $('.addSubGroupBtn').on('click', function (e) {
+                      e.preventDefault();
+
+                      pGrpcode = $(this).attr('id');
+
+                      $('#inputAddGrpcode').val(null);
+                      $('#inputAddgroupname').val(null);
+
+                      addModal.modal('show');
+                    });
+
+                    $('#inputAddGrpcode').on('input', function (e) {
+                      newGrpcode = $(this).val();
+
+                      if (newGrpcode.length > 2) {
+                        var isValid = materialWarehouseService.validateWrhscode(newGrpcode);
+                        console.log(isValid);
+
+                        if (isValid) {
+                          if (pGrpcode) {
+                            newGrpcode = pGrpcode + "_" + $(this).val();
+                          }
+                          console.log(newGrpcode);
+                          materialGroupService.verifyGrpcode(newGrpcode, function (data) {
+                            console.log("rest" + data);
+                            if (data) {
+                              grpcodeVerified = true;
+                            } else {
+                              grpcodeVerified = false;
+                            }
+
+                            if (grpcodeVerified && groupnameVerified) {
+                              addGroupBtn.removeClass('disabled');
+                            }
+                          })
+                        }
+                      }
+                    });
+                    $('#inputAddgroupname').on('input', function () {
+                      newGroupname = $(this).val();
+
+                      if (newGroupname.length > 2) {
+                        groupnameVerified = true;
+                      } else {
+                        groupnameVerified = false;
+                      }
+
+                      if (grpcodeVerified && groupnameVerified) {
+                        addGroupBtn.removeClass('disabled');
+                      }
+                    });
+
+                    addGroupBtn.on('click', function (e) {
+                      e.preventDefault();
+
+                      materialGroupService.registerGroup(newGrpcode, newGroupname, pGrpcode, function (data) {
+                        if (data) {
+                          toastService.printToast("그룹이 등록되었습니다.");
+                        } else {
+                          toastService.printToast("그룹 등록에 실패하였습니다.");
+                        }
+                      })
+                    })
+                  });
+                </script>
+              </th:block>
+            </div>
+          </div>
+        </main>
+        <!-- ### $App Screen Footer ### -->
+        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+          <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+        </footer>
+      </div>
+  </body>
+  </th:block>
+</html>
