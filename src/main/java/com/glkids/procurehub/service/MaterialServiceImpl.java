@@ -9,7 +9,6 @@ import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
-import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,11 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -55,7 +53,11 @@ public class MaterialServiceImpl implements MaterialService {
         return materialEntityToDTO(materialOpt);
     }
 
-    // 자재명을 검색하는 서비스 메서드 추가
+    /**
+     * 입력 한 값을 포함하는 자재 명을 가지는 자재 검색
+     * @param name 자재 명 검색 입력 값
+     * @return 자재 목록
+     */
     @Override
     public List<Material> findByNameContaining(String name) {
         return materialRepository.findByMtrlContaining(name);
@@ -134,6 +136,16 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public Boolean verifyWrhscode(String wrhscode) {
         return !materialWarehouseRepository.existsById(wrhscode);
+    }
+
+    /**
+     *
+     * @param grpcode 중복을 확인할 자재 그룹 코드
+     * @return 중복시 false, 사용 가능 시 true.
+     */
+    @Override
+    public Boolean verifyGrpcode(String grpcode) {
+        return !materialGroupRepository.existsById(grpcode);
     }
 
     /**
@@ -235,6 +247,67 @@ public class MaterialServiceImpl implements MaterialService {
         }
         Collections.reverse(direction);
         return direction;
+    }
+
+    public List<MaterialGroupNode> getAllMaterialGroups() {
+        List<MaterialGroup> allGroups = materialGroupRepository.findAllMaterialGroups();
+
+        // 맵을 사용하여 그룹 코드와 노드 간의 매핑을 생성
+        Map<String, MaterialGroupNode> groupMap = new HashMap<>();
+
+        // 노드 생성
+        for (MaterialGroup group : allGroups) {
+            groupMap.put(group.getGrpcode(), new MaterialGroupNode(group));
+        }
+
+        // 자식 노드를 부모 노드에 추가
+        for (MaterialGroupNode node : groupMap.values()) {
+            String parentCode = node.getGroup().getPGrpcode();
+            if (parentCode != null) {
+                MaterialGroupNode parent = groupMap.get(parentCode);
+                if (parent != null) {
+                    parent.getChildren().add(node);
+                }
+            }
+        }
+
+        // 최상위 노드만 추출
+        List<MaterialGroupNode> topNodes = groupMap.values().stream()
+                .filter(node -> node.getGroup().getPGrpcode() == null)
+                .collect(Collectors.toList());
+
+        return topNodes;
+    }
+
+    /**
+     * 자재 그룹을 추가합니다.
+     * @param materialGroupDTO 추가할 자재 그룹
+     * @return
+     */
+    @Override
+    public Boolean registerMaterialGroup(MaterialGroupDTO materialGroupDTO) {
+        if (materialGroupDTO.getPGrpcode() == null || materialGroupDTO.getPGrpcode().isEmpty()) { // 부모 그룹이 없는 경우
+            materialGroupDTO.setDepth(0);
+            materialGroupDTO.setPGrpcode(null);
+        } else { // 부모 그룹이 있는 경우
+            Integer depth = materialGroupRepository.findById(materialGroupDTO.getPGrpcode()).get().getDepth() + 1;
+            materialGroupDTO.setDepth(depth);
+        }
+
+        materialGroupRepository.save(groupDTOToEntity(materialGroupDTO));
+        return materialGroupRepository.existsById(materialGroupDTO.getGrpcode());
+    }
+
+    /**
+     * 자재 그룹의 이름을 업데이터 합니다.
+     * @param materialGroupDTO 자재 그룹 이름을 변경할 그룹 객체
+     * @return 변경된 행의 수를 통해 변경 시 true, 미 변경 시 false를 리턴합니다.
+     */
+    @Transactional
+    @Override
+    public Boolean updateMaterialGroup(MaterialGroupDTO materialGroupDTO) {
+        Integer i = materialGroupRepository.updateMaterialGroup(materialGroupDTO.getName(), materialGroupDTO.getGrpcode());
+        return i > 0;
     }
 
     @Override
