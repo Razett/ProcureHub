@@ -1,19 +1,25 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.UserDTO;
+import com.glkids.procurehub.service.ImportService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
 
 /**
  * 입고 관리 메뉴 컨트롤러
  */
 @RequestMapping("/import")
 @Controller
+@RequiredArgsConstructor
 public class ImportController {
+
+    private final ImportService importService;
 
     /**
      * 입고 현황
@@ -59,8 +65,10 @@ public class ImportController {
      */
     @GetMapping("/totallist")
     public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model){
+
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "입고 전체");
+        model.addAttribute("importList", importService.list());
 
         return "import/totallist";
     }
