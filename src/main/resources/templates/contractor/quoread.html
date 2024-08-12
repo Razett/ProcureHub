@@ -260,14 +260,14 @@
                                                             th:text="${quotationMtrl.material.name}"></td>
                                                         <td class="text-center"
                                                             th:text="${quotationMtrl.material.standard}"></td>
-                                                        <td class="text-end"
+                                                        <td class="text-center"
                                                             th:text="${quotationMtrl.material.quantity}"></td>
-                                                        <td class="text-end" th:text="${quotationMtrl.quantity}"></td>
-                                                        <td class="text-end"
+                                                        <td class="text-center" th:text="${quotationMtrl.quantity}"></td>
+                                                        <td class="text-center"
                                                             th:text="${#numbers.formatInteger(quotationMtrl.unitprice, 0 , 'COMMA')}"></td>
-                                                        <td class="text-end"
+                                                        <td class="text-center"
                                                             th:text="${#numbers.formatInteger(quotationMtrl.totalprice, 0 , 'COMMA')}"></td>
-                                                        <td class="text-end"
+                                                        <td class="text-center"
                                                             th:text="${quotationMtrl.leadtime} + '일'"></td>
                                                     </tr>
                                                 </th:block>
