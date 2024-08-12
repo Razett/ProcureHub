@@ -575,6 +575,13 @@
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
     <script th:src="@{/js/toast.js}"></script>
+    <script>
+      var msg = '[[${msg}]]';
+
+      if (msg) {
+        toastService.printToast(msg);
+      }
+    </script>
   </body>
 </th:block>
 </html>

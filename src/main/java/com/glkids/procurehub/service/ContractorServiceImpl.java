@@ -56,9 +56,11 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
-    public void register(ContractorDTO contractorDTO) {
+    public Boolean register(ContractorDTO contractorDTO) {
         Contractor conEntity = contractorDtoToEntity(contractorDTO);
         contractorRepository.save(conEntity);
+
+        return contractorRepository.existsById(conEntity.getCorno());
     }
 
     @Override
@@ -111,9 +113,11 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
-    public void quoRegister(QuotationDTO quotationDTO) {
+    public Boolean quoRegister(QuotationDTO quotationDTO) {
         Quotation quoEntity = quotationDtoToEntity(quotationDTO);
         quotationRepository.save(quoEntity);
+
+        return quoEntity.getQtno() != null;
     }
 
     @Override

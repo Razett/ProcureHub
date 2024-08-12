@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -77,8 +78,12 @@ public class ContractorController {
      * 업체 등록 처리
      */
     @PostMapping("/register")
-    public String postRegister(ContractorDTO contractorDTO) {
-        contractorService.register(contractorDTO);
+    public String postRegister(ContractorDTO contractorDTO, RedirectAttributes redirectAttributes) {
+        if (contractorService.register(contractorDTO)) {
+            redirectAttributes.addFlashAttribute("msg", "업체가 등록되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "업체 등록에 실패하였습니다.");
+        }
         return "redirect:/contractor/list";
     }
 
@@ -100,8 +105,9 @@ public class ContractorController {
      * 업체 수정 처리
      */
     @PostMapping("/update")
-    public String postUpdate(@ModelAttribute ContractorDTO contractorDTO) {
+    public String postUpdate(@ModelAttribute ContractorDTO contractorDTO, RedirectAttributes redirectAttributes) {
         contractorService.update(contractorDTO);
+        redirectAttributes.addFlashAttribute("msg", "업체 정보가 수정되었습니다.");
         return "redirect:/contractor/read?corno=" + contractorDTO.getCorno();
     }
 
@@ -132,9 +138,13 @@ public class ContractorController {
      * 견적 등록 처리
      */
     @PostMapping("/quoregister")
-    public String postQuoRegister(QuotationDTO quotationDTO, QuotationMtrl quotationMtrl) {
-        contractorService.quoRegister(quotationDTO);
-        return "/contractor/quolist";
+    public String postQuoRegister(QuotationDTO quotationDTO, RedirectAttributes redirectAttributes) {
+        if(contractorService.quoRegister(quotationDTO)) {
+            redirectAttributes.addFlashAttribute("msg", "견적이 등록되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "견적이 등록에 실패하였습니다.");
+        }
+        return "redirect:/contractor/quolist";
     }
 
     /**
@@ -171,12 +181,13 @@ public class ContractorController {
     }
 
     @PostMapping("/quoupdate")
-    public String Postquoupdate(@ModelAttribute QuotationDTO quotationDTO){
+    public String Postquoupdate(@ModelAttribute QuotationDTO quotationDTO, RedirectAttributes redirectAttributes){
 
 
         quotationDTO.setContractor(Contractor.builder().corno(quotationDTO.getCorno()).build());
         quotationDTO.setEmp(Emp.builder().empno(201758030L).build());
         contractorService.quoupdate(quotationDTO);
+        redirectAttributes.addFlashAttribute("msg", "견적이 수정되었습니다.");
 
         return "redirect:/contractor/quoread?qtno=" + quotationDTO.getQtno();
     }

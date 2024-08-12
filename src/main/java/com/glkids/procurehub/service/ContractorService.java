@@ -24,7 +24,7 @@ public interface ContractorService {
     void update(ContractorDTO contractorDTO);
 
     //4. 업체 등록
-    void register(ContractorDTO contractorDTO);
+    Boolean register(ContractorDTO contractorDTO);
 
     //5. 견적 목록
     List<QuotationDTO> quoList(String type, String input);
@@ -32,7 +32,7 @@ public interface ContractorService {
     List<QuotationDTO> quoListByContractor(Long corno, Integer pageNum);
 
     //6. 견적 등록
-    void quoRegister(QuotationDTO quotationDTO);
+    Boolean quoRegister(QuotationDTO quotationDTO);
 
     //7. 이름검색기능
     ContractorDTO findByName(String name);
