@@ -1,10 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>출고 전체 내역</h1>
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <style>
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #fff;
+                z-index: 90000;
+            }
+
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
+
+            @-webkit-keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0)
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <div class="row gap-20 pos-r">
+                            <div class="bgc-white p-20 bd col-md-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">출고 전체 내역</h4>
+                                </div>
+                                <div style="overflow:auto; width:1792px; height:230px;">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>출고 코드</th>
+                                            <th>출고 요청일</th>
+                                            <th>출고 요청 사원</th>
+                                            <th>조달 계획 코드</th>
+                                            <th>출고일</th>
+                                            <th>출고 처리 사원</th>
+                                            <th>자재코드</th>
+                                            <th>자재명</th>
+                                            <th>자재 수량</th>
+                                            <th>요청 수량</th>
+                                            <th>등록일</th>
+                                            <th>출고 상태</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                        <tr th:each="list : ${exportlist}">
+                                            <td class="import-code" th:text="${list.exportno}"></td>
+                                            <td th:text="${list.shippeddate}"></td>
+                                            <td th:text="${list.shipper}"></td>
+                                            <td th:text="${list.prcr.prcrno}"></td>
+                                            <td th:text="${list.duedate}"></td>
+                                            <td th:text="${list.shipper}"></td>
+                                            <td th:text="${list.prcr.material.mtrlno}"></td>
+                                            <td th:text="${list.prcr.material.name}"></td>
+                                            <td th:text="${list.prcr.material.quantity}"></td>
+                                            <td th:text="${list.quantity}"></td>
+                                            <td th:text="${list.registerdate}"></td>
+                                            <td th:text="${list.status}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 스크립트는 이곳에 위치 -->
+                        <script>
+                            $(document).ready(function () {
+                                // 입고 코드 클릭 시 모달 표시
+                                $('.import-code').on('click', function () {
+                                    $('#importModal').modal('show');
+                                });
+                            });
+                        </script>
+                        <!-- 입고 상세 정보 모달 -->
+                        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="importModalLabel">입고 전체 내역 모달</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    </body>
+</th:block>
 </html>
