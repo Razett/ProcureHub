@@ -21,6 +21,7 @@ public class CalendarController {
     public List<Map<String, Object>> getEvents() {
         return calendarService.getAllCalendar().stream().map(event -> {
             Map<String, Object> eventData = new HashMap<>();
+            eventData.put(("id"), event.getId());
             eventData.put("title", event.getTitle());
             eventData.put("start", event.getStartDate());
             eventData.put("end", event.getEndDate());
@@ -31,5 +32,17 @@ public class CalendarController {
     @PostMapping("/add")
     public Calendar addCalendar(@RequestBody Calendar calendar) {
         return calendarService.saveCalendar(calendar);
+    }
+
+    @PostMapping("/update")  // 수정 시 사용할 API
+    public Calendar updateCalendar(@RequestBody Calendar calendar) {
+        // 기존 이벤트가 존재하는지 확인하고, 있다면 수정
+        return calendarService.updateCalendar(calendar);
+    }
+
+    @PostMapping("/delete")  // 삭제 시 사용할 API
+    public void deleteCalendar(@RequestBody Map<String, Long> requestData) {
+        Long eventId = requestData.get("id");
+        calendarService.deleteCalendar(eventId);
     }
 }
