@@ -2,6 +2,7 @@ package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.MaterialGroupDTO;
+import com.glkids.procurehub.dto.ProcurementDetailsDTO;
 import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.MaterialFile;
@@ -11,6 +12,7 @@ import com.glkids.procurehub.repository.MaterialGroupRepository;
 import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import com.glkids.procurehub.service.MaterialService;
 import com.glkids.procurehub.service.MaterialServiceImpl;
+import com.glkids.procurehub.service.ProcurementService;
 import com.glkids.procurehub.status.MaterialStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 /**
  * 자재 관리 메뉴 컨트롤러
@@ -29,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MaterialController {
 
     private final MaterialService materialService;
+    private final ProcurementService procurementService;
 
     /**
      * 자재 목록
@@ -183,7 +188,10 @@ public class MaterialController {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "조달 계획");
 
-        return "/material/prcrlist";
+        List<ProcurementDetailsDTO> procurementDetails = procurementService.getProcurementDetails();
+        model.addAttribute("orderList", procurementDetails);  // 여기서 orderList로 데이터 전달
+        System.out.println(model.addAttribute("orderList", procurementDetails));
+        return "material/prcrlist";  // prcrlist.html 파일로 이동
     }
 
     /**
