@@ -188,10 +188,10 @@ public class MaterialController {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "조달 계획");
 
-        List<ProcurementDetailsDTO> procurementDetails = procurementService.getProcurementDetails();
-        model.addAttribute("orderList", procurementDetails);  // 여기서 orderList로 데이터 전달
-        System.out.println(model.addAttribute("orderList", procurementDetails));
-        return "material/prcrlist";  // prcrlist.html 파일로 이동
+        List<ProcurementDetailsDTO> procurementDetails = procurementService.getProcurementDetailsByStatus();
+        model.addAttribute("orderList", procurementDetails);
+
+        return "material/prcrlist";  // prcrlist.html 뷰로 이동
     }
 
     /**

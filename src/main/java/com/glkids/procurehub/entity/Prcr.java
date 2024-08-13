@@ -48,8 +48,5 @@ public class Prcr extends BaseEntity {
 
     @Column(nullable = false)
     private Integer status;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private QuotationMtrl quotationMtrl; // QuotationMtrl와의 관계 추가
-}
