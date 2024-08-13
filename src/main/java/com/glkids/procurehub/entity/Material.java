@@ -52,4 +52,5 @@ public class Material extends BaseEntity {
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private MaterialStatus status = MaterialStatus.OK;
+
 }
