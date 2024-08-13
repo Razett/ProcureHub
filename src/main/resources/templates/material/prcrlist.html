@@ -25,7 +25,7 @@
                     <th>자재명</th>
                     <th>자재 규격</th>
                     <th>자재 현 수량</th>
-                    <th>자재 조달 수량</th>
+                    <th>조달 자재 수량</th>
                     <th>조달 상태</th>
                     <th>L/T</th>
                     <th>등록날짜</th>
@@ -34,24 +34,30 @@
                 </tr>
                 </thead>
                 <tbody>
+                <!-- 레코드가 없을 때 표시 -->
+                <tr th:if="${#lists.isEmpty(orderList)}">
+                    <td colspan="17">No records found.</td>
+                </tr>
+                <!-- 레코드가 있을 때 각 항목 표시 -->
                 <tr th:each="order : ${orderList}">
-                    <td th:text="${order.prcrNo}"></td>
-                    <td th:text="${#temporals.format(order.reqDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:text="${order.prdcPlanNo}"></td>
-                    <td th:text="${#temporals.format(order.startDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:text="${order.prdcNo}"></td>
-                    <td th:text="${order.productName}"></td>
-                    <td th:text="${order.productQuantity}"></td>
+                    <td th:text="${order.prcrno}"></td>
+                    <td th:text="${#temporals.format(order.reqdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${order.prdcPlanNo}"></td> <!-- 필드 이름 수정 -->
+                    <td th:text="${#temporals.format(order.startdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${order.prdcno}"></td>
+                    <td th:text="${order.productName}"></td> <!-- 필드 이름 수정 -->
+                    <td th:text="${order.productQuantity}"></td> <!-- 필드 이름 수정 -->
                     <td th:text="${order.mtrlno}"></td>
-                    <td th:text="${order.materialName}"></td>
-                    <td th:text="${order.materialStandard}"></td>
-                    <td th:text="${order.materialQuantity}"></td>
-                    <td th:text="${order.materialProcurementQuantity}"></td>
+                    <td th:text="${order.materialName}"></td> <!-- 필드 이름 수정 -->
+                    <td th:text="${order.standard}"></td> <!-- materialStandard 대신 standard로 변경 -->
+                    <td th:text="${order.materialQuantity}"></td> <!-- 필드 이름 수정 -->
+                    <td th:text="${order.materialProcurementQuantity}"></td> <!-- 필드 이름 수정 -->
                     <td th:text="${order.status}"></td>
                     <td></td>
-                    <td th:text="${order.regdate}"></td>
-                    <td th:text="${order.moddate}"></td>
-                    <td><i class="bi bi-file-earmark-plus"></i></td>
+                    <td th:text="${#temporals.format(order.regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(order.moddate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <!-- 발주 추가 아이콘을 링크로 감싸서 클릭 가능하게 함 -->
+                    <td><a th:href="@{'/order/add/' + ${order.prcrno}}"><i class="bi bi-file-earmark-plus"></i></a></td>
                 </tr>
                 </tbody>
             </table>

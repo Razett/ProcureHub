@@ -16,32 +16,34 @@ public class ProcurementService {
     @Autowired
     private PrcrRepository prcrRepository;
 
-    public List<ProcurementDetailsDTO> getProcurementDetails() {
-        List<Prcr> procurementPlans = prcrRepository.findAll();
-
-        return procurementPlans.stream().map(prcr -> {
-            PrdcPlan prdcPlan = prcr.getPrdcPlan();
-            Prdc product = prdcPlan.getPrdc();
-            Material material = prcr.getMaterial();
-            QuotationMtrl quotationMtrl = prcr.getQuotationMtrl(); // QuotationMtrl 객체 가져오기
-
-            return ProcurementDetailsDTO.builder()
-                    .prcrNo(prcr.getPrcrno())
-                    .reqDate(prcr.getReqdate())
-                    .prdcPlanNo(prdcPlan.getPrdcPlanNo())
-                    .startDate(prdcPlan.getStartdate())
-                    .prdcNo(product.getPrdcno())
-                    .productName(product.getName())
-                    .productQuantity(prdcPlan.getQuantity())
-                    .mtrlno(material.getMtrlno())
-                    .materialName(material.getName())
-                    .materialStandard(material.getStandard())
-                    .materialQuantity(material.getQuantity())
-                    .materialProcurementQuantity(prcr.getQuantity())
-                    .status(prcr.getStatus())
-                    .regdate(prcr.getRegdate())
-                    .moddate(prcr.getModdate())
-                    .build();
-        }).collect(Collectors.toList());
+    public List<ProcurementDetailsDTO> getProcurementDetailsByStatus() {
+          return prcrRepository.findAllProcurements();
     }
 }
+    //쿼리 dsl  빌더로 해서 짜는법
+//    public List<ProcurementDetailsDTO> getProcurementDetails() {
+//        List<Prcr> procurementPlans = prcrRepository.findAll();
+//
+//        return procurementPlans.stream().map(prcr -> {
+//            PrdcPlan prdcPlan = prcr.getPrdcPlan();  // 조달 계획에서 연관된 생산 계획 가져오기
+//            Prdc product = prdcPlan.getPrdc();  // 생산 계획에서 연관된 제품 가져오기
+//            Material material = prcr.getMaterial();  // 조달 계획에서 연관된 자재 가져오기
+//
+//            return ProcurementDetailsDTO.builder()
+//                    .prcrno(prcr.getPrcrno())  // 조달 계획 코드
+//                    .reqdate(prcr.getReqdate())  // 납기일
+//                    .prdcPlanNo(prdcPlan.getPrdcPlanNo())  // 생산 계획 코드
+//                    .startdate(prdcPlan.getStartdate())  // 생산 시작일
+//                    .prdcno(product.getPrdcno())  // 생산 제품 코드
+//                    .productName(product.getName())  // 생산 제품명
+//                    .productQuantity(prdcPlan.getQuantity())  // 생산 제품 수량
+//                    .mtrlno(material.getMtrlno())  // 자재 번호
+//                    .materialName(material.getName())  // 자재명
+//                    .standard(material.getStandard())  // 자재 표준
+//                    .materialQuantity(material.getQuantity())  // 자재 수량
+//                    .materialProcurementQuantity(prcr.getQuantity())  // 조달 자재 수량
+//                    .status(prcr.getStatus())  // 조달 상태
+//                    .build();
+//        }).collect(Collectors.toList());
+//    }
+
