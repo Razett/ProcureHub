@@ -214,6 +214,7 @@
                 // FullCalendar 초기화
                 calendar = new FullCalendar.Calendar(calendarEl, {
                   initialView: 'dayGridMonth',
+                  locale: 'ko', // 한국어로 설정
                   events: '/api/Calendar/read', // 서버에서 JSON 데이터를 가져옵니다.
                   editable: true,
                   eventColor: '#cce8f4', // 이벤트 배경 색상
