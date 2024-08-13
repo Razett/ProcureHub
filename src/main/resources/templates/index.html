@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <title>Home</title>
     <style>
       #loader {
@@ -75,8 +76,186 @@
           <div id="mainContent">
             <div class="full-container">
               <th:block th:fragment="content">
-                <span>index</span>
+                <main class="main-content bgc-grey-100">
+                    <div class="full-container">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <!-- Main Content -->
+                          <div class="bgc-white p-20 bd">
+                            <div class="col-md-10">
+                              <div class="container mt-4">
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">조달 계획</h5>
+                                        <p class="card-text">조달 계획: 329건</p>
+                                        <p class="card-text">조달 완료: 320건</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">발주 현황</h5>
+                                        <p class="card-text">발주: 390건</p>
+                                        <p class="card-text">발주 완료: 392건</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">입고 현황</h5>
+                                        <p class="card-text">입고 요청: 100건</p>
+                                        <p class="card-text">입고 완료: 97건</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">출고 현황</h5>
+                                        <p class="card-text">출고 요청: 21건</p>
+                                        <p class="card-text">출고 완료: 19건</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                  <div class="col-md-8">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">생산 계획</h5>
+                                        <div class="calendar">
+                                          <div id='calendar'></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="card mb-4">
+                                      <div class="card-body">
+                                        <h5 class="card-title">이번달 진행률</h5>
+                                        <div class="progress-bar-container">
+                                          <div class="progress-bar-fill" style="width: 50%;"></div>
+                                          <span class="progress-percent">50%</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">상세보기</h5>
+                                        <p>2024/7/4</p>
+                                        <p>생산 계획 코드: PCT0002</p>
+                                        <p>생산 제품코드: MD0002</p>
+                                        <p>생산 제품명: EEB</p>
+                                        <p>생산 수량: 100</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- 일정 추가 버튼과 모달 -->
+                                <div class="container mt-5">
+                                  <h2>일정 관리</h2>
+                                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
+                                    일정 추가
+                                  </button>
+                                </div>
+
+                                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="eventModalLabel">일정 추가</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form id="eventForm">
+                                          <div class="mb-3">
+                                            <label for="title" class="form-label">일정 제목</label>
+                                            <input type="text" class="form-control" id="title" required>
+                                          </div>
+                                          <div class="mb-3">
+                                            <label for="startDate" class="form-label">시작 날짜</label>
+                                            <input type="datetime-local" class="form-control" id="startDate" required>
+                                          </div>
+                                          <div class="mb-3">
+                                            <label for="endDate" class="form-label">종료 날짜</label>
+                                            <input type="datetime-local" class="form-control" id="endDate" required>
+                                          </div>
+                                          <button type="submit" class="btn btn-primary">추가</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div> <!-- End Main Content -->
+                        </div> <!-- End Row -->
+                      </div> <!-- End Container -->
+                    </div>
+                </main>
+
               </th:block>
+                <script>
+                  let calendar;
+
+                  document.addEventListener('DOMContentLoaded', function () {
+                    var calendarEl = document.getElementById('calendar');
+
+                    calendar = new FullCalendar.Calendar(calendarEl, {
+                      initialView: 'dayGridMonth',
+                      events: '/api/Calendar/read', // 서버에서 JSON 데이터를 가져옵니다.
+                      editable: true
+                    });
+
+                    calendar.render();
+                  });
+
+                  document.getElementById('eventForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const event = {
+                      title: document.getElementById('title').value,
+                      startDate: document.getElementById('startDate').value,
+                      endDate: document.getElementById('endDate').value
+                    };
+
+                    fetch('/api/Calendar/add', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(event)
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                              alert('일정이 추가되었습니다.');
+
+                              // 모달을 닫습니다.
+                              var eventModalEl = document.getElementById('eventModal');
+                              var eventModal = bootstrap.Modal.getInstance(eventModalEl); // 모달 인스턴스 가져오기
+                              eventModal.hide();
+
+                              // 모달이 완전히 닫힌 후 이벤트 리스너로 background 오버레이 제거
+                              eventModalEl.addEventListener('hidden.bs.modal', function () {
+                                document.body.classList.remove('modal-open');
+                                var modalBackdrop = document.querySelector('.modal-backdrop');
+                                if (modalBackdrop) {
+                                  modalBackdrop.remove();
+                                }
+                              });
+
+                              // 달력을 새로고침합니다.
+                              calendar.refetchEvents();
+                            })
+                            .catch(error => console.error('Error adding event:', error));
+                  });
+                </script>
             </div>
           </div>
         </main>

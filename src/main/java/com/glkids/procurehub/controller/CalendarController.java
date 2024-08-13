@@ -17,7 +17,7 @@ public class CalendarController {
     @Autowired
     private CalendarService calendarService;
 
-    @GetMapping
+    @GetMapping("/read")
     public List<Map<String, Object>> getEvents() {
         return calendarService.getAllCalendar().stream().map(event -> {
             Map<String, Object> eventData = new HashMap<>();
