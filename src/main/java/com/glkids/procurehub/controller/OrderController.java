@@ -94,8 +94,8 @@ public class OrderController {
      * 검수 현황
      */
     @GetMapping("/inspstatus")
-    public String inspectionStatus(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+    public void inspectionStatus(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         model.addAttribute("user", userDTO);
-        return "/order/inspstatus";
+
     }
 }
