@@ -26,6 +26,6 @@ public class Prdc {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "prdc",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "prdc", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<PrdcMtrl> prdcmtrls;
 }

@@ -1,9 +1,6 @@
 package com.glkids.procurehub.repository;
 
-import com.glkids.procurehub.entity.Emp;
-import com.glkids.procurehub.entity.Material;
-import com.glkids.procurehub.entity.Prcr;
-import com.glkids.procurehub.entity.PrdcPlan;
+import com.glkids.procurehub.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,5 +44,20 @@ public class PrcrRepositoryTest {
                     .prdcPlan(PrdcPlan.builder().prdcPlanNo(randomPrdcPlanNo).build())
                     .build());
         }
+    }
+    @Test
+    public void prdcMtrlTest(){
+        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(3).material(Material.builder().mtrlno(157L).build()).prdc(Prdc.builder().prdcno(8L).build()).build());
+        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(4).material(Material.builder().mtrlno(211L).build()).prdc(Prdc.builder().prdcno(8L).build()).build());
+    }
+
+
+
+    @Test
+    public void prcrPlanTest(){
+        prdcPlanRepository.save(PrdcPlan.builder().enddate(LocalDateTime.now()).startdate(LocalDateTime.now()).quantity(3L).prdc(Prdc.builder().prdcno(8L).build()).build()
+
+
+        );
     }
 }

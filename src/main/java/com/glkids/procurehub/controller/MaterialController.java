@@ -189,8 +189,8 @@ public class MaterialController {
         model.addAttribute("title", "조달 계획");
 
         List<ProcurementDetailsDTO> procurementDetails = procurementService.getProcurementDetailsByStatus();
+        System.out.println(procurementDetails);
         model.addAttribute("orderList", procurementDetails);
-
         return "material/prcrlist";  // prcrlist.html 뷰로 이동
     }
 
