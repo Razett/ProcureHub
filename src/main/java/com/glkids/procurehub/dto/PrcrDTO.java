@@ -3,6 +3,8 @@ package com.glkids.procurehub.dto;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.PrdcPlan;
+import com.glkids.procurehub.status.OrderStatus;
+import com.glkids.procurehub.status.PrcrStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,4 +35,15 @@ public class PrcrDTO {
     private LocalDateTime reqdate;
     private Long quantity;
     private Integer status;
+
+    public String getStatusString() {
+        if (status != null) {
+            for (PrcrStatus prcrStatus : PrcrStatus.values()) {
+                if (prcrStatus.ordinal() == status) {
+                    return prcrStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

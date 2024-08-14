@@ -76,73 +76,97 @@
                     <th:block th:fragment="content">
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">출고 전체 내역</h4>
-                                    <div>
-                                        <button type="button" class="btn cur-p btn-secondary btn-color"
-                                                style="float: right; margin-bottom: 10px;">
-                                            <span class="ti-download"></span><span class="icon-name"></span>&nbsp;Download
-                                        </button>
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="c-grey-900 mT-10 mB-30">출고 전체 내역</h4>
+                                    <div class="d-flex align-items-center mT-10 mB-30">
+                                        <a href="#searchGroup"
+                                           class="px-2 py-2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="searchGroup">
+                                            <i class="c-grey-900 ti-search fa-1-25x"></i>
+                                        </a>
+                                        <div class="dropdown">
+                                            <a class="px-2 py-2 ms-2" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="">셀 서식으로 다운로드</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                                <div style="overflow:auto; width:1792px; height:230px;">
-                                    <table class="table table-bordered table-hover">
+                                <div class="row collapse" id="searchGroup">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4 mB-15">
+                                        <div class="input-group">
+                                            <div class="input-group-text"> <!-- #f8f9fa  rgba(0, 0, 0, 0.0625) --bs-btn-border-color -->
+                                                <i class="c-grey-900 ti-search"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="searchInput" aria-label="searchInput" aria-describedby="inputSearch">
+                                            <button class="btn btn-outline-light-group c-grey-900" id="searchButton" type="button">검색</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="table table-hover" style="min-width: 1000px;">
                                         <thead>
-                                        <tr>
-                                            <th>출고 코드</th>
-                                            <th>출고 요청일</th>
-                                            <th>출고 요청 사원</th>
-                                            <th>조달 계획 코드</th>
-                                            <th>출고일</th>
-                                            <th>출고 처리 사원</th>
-                                            <th>자재코드</th>
-                                            <th>자재명</th>
-                                            <th>자재 수량</th>
-                                            <th>요청 수량</th>
-                                            <th>등록일</th>
-                                            <th>출고 상태</th>
-                                        </tr>
+                                            <tr>
+                                                <th scope="col" class="text-center">출고 코드</th>
+                                                <th scope="col" class="text-center">요청일</th>
+                                                <th scope="col" class="text-center">처리일</th>
+                                                <th scope="col" class="text-center">담당자</th>
+                                                <th scope="col" class="text-center">자재코드</th>
+                                                <th scope="col" class="text-center">자재명</th>
+                                                <th scope="col" class="text-center">요청 수량</th>
+                                                <th scope="col" class="text-center">출고 상태</th>
+                                            </tr>
                                         </thead>
                                         <tbody id="tableBody">
-                                        <tr th:each="list : ${exportlist}">
-                                            <td class="import-code" th:text="${list.exportno}"></td>
-                                            <td th:text="${list.shippeddate}"></td>
-                                            <td th:text="${list.shipper}"></td>
-                                            <td th:text="${list.prcr.prcrno}"></td>
-                                            <td th:text="${list.duedate}"></td>
-                                            <td th:text="${list.shipper}"></td>
-                                            <td th:text="${list.prcr.material.mtrlno}"></td>
-                                            <td th:text="${list.prcr.material.name}"></td>
-                                            <td th:text="${list.prcr.material.quantity}"></td>
-                                            <td th:text="${list.quantity}"></td>
-                                            <td th:text="${list.registerdate}"></td>
-                                            <td th:text="${list.status}"></td>
-                                        </tr>
+                                            <th:block th:each="export : ${exportlist}">
+                                                <tr class="export_tr" th:id="${export.exportno}">
+                                                    <td th:text="'EX' + ${#numbers.formatInteger(export.exportno, 6)}"></td>
+                                                    <td th:text="${#temporals.format(export.duedate, 'yyyy-MM-dd a hh:mm')}"></td>
+                                                    <td th:text="${#temporals.format(export.shippeddate, 'yyyy-MM-dd a hh:mm')}"></td>
+                                                    <td th:text="${export.shipper}"></td>
+                                                    <td th:text="${export.prcr.material.mtrlno}"></td>
+                                                    <td th:text="${export.prcr.material.name}"></td>
+                                                    <td th:text="${#numbers.formatInteger(export.quantity, 0, 'COMMA')}"></td>
+                                                    <td th:text="${export.statusString}"></td>
+                                                </tr>
+                                            </th:block>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                        <!-- 스크립트는 이곳에 위치 -->
-                        <script>
-                            $(document).ready(function () {
-                                // 입고 코드 클릭 시 모달 표시
-                                $('.import-code').on('click', function () {
-                                    $('#importModal').modal('show');
-                                });
-                            });
-                        </script>
-                        <!-- 입고 상세 정보 모달 -->
-                        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                        <!-- 출고 상세 정보 모달 -->
+                        <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="importModalLabel">입고 전체 내역 모달</h5>
+                                        <h5 class="modal-title" id="exportModalLabel">출고 상세정보</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- 여기에 모달의 본문 내용이 들어갑니다 -->
+                                        <p id="modalBodyText">모달의 콘텐츠를 여기에 추가하세요.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        <button type="button" class="btn btn-primary">확인</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            $(document).ready(function () {
+                                // 출고 코드 클릭 시 모달 표시
+                                $('.export_tr').on('click', function () {
+                                    var exportno = $(this).attr('id');
+
+                                    $('#modalBodyText').text(exportno);
+                                    $('#exportModal').modal('show');
+                                });
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>

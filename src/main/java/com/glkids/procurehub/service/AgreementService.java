@@ -3,6 +3,7 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.AgreementDTO;
 import com.glkids.procurehub.dto.ContractorDTO;
 import com.glkids.procurehub.entity.Agreement;
+import com.glkids.procurehub.status.AgreementStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,10 +12,12 @@ import java.time.format.DateTimeFormatter;
 public interface AgreementService {
 
     //등록하기
-    void register(AgreementDTO agreementdto);
+    Boolean register(AgreementDTO agreementdto);
 
     // 글가져오기
     AgreementDTO read(Long grmo);
+
+    void changeStatus(Long grmno, AgreementStatus agreementStatus);
 
     default Agreement agreementDtoToEntity (AgreementDTO agreementDTO) {
         Agreement agreement = Agreement.builder()

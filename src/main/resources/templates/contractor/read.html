@@ -142,7 +142,7 @@
                                                         <a th:href="@{/contractor/quoread(qtno=${quotation.qtno})}" class="list-group-item list-group-item-action">
                                                             <div class="d-flex w-100 justify-content-between">
                                                                 <h5 class="pb-2" th:text="${quotation.title}"></h5>
-                                                                <small class="text-body-secondary" th:text="${quotation.status}"></small>
+                                                            <small class="text-body-secondary" th:text="${quotation.getQuotationStatusString()}"></small>
                                                             </div>
                                                             <th:block th:if="${quotation.quotationMtrlList.size() > 0}">
                                                                 <span class="pb-1" th:text="'MA' + ${#numbers.formatInteger(quotation.quotationMtrlList.get(0).material.mtrlno, 6)}"></span>

@@ -2,6 +2,7 @@ package com.glkids.procurehub.dto;
 
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Prcr;
+import com.glkids.procurehub.status.ExportStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,4 +38,15 @@ public class ExportDTO {
     private LocalDateTime duedate;
     private LocalDateTime registerdate;
     private Integer status;
+
+    public String getStatusString() {
+        if (status != null) {
+            for (ExportStatus exportStatus : ExportStatus.values()) {
+                if (exportStatus.ordinal() == status) {
+                    return exportStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

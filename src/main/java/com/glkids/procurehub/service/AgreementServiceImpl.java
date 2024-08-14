@@ -5,6 +5,9 @@ import com.glkids.procurehub.entity.Agreement;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.repository.AgreementRepository;
 import com.glkids.procurehub.repository.ContractorRepository;
+import com.glkids.procurehub.status.AgreementStatus;
+import com.glkids.procurehub.status.QuotationStatus;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +19,23 @@ public class AgreementServiceImpl implements AgreementService {
 
     private final AgreementRepository agreementRepository;
     private final ContractorRepository contractorRepository;
+    private final QuotationService quotationService;
 
 
+    @Transactional
     @Override
-    public void register(AgreementDTO agreementdto) {
+    public Boolean register(AgreementDTO agreementdto) {
         Agreement agreement = agreementDtoToEntity(agreementdto);
         agreementRepository.save(agreement);
+
+        if (quotationService.isDuplicatedQuotationMtrl(agreementdto.getQtno(), agreementdto.getCorno())) {
+            quotationService.changeStatus(agreementdto.getQtno(), QuotationStatus.DUPPLICATED_MTRL);
+            changeStatus(agreement.getGrmno(), AgreementStatus.DUPPLICATED_MTRL);
+        } else {
+            quotationService.changeStatus(agreementdto.getQtno(), QuotationStatus.AGREEMENT);
+        }
+
+        return agreement.getGrmno() != null;
     }
 
     @Override
@@ -31,5 +45,11 @@ public class AgreementServiceImpl implements AgreementService {
             return agreementEntitytoDTO(agrop.get());
         }
         return null;
+    }
+
+    @Transactional
+    @Override
+    public void changeStatus(Long grmno, AgreementStatus agreementStatus) {
+        agreementRepository.changeStatus(grmno, agreementStatus.ordinal());
     }
 }

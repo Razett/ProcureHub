@@ -116,7 +116,7 @@
                                         <td th:text="${ordertotallist.quotationmtrl.quotation != null && ordertotallist.quotationmtrl.quotation.contractor != null ? ordertotallist.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
                                         <td th:text="${#temporals.format(ordertotallist.getRegdate(), 'yyyy-MM-dd')}">
                                         <td th:text="${ordertotallist.quantity}"></td>
-                                        <td th:text="${ordertotallist.status}">
+                                        <td th:text="${ordertotallist.statusString}">
                                     </tr>
                                     </tbody>
                                 </table>

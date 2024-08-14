@@ -85,141 +85,159 @@
                             <div class="row gap-20 pos-r">
                                 <div class="col-md-6">
                                     <div class="bgc-white p-20 bd h-100">
-
-                                        <h4 class="c-grey-900 mT-10 mB-5">회사정보</h4>
-
+                                        <h4 class="c-grey-900 mT-10 mB-30">계약 정보 입력</h4>
                                         <div class="mb-3">
-                                            <label class="form-label">사업자 등록번호<span
+                                            <label class="form-label">계약명</label>
+                                            <input type="text" name="title"
+                                                   class="form-control" placeholder="계약명을 입력하시오" maxlength="20">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label" for="quotationContent">세부내용</label>
+                                            <textarea type="text" name="content" class="form-control h-25" rows="6"
+                                                      id="quotationContent" placeholder="세부내용을 입력하세요."
+                                                      control-id="ControlID-1" maxlength="1024"></textarea>
+                                        </div>
+                                        <input type="hidden" name="status" value="0">
+                                        <label class="form-label">계약 기간</label>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label fw-500">시작일</label>
+                                                <div class="timepicker-input input-icon mb-3">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bgc-white bd bdwR-0">
+                                                            <i class="ti-calendar"></i>
+                                                        </div>
+                                                        <input type="text" name="startdateText" class="form-control bdc-grey-200 start-date" placeholder="Datepicker">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label fw-500">종료일</label>
+                                                <div class="timepicker-input input-icon mb-3">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bgc-white bd bdwR-0">
+                                                            <i class="ti-calendar"></i>
+                                                        </div>
+                                                        <input type="text" name="enddateText" class="form-control bdc-grey-200 start-date" placeholder="Datepicker">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bgc-white p-20 bd">
+                                        <h4 class="c-grey-900 mT-10 mB-30">협럭 업체 정보</h4>
+                                        <div class="mb-3">
+                                            <label class="form-label">사업자등록번호<span
                                                     class="c-red-700 fa-1x"></span></label>
                                             <input th:value="${qtno.contractor.corno}" type="text" name="corno"
-                                                   class="form-control"
+                                                   class="form-control bgc-grey-100"
                                                    readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label" for="inputName"><span
                                                     class="c-red-700 fa-1x"></span>회사명</label>
                                             <input th:value="${qtno.contractor.name}" type="text" name="name"
-                                                   class="form-control" id="inputName"
+                                                   class="form-control bgc-grey-100" id="inputName"
                                                    maxlength="150" readonly>
                                         </div>
-
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="bgc-white p-20 bd h-100">
-                                        <h4 class="c-grey-900 mT-10 mB-5">계약 정보를 입력하시오</h4>
-                                        <div class="d-flex justify-content-end">
-                                            <button type="button" class="btn cur-p btn-secondary btn-color me-2"
-                                                    control-id="ControlID-2">취소
-                                            </button>
-                                            <button type="submit" class="btn btn-primary btn-color"
-                                                    control-id="ControlID-4">등록하기
-                                            </button>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">계약명</label>
-                                            <input type="text" name="title"
-                                                   class="form-control" placeholder="계약명을 입력하시오" maxlength="20">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="statusSelect" class="form-label">견적 상태</label>
-                                            <select name="status" id="statusSelect" class="form-control">
-                                                <option value="0" selected>항목을 선택하세요</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label fw-500">계약일</label>
-                                            <div class="timepicker-input input-icon mb-3">
-                                                <div class="input-group">
-                                                    <div class="input-group-text bgc-white bd bdwR-0">
-                                                        <i class="ti-calendar"></i>
-                                                    </div>
-                                                    <input type="text" name="startdateText" class="form-control bdc-grey-200 start-date" placeholder="Datepicker">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label fw-500">종료일</label>
-                                            <div class="timepicker-input input-icon mb-3">
-                                                <div class="input-group">
-                                                    <div class="input-group-text bgc-white bd bdwR-0">
-                                                        <i class="ti-calendar"></i>
-                                                    </div>
-                                                    <input type="text" name="enddateText" class="form-control bdc-grey-200 start-date" placeholder="Datepicker">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
                                     <div class="bgc-white mT-20 p-20 bd">
-                                        <h4 class="c-grey-900 mT-10 mB-5" th:text="${qtno.title}"></h4>
-
-                                        <div th:text="${#temporals.format(qtno.regdate, 'yyyy-MM-dd')}"></div><!--생성날짜-->
-                                        <br>
-                                        <table class="table table-hover">
-                                            <thead class="thead-light">
-                                            <tr>
-                                                <th class="form-label">견적 금액</th>
-                                                <th class="form-label">자재명</th>
-                                                <th class="form-label">자재코드</th>
-                                                <th class="form-label">수량</th>
-                                                <th class="form-label">단가</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="list : ${qtnomtrl}">
-                                                <td th:text="${list.totalprice}"></td>
-                                                <td th:text="${list.material.name}"></td>
-                                                <td th:text="${list.material.mtrlno}"></td>
-                                                <td th:text="${list.quantity}"></td>
-                                                <td th:text="${list.unitprice}"></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <h4 class="c-grey-900 mT-10 mB-30">견적 정보</h4>
+                                        <div class="mb-3">
+                                            <label class="form-label">견적 제목</label>
+                                            <input type="text" class="form-control bgc-grey-100" th:value="${qtno.title}" readonly>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">등록일</label>
+                                            <input type="text" class="form-control bgc-grey-100" th:value="${#temporals.format(qtno.regdate , 'yyyy-MM-dd a hh:mm')}" readonly>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row gap-20 pos-r">
+                                <div class="col-md-12">
+                                    <div class="bgc-white mT-20 p-20 bd">
+                                        <h4 class="c-grey-900 mT-10 mB-30">견적 자재 정보</h4>
+                                        <div class="overflow-x-auto overflow-y-auto" style="max-height: 200px;">
+                                            <table class="table table-hover" style="min-width: 500px;">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">자재코드</th>
+                                                    <th class="text-center">자재명</th>
+                                                    <th class="text-center">수량</th>
+                                                    <th class="text-center">단가</th>
+                                                    <th class="text-center">견적 금액</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="list : ${qtnomtrl}">
+                                                    <td class="text-center" th:text="'MA' + ${#numbers.formatInteger(list.material.mtrlno, 6)}"></td>
+                                                    <td class="text-center" th:text="${list.material.name}"></td>
+                                                    <td class="text-end" th:text="${list.quantity}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(list.unitprice, 0, 'COMMA')}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(list.totalprice, 0, 'COMMA')}"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="row gap-20 pos-r">
+                                    <div class="col-md-12">
+                                        <div class="bgc-white mT-20 p-20 bd">
+                                            <div class="d-flex">
+                                                <button type="button" class="btn cur-p btn-secondary btn-color me-2"
+                                                        control-id="ControlID-2">취소
+                                                </button>
+                                                <button type="submit" class="btn btn-primary btn-color"
+                                                        control-id="ControlID-4">등록하기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                                const inputMngrPhone = document.getElementById('inputMngrPhone');
+                                const inputPhone = document.getElementById('inputPhone');
+                                const inputCorno = document.getElementById('inputCorno');
+                                const inputAccountNum = document.getElementById('inputAccountNum');
+
+                                // 숫자만 허용하는 함수
+                                const enforceNumericInput = (input) => {
+                                    input.addEventListener('input', () => {
+                                        input.value = input.value.replace(/[^0-9]/g, '');
+                                    });
+                                };
+
+                                // 최대 길이를 제한하는 함수
+                                const enforceMaxLength = (input, maxLength) => {
+                                    input.addEventListener('input', () => {
+                                        if (input.value.length > maxLength) {
+                                            input.value = input.value.slice(0, maxLength);
+                                        }
+                                    });
+                                };
+
+                                // 각 입력 필드에 숫자만 입력되도록 설정
+                                enforceNumericInput(inputMngrPhone);
+                                enforceNumericInput(inputPhone);
+                                enforceNumericInput(inputCorno);
+                                enforceNumericInput(inputAccountNum);
+                                // 사업자 등록번호는 최대 10자리로 제한
+                                enforceMaxLength(inputCorno, 10);
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    const inputMngrPhone = document.getElementById('inputMngrPhone');
-                    const inputPhone = document.getElementById('inputPhone');
-                    const inputCorno = document.getElementById('inputCorno');
-                    const inputAccountNum = document.getElementById('inputAccountNum');
-
-                    // 숫자만 허용하는 함수
-                    const enforceNumericInput = (input) => {
-                        input.addEventListener('input', () => {
-                            input.value = input.value.replace(/[^0-9]/g, '');
-                        });
-                    };
-
-                    // 최대 길이를 제한하는 함수
-                    const enforceMaxLength = (input, maxLength) => {
-                        input.addEventListener('input', () => {
-                            if (input.value.length > maxLength) {
-                                input.value = input.value.slice(0, maxLength);
-                            }
-                        });
-                    };
-
-                    // 각 입력 필드에 숫자만 입력되도록 설정
-                    enforceNumericInput(inputMngrPhone);
-                    enforceNumericInput(inputPhone);
-                    enforceNumericInput(inputCorno);
-                    enforceNumericInput(inputAccountNum);
-                    // 사업자 등록번호는 최대 10자리로 제한
-                    enforceMaxLength(inputCorno, 10);
-                });
-            </script>
         </main>
     </div>
     </body>
-</th:block>
 </div>
 </div>
 </main>

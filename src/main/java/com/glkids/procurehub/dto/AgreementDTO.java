@@ -2,8 +2,8 @@ package com.glkids.procurehub.dto;
 
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
-import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.Quotation;
+import com.glkids.procurehub.status.AgreementStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Builder
 @AllArgsConstructor
@@ -34,5 +33,16 @@ public class AgreementDTO {
     private LocalDateTime modedate;
     private Long corno;
     private Long qtno;
+
+    public String getStatusString() {
+        if (status != null) {
+            for (AgreementStatus agreementStatus : AgreementStatus.values()) {
+                if (agreementStatus.ordinal() == status) {
+                    return agreementStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 
 }

@@ -76,51 +76,75 @@
                     <th:block th:fragment="content">
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">입고 전체 내역</h4>
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="c-grey-900 mT-10 mB-30">입고 전체 내역</h4>
+                                    <div class="d-flex align-items-center mT-10 mB-30">
+                                        <a href="#searchGroup"
+                                           class="px-2 py-2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="searchGroup">
+                                            <i class="c-grey-900 ti-search fa-1-25x"></i>
+                                        </a>
+                                        <div class="dropdown">
+                                            <a class="px-2 py-2 ms-2" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="">셀 서식으로 다운로드</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div style="overflow:auto; width:1792px; height:230px;">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
+                                <div class="row collapse" id="searchGroup">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4 mB-15">
+                                        <div class="input-group">
+                                            <div class="input-group-text"> <!-- #f8f9fa  rgba(0, 0, 0, 0.0625) --bs-btn-border-color -->
+                                                <i class="c-grey-900 ti-search"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="searchInput" aria-label="searchInput" aria-describedby="inputSearch">
+                                            <button class="btn btn-outline-light-group c-grey-900" id="searchButton" type="button">검색</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="table table-hover" style="min-width: 1400px;">
+                                        <thead class="position-sticky top-0">
                                         <tr>
-                                            <th>입고 코드</th>
-                                            <th>입고일</th>
-                                            <th>도착 처리 사원</th>
-                                            <th>발주 코드</th>
-                                            <th>발주일</th>
-                                            <th>조달 계획 코드</th>
-                                            <th>자재코드</th>
-                                            <th>자재명</th>
-                                            <th>발주수량</th>
-                                            <th>입고 수량</th>
-                                            <th>등록일</th>
-                                            <th>입고 상태</th>
-                                            <th>명세서 발행</th>
+                                            <th scope="col" class="text-center">입고 코드</th>
+                                            <th scope="col" class="text-center">도착일</th>
+                                            <th scope="col" class="text-center">입고일</th>
+                                            <th scope="col" class="text-center">담당자</th>
+                                            <th scope="col" class="text-center">발주 코드</th>
+                                            <th scope="col" class="text-center">자재 코드</th>
+                                            <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center">발주 수량</th>
+                                            <th scope="col" class="text-center">입고 수량</th>
+                                            <th scope="col" class="text-center">입고 상태</th>
+                                            <th scope="col" class="text-center">명세서 발행</th>
                                         </tr>
                                         </thead>
                                         <tbody id="tableBody">
-                                        <tr th:each="list : ${importList}">
-                                            <td class="import-code" th:text="${list.importno}"></td>
-                                            <td class="import-code" th:text="${list.arrivaldate}"></td>
-                                            <td class="import-code" th:text="${list.approver}"></td>
-                                            <td class="import-code" th:text="${list.order.orderno}"></td>
-                                            <td class="import-code" th:text="${list.order.orderdate}"></td>
-                                            <td class="import-code"th:text="${list.order.prcr}"></td>
-                                            <td class="import-code" th:text="${list.order.material.mtrlno}"></td>
-                                            <td class="import-code" th:text="${list.order.material.name}"></td>
-                                            <td class="import-code" th:text="${list.order.quantity}"></td>
-                                            <td class="import-code" th:text="${list.quantity}"></td>
-                                            <td class="import-code" th:text="${list.approvedate}"></td>
-                                            <td class="import-code" th:text="${list.status}"></td>
-                                            <td class="text-center">
-                                                <a th:href="@{/import/importForm(importno=${list.importno})}"
-                                                   class="px-2 py-2" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top"
-                                                   data-bs-original-title="명세서 발행">
-                                                    <i class="ti-download"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                            <th:block th:each="import : ${importList}">
+                                                <tr th:id="${import.importno}">
+                                                    <td class="import-code text-center" th:text="'IM' + ${#numbers.formatInteger(import.importno, 6)}"></td>
+                                                    <td class="import-code text-center" th:text="${#temporals.format(import.arrivaldate, 'yyyy-MM-dd a hh:mm') }"></td>
+                                                    <td class="import-code text-center" th:text="${#temporals.format(import.approvedate, 'yyyy-MM-dd a hh:mm')}"></td>
+                                                    <td class="import-code text-center" th:text="${import.approver}"></td>
+                                                    <td class="import-code text-center" th:text="'OR' + ${#numbers.formatInteger(import.order.orderno, 6)}"></td>
+                                                    <td class="import-code text-center" th:text="'MA' + ${#numbers.formatInteger(import.order.material.mtrlno, 6)}"></td>
+                                                    <td class="import-code text-center" th:text="${import.order.material.name}"></td>
+                                                    <td class="import-code text-end" th:text="${#numbers.formatInteger(import.order.quantity, 0, 'COMMA')}"></td>
+                                                    <td class="import-code text-end" th:text="${#numbers.formatInteger(import.quantity, 0, 'COMMA')}"></td>
+                                                    <td class="import-code text-center" th:text="${import.statusString}"></td>
+                                                    <td class="text-center">
+                                                        <a th:href="@{/import/importForm(importno=${import.importno})}"
+                                                           class="px-2 py-2" data-bs-toggle="tooltip"
+                                                           data-bs-placement="top"
+                                                           data-bs-original-title="명세서 발행">
+                                                            <i class="ti-download"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
                                         </tbody>
                                     </table>
                                 </div>
@@ -141,7 +165,7 @@
                             <div class="modal-dialog modal-xl"> <!-- modal-xl 클래스로 더 큰 모달 설정 -->
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="importModalLabel">입고 전체 내역 모달</h5>
+                                        <h5 class="modal-title" id="importModalLabel">입고 상세정보</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -150,7 +174,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <button type="button" class="btn btn-primary">저장</button>
+                                        <button type="button" class="btn btn-primary">확인</button>
                                     </div>
                                 </div>
                             </div>

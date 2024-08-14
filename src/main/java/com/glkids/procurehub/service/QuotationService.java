@@ -2,6 +2,7 @@ package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.*;
+import com.glkids.procurehub.status.QuotationStatus;
 
 import java.util.List;
 
@@ -18,6 +19,10 @@ public interface QuotationService {
     QuotationDTO read(Long qtno);
 
     List<QuotationFileDTO> quotationFileList(Long qtno);
+
+    Boolean isDuplicatedQuotationMtrl(Long qtno, Long corno);
+
+    void changeStatus(Long qtno, QuotationStatus quotationStatus);
 
     // DTO to Entity 변환 메서드
     default Quotation quotationDtoToEntity(QuotationDTO quotationDTO) {

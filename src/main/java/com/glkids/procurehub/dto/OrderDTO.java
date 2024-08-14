@@ -2,6 +2,8 @@ package com.glkids.procurehub.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.glkids.procurehub.entity.*;
+import com.glkids.procurehub.status.AgreementStatus;
+import com.glkids.procurehub.status.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,4 +43,15 @@ public class OrderDTO {
     private LocalDateTime regdate; //DB에 생성된 날짜
     private LocalDateTime moddate; //마지막 수정된 날짜
     private Long qtmtno;
+
+    public String getStatusString() {
+        if (status != null) {
+            for (OrderStatus orderStatus : OrderStatus.values()) {
+                if (orderStatus.ordinal() == status) {
+                    return orderStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }
