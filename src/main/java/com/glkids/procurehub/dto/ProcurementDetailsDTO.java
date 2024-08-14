@@ -27,4 +27,5 @@ public class ProcurementDetailsDTO  {
     private Integer status;  // 조달 상태
     private LocalDateTime regdate;  // 생성 일자
     private LocalDateTime moddate;  // 수정 일자
+
 }
