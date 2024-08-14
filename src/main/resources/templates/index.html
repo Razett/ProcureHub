@@ -199,6 +199,7 @@
                                 <input type="datetime-local" class="form-control" id="endDate" required>
                               </div>
                               <button type="submit" class="btn cur-p btn-dark btn-color" >저장</button>
+                              <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">삭제</button> <!-- 삭제 버튼 -->
                             </form>
                           </div>
                         </div>
@@ -214,18 +215,41 @@
 
               document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
+                var deleteButton = document.getElementById('deleteEvent');
 
                 // 사용할 색상 배열
-                const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB' ,'#FFC0CB', '#a5ea89', '#ffcb6b', '#FFFAF0' ,'#FFFACD'];
+                const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
 
                 // FullCalendar 초기화
                 calendar = new FullCalendar.Calendar(calendarEl, {
                   initialView: 'dayGridMonth',
-                  locale: 'ko', // 한국어로 설정
-                  editable: false, // 이벤트를 드래그 및 리사이즈할 수 있도록 허용
-                  events: '/api/Calendar/read', // 서버에서 JSON 데이터를 가져옵니다.
-                  eventColor: '#cce8f4', // 기본 이벤트 배경 색상
-                  eventTextColor: '#333333', // 이벤트 텍스트 색상
+                  locale: 'ko',
+                  editable: false,
+                  eventTextColor: '#000000',
+                  events: function(fetchInfo, successCallback, failureCallback) {
+                    fetch('/api/Calendar/read')
+                            .then(response => response.json())
+                            .then(events => {
+                              events.forEach(event => {
+                                const storedEvent = localStorage.getItem(`event-${event.id}`);
+                                if (storedEvent) {
+                                  const parsedEvent = JSON.parse(storedEvent);
+                                  event.backgroundColor = parsedEvent.backgroundColor;
+                                  event.borderColor = parsedEvent.borderColor;
+                                } else {
+                                  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                                  event.backgroundColor = randomColor;
+                                  event.borderColor = randomColor;
+                                  localStorage.setItem(`event-${event.id}`, JSON.stringify({
+                                    backgroundColor: randomColor,
+                                    borderColor: randomColor
+                                  }));
+                                }
+                              });
+                              successCallback(events);
+                            })
+                            .catch(error => failureCallback(error));
+                  },
                   eventContent: function(arg) {
                     let startDate = arg.event.start.toISOString().split('T')[0];
                     let endDate = arg.event.end ? arg.event.end.toISOString().split('T')[0] : startDate;
@@ -243,6 +267,9 @@
 
                     currentEvent = info.event;
 
+                    // 수정 모달에서는 삭제 버튼을 표시
+                    deleteButton.style.display = 'inline-block';
+
                     document.getElementById('eventModalLabel').innerText = '일정 수정';
                     document.getElementById('title').value = info.event.title;
                     document.getElementById('startDate').value = info.event.start.toISOString().slice(0, 16);
@@ -259,6 +286,9 @@
                   currentEvent = null; // 새로운 이벤트 추가를 위한 초기화
                   document.getElementById('eventModalLabel').innerText = '일정 추가';
                   document.getElementById('eventForm').reset(); // 폼 초기화
+
+                  // 일정 추가 모달에서는 삭제 버튼을 숨김
+                  deleteButton.style.display = 'none';
                 });
 
                 // 모달 닫기 시 백드롭 제거
@@ -294,7 +324,9 @@
                   const event = {
                     title: title,
                     startDate: start,
-                    endDate: end
+                    endDate: end,
+                    backgroundColor: currentEvent ? currentEvent.backgroundColor : colors[Math.floor(Math.random() * colors.length)],
+                    borderColor: currentEvent ? currentEvent.borderColor : colors[Math.floor(Math.random() * colors.length)]
                   };
 
                   if (currentEvent) {
@@ -312,14 +344,21 @@
                             .then(data => {
                               currentEvent.setProp('title', event.title);
                               currentEvent.setDates(event.startDate, event.endDate || event.startDate);
+                              currentEvent.setProp('backgroundColor', event.backgroundColor);
+                              currentEvent.setProp('borderColor', event.borderColor);
+
+                              // 수정된 색상 정보를 로컬 스토리지에 저장
+                              localStorage.setItem(`event-${event.id}`, JSON.stringify({
+                                backgroundColor: event.backgroundColor,
+                                borderColor: event.borderColor
+                              }));
+
                               alert('이벤트가 성공적으로 업데이트되었습니다.');
                               closeModal();
                             })
                             .catch(error => console.error('Error updating event:', error));
                   } else {
                     // 새로운 이벤트 추가
-                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
                     fetch('/api/Calendar/add', {
                       method: 'POST',
                       headers: {
@@ -335,18 +374,47 @@
                                 start: event.startDate,
                                 end: event.endDate,
                                 allDay: false,
-                                backgroundColor: randomColor, // 랜덤 색상 설정
-                                borderColor: randomColor // 랜덤 색상 설정
+                                backgroundColor: event.backgroundColor,
+                                borderColor: event.borderColor
                               });
+
+                              // 새로 추가된 이벤트 색상 정보를 로컬 스토리지에 저장
+                              localStorage.setItem(`event-${data.id}`, JSON.stringify({
+                                backgroundColor: event.backgroundColor,
+                                borderColor: event.borderColor
+                              }));
+
                               alert('일정이 추가되었습니다.');
                               closeModal();
                             })
                             .catch(error => console.error('Error adding event:', error));
                   }
                 });
+
+                // 삭제 버튼 클릭 이벤트 처리
+                deleteButton.addEventListener('click', function () {
+                  if (currentEvent) {
+                    fetch('/api/Calendar/delete', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ id: currentEvent.id })
+                    })
+                            .then(response => {
+                              if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                              }
+                              currentEvent.remove(); // 캘린더에서 이벤트 제거
+                              localStorage.removeItem(`event-${currentEvent.id}`); // 로컬 스토리지에서도 제거
+                              alert('이벤트가 삭제되었습니다.');
+                              closeModal();
+                            })
+                            .catch(error => console.error('Error deleting event:', error));
+                  }
+                });
               });
             </script>
-
 
           </th:block>
         </div> <!-- End Container -->

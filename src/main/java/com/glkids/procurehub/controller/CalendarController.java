@@ -1,8 +1,10 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.CalendarDTO;
 import com.glkids.procurehub.entity.Calendar;
 import com.glkids.procurehub.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -30,10 +32,20 @@ public class CalendarController {
     }
 
     @PostMapping("/add")
-    public Calendar addCalendar(@RequestBody Calendar calendar) {
-        return calendarService.saveCalendar(calendar);
-    }
+    public ResponseEntity<Map<String, Object>> addEvent(@RequestBody CalendarDTO calendarDTO) {
+        Calendar calendar = new Calendar();
+        calendar.setTitle(calendarDTO.getTitle());
+        calendar.setStartDate(calendarDTO.getStartDate());
+        calendar.setEndDate(calendarDTO.getEndDate());
+        calendarService.saveCalendar(calendar);
 
+        // 서버에서 유효한 JSON 객체를 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", calendar.getId());
+        response.put("message", "Event added successfully");
+
+        return ResponseEntity.ok(response);
+    }
     @PostMapping("/update")  // 수정 시 사용할 API
     public Calendar updateCalendar(@RequestBody Calendar calendar) {
         // 기존 이벤트가 존재하는지 확인하고, 있다면 수정
