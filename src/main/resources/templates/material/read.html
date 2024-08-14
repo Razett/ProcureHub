@@ -166,9 +166,9 @@
                                                         </h2>
                                                         <div th:id="'collapse'+${iterStat.index}" class="accordion-collapse collapse show" data-bs-parent="#materialFileAccordion">
                                                             <div class="accordion-body">
-                                                                <a th:href="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}" target="_blank">
-                                                                    <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
-                                                                         class="card-img-top mb-3" th:alt="'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}"
+                                                                <a th:href="@{'http://m-it.iptime.org:8028/material/display?file=' + ${file.uuid} + '_' + ${file.name}}" target="_blank">
+                                                                    <img th:src="@{'http://m-it.iptime.org:8028/material/display?file=' + ${file.uuid} + '_' + ${file.name}}"
+                                                                         class="card-img-top mb-3" th:alt="'http://m-it.iptime.org:8028/material/display?file=' + ${file.uuid} + '_' + ${file.name}"
                                                                          style="height: 180px; object-fit: cover;">
                                                                 </a>
                                                             </div>
@@ -184,9 +184,9 @@
                                                         </h2>
                                                         <div th:id="'collapse'+${iterStat.index}" class="accordion-collapse collapse" data-bs-parent="#materialFileAccordion">
                                                             <div class="accordion-body">
-                                                                <a th:href="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}" target="_blank">
-                                                                    <img th:src="@{'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}}"
-                                                                         class="card-img-top mb-3" th:alt="'http://192.168.1.25:8081/display?file=' + ${file.uuid} + '_' + ${file.name}"
+                                                                <a th:href="@{'http://m-it.iptime.org:8028/material/display?file=' + ${file.uuid} + '_' + ${file.name}}" target="_blank">
+                                                                    <img th:src="@{'http://m-it.iptime.org:8028/material/display?file=' + ${file.uuid} + '_' + ${file.name}}"
+                                                                         class="card-img-top mb-3" th:alt="'http://m-it.iptime.org:8028/material/display?file=' + ${file.uuid} + '_' + ${file.name}"
                                                                          style="height: 180px; object-fit: cover;">
                                                                 </a>
                                                             </div>
@@ -232,7 +232,7 @@
                         <input type="hidden" id="mtrlno" value="${material.mtrlno}">
                         <script>
                             $(document).ready(function () {
-                                const server_url = 'http://192.168.1.25:8081';
+                                const server_url = 'http://m-it.iptime.org:8028/material';
 
                                 var fileData = new FormData();
                                 var file;
