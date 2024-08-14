@@ -4,6 +4,8 @@ import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.Order;
+import com.glkids.procurehub.status.ImportStatus;
+import com.glkids.procurehub.status.PrcrStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,4 +42,14 @@ public class ImportDTO {
     private Emp approver;
     private Integer status;
 
+    public String getStatusString() {
+        if (status != null) {
+            for (ImportStatus importStatus : ImportStatus.values()) {
+                if (importStatus.ordinal() == status) {
+                    return importStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

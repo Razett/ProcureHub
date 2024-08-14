@@ -149,6 +149,7 @@
                                                 <input type="text" name="address" class="form-control bgc-grey-100" id="address"
                                                        placeholder="" th:value="${updateread.contractor.address1}+${updateread.contractor.address2}" readonly>
                                             </div>
+                                            <input type="hidden" name="status" th:value="${updateread.status < 2 or updateread == 6 ? '0' : updateread.status}" id="status">
                                         </div>
                                     </div>
                                 </div>
@@ -158,12 +159,14 @@
                                     <div class="bgc-white p-20 bd">
                                         <div class="d-flex justify-content-between">
                                             <h4 class="c-grey-900 mT-10 mB-5">자재 정보</h4>
-                                            <div class="mT-10 mB-5">
-                                                <a href="#" id="add-material" class="px-2 py-2" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top" data-bs-original-title="자재 추가">
-                                                    <i class="c-grey-900 ti-plus fa-1-25x"></i>
-                                                </a>
-                                            </div>
+                                            <th:block th:if="${updateread.status < 2}">
+                                                <div class="mT-10 mB-5">
+                                                    <a href="#" id="add-material" class="px-2 py-2" data-bs-toggle="tooltip"
+                                                       data-bs-placement="top" data-bs-original-title="자재 추가">
+                                                        <i class="c-grey-900 ti-plus fa-1-25x"></i>
+                                                    </a>
+                                                </div>
+                                            </th:block>
                                         </div>
                                         <div class="mB-30 d-flex">
                                             <span class="c-red-700 fa-1x"></span>
@@ -219,11 +222,17 @@
                                             <input type="file" name="file" class="form-control" multiple>
                                         </div>
                                         <div class="mt-3">
-                                            <input type="hidden" name="empno" id="empno" value="201758030">
-                                            <button type="button" class="btn cur-p btn-secondary" id="cancel">
-                                                취소
-                                            </button>
-                                            <input type="submit" class="btn cur-p btn-primary c-white" value="등록하기">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex">
+                                                    <button type="button" class="btn cur-p btn-secondary" id="cancel">
+                                                        취소
+                                                    </button>
+                                                    <input type="submit" class="btn cur-p btn-primary c-white ms-2" value="등록하기">
+                                                </div>
+                                                <button type="submit" class="btn cur-p btn-danger c-white" id="delete">
+                                                    견적 취소
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -233,6 +242,15 @@
                                 const exist_qtno = [[${updateread.qtno}]];
                             </script>
                             <script src="/js/quoregister.js"></script>
+                            <script>
+                                $(document).ready(function () {
+                                    $('#delete').on('click', function (e) {
+                                        e.preventDefault();
+                                        $('#status').val('5');
+                                        $(this).closest('form').submit();
+                                    });
+                                });
+                            </script>
                         </form>
                     </th:block>
                 </div>

@@ -48,5 +48,6 @@ public class Prcr extends BaseEntity {
 
     @Column(nullable = false)
     private Integer status;
+
     }
 

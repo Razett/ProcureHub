@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.tags.Param;
 
 import java.beans.PropertyEditorSupport;
@@ -42,17 +43,22 @@ public class AgreementController {
     }
 
     @PostMapping("/register")
-    public String proregister(AgreementDTO agreementDTO, @RequestParam("startdateText") String startdateText, @RequestParam("enddateText") String enddateText) {
+    public String proregister(@AuthenticationPrincipal UserDTO userDTO, AgreementDTO agreementDTO, @RequestParam("startdateText") String startdateText, @RequestParam("enddateText") String enddateText, RedirectAttributes redirectAttributes) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         agreementDTO.setContractor(Contractor.builder().corno(agreementDTO.getCorno()).build());
         agreementDTO.setQuotation(Quotation.builder().qtno(agreementDTO.getQtno()).build());
-        agreementDTO.setEmp(Emp.builder().empno(201758030L).build());
+        agreementDTO.setEmp(userDTO.getEmp());
 
         agreementDTO.setStartdate(LocalDate.parse(startdateText, formatter).atStartOfDay());
         agreementDTO.setEnddate(LocalDate.parse(enddateText, formatter).atStartOfDay());
 
-        agreementService.register(agreementDTO);
-        return "redirect:/contractor/list";
+        Boolean result = agreementService.register(agreementDTO);
+        if (result) {
+            redirectAttributes.addFlashAttribute("msg", "계약이 등록되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "계약등록에 실패하였습니다.");
+        }
+        return "redirect:/contractor/quoread?qtno=" + agreementDTO.getQtno();
     }
 
 }

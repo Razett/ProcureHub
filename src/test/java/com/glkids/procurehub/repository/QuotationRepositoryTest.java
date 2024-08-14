@@ -4,6 +4,7 @@ import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.entity.Agreement;
 import com.glkids.procurehub.entity.Quotation;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.service.QuotationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,9 @@ public class QuotationRepositoryTest {
 
     @Autowired
     private QuotationRepository quotationRepository;
+
+    @Autowired
+    QuotationService quotationService;
 
     @Test
     public void quoListByContractorTest() {
@@ -41,5 +45,11 @@ public class QuotationRepositoryTest {
                 System.out.println();
             }
         });
+    }
+
+    @Test
+    public void quoDupTest() {
+        boolean a = quotationService.isDuplicatedQuotationMtrl(168L, 4154L);
+        System.out.println(a);
     }
 }

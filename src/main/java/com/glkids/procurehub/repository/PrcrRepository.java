@@ -17,6 +17,6 @@ public interface PrcrRepository extends JpaRepository<Prcr, Long> {
             "LEFT JOIN p.prdcPlan pp " +
             "LEFT JOIN pp.prdc pr " +
             "LEFT JOIN PrdcMtrl pm ON pm.prdc = pr " +
-            "LEFT JOIN pm.material m")
+            "LEFT JOIN pm.material m ")  // QuotationMtrl과 조인하여 leadTime 가져오기
     List<ProcurementDetailsDTO> findAllProcurements();
 }

@@ -6,6 +6,7 @@ import com.glkids.procurehub.dto.QuotationMtrlDTO;
 import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Contractor;
 import com.glkids.procurehub.entity.Emp;
+import com.glkids.procurehub.entity.Quotation;
 import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.service.*;
 import com.glkids.procurehub.status.QuotationStatus;
@@ -194,9 +195,15 @@ public class ContractorController {
 
     @GetMapping("/quotationForm")
     public String quotationForm(@AuthenticationPrincipal UserDTO userDTO, Model model, Long qtno){
+        QuotationDTO quotationDTO = contractorService.quoread(qtno);
+
+        if (quotationDTO.getStatus() == QuotationStatus.NEED_AGREEMENT.ordinal()) {
+            quotationService.changeStatus(qtno, QuotationStatus.CONTINUING);
+        }
         model.addAttribute("user", userDTO);
         model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
-        model.addAttribute("quotation" ,contractorService.quoread(qtno));
+        model.addAttribute("quotation" , quotationDTO);
+        
         return "/contractor/quotationForm";
     }
 

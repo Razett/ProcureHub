@@ -8,6 +8,7 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.QuotationFileRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
+import com.glkids.procurehub.status.QuotationStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -91,5 +92,42 @@ public class QuotationServiceImpl implements QuotationService {
 ;
         quotationFileRepository.findAll(builder.and(quotationExp)).forEach(x -> quotationFileDTOList.add(quotationFileEntityToDTO(x)));
         return quotationFileDTOList;
+    }
+
+    @Override
+    public Boolean isDuplicatedQuotationMtrl(Long qtno, Long corno) {
+        QQuotationMtrl qQuotationMtrl = QQuotationMtrl.quotationMtrl;
+
+        BooleanExpression qtnoExp = qQuotationMtrl.quotation.qtno.eq(qtno);
+        List<QuotationMtrl> quoMtrlList = new ArrayList<>();
+        quotationMtrlRepository.findAll(qtnoExp).forEach(quoMtrlList::add);
+
+        System.out.println(quoMtrlList);  // For debugging
+
+        BooleanBuilder builder = new BooleanBuilder();
+        if (!quoMtrlList.isEmpty()) {
+            BooleanBuilder qtmtnoExpBuilder = new BooleanBuilder();
+            for (QuotationMtrl quotationMtrl : quoMtrlList) {
+                BooleanExpression qtmtnoExp = qQuotationMtrl.material.mtrlno.eq(quotationMtrl.getMaterial().getMtrlno());
+                qtmtnoExpBuilder.or(qtmtnoExp);
+            }
+            builder.and(qtmtnoExpBuilder);
+        }
+
+        BooleanExpression qtStatusExp = qQuotationMtrl.quotation.status.eq(QuotationStatus.AGREEMENT.ordinal());
+        BooleanExpression qtCornoExp = qQuotationMtrl.quotation.contractor.corno.eq(corno);
+
+        List<QuotationMtrl> quoDupList = new ArrayList<>();
+        quotationMtrlRepository.findAll(builder.and(qtStatusExp).and(qtCornoExp)).forEach(quoDupList::add);
+
+        System.out.println(quoDupList);  // For debugging
+
+        return !quoDupList.isEmpty();
+    }
+
+    @Transactional
+    @Override
+    public void changeStatus(Long qtno, QuotationStatus quotationStatus) {
+        quotationRepository.changeStatus(qtno, quotationStatus.ordinal());
     }
 }

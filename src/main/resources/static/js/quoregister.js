@@ -389,6 +389,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         var title = $('input[name="title"]').val();
+        var status = $('input[name="status"]').val();
         var content = $('textarea[name="content"]').val();
 
         if (!title) {
@@ -400,7 +401,7 @@ $(document).ready(function () {
             qtno: exist_qtno,
             title: title,
             content: content,
-            status: 0,
+            status: status,
             contractor: {
                 corno: $('input[name="corno"]').val()
             }
