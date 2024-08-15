@@ -4,8 +4,10 @@ import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
 import com.glkids.procurehub.entity.QOrder;
+import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.repository.EmpRepository;
 import com.glkids.procurehub.repository.OrderRepository;
+import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final EmpRepository empRepository;
+    private final QuotationMtrlRepository quotationMtrlRepository;
 
     @Override
     public List<OrderDTO> getOrderListBefore() {
@@ -32,7 +34,12 @@ public class OrderServiceImpl implements OrderService {
         BooleanBuilder builder = new BooleanBuilder();
         BooleanExpression statusExp = qOrder.status.eq(0);
 
-        orderRepository.findAll(builder.and(statusExp)).forEach(x -> orderDTOList.add(orderEntityToDTO(x)));
+        orderRepository.findAll(builder.and(statusExp)).forEach(x -> {
+            List<QuotationMtrl> list = quotationMtrlRepository.findByMaterial(x.getMaterial().getMtrlno());
+            OrderDTO orderDTO = orderEntityToDTO(x);
+            orderDTO.setQuotationmtrlList(list);
+            orderDTOList.add(orderDTO);
+        });
         return orderDTOList;
     }
 
