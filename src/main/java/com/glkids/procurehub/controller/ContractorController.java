@@ -165,6 +165,8 @@ public class ContractorController {
         model.addAttribute("quotation", quotationDTO);
         model.addAttribute("quotationMtrlList", quotationMtrlList);
         model.addAttribute("quoFileList", quotationService.quotationFileList(qtno));
+        model.addAttribute("agreementList", agreementservice.readListByQtno(qtno));
+
         return "/contractor/quoread";
     }
 
@@ -203,7 +205,7 @@ public class ContractorController {
         model.addAttribute("user", userDTO);
         model.addAttribute("quotationMtrlList", quotationService.readQuotationMtrlList(qtno));
         model.addAttribute("quotation" , quotationDTO);
-        
+
         return "/contractor/quotationForm";
     }
 

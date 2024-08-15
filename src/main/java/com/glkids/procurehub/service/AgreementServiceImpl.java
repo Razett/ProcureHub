@@ -3,14 +3,20 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.AgreementDTO;
 import com.glkids.procurehub.entity.Agreement;
 import com.glkids.procurehub.entity.Contractor;
+import com.glkids.procurehub.entity.QAgreement;
 import com.glkids.procurehub.repository.AgreementRepository;
 import com.glkids.procurehub.repository.ContractorRepository;
 import com.glkids.procurehub.status.AgreementStatus;
 import com.glkids.procurehub.status.QuotationStatus;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,6 +51,21 @@ public class AgreementServiceImpl implements AgreementService {
             return agreementEntitytoDTO(agrop.get());
         }
         return null;
+    }
+
+    @Override
+    public List<AgreementDTO> readListByQtno(Long qtno) {
+        List<AgreementDTO> list = new ArrayList<>();
+
+        QAgreement qAgreement = QAgreement.agreement;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression qtnoExp = qAgreement.quotation.qtno.eq(qtno);
+
+        agreementRepository.findAll(builder.and(qtnoExp), Sort.by(Sort.Direction.DESC, "regdate")).forEach(agreement -> {
+            list.add(agreementEntitytoDTO(agreement));
+        });
+        return list;
     }
 
     @Transactional
