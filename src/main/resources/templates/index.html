@@ -161,7 +161,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="card">
+                        <div  class="card" id="detailCard">
                           <div class="card-body">
                             <h5 class="card-title">상세보기</h5>
                             <p>2024/7/4</p>
@@ -225,6 +225,29 @@
                   locale: 'ko',
                   editable: false,
                   eventTextColor: '#000000',
+                  dateClick: function(info) {
+                    // 클릭한 날짜에 해당하는 이벤트들을 필터링
+                    const clickedDate = info.dateStr;
+                    const events = calendar.getEvents().filter(event => {
+                      const eventDate = event.start.toISOString().split('T')[0];
+                      return eventDate === clickedDate;
+                    });
+
+                    // 상세보기 div에 이벤트 정보를 표시
+                    let detailsHtml = `<h5 class="card-title">상세보기</h5><p>${clickedDate}</p>`;
+
+                    if (events.length > 0) {
+                      events.forEach(event => {
+                        detailsHtml += `<p>일정 제목: ${event.title}</p>`;
+                        // 추가적인 이벤트 정보를 여기에 표시할 수 있습니다
+                      });
+                    } else {
+                      detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
+                    }
+
+                    // 선택한 날짜의 이벤트를 상세보기 카드에 업데이트
+                    $('#detailCard .card-body').html(detailsHtml);
+                  },
                   events: function (fetchInfo, successCallback, failureCallback) {
                     $.ajax({
                       url: '/api/Calendar/read',
@@ -260,6 +283,14 @@
                     contentEl.innerHTML = `<b>${title}</b>`;
 
                     return { domNodes: [contentEl] };
+                  },
+                  eventDidMount: function(info) {
+                    // 이벤트의 스타일을 강제로 설정하여 색상이 적용되도록 함
+                    $(info.el).css({
+                      'background-color': info.event.backgroundColor + ' !important',
+                      'border-color': info.event.borderColor + ' !important'
+                    });
+                    console.log("이벤트 렌더링:", info.event.title, info.event.backgroundColor);
                   },
                   eventClick: function (info) {
                     var eventModalEl = $('#eventModal');
@@ -319,14 +350,27 @@
 
                   const title = $('#title').val();
                   const start = $('#startDate').val();
-                  const end = $('#endDate').val();
+                  let end = $('#endDate').val();
+
+                  // 단일 일정의 경우 endDate를 제거
+                  if (!end || start === end) {
+                    end = null; // 단일 일정으로 처리
+                  } else {
+                    // endDate에 시간 정보 추가
+                    end += ':00';
+                  }
+
+                  // startDate에도 시간 정보 추가
+                  const startWithTime = start + ':00';
+
+                  const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
                   const event = {
                     title: title,
-                    startDate: start,
+                    startDate: startWithTime,
                     endDate: end,
-                    backgroundColor: currentEvent ? currentEvent.backgroundColor : colors[Math.floor(Math.random() * colors.length)],
-                    borderColor: currentEvent ? currentEvent.borderColor : colors[Math.floor(Math.random() * colors.length)]
+                    backgroundColor: currentEvent ? currentEvent.backgroundColor : randomColor,
+                    borderColor: currentEvent ? currentEvent.borderColor : randomColor
                   };
 
                   if (currentEvent) {
@@ -340,7 +384,7 @@
                       data: JSON.stringify(event),
                       success: function (data) {
                         currentEvent.setProp('title', event.title);
-                        currentEvent.setDates(event.startDate, event.endDate || event.startDate);
+                        currentEvent.setDates(event.startDate, event.endDate);
                         currentEvent.setProp('backgroundColor', event.backgroundColor);
                         currentEvent.setProp('borderColor', event.borderColor);
 
@@ -350,11 +394,12 @@
                           borderColor: event.borderColor
                         }));
 
-                        alert('일정이 수정 되었습니다.');
+                        alert('일정이 수정되었습니다.');
                         closeModal();
                       },
                       error: function (xhr, status, error) {
                         console.error('Error updating event:', error);
+                        console.log('서버 응답:', xhr.responseText);
                       }
                     });
                   } else {
@@ -365,7 +410,7 @@
                       contentType: 'application/json',
                       data: JSON.stringify(event),
                       success: function (data) {
-                        calendar.addEvent({
+                        const newEvent = calendar.addEvent({
                           id: data.id, // 서버에서 반환된 id를 사용
                           title: event.title,
                           start: event.startDate,
@@ -375,17 +420,18 @@
                           borderColor: event.borderColor
                         });
 
-                        // 새로 추가된 이벤트 색상 정보를 로컬 스토리지에 저장
-                        localStorage.setItem(`event-${data.id}`, JSON.stringify({
-                          backgroundColor: event.backgroundColor,
-                          borderColor: event.borderColor
-                        }));
+                        // 콘솔에 추가된 이벤트 정보 출력
+                        console.log("새로운 이벤트 추가:", newEvent.title, newEvent.backgroundColor);
+
+                        // FullCalendar 이벤트 재렌더링
+                        calendar.render();
 
                         alert('일정이 추가되었습니다.');
                         closeModal();
                       },
                       error: function (xhr, status, error) {
                         console.error('Error adding event:', error);
+                        console.log('서버 응답:', xhr.responseText);
                       }
                     });
                   }
