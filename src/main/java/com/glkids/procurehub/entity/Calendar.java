@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Calendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

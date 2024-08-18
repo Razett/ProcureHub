@@ -161,7 +161,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="card">
+                        <div  class="card" id="detailCard">
                           <div class="card-body">
                             <h5 class="card-title">상세보기</h5>
                             <p>2024/7/4</p>
@@ -182,7 +182,6 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="eventModalLabel">일정 추가</h5>
-                            <button type="button" class="btn cur-p btn-dark btn-color" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
                             <form id="eventForm">
@@ -213,9 +212,9 @@
               let calendar;
               let currentEvent; // 현재 수정 중인 이벤트를 저장할 변수
 
-              document.addEventListener('DOMContentLoaded', function () {
+              $(document).ready(function () {
                 var calendarEl = document.getElementById('calendar');
-                var deleteButton = document.getElementById('deleteEvent');
+                var deleteButton = $('#deleteEvent');
 
                 // 사용할 색상 배열
                 const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
@@ -226,54 +225,86 @@
                   locale: 'ko',
                   editable: false,
                   eventTextColor: '#000000',
-                  events: function(fetchInfo, successCallback, failureCallback) {
-                    fetch('/api/Calendar/read')
-                            .then(response => response.json())
-                            .then(events => {
-                              events.forEach(event => {
-                                const storedEvent = localStorage.getItem(`event-${event.id}`);
-                                if (storedEvent) {
-                                  const parsedEvent = JSON.parse(storedEvent);
-                                  event.backgroundColor = parsedEvent.backgroundColor;
-                                  event.borderColor = parsedEvent.borderColor;
-                                } else {
-                                  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                                  event.backgroundColor = randomColor;
-                                  event.borderColor = randomColor;
-                                  localStorage.setItem(`event-${event.id}`, JSON.stringify({
-                                    backgroundColor: randomColor,
-                                    borderColor: randomColor
-                                  }));
-                                }
-                              });
-                              successCallback(events);
-                            })
-                            .catch(error => failureCallback(error));
+                  dateClick: function(info) {
+                    // 클릭한 날짜에 해당하는 이벤트들을 필터링
+                    const clickedDate = info.dateStr;
+                    const events = calendar.getEvents().filter(event => {
+                      const eventDate = event.start.toISOString().split('T')[0];
+                      return eventDate === clickedDate;
+                    });
+
+                    // 상세보기 div에 이벤트 정보를 표시
+                    let detailsHtml = `<h5 class="card-title">상세보기</h5><p>${clickedDate}</p>`;
+
+                    if (events.length > 0) {
+                      events.forEach(event => {
+                        detailsHtml += `<p>일정 제목: ${event.title}</p>`;
+                        // 추가적인 이벤트 정보를 여기에 표시할 수 있습니다
+                      });
+                    } else {
+                      detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
+                    }
+
+                    // 선택한 날짜의 이벤트를 상세보기 카드에 업데이트
+                    $('#detailCard .card-body').html(detailsHtml);
                   },
-                  eventContent: function(arg) {
-                    let startDate = arg.event.start.toISOString().split('T')[0];
-                    let endDate = arg.event.end ? arg.event.end.toISOString().split('T')[0] : startDate;
+                  events: function (fetchInfo, successCallback, failureCallback) {
+                    $.ajax({
+                      url: '/api/Calendar/read',
+                      method: 'GET',
+                      success: function (events) {
+                        events.forEach(event => {
+                          const storedEvent = localStorage.getItem(`event-${event.id}`);
+                          if (storedEvent) {
+                            const parsedEvent = JSON.parse(storedEvent);
+                            event.backgroundColor = parsedEvent.backgroundColor;
+                            event.borderColor = parsedEvent.borderColor;
+                          } else {
+                            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                            event.backgroundColor = randomColor;
+                            event.borderColor = randomColor;
+                            localStorage.setItem(`event-${event.id}`, JSON.stringify({
+                              backgroundColor: randomColor,
+                              borderColor: randomColor
+                            }));
+                          }
+                        });
+                        successCallback(events);
+                      },
+                      error: function (xhr, status, error) {
+                        failureCallback(error);
+                      }
+                    });
+                  },
+                  eventContent: function (arg) {
                     let title = arg.event.title;
-                    let dateRange = `${startDate} ~ ${endDate}`;
 
                     let contentEl = document.createElement('div');
-                    contentEl.innerHTML = `<b>${title}</b><br>${dateRange}`;
+                    contentEl.innerHTML = `<b>${title}</b>`;
 
                     return { domNodes: [contentEl] };
                   },
-                  eventClick: function(info) {
-                    var eventModalEl = document.getElementById('eventModal');
-                    var eventModal = new bootstrap.Modal(eventModalEl);
+                  eventDidMount: function(info) {
+                    // 이벤트의 스타일을 강제로 설정하여 색상이 적용되도록 함
+                    $(info.el).css({
+                      'background-color': info.event.backgroundColor + ' !important',
+                      'border-color': info.event.borderColor + ' !important'
+                    });
+                    console.log("이벤트 렌더링:", info.event.title, info.event.backgroundColor);
+                  },
+                  eventClick: function (info) {
+                    var eventModalEl = $('#eventModal');
+                    var eventModal = new bootstrap.Modal(eventModalEl[0]);
 
                     currentEvent = info.event;
 
                     // 수정 모달에서는 삭제 버튼을 표시
-                    deleteButton.style.display = 'inline-block';
+                    deleteButton.show();
 
-                    document.getElementById('eventModalLabel').innerText = '일정 수정';
-                    document.getElementById('title').value = info.event.title;
-                    document.getElementById('startDate').value = info.event.start.toISOString().slice(0, 16);
-                    document.getElementById('endDate').value = info.event.end ? info.event.end.toISOString().slice(0, 16) : '';
+                    $('#eventModalLabel').text('일정 수정');
+                    $('#title').val(info.event.title);
+                    $('#startDate').val(info.event.start.toISOString().slice(0, 16));
+                    $('#endDate').val(info.event.end ? info.event.end.toISOString().slice(0, 16) : '');
 
                     eventModal.show();
                   }
@@ -282,135 +313,148 @@
                 calendar.render();
 
                 // 모달 초기화: 일정 추가 버튼을 누르면 폼 초기화
-                document.querySelector('[data-bs-target="#eventModal"]').addEventListener('click', function() {
+                $('[data-bs-target="#eventModal"]').on('click', function () {
                   currentEvent = null; // 새로운 이벤트 추가를 위한 초기화
-                  document.getElementById('eventModalLabel').innerText = '일정 추가';
-                  document.getElementById('eventForm').reset(); // 폼 초기화
+                  $('#eventModalLabel').text('일정 추가');
+                  $('#eventForm')[0].reset(); // 폼 초기화
 
                   // 일정 추가 모달에서는 삭제 버튼을 숨김
-                  deleteButton.style.display = 'none';
+                  deleteButton.hide();
                 });
 
                 // 모달 닫기 시 백드롭 제거
-                document.getElementById('eventModal').addEventListener('hidden.bs.modal', function () {
-                  var modalBackdrop = document.querySelector('.modal-backdrop');
-                  if (modalBackdrop) {
+                $('#eventModal').on('hidden.bs.modal', function () {
+                  var modalBackdrop = $('.modal-backdrop');
+                  if (modalBackdrop.length) {
                     modalBackdrop.remove();
                   }
                 });
 
                 // 모달 닫기 함수 보강
                 function closeModal() {
-                  var eventModalEl = document.getElementById('eventModal');
-                  var eventModal = bootstrap.Modal.getInstance(eventModalEl);
+                  var eventModalEl = $('#eventModal');
+                  var eventModal = bootstrap.Modal.getInstance(eventModalEl[0]);
                   if (eventModal) {
                     eventModal.hide();
-                    document.body.classList.remove('modal-open');
-                    var modalBackdrop = document.querySelector('.modal-backdrop');
-                    if (modalBackdrop) {
+                    $('body').removeClass('modal-open');
+                    var modalBackdrop = $('.modal-backdrop');
+                    if (modalBackdrop.length) {
                       modalBackdrop.remove();
                     }
                   }
                 }
 
                 // 이벤트 폼 제출 처리 (추가 또는 수정)
-                document.getElementById('eventForm').addEventListener('submit', function (e) {
+                $('#eventForm').on('submit', function (e) {
                   e.preventDefault();
 
-                  const title = document.getElementById('title').value;
-                  const start = document.getElementById('startDate').value;
-                  const end = document.getElementById('endDate').value;
+                  const title = $('#title').val();
+                  const start = $('#startDate').val();
+                  let end = $('#endDate').val();
+
+                  // 단일 일정의 경우 endDate를 제거
+                  if (!end || start === end) {
+                    end = null; // 단일 일정으로 처리
+                  } else {
+                    // endDate에 시간 정보 추가
+                    end += ':00';
+                  }
+
+                  // startDate에도 시간 정보 추가
+                  const startWithTime = start + ':00';
+
+                  const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
                   const event = {
                     title: title,
-                    startDate: start,
+                    startDate: startWithTime,
                     endDate: end,
-                    backgroundColor: currentEvent ? currentEvent.backgroundColor : colors[Math.floor(Math.random() * colors.length)],
-                    borderColor: currentEvent ? currentEvent.borderColor : colors[Math.floor(Math.random() * colors.length)]
+                    backgroundColor: currentEvent ? currentEvent.backgroundColor : randomColor,
+                    borderColor: currentEvent ? currentEvent.borderColor : randomColor
                   };
 
                   if (currentEvent) {
                     // 기존 이벤트 수정
                     event.id = currentEvent.id; // 수정 시에만 id 사용
 
-                    fetch('/api/Calendar/update', {
+                    $.ajax({
+                      url: '/api/Calendar/update',
                       method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
+                      contentType: 'application/json',
+                      data: JSON.stringify(event),
+                      success: function (data) {
+                        currentEvent.setProp('title', event.title);
+                        currentEvent.setDates(event.startDate, event.endDate);
+                        currentEvent.setProp('backgroundColor', event.backgroundColor);
+                        currentEvent.setProp('borderColor', event.borderColor);
+
+                        // 수정된 색상 정보를 로컬 스토리지에 저장
+                        localStorage.setItem(`event-${event.id}`, JSON.stringify({
+                          backgroundColor: event.backgroundColor,
+                          borderColor: event.borderColor
+                        }));
+
+                        alert('일정이 수정되었습니다.');
+                        closeModal();
                       },
-                      body: JSON.stringify(event)
-                    })
-                            .then(response => response.json())
-                            .then(data => {
-                              currentEvent.setProp('title', event.title);
-                              currentEvent.setDates(event.startDate, event.endDate || event.startDate);
-                              currentEvent.setProp('backgroundColor', event.backgroundColor);
-                              currentEvent.setProp('borderColor', event.borderColor);
-
-                              // 수정된 색상 정보를 로컬 스토리지에 저장
-                              localStorage.setItem(`event-${event.id}`, JSON.stringify({
-                                backgroundColor: event.backgroundColor,
-                                borderColor: event.borderColor
-                              }));
-
-                              alert('이벤트가 성공적으로 업데이트되었습니다.');
-                              closeModal();
-                            })
-                            .catch(error => console.error('Error updating event:', error));
+                      error: function (xhr, status, error) {
+                        console.error('Error updating event:', error);
+                        console.log('서버 응답:', xhr.responseText);
+                      }
+                    });
                   } else {
                     // 새로운 이벤트 추가
-                    fetch('/api/Calendar/add', {
+                    $.ajax({
+                      url: '/api/Calendar/add',
                       method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
+                      contentType: 'application/json',
+                      data: JSON.stringify(event),
+                      success: function (data) {
+                        const newEvent = calendar.addEvent({
+                          id: data.id, // 서버에서 반환된 id를 사용
+                          title: event.title,
+                          start: event.startDate,
+                          end: event.endDate,
+                          allDay: false,
+                          backgroundColor: event.backgroundColor,
+                          borderColor: event.borderColor
+                        });
+
+                        // 콘솔에 추가된 이벤트 정보 출력
+                        console.log("새로운 이벤트 추가:", newEvent.title, newEvent.backgroundColor);
+
+                        // FullCalendar 이벤트 재렌더링
+                        calendar.render();
+
+                        alert('일정이 추가되었습니다.');
+                        closeModal();
                       },
-                      body: JSON.stringify(event)
-                    })
-                            .then(response => response.json())
-                            .then(data => {
-                              calendar.addEvent({
-                                id: data.id, // 서버에서 반환된 id를 사용
-                                title: event.title,
-                                start: event.startDate,
-                                end: event.endDate,
-                                allDay: false,
-                                backgroundColor: event.backgroundColor,
-                                borderColor: event.borderColor
-                              });
-
-                              // 새로 추가된 이벤트 색상 정보를 로컬 스토리지에 저장
-                              localStorage.setItem(`event-${data.id}`, JSON.stringify({
-                                backgroundColor: event.backgroundColor,
-                                borderColor: event.borderColor
-                              }));
-
-                              alert('일정이 추가되었습니다.');
-                              closeModal();
-                            })
-                            .catch(error => console.error('Error adding event:', error));
+                      error: function (xhr, status, error) {
+                        console.error('Error adding event:', error);
+                        console.log('서버 응답:', xhr.responseText);
+                      }
+                    });
                   }
                 });
 
                 // 삭제 버튼 클릭 이벤트 처리
-                deleteButton.addEventListener('click', function () {
+                deleteButton.on('click', function () {
                   if (currentEvent) {
-                    fetch('/api/Calendar/delete', {
+                    $.ajax({
+                      url: '/api/Calendar/delete',
                       method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
+                      contentType: 'application/json',
+                      data: JSON.stringify({ id: currentEvent.id }),
+                      success: function () {
+                        currentEvent.remove(); // 캘린더에서 이벤트 제거
+                        localStorage.removeItem(`event-${currentEvent.id}`); // 로컬 스토리지에서도 제거
+                        alert('일정이 삭제되었습니다.');
+                        closeModal();
                       },
-                      body: JSON.stringify({ id: currentEvent.id })
-                    })
-                            .then(response => {
-                              if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                              }
-                              currentEvent.remove(); // 캘린더에서 이벤트 제거
-                              localStorage.removeItem(`event-${currentEvent.id}`); // 로컬 스토리지에서도 제거
-                              alert('이벤트가 삭제되었습니다.');
-                              closeModal();
-                            })
-                            .catch(error => console.error('Error deleting event:', error));
+                      error: function (xhr, status, error) {
+                        console.error('Error deleting event:', error);
+                      }
+                    });
                   }
                 });
               });
