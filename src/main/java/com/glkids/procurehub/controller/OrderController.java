@@ -53,25 +53,6 @@ public class OrderController {
 
     /**
      * @deprecated
-     * 발주 진행 수정
-     */
-    @Deprecated
-    @GetMapping("/update")
-    public void getUpdate(Long orderno, Model model){}
-
-    /**
-     * @deprecated
-     * 발주 진행 사항 수정 후 저장 버튼 클릭 시 발주 현황 화면으로
-     */
-    @Deprecated
-    @PostMapping("/update")
-    public String postUpdate(Model model, Order order){
-        model.addAttribute("order", order);
-        return "order/list";
-    }
-
-    /**
-     * @deprecated
      * 발주 상세 정보
      */
     @Deprecated
