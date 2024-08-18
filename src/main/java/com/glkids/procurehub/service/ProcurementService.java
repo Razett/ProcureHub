@@ -1,5 +1,6 @@
 package com.glkids.procurehub.service;
 
+import com.glkids.procurehub.dto.PrdcMtrlDetailsDTO;
 import com.glkids.procurehub.dto.ProcurementDetailsDTO;
 import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.PrcrRepository;
@@ -7,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,34 +20,60 @@ public class ProcurementService {
     @Autowired
     private PrcrRepository prcrRepository;
 
-    public List<ProcurementDetailsDTO> getProcurementDetailsByStatus() {
-          return prcrRepository.findAllProcurements();
+//    public List<ProcurementDetailsDTO> getProcurementDetails() {
+//          return prcrRepository.findAllProcurements();
+//    }
+
+    public List<ProcurementDetailsDTO> getProcurementDetailsGroupMtrl() {
+        List<Prcr> procurementPlans = prcrRepository.findAll();
+
+        // prdcPlanNo를 기준으로 DTO와 자재 리스트를 관리할 맵
+        Map<Long, ProcurementDetailsDTO> dtoMap = new HashMap<>();
+
+        for (Prcr prcr : procurementPlans) {
+            PrdcPlan prdcPlan = prcr.getPrdcPlan();
+            Prdc product = prdcPlan.getPrdc();
+            Material material = prcr.getMaterial();
+
+            Long prdcPlanNo = prdcPlan.getPrdcPlanNo();
+
+            // DTO 가져오거나 새로 생성
+            ProcurementDetailsDTO dto = dtoMap.get(prdcPlanNo);
+            if (dto == null) {
+                // 새로운 DTO 생성하여 맵에 추가
+                dto = ProcurementDetailsDTO.builder()
+                        .prcrno(prcr.getPrcrno())
+                        .prdcPlanNo(prdcPlanNo)
+                        .reqdate(prcr.getReqdate())
+                        .startdate(prdcPlan.getStartdate())
+                        .prdcno(product.getPrdcno())
+                        .productName(product.getName())
+                        .productQuantity(prcr.getQuantity())
+                        .status(prcr.getStatus())
+                        .regdate(prcr.getRegdate())
+                        .moddate(prcr.getModdate())
+                        .materials(new ArrayList<>())  // 빈 자재 리스트 생성
+                        .build();
+                dtoMap.put(prdcPlanNo, dto);
+            }
+
+            // PrdcMtrlDetailsDTO 생성
+            PrdcMtrlDetailsDTO mtrlDto = PrdcMtrlDetailsDTO.builder()
+                    .mtrlno(material.getMtrlno())
+                    .name(material.getName())
+                    .standard(material.getStandard())
+                    .quantity(material.getQuantity())
+                    .build();
+
+            // 자재 리스트에 자재 추가 (중복 방지)
+            if (dto.getMaterials().stream().noneMatch(existing -> existing.getMtrlno().equals(mtrlDto.getMtrlno()))) {
+                dto.getMaterials().add(mtrlDto);
+            }
+        }
+
+        // 최종 DTO 리스트를 생성
+        return new ArrayList<>(dtoMap.values());
     }
 }
-    //쿼리 dsl  빌더로 해서 짜는법
-//    public List<ProcurementDetailsDTO> getProcurementDetails() {
-//        List<Prcr> procurementPlans = prcrRepository.findAll();
-//
-//        return procurementPlans.stream().map(prcr -> {
-//            PrdcPlan prdcPlan = prcr.getPrdcPlan();  // 조달 계획에서 연관된 생산 계획 가져오기
-//            Prdc product = prdcPlan.getPrdc();  // 생산 계획에서 연관된 제품 가져오기
-//            Material material = prcr.getMaterial();  // 조달 계획에서 연관된 자재 가져오기
-//
-//            return ProcurementDetailsDTO.builder()
-//                    .prcrno(prcr.getPrcrno())  // 조달 계획 코드
-//                    .reqdate(prcr.getReqdate())  // 납기일
-//                    .prdcPlanNo(prdcPlan.getPrdcPlanNo())  // 생산 계획 코드
-//                    .startdate(prdcPlan.getStartdate())  // 생산 시작일
-//                    .prdcno(product.getPrdcno())  // 생산 제품 코드
-//                    .productName(product.getName())  // 생산 제품명
-//                    .productQuantity(prdcPlan.getQuantity())  // 생산 제품 수량
-//                    .mtrlno(material.getMtrlno())  // 자재 번호
-//                    .materialName(material.getName())  // 자재명
-//                    .standard(material.getStandard())  // 자재 표준
-//                    .materialQuantity(material.getQuantity())  // 자재 수량
-//                    .materialProcurementQuantity(prcr.getQuantity())  // 조달 자재 수량
-//                    .status(prcr.getStatus())  // 조달 상태
-//                    .build();
-//        }).collect(Collectors.toList());
-//    }
+
 

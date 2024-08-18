@@ -10,13 +10,16 @@ import java.util.List;
 
 public interface PrcrRepository extends JpaRepository<Prcr, Long> {
 
-    @Query("SELECT new com.glkids.procurehub.dto.ProcurementDetailsDTO(" +
-            "p.prcrno, p.reqdate, pp.prdcPlanNo, pp.startdate, pr.prdcno, pr.name, pp.quantity, " +
-            "m.mtrlno, m.name, m.standard, m.quantity, p.quantity, p.status, p.regdate, p.moddate) " +
-            "FROM Prcr p " +
-            "LEFT JOIN p.prdcPlan pp " +
-            "LEFT JOIN pp.prdc pr " +
-            "LEFT JOIN PrdcMtrl pm ON pm.prdc = pr " +
-            "LEFT JOIN pm.material m ")  // QuotationMtrl과 조인하여 leadTime 가져오기
-    List<ProcurementDetailsDTO> findAllProcurements();
+//    @Query("SELECT new com.glkids.procurehub.dto.ProcurementDetailsDTO(" +
+//            "p.prcrno, p.reqdate, pp.prdcPlanNo, pp.startdate, pr.prdcno, pr.name, pp.quantity, " +
+//            "m.mtrlno, m.name, m.standard, m.quantity, p.quantity, p.status, p.regdate, p.moddate) " +
+//            "FROM Prcr p " +
+//            "LEFT JOIN p.prdcPlan pp " +
+//            "LEFT JOIN pp.prdc pr " +
+//            "LEFT JOIN PrdcMtrl pm ON pm.prdc = pr " +
+//            "LEFT JOIN pm.material m ")
+//    List<ProcurementDetailsDTO> findAllProcurements();
+
+    List<Prcr> findAll();  // 모든 Prcr 엔티티를 조회
+
 }
