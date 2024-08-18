@@ -21,7 +21,9 @@ public class ExportRepositoryTest {
         Export export = Export.builder()
                 .quantity(100L)
                 .duedate(LocalDateTime.now().plusDays(7))
+                .prcr(Prcr.builder().prcrno(33L).build())
                 .status(1)
+                .emp(Emp.builder().empno(201758030L).build())
                 .build();
 
         exportRepository.save(export);
