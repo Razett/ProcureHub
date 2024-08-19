@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Entity
-public class Import extends BaseEntity {
+public class Imports extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

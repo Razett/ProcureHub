@@ -42,6 +42,8 @@ public class ImportDTO {
     private Emp approver;
     private Integer status;
 
+    private Contractor contractor;
+
     public String getStatusString() {
         if (status != null) {
             for (ImportStatus importStatus : ImportStatus.values()) {

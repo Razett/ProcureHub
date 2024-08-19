@@ -159,23 +159,132 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- 여기에 모달의 본문 내용이 들어갑니다 -->
-                                        <p>모달의 콘텐츠를 여기에 추가하세요.</p>
+                                        <div class="overflow-x-auto">
+                                            <table class="table table-bordered" style="min-width: 760px;">
+                                                <tr class="table-active">
+                                                    <th class="text-center">입고 코드</th>
+                                                    <th class="text-center">입고 상태</th>
+                                                    <th class="text-center">도착일</th>
+                                                    <th class="text-center">입고일</th>
+                                                    <th class="text-center">입고 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-importno">dummy</td>
+                                                    <td class="text-center" id="modal-table-status">dummy</td>
+                                                    <td class="text-center" id="modal-table-arrivaldate">dummy</td>
+                                                    <td class="text-center" id="modal-table-approvedate">dummy</td>
+                                                    <td class="text-center" id="modal-table-quantity">dummy</td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <th class="text-center">발주 코드</th>
+                                                    <th class="text-center">발주일</th>
+                                                    <th class="text-center">사업자등록번호</th>
+                                                    <th class="text-center">업체명</th>
+                                                    <th class="text-center">발주 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-orderno">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-corno">dummy</td>
+                                                    <td class="text-center" id="modal-table-corname">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderquantity">dummy</td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-bordered" style="min-width: 760px;">
+                                                <tr class="table-active">
+                                                    <th class="text-center">자재코드</th>
+                                                    <th class="text-center">자재명</th>
+                                                    <th class="text-center">자재그룹</th>
+                                                    <th class="text-center">창고위치</th>
+                                                    <th class="text-center">현재 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-mtrlno">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlname">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlgroup">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlwrhs">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <hr>
+                                        <div>
+                                            <h5>입고 검수</h5>
+                                            <div class="row">
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">검수(예정)일</label>
+                                                    <input type="text" class="form-control" id="modal-importInspection-duedate">
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">검수자</label>
+                                                    <input type="text" class="form-control" id="modal-importInspection-emp">
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">검수 상태</label>
+                                                    <select class="form-select" id="modal-importInspection-select">
+                                                        <option id="modal-importInspection-4" value="4">검수전</option>
+                                                        <option id="modal-importInspection-7" value="7">정상</option>
+                                                        <option id="modal-importInspection-5" value="5">입고 불량</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">불량 자재 수</label>
+                                                    <input type="number" class="form-control" id="modal-importInspection-dfc">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="form-label">검수 내용</label>
+                                                <textarea rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <button type="button" class="btn btn-primary">확인</button>
+                                        <button type="button" class="btn btn-primary c-white" data-bs-dismiss="modal">확인</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 스크립트는 이곳에 위치 -->
+                        <script src="/js/import.js"></script>
                         <script>
                             $(document).ready(function () {
                                 // 입고 코드 클릭 시 모달 표시
                                 $('.import-code').on('click', function () {
+                                    var id = $(this).closest('tr').attr('id');
+                                    console.log(id);
+
+                                    ImportService.readImport(id, function (data) {
+                                        // console.log(data);
+                                        $('#modal-table-importno').text('IM' + data.importno.toString().padStart(6, '0'));
+                                        $('#modal-table-status').text(data.statusString);
+                                        $('#modal-table-arrivaldate').text(ImportService.formatDate(data.arrivaldate));
+                                        $('#modal-table-approvedate').text(ImportService.formatDate(data.approvedate));
+                                        $('#modal-table-quantity').text(data.quantity);
+
+                                        $('#modal-table-orderno').text('OR' + data.order.orderno.toString().padStart(6, '0'));
+                                        $('#modal-table-orderdate').text(ImportService.formatDate(data.order.orderdate));
+                                        $('#modal-table-corno').text(data.contractor.corno);
+                                        $('#modal-table-corname').text(data.contractor.name);
+                                        $('#modal-table-orderquantity').text(data.order.quantity);
+
+                                        $('#modal-table-mtrlno').text('MA' + data.order.material.mtrlno.toString().padStart(6, '0'));
+                                        $('#modal-table-mtrlname').text(data.order.material.name);
+                                        $('#modal-table-mtrlgroup').text(data.order.material.materialGroup.name);
+                                        $('#modal-table-mtrlwrhs').text(data.order.material.materialWarehouse.name);
+                                        $('#modal-table-mtrlquantity').text(data.order.material.quantity);
+                                    });
                                     $('#importModal').modal('show');
-                                    $('.')
+                                });
+
+                                $('#searchButton').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var input = $('#searchInput').val();
+
+                                    if (input) {
+                                        window.location.href = "/import/totallist?type=ICOCMCMN&input=" + input;
+                                    } else {
+                                        toastService.printToast("검색어를 입력하세요.")
+                                    }
                                 });
                             });
                         </script>
