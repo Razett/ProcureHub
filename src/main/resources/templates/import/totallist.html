@@ -150,16 +150,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 스크립트는 이곳에 위치 -->
-                        <script>
-                            $(document).ready(function () {
-                                // 입고 코드 클릭 시 모달 표시
-                                $('.import-code').on('click', function () {
-                                    $('#importModal').modal('show');
-                                    $('.')
-                                });
-                            });
-                        </script>
                         <!-- 입고 상세 정보 모달 -->
                         <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl"> <!-- modal-xl 클래스로 더 큰 모달 설정 -->
@@ -179,12 +169,21 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- 스크립트는 이곳에 위치 -->
+                        <script>
+                            $(document).ready(function () {
+                                // 입고 코드 클릭 시 모달 표시
+                                $('.import-code').on('click', function () {
+                                    $('#importModal').modal('show');
+                                    $('.')
+                                });
+                            });
+                        </script>
                     </th:block>
                 </div>
             </div>
         </main>
     </div>
-
     </body>
 </th:block>
 </html>
