@@ -141,8 +141,8 @@
                                             <th class="text-center">자재 코드</th>
                                             <th class="text-center">자재명</th>
                                             <th class="text-center">자재 수량</th>
-                                            <th class="text-center">발주 수량</th>
                                             <th class="text-center">회사명</th>
+                                            <th class="text-center">발주 수량</th>
                                             <th class="text-center">단가</th>
                                             <th class="text-center">총금액</th>
                                             <th class="text-center">발주 상태</th>
@@ -159,18 +159,19 @@
                                                 <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}" class="text-center"></td>
                                                 <td th:text="${order.material != null ? order.material.getName() : 'N/A'}" class="text-center"></td>
                                                 <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}" class="text-end"></td>
-                                                <td th:text="${order.quantity}" class="text-end">
                                                 <td class="text-center">
-                                                    <span th:text="${order.quotationmtrlList.get(0).quotation.contractor.name}" th:if="${order.quotationmtrlList.size()>0}"></span>
+                                                    <span th:text="${order.quotationmtrlList.get(0).quotation.contractor.name}" th:data-unitprice="${order.quotationmtrlList.get(0).getUnitprice()}" th:if="${order.quotationmtrlList.size()>0}"></span>
                                                     <select class="form-control contractor-select d-none" name="quotationmtrl" onchange="updateUnitPrice(this)">
                                                         <option th:if="${order.quotationmtrlList.isEmpty()}" selected>...</option>
                                                         <option th:unless="${order.quotationmtrlList.isEmpty()}"
                                                                 th:each="quotationMtrl, i : ${order.quotationmtrlList}"
+                                                                th:data-unitprice="${quotationMtrl.getUnitprice()}"
                                                                 th:text="${quotationMtrl.quotation.contractor.name}"
                                                                 th:value="${quotationMtrl.qtmtno}"
                                                                 th:selected="${i.first}"></option>
                                                     </select>
                                                 </td>
+                                                <td th:text="${order.quantity}" class="text-end">
                                                 <td class="text-end">
                                                     <span th:text="${order.quotationmtrlList.size()>0 ? order.quotationmtrlList.get(0).getUnitprice() : 'N/A'}"></span>
                                                 </td>
@@ -197,8 +198,8 @@
                                         <th>자재 코드</th>
                                         <th>자재명</th>
                                         <th>자재 수량</th>
-                                        <th>발주 수량</th>
                                         <th>회사명</th>
+                                        <th>발주 수량</th>
                                         <th>단가</th>
                                         <th>총금액</th>
                                         <th>발주 상태</th>
@@ -213,8 +214,8 @@
                                             <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
                                             <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
                                             <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}" class="text-end"></td>
-                                            <td th:text="${order.quantity}" class="text-end"></td>
                                             <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
+                                            <td th:text="${order.quantity}" class="text-end"></td>
                                             <td th:text="${order.quotationmtrl.unitprice}" class="text-end"></td>
                                             <td th:text="${order.quotationmtrl.totalprice}" class="text-end"></td>
                                             <td th:text="${order.status}"></td>
@@ -231,6 +232,50 @@
                                 function toggleCheckboxes(masterCheckbox) {
                                     const isChecked = $(masterCheckbox).is(':checked');
                                     $('.ordernoCheckbox').prop('checked', isChecked);
+                                }
+
+                                function updateUnitPrice(selectElement) {
+                                    // 선택된 옵션에서 단가 가져오기
+                                    const selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    const unitPrice = parseFloat(selectedOption.getAttribute('data-unitprice'));
+
+                                    // 현재 행을 가져오기
+                                    const row = selectElement.closest('tr');
+
+                                    // 단가를 업데이트할 셀 찾기
+                                    const unitPriceCell = row.querySelector('td:nth-child(8)');
+                                    unitPriceCell.textContent = unitPrice;  //.toLocaleString('en-US');
+
+                                    // 발주 수량 입력 필드에 이벤트 리스너 추가
+                                    // const quantityInput = row.querySelector('.quantity-input');
+                                    // if (quantityInput) {
+                                    //     quantityInput.addEventListener('input', function () {
+                                    //         updateTotalPrice(unitPrice, quantityInput, row);
+                                    //     });
+                                    // }
+
+                                    // 초기 totalPrice 업데이트
+                                    // updateTotalPrice(unitPrice, quantityInput, row);
+                                }
+
+                                function inputQuantityListener(quantityInput) {
+                                    // 단가를 가져오는 부분
+                                    const row = quantityInput.closest('tr'); // DOM 메서드로 가장 가까운 <tr> 요소 찾기
+                                    const unitPriceText = row.querySelector('td:nth-child(8) span').textContent; // 8번째 칸의 <span> 요소 찾기
+
+                                    console.log(unitPriceText);
+
+                                    updateTotalPrice(parseFloat(unitPriceText), quantityInput, row); // 총금액 업데이트
+                                }
+
+                                function updateTotalPrice(unitPrice, quantityInput, row) {
+                                    // 발주 수량 가져오기
+                                    const quantity = parseFloat(quantityInput.value) || 0;
+
+                                    // 총 금액 계산 및 업데이트
+                                    const totalPrice = unitPrice * quantity;
+                                    const totalPriceCell = row.querySelector('td:nth-child(9)');
+                                    totalPriceCell.textContent = totalPrice;  //.toLocaleString('en-US');
                                 }
 
                                 $(document).ready(function () {
@@ -280,8 +325,8 @@
                                                             <td>${order.material != null ? order.material.mtrlno : 'N/A'}</td>
                                                             <td>${order.material != null ? order.material.name : 'N/A'}</td>
                                                             <td>${order.material != null ? order.material.quantity : 'N/A'}</td>
-                                                            <td>${order.quantity}</td>
                                                             <td>${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}</td>
+                                                            <td>${order.quantity}</td>
                                                             <td>${order.quotationmtrl.unitprice}</td>
                                                             <td>${order.quotationmtrl.totalprice}</td>
                                                             <td>${order.status}</td>
@@ -311,29 +356,25 @@
 
                                         $('#tableBody tr').each(function () {
                                             updateOrderno.push($(this).find('.ordernoCheckbox').val());
-                                            prev_quantity.push($(this).find('td').eq(5).text().trim());
-                                            prev_quotationmtrl.push($(this).find('td').eq(6).text().trim());
+                                            prev_quantity.push($(this).find('td').eq(6).text().trim());
+                                            prev_quotationmtrl.push($(this).find('td').eq(5).text().trim());
                                         });
 
                                         $('#tableBody tr').each(function () {
-                                            const quantityCell = $(this).find('td').eq(5);
-                                            const contractorCell = $(this).find('td').eq(6);
+                                            const quantityCell = $(this).find('td').eq(6);
+                                            const contractorCell = $(this).find('td').eq(5);
 
                                             const orderQuantity = quantityCell.text().trim();
                                             const contractorName = contractorCell.find('span').text().trim();
 
                                             quantityCell.html(`
-                                                <input type="number" class="form-control quantity-input" value="${orderQuantity}"/>
+                                                <input type="number" class="form-control quantity-input" value="${orderQuantity}" onchange="inputQuantityListener(this)"/>
                                             `);
                                             contractorCell.find('span').addClass('d-none');
                                             contractorCell.find('select').removeClass('d-none');
                                         });
                                     });
-                                function updateUnitPrice(){
-                                    var contractorSelect = document.getElementsByName("quotationmtrl");
-                                    var selectValue = contractorSelect.options[contractorSelect.selectedIndex].value;
-                                    var selectText = contractorSelect.options[contractorSelect.selectedIndex].text;
-                                }
+
                                     // "저장" 버튼 누를 시
                                     $('#save-orders-btn').on('click', function () {
                                         $(this).addClass("d-none");
