@@ -152,7 +152,7 @@
                                         <tbody id="tableBody">
                                             <tr th:each="order : ${orderBeforeList}">
                                                 <td>
-                                                    <input type="checkbox" class="ordernoCheckbox text-left" th:value="${order.orderno}">
+                                                    <input type="checkbox" class="ordernoCheckbox text-left" th:value="${order.orderno}" th:disabled="${order.quotationmtrlList.size()<1}">
                                                     <span th:text="${order.orderno}" class="text-center"></span>
                                                 </td>
                                                 <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}" class="text-center"></td>
@@ -161,16 +161,20 @@
                                                 <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}" class="text-end"></td>
                                                 <td th:text="${order.quantity}" class="text-end">
                                                 <td class="text-center">
-                                                    <select class="form-control contractor-select" name="quotationmtrl">
+                                                    <span th:text="${order.quotationmtrlList.get(0).quotation.contractor.name}" th:if="${order.quotationmtrlList.size()>0}"></span>
+                                                    <select class="form-control contractor-select d-none" name="quotationmtrl" onchange="updateUnitPrice(this)">
                                                         <option th:if="${order.quotationmtrlList.isEmpty()}" selected>...</option>
                                                         <option th:unless="${order.quotationmtrlList.isEmpty()}"
-                                                                th:each="quotationMtrl : ${order.quotationmtrlList}"
+                                                                th:each="quotationMtrl, i : ${order.quotationmtrlList}"
                                                                 th:text="${quotationMtrl.quotation.contractor.name}"
-                                                                th:value="${quotationMtrl.qtmtno}"></option>
+                                                                th:value="${quotationMtrl.qtmtno}"
+                                                                th:selected="${i.first}"></option>
                                                     </select>
                                                 </td>
-                                                <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getUnitprice() : 'N/A'}" class="text-end"></td>
-                                                <td th:text="${order.quotationmtrl.totalprice}" class="text-end"></td>
+                                                <td class="text-end">
+                                                    <span th:text="${order.quotationmtrlList.size()>0 ? order.quotationmtrlList.get(0).getUnitprice() : 'N/A'}"></span>
+                                                </td>
+                                                <td th:text="${order.quotationmtrlList.size()>0 ? order.quotationmtrlList.get(0).getUnitprice() * order.quantity : 'N/A'}" class="text-end"></td>
                                                 <td th:text="${order.status}" class="text-center"></td>
                                                 <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
                                             </tr>
@@ -211,7 +215,7 @@
                                             <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}" class="text-end"></td>
                                             <td th:text="${order.quantity}" class="text-end"></td>
                                             <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
-                                            <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getUnitprice() : 'N/A'}" class="text-end"></td>
+                                            <td th:text="${order.quotationmtrl.unitprice}" class="text-end"></td>
                                             <td th:text="${order.quotationmtrl.totalprice}" class="text-end"></td>
                                             <td th:text="${order.status}"></td>
                                             <td class="col-md-2 text-center">
@@ -253,7 +257,7 @@
                                             url: '/rest/order/list',
                                             type: 'POST',
                                             contentType: 'application/json',
-                                            data: JSON.stringify(getOrderno()),
+                                            data: JSON.stringify(getOrderno()), // JSON.stringfy({orderno: ordernoArray[i], quantity:quantityArray[i]}) // 중괄호 열고 닫고 하면 객체를 의미
                                             success: function (response) {
                                                 console.log(response);
 
@@ -325,7 +329,11 @@
                                             contractorCell.find('select').removeClass('d-none');
                                         });
                                     });
-
+                                function updateUnitPrice(){
+                                    var contractorSelect = document.getElementsByName("quotationmtrl");
+                                    var selectValue = contractorSelect.options[contractorSelect.selectedIndex].value;
+                                    var selectText = contractorSelect.options[contractorSelect.selectedIndex].text;
+                                }
                                     // "저장" 버튼 누를 시
                                     $('#save-orders-btn').on('click', function () {
                                         $(this).addClass("d-none");
