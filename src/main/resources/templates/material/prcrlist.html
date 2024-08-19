@@ -47,7 +47,11 @@
 
                                 th {
                                     background-color: #f4f4f4;
-                                    width: 150px; /* 명시적인 너비 설정 */
+                                    width: 150px;
+                                }
+                                /* 줄바꿈을 허용하면서 공백을 유지하는 스타일 */
+                                .multi-line {
+                                    white-space: pre-line;
                                 }
 
                             </style>
@@ -80,7 +84,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="overflow-x:auto; overflow-y:auto; width: 100%; height: 300px;">
+                                <div style="overflow-x:auto; overflow-y:auto; width: 100%; height: 450px;">
                                     <table>
                                         <thead>
                                         <tr>
@@ -123,18 +127,21 @@
                                             <td th:text="${order.prdcno}"></td>
                                             <td th:text="${order.productName}"></td>
                                             <td th:text="${order.productQuantity}"></td>
-                                            <td rowspan="4" style="white-space: nowrap;" th:if="${order.materials != null}">
-                                                <!-- 자재 리스트 출력 시작 -->
-                                                <ul style="margin: 0; padding: 0; list-style: none;">
-                                                    <li th:each="material : ${order.materials}">
-                                                        <span th:text="${material.mtrlno}"></span>
-                                                        <span th:text="${material.name}"></span>
-                                                        <span th:text="${material.standard}"></span>
-                                                        <span th:text="${material.quantity}"></span>
-                                                    </li>
-                                                </ul>
-                                                <!-- 자재 리스트 출력 끝 -->
+                                            <!-- 자재 정보를 하나의 셀 안에서 여러 줄로 출력 -->
+                                            <td class="multi-line">
+                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.mtrlno}"><br></span>
                                             </td>
+                                            <td class="multi-line">
+                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.name}"><br></span>
+                                            </td>
+                                            <td class="multi-line">
+                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.standard}"><br></span>
+                                            </td>
+                                            <td class="multi-line">
+                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.quantity}"><br></span>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
                                             <td th:text="${#temporals.format(order.moddate, 'yyyy-MM-dd')}"></td>
                                             <td th:text="${#temporals.format(order.regdate, 'yyyy-MM-dd')}"></td>
                                             <td th:text="${order.status}"></td>
