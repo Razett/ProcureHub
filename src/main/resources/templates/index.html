@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>Home</title>
     <style>
+      /* Loader 스타일 */
       #loader {
         transition: all 0.3s ease-in-out;
         opacity: 1;
@@ -16,12 +17,10 @@
         background: #fff;
         z-index: 90000;
       }
-
       #loader.fadeOut {
         opacity: 0;
         visibility: hidden;
       }
-
       .spinner {
         width: 40px;
         height: 40px;
@@ -33,7 +32,6 @@
         -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
         animation: sk-scaleout 1.0s infinite ease-in-out;
       }
-
       @-webkit-keyframes sk-scaleout {
         0% { -webkit-transform: scale(0) }
         100% {
@@ -41,7 +39,6 @@
           opacity: 0;
         }
       }
-
       @keyframes sk-scaleout {
         0% {
           -webkit-transform: scale(0);
@@ -53,7 +50,6 @@
           opacity: 0;
         }
       }
-
     </style>
     <script src="js/main.js"></script>
     <link href="css/style.css" rel="stylesheet">
@@ -73,21 +69,15 @@
 
   <!-- #Main ============================ -->
   <div class="page-container">
-
-    <!-- ### $App Screen Content ### -->
     <main class="main-content bgc-grey-100">
       <input type="hidden" id="id" value="">
       <div id="mainContent">
         <div class="full-container">
           <th:block th:fragment="content">
             <style>
-              /* FullCalendar 날짜 숫자를 검정색으로 변경 */
-              .fc-daygrid-day-number {
-                color: #000000; /* 검정색 */
-              }
-              /* FullCalendar 요일 헤더 색상을 검정색으로 변경 */
-              .fc-col-header-cell-cushion {
-                color: #000000; /* 검정색 */
+              /* FullCalendar 날짜와 요일 색상 스타일링 */
+              .fc-daygrid-day-number, .fc-col-header-cell-cushion {
+                color: #000000;
               }
             </style>
             <div class="row">
@@ -105,35 +95,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">발주 현황</h5>
-                            <p class="card-text">발주: 390건</p>
-                            <p class="card-text">발주 완료: 392건</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">입고 현황</h5>
-                            <p class="card-text">입고 요청: 100건</p>
-                            <p class="card-text">입고 완료: 97건</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">출고 현황</h5>
-                            <p class="card-text">출고 요청: 21건</p>
-                            <p class="card-text">출고 완료: 19건</p>
-                          </div>
-                        </div>
-                      </div>
+                      <!-- 다른 카드들 추가 -->
                     </div>
-
                     <div class="row mt-4">
                       <div class="col-md-8">
                         <div class="card">
@@ -161,22 +124,16 @@
                             </div>
                           </div>
                         </div>
-                        <div  class="card" id="detailCard">
+                        <div class="card" id="detailCard">
                           <div class="card-body">
                             <h5 class="card-title">상세보기</h5>
-                            <p>2024/7/4</p>
-                            <p>생산 계획 코드: PCT0002</p>
-                            <p>생산 제품코드: MD0002</p>
-                            <p>생산 제품명: EEB</p>
-                            <p>생산 수량: 100</p>
+                            <p>날짜를 선택하세요</p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <!-- 일정 추가 버튼과 모달 -->
-
-
+                    <!-- 일정 추가 모달 -->
                     <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
@@ -197,7 +154,7 @@
                                 <label for="endDate" class="form-label">종료 날짜</label>
                                 <input type="datetime-local" class="form-control" id="endDate" required>
                               </div>
-                              <button type="submit" class="btn cur-p btn-dark btn-color" >저장</button>
+                              <button type="submit" class="btn cur-p btn-dark btn-color">저장</button>
                               <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">삭제</button> <!-- 삭제 버튼 -->
                             </form>
                           </div>
@@ -210,13 +167,12 @@
             </div>
             <script>
               let calendar;
-              let currentEvent; // 현재 수정 중인 이벤트를 저장할 변수
+              let currentEvent;
 
               $(document).ready(function () {
                 var calendarEl = document.getElementById('calendar');
                 var deleteButton = $('#deleteEvent');
 
-                // 사용할 색상 배열
                 const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
 
                 // FullCalendar 초기화
@@ -225,81 +181,96 @@
                   locale: 'ko',
                   editable: false,
                   eventTextColor: '#000000',
+
+                  // 날짜 클릭 시 상세보기 처리
                   dateClick: function(info) {
-                    // 클릭한 날짜에 해당하는 이벤트들을 필터링
                     const clickedDate = info.dateStr;
                     const events = calendar.getEvents().filter(event => {
                       const eventDate = event.start.toISOString().split('T')[0];
                       return eventDate === clickedDate;
                     });
 
-                    // 상세보기 div에 이벤트 정보를 표시
                     let detailsHtml = `<h5 class="card-title">상세보기</h5><p>${clickedDate}</p>`;
-
                     if (events.length > 0) {
                       events.forEach(event => {
                         detailsHtml += `<p>일정 제목: ${event.title}</p>`;
-                        // 추가적인 이벤트 정보를 여기에 표시할 수 있습니다
                       });
                     } else {
                       detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
                     }
 
-                    // 선택한 날짜의 이벤트를 상세보기 카드에 업데이트
                     $('#detailCard .card-body').html(detailsHtml);
                   },
+
+                  // 서버에서 이벤트 데이터를 가져오는 처리
                   events: function (fetchInfo, successCallback, failureCallback) {
+                    // prdcPlans 엔드포인트에서 데이터를 가져옴
                     $.ajax({
-                      url: '/api/Calendar/read',
+                      url: '/api/Calendar/prdcPlans',
                       method: 'GET',
-                      success: function (events) {
-                        events.forEach(event => {
-                          const storedEvent = localStorage.getItem(`event-${event.id}`);
-                          if (storedEvent) {
-                            const parsedEvent = JSON.parse(storedEvent);
-                            event.backgroundColor = parsedEvent.backgroundColor;
-                            event.borderColor = parsedEvent.borderColor;
-                          } else {
-                            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                            event.backgroundColor = randomColor;
-                            event.borderColor = randomColor;
-                            localStorage.setItem(`event-${event.id}`, JSON.stringify({
-                              backgroundColor: randomColor,
-                              borderColor: randomColor
-                            }));
+                      success: function (data) {
+                        const prdcPlanEvents = data.map(plan => {
+                          return {
+                            id: plan.planNo,
+                            title: `생산 수량: ${plan['quantity+']}`,
+                            start: plan.start,
+                            end: plan.end,
+                            backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+                          };
+                        });
+
+                        // read 엔드포인트에서 데이터를 가져옴
+                        $.ajax({
+                          url: '/api/Calendar/read',
+                          method: 'GET',
+                          success: function (data) {
+                            const calendarEvents = data.map(event => {
+                              return {
+                                id: event.id,
+                                title: event.title,
+                                start: event.start,
+                                end: event.end,
+                                backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+                              };
+                            });
+
+                            // prdcPlanEvents와 calendarEvents를 합쳐서 전달
+                            successCallback([...prdcPlanEvents, ...calendarEvents]);
+                          },
+                          error: function (xhr, status, error) {
+                            console.error('Error fetching calendar events:', error);
+                            failureCallback(error);
                           }
                         });
-                        successCallback(events);
                       },
                       error: function (xhr, status, error) {
+                        console.error('Error fetching prdcPlans:', error);
                         failureCallback(error);
                       }
                     });
                   },
+
                   eventContent: function (arg) {
                     let title = arg.event.title;
-
                     let contentEl = document.createElement('div');
                     contentEl.innerHTML = `<b>${title}</b>`;
-
                     return { domNodes: [contentEl] };
                   },
+
                   eventDidMount: function(info) {
-                    // 이벤트의 스타일을 강제로 설정하여 색상이 적용되도록 함
                     $(info.el).css({
                       'background-color': info.event.backgroundColor + ' !important',
                       'border-color': info.event.borderColor + ' !important'
                     });
-                    console.log("이벤트 렌더링:", info.event.title, info.event.backgroundColor);
                   },
+
                   eventClick: function (info) {
                     var eventModalEl = $('#eventModal');
                     var eventModal = new bootstrap.Modal(eventModalEl[0]);
 
                     currentEvent = info.event;
 
-                    // 수정 모달에서는 삭제 버튼을 표시
-                    deleteButton.show();
+                    deleteButton.show(); // 수정 모달에서는 삭제 버튼을 표시
 
                     $('#eventModalLabel').text('일정 수정');
                     $('#title').val(info.event.title);
@@ -312,17 +283,13 @@
 
                 calendar.render();
 
-                // 모달 초기화: 일정 추가 버튼을 누르면 폼 초기화
                 $('[data-bs-target="#eventModal"]').on('click', function () {
-                  currentEvent = null; // 새로운 이벤트 추가를 위한 초기화
+                  currentEvent = null;
                   $('#eventModalLabel').text('일정 추가');
-                  $('#eventForm')[0].reset(); // 폼 초기화
-
-                  // 일정 추가 모달에서는 삭제 버튼을 숨김
+                  $('#eventForm')[0].reset();
                   deleteButton.hide();
                 });
 
-                // 모달 닫기 시 백드롭 제거
                 $('#eventModal').on('hidden.bs.modal', function () {
                   var modalBackdrop = $('.modal-backdrop');
                   if (modalBackdrop.length) {
@@ -330,7 +297,6 @@
                   }
                 });
 
-                // 모달 닫기 함수 보강
                 function closeModal() {
                   var eventModalEl = $('#eventModal');
                   var eventModal = bootstrap.Modal.getInstance(eventModalEl[0]);
@@ -352,15 +318,12 @@
                   const start = $('#startDate').val();
                   let end = $('#endDate').val();
 
-                  // 단일 일정의 경우 endDate를 제거
                   if (!end || start === end) {
-                    end = null; // 단일 일정으로 처리
+                    end = null;
                   } else {
-                    // endDate에 시간 정보 추가
                     end += ':00';
                   }
 
-                  // startDate에도 시간 정보 추가
                   const startWithTime = start + ':00';
 
                   const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -374,8 +337,7 @@
                   };
 
                   if (currentEvent) {
-                    // 기존 이벤트 수정
-                    event.id = currentEvent.id; // 수정 시에만 id 사용
+                    event.id = currentEvent.id;
 
                     $.ajax({
                       url: '/api/Calendar/update',
@@ -387,13 +349,6 @@
                         currentEvent.setDates(event.startDate, event.endDate);
                         currentEvent.setProp('backgroundColor', event.backgroundColor);
                         currentEvent.setProp('borderColor', event.borderColor);
-
-                        // 수정된 색상 정보를 로컬 스토리지에 저장
-                        localStorage.setItem(`event-${event.id}`, JSON.stringify({
-                          backgroundColor: event.backgroundColor,
-                          borderColor: event.borderColor
-                        }));
-
                         alert('일정이 수정되었습니다.');
                         closeModal();
                       },
@@ -403,7 +358,6 @@
                       }
                     });
                   } else {
-                    // 새로운 이벤트 추가
                     $.ajax({
                       url: '/api/Calendar/add',
                       method: 'POST',
@@ -411,21 +365,17 @@
                       data: JSON.stringify(event),
                       success: function (data) {
                         const newEvent = calendar.addEvent({
-                          id: data.id, // 서버에서 반환된 id를 사용
+                          id: data.id,
                           title: event.title,
                           start: event.startDate,
                           end: event.endDate,
-                          allDay: false,
+                          allDay: !event.endDate,
                           backgroundColor: event.backgroundColor,
                           borderColor: event.borderColor
                         });
 
-                        // 콘솔에 추가된 이벤트 정보 출력
                         console.log("새로운 이벤트 추가:", newEvent.title, newEvent.backgroundColor);
-
-                        // FullCalendar 이벤트 재렌더링
                         calendar.render();
-
                         alert('일정이 추가되었습니다.');
                         closeModal();
                       },
@@ -437,7 +387,6 @@
                   }
                 });
 
-                // 삭제 버튼 클릭 이벤트 처리
                 deleteButton.on('click', function () {
                   if (currentEvent) {
                     $.ajax({
@@ -446,8 +395,8 @@
                       contentType: 'application/json',
                       data: JSON.stringify({ id: currentEvent.id }),
                       success: function () {
-                        currentEvent.remove(); // 캘린더에서 이벤트 제거
-                        localStorage.removeItem(`event-${currentEvent.id}`); // 로컬 스토리지에서도 제거
+                        currentEvent.remove();
+                        localStorage.removeItem(`event-${currentEvent.id}`);
                         alert('일정이 삭제되었습니다.');
                         closeModal();
                       },
@@ -464,7 +413,6 @@
         </div> <!-- End Container -->
       </div>
     </main>
-    <!-- ### $App Screen Footer ### -->
     <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
       <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
     </footer>

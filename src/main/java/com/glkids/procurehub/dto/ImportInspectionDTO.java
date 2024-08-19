@@ -1,7 +1,13 @@
-package com.glkids.procurehub.entity;
+package com.glkids.procurehub.dto;
 
+import com.glkids.procurehub.entity.Emp;
+import com.glkids.procurehub.entity.Imports;
+import com.glkids.procurehub.status.ImportStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -16,35 +22,28 @@ import java.time.LocalDateTime;
  * <p>{@code Emp emp} - 검수 처리자 [FK, Nullable]</p>
  * <p>{@code Integer status} - 검수 상태 코드 [INT, Not Null]</p>
  */
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Builder
-@ToString
-@Getter
-@Entity
-public class ImportInspection extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class ImportInspectionDTO {
     private Long importNspcNo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
     private Imports imports;
-
-    @Column(nullable = false)
     private LocalDateTime duedate;
-
-    @Column(length = 1024, nullable = true)
     private String content;
-
-    @Column(nullable = false)
     private Integer dfcQuantity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = true)
     private Emp emp;
-
-    @Column(nullable = false)
     private Integer status;
+
+    public String getStatusString() {
+        if (status != null) {
+            for (ImportStatus importStatus : ImportStatus.values()) {
+                if (importStatus.ordinal() == status) {
+                    return importStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

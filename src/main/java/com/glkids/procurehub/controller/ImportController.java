@@ -70,11 +70,11 @@ public class ImportController {
      * 입고 전체 내역
      */
     @GetMapping("/totallist")
-    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model){
+    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model, String type, String input){
 
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "입고 전체");
-        model.addAttribute("importList", importService.list());
+        model.addAttribute("importList", importService.totalList(type, input));
 
         return "import/totallist";
     }

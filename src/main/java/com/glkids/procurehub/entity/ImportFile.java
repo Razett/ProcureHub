@@ -26,7 +26,7 @@ public class ImportFile extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Import anImport;
+    private Imports imports;
 
     @Column(nullable = true)
     private String uuid;
