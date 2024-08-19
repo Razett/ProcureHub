@@ -3,6 +3,7 @@ package com.glkids.procurehub.controller;
 import com.glkids.procurehub.dto.CalendarDTO;
 import com.glkids.procurehub.entity.Calendar;
 import com.glkids.procurehub.service.CalendarService;
+import com.glkids.procurehub.service.PrdcPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,7 @@ public class CalendarController {
 
         return ResponseEntity.ok(response);
     }
+
     @PostMapping("/update")
     public Calendar updateCalendar(@RequestBody Calendar calendar) {
         // 여기서 calendar 객체는 backgroundColor와 borderColor 필드를 무시하고 매핑됩니다.
@@ -56,5 +58,18 @@ public class CalendarController {
     public void deleteCalendar(@RequestBody Map<String, Long> requestData) {
         Long eventId = requestData.get("id");
         calendarService.deleteCalendar(eventId);
+    }
+
+
+    @GetMapping("/prdcPlans")
+    public List<Map<String, Object>> getPrdcPlans() {
+        return calendarService.getAllPrdcPlan().stream().map(event -> {
+            Map<String, Object> plan = new HashMap<>();
+            plan.put(("planNo"), event.getPrdcPlanNo());
+            plan.put("start", event.getStartdate());
+            plan.put("end", event.getEnddate());
+            plan.put("quantity+", event.getQuantity());
+            return plan;
+        }).collect(Collectors.toList());
     }
 }

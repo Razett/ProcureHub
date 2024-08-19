@@ -1,7 +1,9 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.entity.Calendar;
+import com.glkids.procurehub.entity.PrdcPlan;
 import com.glkids.procurehub.repository.CalendarRepository;
+import com.glkids.procurehub.repository.PrdcPlanRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,15 @@ public class CalendarService {
     @Autowired
     private CalendarRepository calendarRepository;
 
+    @Autowired
+    PrdcPlanRepository prdcPlanRepository;
+
     public List<Calendar> getAllCalendar() {
         return calendarRepository.findAll();
+    }
+
+    public List<PrdcPlan> getAllPrdcPlan() {
+        return prdcPlanRepository.findAll();
     }
 
     public Calendar saveCalendar(Calendar calendar) {
