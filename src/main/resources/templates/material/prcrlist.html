@@ -51,7 +51,9 @@
                                 }
                                 /* 줄바꿈을 허용하면서 공백을 유지하는 스타일 */
                                 .multi-line {
-                                    white-space: pre-line;
+                                    white-space: pre-wrap;
+                                    word-break: break-all; /* 또는 word-wrap: break-word; */
+
                                 }
 
                             </style>
@@ -114,7 +116,7 @@
                                         </tr>
                                         </thead>
                                         <tbody id="tableBody">
-                                        <tr th:each="order : ${orderList}">
+                                        <tr th:each="order , iterStat : ${orderList}">
                                             <td>
                                                 <label>
                                                     <input type="checkbox" id="order-codeList">
@@ -129,16 +131,16 @@
                                             <td th:text="${order.productQuantity}"></td>
                                             <!-- 자재 정보를 하나의 셀 안에서 여러 줄로 출력 -->
                                             <td class="multi-line">
-                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.mtrlno}"><br></span>
+                                                <span th:each="material : ${order.materials}" th:utext="${material.mtrlno} + ' <br/>'"></span>
                                             </td>
                                             <td class="multi-line">
-                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.name}"><br></span>
+                                                <span th:each="material : ${order.materials}" th:utext="${material.name} + ' <br/>'"></span>
                                             </td>
                                             <td class="multi-line">
-                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.standard}"><br></span>
+                                                <span th:each="material : ${order.materials}" th:utext="${material.standard} + ' <br/>'"></span>
                                             </td>
                                             <td class="multi-line">
-                                                <span th:each="material, iterStat : ${order.materials}" th:text="${material.quantity}"><br></span>
+                                                <span th:each="material : ${order.materials}" th:utext="${material.quantity} + ' <br/>'"></span>
                                             </td>
                                             <td></td>
                                             <td></td>
