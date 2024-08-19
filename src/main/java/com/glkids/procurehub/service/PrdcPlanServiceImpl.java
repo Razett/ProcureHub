@@ -24,4 +24,5 @@ public class PrdcPlanServiceImpl implements PrdcPlanService {
         prdcplanDTOList.forEach(x -> prdcDTOList.add(PrdcPlanEntityToDTO(x)));
         return prdcDTOList;
     }
+
 }
