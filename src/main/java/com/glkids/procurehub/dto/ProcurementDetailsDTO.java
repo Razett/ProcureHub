@@ -1,6 +1,8 @@
 package com.glkids.procurehub.dto;
 
 import com.glkids.procurehub.entity.PrdcPlan;
+import com.glkids.procurehub.status.ImportStatus;
+import com.glkids.procurehub.status.PrcrStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -26,5 +28,17 @@ public class ProcurementDetailsDTO  {
     private LocalDateTime regdate;  // 생성 일자
     private LocalDateTime moddate;  // 수정 일자
     private List<PrdcMtrlDetailsDTO> materials;  // 자재 리스트
+    private Integer leadtime;
+    private Integer leadtimeColor;
 
+    public String getStatusString() {
+        if (status != null) {
+            for (PrcrStatus prcrStatus : PrcrStatus.values()) {
+                if (prcrStatus.ordinal() == status) {
+                    return prcrStatus.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }
