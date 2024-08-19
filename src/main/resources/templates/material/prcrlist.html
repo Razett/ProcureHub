@@ -3,10 +3,11 @@
 <th:block th:replace="~{/base/base::setContent(~{this::content})}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name="viewport">
         <title>Home</title>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"
-                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script crossorigin="anonymous"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+                src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
         <script defer="defer" src="/js/main.js"></script>
     </head>
@@ -58,22 +59,25 @@
                                     <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">조달 계획 목록</h4>
                                     <div class="d-flex flex-column align-items-end">
                                         <div class="d-flex align-items-center" style="margin-bottom: 15px;">
-                                            <button type="button" class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
-                                                <a th:href="@{/order/add}"
-                                                   style="text-decoration: none; color: inherit; text-align: center;">발주추가</a>
+                                            <button class="btn cur-p btn-outline-secondary"
+                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
+                                                    type="button">
+                                                <a style="text-decoration: none; color: inherit; text-align: center;"
+                                                   th:href="@{/order/add}">발주추가</a>
                                             </button>
-                                            <button type="button" class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;">
-                                                <a th:href="@{/order/update}" th:method="get"
-                                                   style="text-decoration: none; color: inherit; text-align: center;">
+                                            <button class="btn cur-p btn-outline-secondary"
+                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
+                                                    type="button">
+                                                <a style="text-decoration: none; color: inherit; text-align: center;"
+                                                   th:href="@{/order/update}"
+                                                   th:method="get">
                                                     <span class="ti-pencil-alt"></span><span class="icon-name"></span>&nbsp;수정
                                                 </a>
                                             </button>
-                                            <button type="button" id="execute-orders-btn"
-                                                    class="btn cur-p btn-outline-secondary"
+                                            <button class="btn cur-p btn-outline-secondary" id="execute-orders-btn"
+                                                    onclick="executeOrders()"
                                                     style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
-                                                    onclick="executeOrders()">
+                                                    type="button">
                                                 <a href="#" id="order-link"
                                                    style="text-decoration: none; color: inherit; text-align: center;">Download</a>
                                             </button>
@@ -86,8 +90,8 @@
                                         <tr>
                                             <th>
                                                 <label>
-                                                    <input type="checkbox" id="order-code"
-                                                           onclick="toggleCheckboxes(this)">
+                                                    <input id="order-code" onclick="toggleCheckboxes(this)"
+                                                           type="checkbox">
                                                     조달 계획코드
                                                 </label>
                                             </th>
@@ -96,10 +100,11 @@
                                             <th>생산 시작일</th>
                                             <th>생산 제품코드</th>
                                             <th>생산 제품명</th>
-                                            <th>생산 제품수량</th>
-                                            <th>자재코드</th>
-                                            <th>자재명</th>
-                                            <th>자재규격</th>
+                                            <th>생산 수량</th>
+                                            <th>생산 필요 자재코드</th>
+                                            <th style="width: 250px;">자재명</th>
+                                            <th style="width: 300px;">자재규격</th>
+                                            <th>생산 필요 자재수량</th>
                                             <th>자재 현 수량</th>
                                             <th>자재 조달 수량</th>
                                             <th>L/T</th>
@@ -113,7 +118,7 @@
                                         <tr th:each="order , iterStat : ${orderList}">
                                             <td>
                                                 <label>
-                                                    <input type="checkbox" id="order-codeList">
+                                                    <input id="order-codeList" type="checkbox">
                                                     <span th:text="${order.prcrno}"></span>
                                                 </label>
                                             </td>
@@ -122,21 +127,38 @@
                                             <td th:text="${#temporals.format(order.startdate, 'yyyy-MM-dd')}"></td>
                                             <td th:text="${order.prdcno}"></td>
                                             <td th:text="${order.productName}"></td>
-                                            <td th:text="${order.productQuantity}"></td>
-                                            <!-- 자재 정보를 하나의 셀 안에서 여러 줄로 출력 -->
                                             <td>
-                                                <span th:each="material : ${order.materials}" th:utext="${material.mtrlno} + ' <br/>'"></span>
+                                                <span th:each="quantity : ${order.productQuantity}">
+                                                    <span th:text="${quantity} + '개'"></span>
+                                                </span>
                                             </td>
                                             <td>
-                                                <span th:each="material : ${order.materials}" th:utext="${material.name} + ' <br/>'"></span>
+                                                <span th:each="material : ${order.materials}"
+                                                      th:utext="${material.mtrlno} + ' <br/>'"></span>
                                             </td>
                                             <td>
-                                                <span th:each="material : ${order.materials}" th:utext="${material.standard} + ' <br/>'"></span>
+                                                <span th:each="material : ${order.materials}"
+                                                      th:utext="${material.name} + ' <br/>'"></span>
                                             </td>
                                             <td>
-                                                <span th:each="material : ${order.materials}" th:utext="${material.quantity} + ' <br/>'"></span>
+                                                <span th:each="material : ${order.materials}"
+                                                      th:utext="${material.standard} + ' <br/>'"></span>
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                <span th:each="quantityMtrl : ${order.productMtrlQuantity}">
+                                                    <span th:text="${quantityMtrl} + ' 개'"></span><br/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span th:each="material : ${order.materials}"
+                                                      th:utext="${material.quantity} + ' <br/>'"></span>
+                                            </td>
+                                            <td>
+                                                <span th:each="material, iterStat : ${order.materials}">
+                                                    <span th:text="${material.procureQuantity} + '개'"></span>
+                                                    <span th:if="${!iterStat.last}" th:utext="'<br/>'"></span>
+                                                </span>
+                                            </td>
                                             <td></td>
                                             <td th:text="${#temporals.format(order.moddate, 'yyyy-MM-dd')}"></td>
                                             <td th:text="${#temporals.format(order.regdate, 'yyyy-MM-dd')}"></td>

@@ -13,4 +13,5 @@ public class PrdcMtrlDetailsDTO {
     private String name;
     private String standard;
     private Long quantity;
+    private Long procureQuantity;
 }

@@ -48,7 +48,8 @@ public class ProcurementService {
                         .startdate(prdcPlan.getStartdate())
                         .prdcno(product.getPrdcno())
                         .productName(product.getName())
-                        .productQuantity(prcr.getQuantity())
+                        .productQuantity(prdcPlan.getQuantity())
+                        .productMtrlQuantity(new ArrayList<>()) // 빈 리스트로 초기화
                         .status(prcr.getStatus())
                         .regdate(prcr.getRegdate())
                         .moddate(prcr.getModdate())
@@ -57,12 +58,16 @@ public class ProcurementService {
                 dtoMap.put(prdcPlanNo, dto);
             }
 
+            // 각 자재에 대한 quantity를 리스트에 추가
+            dto.getProductMtrlQuantity().add(prcr.getQuantity());
+
             // PrdcMtrlDetailsDTO 생성
             PrdcMtrlDetailsDTO mtrlDto = PrdcMtrlDetailsDTO.builder()
                     .mtrlno(material.getMtrlno())
                     .name(material.getName())
                     .standard(material.getStandard())
-                    .quantity(material.getQuantity())
+                    .quantity(material.getQuantity()) // 각 자재에 해당하는 prcr의 quantity 설정
+                    .procureQuantity(material.getQuantity() >= prcr.getQuantity() ? 0 : prcr.getQuantity() - material.getQuantity() + 5) // 로직 수정
                     .build();
 
             // 자재 리스트에 자재 추가 (중복 방지)
