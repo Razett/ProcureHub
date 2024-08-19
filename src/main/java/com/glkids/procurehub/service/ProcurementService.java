@@ -89,22 +89,18 @@ public class ProcurementService {
                 }
             }
 
+            // LT + Buffer 가 현재시간과 얼마나 차이나는지에 따라 컬러값 세팅.
             if (leadtime != -1) {
                 LocalDate now = LocalDate.now();
                 LocalDate reqdate = dto.getReqdate().toLocalDate();
 
                 if (now.plusDays(leadtime + 2 + 3).isAfter(reqdate) || now.plusDays(leadtime + 2 + 3).isEqual(reqdate)) {
-                    dto.setLeadtimeColor(0);
+                    dto.setStatus(PrcrStatus.RED.ordinal());
+                    // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
                 } else if (now.plusDays(leadtime + 2 + 5).isAfter(reqdate) || now.plusDays(leadtime + 2 + 5).isEqual(reqdate)) {
-                    dto.setLeadtimeColor(1);
-                } else {
-                    dto.setLeadtimeColor(3);
+                    dto.setStatus(PrcrStatus.YELLOW.ordinal());
                 }
             }
-
-            if (dto.getStatus() == PrcrStatus.AUTO_MODIFIED.ordinal())
-                dto.setLeadtimeColor(2);
-            // LT + Buffer 가 현재시간과 얼마나 차이나는지에 따라 컬러값 세팅.
 
             // 각 자재에 대한 quantity를 리스트에 추가
             dto.getProductMtrlQuantity().add(prcr.getQuantity());

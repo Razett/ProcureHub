@@ -10,6 +10,8 @@ public enum PrcrStatus {
     AUTO_GENERATED("자동 생성됨"),
     AUTO_MODIFIED("자동 수정됨"),
     MODIFIED("수정됨"),
+    RED("긴급"),
+    YELLOW("경고"),
     ORDER_ADDED("발주 추가됨"),
     ORDERED("발주 진행중"),
     EXPIRED("만료됨");

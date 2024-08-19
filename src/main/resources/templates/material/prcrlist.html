@@ -97,9 +97,9 @@
                                         <th:block th:each="order, i : ${orderList}">
                                             <th:block th:each="material, j : ${order.materials}">
                                                 <tr>
-                                                    <th:block th:switch="${order.leadtimeColor}">
-                                                        <td th:case="0" class="text-center bgc-red-50">
-                                                        <td th:case="1" class="text-center bgc-yellow-50" >
+                                                    <th:block th:switch="${order.status}">
+                                                        <td th:case="4" class="text-center bgc-red-50">
+                                                        <td th:case="5" class="text-center bgc-yellow-50" >
                                                         <td th:case="2" class="text-center bgc-blue-50" >
                                                         <td th:case="*" class="text-center">
                                                     </th:block>
