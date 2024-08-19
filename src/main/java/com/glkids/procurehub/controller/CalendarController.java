@@ -69,6 +69,7 @@ public class CalendarController {
             plan.put("start", event.getStartdate());
             plan.put("end", event.getEnddate());
             plan.put("quantity+", event.getQuantity());
+            plan.put("prdcName", event.getPrdc().getName());
             return plan;
         }).collect(Collectors.toList());
     }
