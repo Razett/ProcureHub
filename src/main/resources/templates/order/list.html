@@ -16,7 +16,7 @@
                 position: fixed;
                 height: 100vh;
                 width: 100%;
-                background: #fff;
+                background: #fdc6c6;
                 z-index: 90000;
             }
 
@@ -129,55 +129,50 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="width:1792px; height:230px;">
-                                    <table class="table table-bordered table-hover" style="width: 100%; text-align: center;">
+                                <div style="overflow:auto; max-width:1792px; height:230px;">
+                                    <table class="table table-bordered table-hover" style="width: 100%;">
                                         <thead>
                                         <tr>
                                             <th>
-                                                <label>
-                                                    <input type="checkbox" id="order-code" onclick="toggleCheckboxes(this)">
-                                                    발주코드
-                                                </label>
+                                                <input type="checkbox" id="order-code" onclick="toggleCheckboxes(this)" class="text-left">
+                                                <span class="text-center">발주코드</span>
                                             </th>
-                                            <th>납기일</th>
-                                            <th>자재 코드</th>
-                                            <th>자재명</th>
-                                            <th>자재 수량</th>
-                                            <th>발주 수량</th>
-                                            <th>회사명</th>
-                                            <th>단가</th>
-                                            <th>총금액</th>
-                                            <th>발주 상태</th>
-                                            <th>발주서 발행</th>
+                                            <th class="text-center">납기일</th>
+                                            <th class="text-center">자재 코드</th>
+                                            <th class="text-center">자재명</th>
+                                            <th class="text-center">자재 수량</th>
+                                            <th class="text-center">발주 수량</th>
+                                            <th class="text-center">회사명</th>
+                                            <th class="text-center">단가</th>
+                                            <th class="text-center">총금액</th>
+                                            <th class="text-center">발주 상태</th>
+                                            <th class="text-center">발주서 발행</th>
                                         </tr>
                                         </thead>
                                         <tbody id="tableBody">
                                             <tr th:each="order : ${orderBeforeList}">
                                                 <td>
-                                                    <label>
-                                                        <input type="checkbox" class="ordernoCheckbox"
-                                                               th:value="${order.orderno}">
-                                                        <span th:text="${order.orderno}"></span>
-                                                    </label>
+                                                    <input type="checkbox" class="ordernoCheckbox text-left" th:value="${order.orderno}">
+                                                    <span th:text="${order.orderno}" class="text-center"></span>
                                                 </td>
-                                                <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
-                                                <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
-                                                <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
-                                                <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}"></td>
-                                                <td th:text="${order.quantity}">
-                                                <td>
-                                                    <span th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></span>
-                                                    <select class="form-control contractor-select d-none">
-                                                        <option th:each="order : ${orderBeforeList}"
-                                                                th:value="${quotationmtrl}"
-                                                                th:text="${order.quotationmtrl.quotation.contractor.name}"></option>
+                                                <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}" class="text-center"></td>
+                                                <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}" class="text-center"></td>
+                                                <td th:text="${order.material != null ? order.material.getName() : 'N/A'}" class="text-center"></td>
+                                                <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}" class="text-end"></td>
+                                                <td th:text="${order.quantity}" class="text-end">
+                                                <td class="text-center">
+                                                    <select class="form-control contractor-select" name="quotationmtrl">
+                                                        <option th:if="${order.quotationmtrlList.isEmpty()}" selected>...</option>
+                                                        <option th:unless="${order.quotationmtrlList.isEmpty()}"
+                                                                th:each="quotationMtrl : ${order.quotationmtrlList}"
+                                                                th:text="${quotationMtrl.quotation.contractor.name}"
+                                                                th:value="${quotationMtrl.qtmtno}"></option>
                                                     </select>
                                                 </td>
-                                                <td th:text="${order.quotationmtrl.unitprice}">
-                                                <td th:text="${order.quotationmtrl.totalprice}">
-                                                <td th:text="${order.status}">
-                                                <td class="col-md-1 text-center"><span class="ti-download"></span><span
-                                                        class="icon-name"></span></td>
+                                                <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getUnitprice() : 'N/A'}" class="text-end"></td>
+                                                <td th:text="${order.quotationmtrl.totalprice}" class="text-end"></td>
+                                                <td th:text="${order.status}" class="text-center"></td>
+                                                <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -189,7 +184,7 @@
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
                                 <h4 class="c-grey-900 mT-10 mB-30">진행 현황</h4>
-                                <div style="overflow:auto; width:1792px; height:230px;">
+                                <div style="overflow:auto; max-width:1792px; height:230px;">
                                 <table id="target-table" class="table table-bordered table-hover" style="width: 100%; text-align: center;">
                                     <thead>
                                     <tr>
@@ -213,12 +208,12 @@
                                             <td th:text="${order.prcr != null ? order.prcr.getReqdate() : 'N/A'}"></td>
                                             <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
                                             <td th:text="${order.material != null ? order.material.getName() : 'N/A'}"></td>
-                                            <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}"></td>
-                                            <td th:text="${order.quantity}">
+                                            <td th:text="${order.material != null ? order.material.getQuantity() : 'N/A'}" class="text-end"></td>
+                                            <td th:text="${order.quantity}" class="text-end"></td>
                                             <td th:text="${order.quotationmtrl.quotation != null && order.quotationmtrl.quotation.contractor != null ? order.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
-                                            <td th:text="${order.quotationmtrl.unitprice}">
-                                            <td th:text="${order.quotationmtrl.totalprice}">
-                                            <td th:text="${order.status}">
+                                            <td th:text="${order.quotationmtrl != null ? order.quotationmtrl.getUnitprice() : 'N/A'}" class="text-end"></td>
+                                            <td th:text="${order.quotationmtrl.totalprice}" class="text-end"></td>
+                                            <td th:text="${order.status}"></td>
                                             <td class="col-md-2 text-center">
                                                 <span th:text="${#temporals.format(order.orderdate, 'yyyy-MM-dd')}"></span>
                                                 <span th:text="${#temporals.format(order.orderdate, 'a hh:mm')}"></span>
@@ -316,35 +311,18 @@
                                             prev_quotationmtrl.push($(this).find('td').eq(6).text().trim());
                                         });
 
-                                        // inputBox로 바꾸기
                                         $('#tableBody tr').each(function () {
                                             const quantityCell = $(this).find('td').eq(5);
                                             const contractorCell = $(this).find('td').eq(6);
 
                                             const orderQuantity = quantityCell.text().trim();
-                                            const contractorName = contractorCell.text().trim();
+                                            const contractorName = contractorCell.find('span').text().trim();
 
                                             quantityCell.html(`
                                                 <input type="number" class="form-control quantity-input" value="${orderQuantity}"/>
                                             `);
-                                            contractorCell.html(`
-                                                <select class="form-control contractor-select" size="1">
-                                                    <option value="${contractorName}" selected>${contractorName}</option>
-                                                    <option value="Contractor 1">Contractor 1</option>
-                                                    <option value="Contractor 2">Contractor 2</option>
-                                                    <option value="Contractor 3">Contractor 3</option>
-                                                    <option value="Contractor 4">Contractor 4</option>
-                                                    <option value="Contractor 5">Contractor 5</option>
-                                                    <option value="Contractor 6">Contractor 6</option>
-                                                </select>
-                                            `);
-                                        });
-
-                                        // 클릭 시 모든 옵션 표시
-                                        $('.contractor-select').on('focus', function () {
-                                            $(this).attr('size', $(this).find('option').length);
-                                        }).on('blur', function () {
-                                            $(this).attr('size', 1);
+                                            contractorCell.find('span').addClass('d-none');
+                                            contractorCell.find('select').removeClass('d-none');
                                         });
                                     });
 

@@ -122,14 +122,14 @@
                                         <tbody id="tableBody">
                                             <th:block th:each="export : ${exportlist}">
                                                 <tr class="export_tr" th:id="${export.exportno}">
-                                                    <td th:text="'EX' + ${#numbers.formatInteger(export.exportno, 6)}"></td>
-                                                    <td th:text="${#temporals.format(export.duedate, 'yyyy-MM-dd a hh:mm')}"></td>
-                                                    <td th:text="${#temporals.format(export.shippeddate, 'yyyy-MM-dd a hh:mm')}"></td>
-                                                    <td th:text="${export.shipper}"></td>
-                                                    <td th:text="${export.prcr.material.mtrlno}"></td>
-                                                    <td th:text="${export.prcr.material.name}"></td>
-                                                    <td th:text="${#numbers.formatInteger(export.quantity, 0, 'COMMA')}"></td>
-                                                    <td th:text="${export.statusString}"></td>
+                                                    <td class="text-center" th:text="'EX' + ${#numbers.formatInteger(export.exportno, 6)}"></td>
+                                                    <td class="text-center" th:text="${#temporals.format(export.duedate, 'yyyy-MM-dd a hh:mm')}"></td>
+                                                    <td class="text-center" th:text="${#temporals.format(export.shippeddate, 'yyyy-MM-dd a hh:mm')}"></td>
+                                                    <td class="text-center" th:text="${export.shipper}"></td>
+                                                    <td class="text-center" th:text="'MA' + ${#numbers.formatInteger(export.prcr.material.mtrlno, 6)}"></td>
+                                                    <td class="text-center" th:text="${export.prcr.material.name}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(export.quantity, 0, 'COMMA')}"></td>
+                                                    <td class="text-center" th:text="${export.statusString}"></td>
                                                 </tr>
                                             </th:block>
                                         </tbody>
@@ -139,32 +139,102 @@
                         </div>
                         <!-- 출고 상세 정보 모달 -->
                         <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exportModalLabel">출고 상세정보</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- 여기에 모달의 본문 내용이 들어갑니다 -->
-                                        <p id="modalBodyText">모달의 콘텐츠를 여기에 추가하세요.</p>
+                                        <table class="table table-bordered">
+                                            <tr class="table-active">
+                                                <th class="text-center">출고 코드</th>
+                                                <th class="text-center">출고 상태</th>
+                                                <th class="text-center">요청일</th>
+                                                <th class="text-center">요청 수량</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center" id="modal-table-exportno">dummy</td>
+                                                <td class="text-center" id="modal-table-status">dummy</td>
+                                                <td class="text-center" id="modal-table-reqdate">dummy</td>
+                                                <td class="text-center" id="modal-table-quantity">dummy</td>
+                                            </tr>
+                                            <tr class="table-active">
+                                                <th class="text-center">조달 계획 코드</th>
+                                                <th class="text-center">납기일</th>
+                                                <th class="text-center">처리일</th>
+                                                <th class="text-center">처리자</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center" id="modal-table-prcrno">dummy</td>
+                                                <td class="text-center" id="modal-table-prcrdate">dummy</td>
+                                                <td class="text-center" id="modal-table-shippeddate">dummy</td>
+                                                <td class="text-center" id="modal-table-shipper">dummy</td>
+                                            </tr>
+                                        </table>
+                                        <table class="table table-bordered">
+                                            <tr class="table-active">
+                                                <th class="text-center">자재코드</th>
+                                                <th class="text-center">자재명</th>
+                                                <th class="text-center">자재그룹</th>
+                                                <th class="text-center">창고위치</th>
+                                                <th class="text-center">현재 수량</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center" id="modal-table-mtrlno">dummy</td>
+                                                <td class="text-center" id="modal-table-mtrlname">dummy</td>
+                                                <td class="text-center" id="modal-table-mtrlgroup">dummy</td>
+                                                <td class="text-center" id="modal-table-mtrlwrhs">dummy</td>
+                                                <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <button type="button" class="btn btn-primary">확인</button>
+                                        <button type="button" class="btn btn-primary c-white" data-bs-dismiss="modal">확인</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <script src="/js/export.js"></script>
                         <script>
                             $(document).ready(function () {
                                 // 출고 코드 클릭 시 모달 표시
                                 $('.export_tr').on('click', function () {
                                     var exportno = $(this).attr('id');
 
-                                    $('#modalBodyText').text(exportno);
+                                    ExportService.readExport(exportno, function (data) {
+                                        // console.log(data);
+                                        $('#modal-table-exportno').text('EX' + data.exportno.toString().padStart(6, '0'));
+                                        $('#modal-table-status').text(data.statusString);
+                                        $('#modal-table-reqdate').text(ExportService.formatDate(data.duedate));
+                                        $('#modal-table-quantity').text(data.quantity);
+
+                                        $('#modal-table-prcrno').text('P' + data.prcr.prcrno.toString().padStart(6, '0'));
+                                        $('#modal-table-prcrdate').text(ExportService.formatDate(data.prcr.reqdate));
+                                        $('#modal-table-shippeddate').text(ExportService.formatDate(data.shippeddate));
+                                        $('#modal-table-shipper').text(data.shipper);
+
+                                        $('#modal-table-mtrlno').text('MA' + data.prcr.material.mtrlno.toString().padStart(6, '0'));
+                                        $('#modal-table-mtrlname').text(data.prcr.material.name);
+                                        $('#modal-table-mtrlgroup').text(data.prcr.material.materialGroup.name);
+                                        $('#modal-table-mtrlwrhs').text(data.prcr.material.materialWarehouse.name);
+                                        $('#modal-table-mtrlquantity').text(data.prcr.material.quantity);
+                                    });
+
                                     $('#exportModal').modal('show');
                                 });
+
+                                $('#searchButton').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var input = $('#searchInput').val();
+
+                                    if (input) {
+                                        window.location.href = "/export/totallist?type=ECMCMNENEM&input=" + input;
+                                    } else {
+                                        toastService.printToast("검색어를 입력하세요.")
+                                    }
+                                })
                             });
                         </script>
                     </th:block>

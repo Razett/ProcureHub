@@ -46,9 +46,9 @@ public class CalendarController {
 
         return ResponseEntity.ok(response);
     }
-    @PostMapping("/update")  // 수정 시 사용할 API
+    @PostMapping("/update")
     public Calendar updateCalendar(@RequestBody Calendar calendar) {
-        // 기존 이벤트가 존재하는지 확인하고, 있다면 수정
+        // 여기서 calendar 객체는 backgroundColor와 borderColor 필드를 무시하고 매핑됩니다.
         return calendarService.updateCalendar(calendar);
     }
 

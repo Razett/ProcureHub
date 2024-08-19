@@ -15,8 +15,4 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPredicateExecutor<Order> {
-
-    @Modifying
-    @Query("UPDATE Order o SET o.emp = :emp, o.orderdate = :orderdate, o.status = :status WHERE o.orderno = :orderno")
-    void orderExecute(@Param("orderno") Long orderno, @Param("emp") Emp emp, @Param("orderdate") LocalDateTime orderdate, @Param("status") Integer status);
 }

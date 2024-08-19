@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <b>발주</b>
@@ -43,6 +44,7 @@ public class OrderDTO {
     private LocalDateTime regdate; //DB에 생성된 날짜
     private LocalDateTime moddate; //마지막 수정된 날짜
     private Long qtmtno;
+    private List<QuotationMtrl> quotationmtrlList;
 
     public String getStatusString() {
         if (status != null) {

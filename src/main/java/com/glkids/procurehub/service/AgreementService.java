@@ -8,14 +8,16 @@ import com.glkids.procurehub.status.AgreementStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public interface AgreementService {
 
     //등록하기
     Boolean register(AgreementDTO agreementdto);
 
-    // 글가져오기
     AgreementDTO read(Long grmo);
+
+    List<AgreementDTO> readListByQtno(Long qtno);
 
     void changeStatus(Long grmno, AgreementStatus agreementStatus);
 

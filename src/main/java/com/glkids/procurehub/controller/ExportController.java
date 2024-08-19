@@ -33,10 +33,10 @@ public class ExportController {
      * 출고 전체 내역
      */
     @GetMapping("/totallist")
-    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model, String type, String input) {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "출고 전체");
-        model.addAttribute("exportlist", exportService.list());
+        model.addAttribute("exportlist", exportService.totalList(type, input));
         return "/export/totallist";
     }
 
