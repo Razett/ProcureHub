@@ -31,6 +31,9 @@ public class ProcurementService {
         Map<Long, ProcurementDetailsDTO> dtoMap = new HashMap<>();
         Map<Long, Long> mtrlQuantityMap = new HashMap<>();  // key = mtrlno, value=currentQuantity - prcr.quantity
 
+        int redCount = 0;
+        int yellowCount = 0;
+
         for (Prcr prcr : procurementPlans) {
             PrdcPlan prdcPlan = prcr.getPrdcPlan();
             Prdc product = prdcPlan.getPrdc();
@@ -91,9 +94,11 @@ public class ProcurementService {
 
                 if (now.plusDays(leadtime + 2 + 3).isAfter(reqdate) || now.plusDays(leadtime + 2 + 3).isEqual(reqdate)) {
                     dto.setStatus(PrcrStatus.RED.ordinal());
+                    redCount++;
                     // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
                 } else if (now.plusDays(leadtime + 2 + 5).isAfter(reqdate) || now.plusDays(leadtime + 2 + 5).isEqual(reqdate)) {
                     dto.setStatus(PrcrStatus.YELLOW.ordinal());
+                    redCount++;
                 }
             }
 
@@ -121,7 +126,7 @@ public class ProcurementService {
                     order.setPrcr(prcr);
                     order.setMaterial(material); // material 필드 설정 왜 why? Order엔티티에서 material 필드가 not null 임 그래서 material 를 설정해줌
                     order.setQuantity(mtrlDto.getProcureQuantity());
-                    order.setStatus(1);
+                    order.setStatus(0);
                 } else {
                     // 기존 Order 객체의 수량 업데이트
                     order.setQuantity(mtrlDto.getProcureQuantity());
