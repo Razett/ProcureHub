@@ -28,8 +28,6 @@ public class ProcurementDetailsDTO  {
     private LocalDateTime regdate;  // 생성 일자
     private LocalDateTime moddate;  // 수정 일자
     private List<PrdcMtrlDetailsDTO> materials;  // 자재 리스트
-    private Integer leadtime;
-    private Integer leadtimeColor;
 
     public String getStatusString() {
         if (status != null) {
