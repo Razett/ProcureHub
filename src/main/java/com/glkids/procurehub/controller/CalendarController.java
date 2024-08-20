@@ -6,8 +6,6 @@ import com.glkids.procurehub.dto.PrdcPlanDTO;
 import com.glkids.procurehub.entity.Calendar;
 import com.glkids.procurehub.entity.Prdc;
 import com.glkids.procurehub.entity.PrdcPlan;
-import com.glkids.procurehub.repository.PrcrRepository;
-import com.glkids.procurehub.repository.PrdcRepository;
 import com.glkids.procurehub.service.CalendarService;
 import com.glkids.procurehub.service.PrdcPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +25,6 @@ public class CalendarController {
     private CalendarService calendarService;
     @Autowired
     private PrdcPlanService prdcPlanService;
-    @Autowired
-    private PrdcRepository prdcRepository;
-    @Autowired
-    private PrcrRepository prcrRepository;
 
 
     @GetMapping("/read")
@@ -112,4 +106,9 @@ public class CalendarController {
             prdcDTO.setName(prdc.getName());
             return ResponseEntity.ok(prdcDTO);
         }
+
+    @PostMapping("/updatePrdcPlan")
+    public Long updatePrdcPlan(@RequestBody PrdcPlanDTO prdcPlanDTO) {
+        return prdcPlanService.updatePrdcPlan(prdcPlanDTO);
+    }
 }

@@ -22,7 +22,7 @@ public interface PrdcPlanService {
 
     PrdcPlan createPrdcPlan(PrdcPlanDTO prdcPlanDTO);
 
-
+    Long updatePrdcPlan (PrdcPlanDTO prdcPlanDTO);
     default PrdcPlanDTO PrdcPlanEntityToDTO(PrdcPlan entity) {
         PrdcPlanDTO prdcPlanDTO = PrdcPlanDTO.builder()
                 .prdcPlanNo(entity.getPrdcPlanNo())

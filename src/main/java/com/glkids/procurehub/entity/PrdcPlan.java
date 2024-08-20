@@ -38,4 +38,5 @@ public class PrdcPlan {
 
     @Column(nullable = false)
     private LocalDateTime enddate;
+
 }

@@ -1,19 +1,15 @@
 package com.glkids.procurehub.service;
 
 
-import com.glkids.procurehub.dto.PrcrDTO;
-import com.glkids.procurehub.dto.PrdcDTO;
 import com.glkids.procurehub.dto.PrdcPlanDTO;
 import com.glkids.procurehub.entity.Prdc;
 import com.glkids.procurehub.entity.PrdcPlan;
 import com.glkids.procurehub.repository.PrdcPlanRepository;
 import com.glkids.procurehub.repository.PrdcRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -70,5 +66,9 @@ public class PrdcPlanServiceImpl implements PrdcPlanService {
                 .build();
 
         return prdcPlanRepository.save(prdcPlan);
+    }
+
+    public Long updatePrdcPlan (PrdcPlanDTO prdcPlanDTO) {
+      return (long) prdcPlanRepository.updateQuantityByPrdcPlanNo(prdcPlanDTO.getQuantity(), prdcPlanDTO.getPrdcPlanNo());
     }
 }
