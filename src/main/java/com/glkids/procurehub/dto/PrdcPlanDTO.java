@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Data
 public class PrdcPlanDTO {
     private Long prdcPlanNo; //생산 계획 코드
+    private Long prdcNo;
+    private String prdcName;
     private Prdc prdc; //제품
     private Long quantity; //생산
     private LocalDateTime startdate; // 생산 시작일

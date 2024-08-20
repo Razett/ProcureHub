@@ -50,6 +50,63 @@
           opacity: 0;
         }
       }
+
+      /* FullCalendar 날짜와 요일 색상 스타일링 */
+      .fc-daygrid-day-number, .fc-col-header-cell-cushion {
+        color: #000000;
+      }
+
+      /* 카드 스타일 */
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px;
+        background-color: #fff;
+        width: 250px;
+      }
+
+      .card h5 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      .card .item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .card .item:last-child {
+        margin-bottom: 0;
+      }
+
+      .card .icon {
+        font-size: 24px;
+        margin-right: 8px;
+      }
+
+      .card .text {
+        font-size: 14px;
+      }
+
+      .card .text strong {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
+
+      .card .text p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      /* 진행률 텍스트 위치 수정 */
+      .easy-pie-chart span {
+        display: inline-block;
+        transform: translateX(10px); /* 오른쪽으로 이동 */
+      }
+
     </style>
     <script src="js/main.js"></script>
     <link href="css/style.css" rel="stylesheet">
@@ -74,55 +131,6 @@
       <div id="mainContent">
         <div class="full-container">
           <th:block th:fragment="content">
-            <style>
-              /* FullCalendar 날짜와 요일 색상 스타일링 */
-              .fc-daygrid-day-number, .fc-col-header-cell-cushion {
-                color: #000000;
-                .card {
-                  border: 1px solid #ddd;
-                  border-radius: 8px;
-                  padding: 16px;
-                  background-color: #fff;
-                  width: 250px;
-                }
-
-                .card h5 {
-                  font-size: 16px;
-                  font-weight: bold;
-                  margin-bottom: 8px;
-                }
-
-                .card .item {
-                  display: flex;
-                  align-items: center;
-                  margin-bottom: 12px;
-                }
-
-                .card .item:last-child {
-                  margin-bottom: 0;
-                }
-
-                .card .icon {
-                  font-size: 24px;
-                  margin-right: 8px;
-                }
-
-                .card .text {
-                  font-size: 14px;
-                }
-
-                .card .text strong {
-                  display: block;
-                  margin-bottom: 4px;
-                  font-weight: bold;
-                }
-
-                .card .text p {
-                  margin: 0;
-                  line-height: 1.5;
-                }
-              }
-            </style>
             <div class="row">
               <!-- Main Content -->
               <div class="bgc-white p-20 bd">
@@ -134,7 +142,7 @@
                           <h5>조달 계획 현황</h5>
                           <div class="item">
                             <div class="text">
-                              <strong>당일 확인 필요한 조달계획 : </strong> 1건
+                              <strong>당일 확인 필요한 조달계획 :</strong> 1건
                             </div>
                           </div>
                           <div class="item">
@@ -148,28 +156,55 @@
                       </div>
                       <div class="col-md-3">
                         <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">조달 계획</h5>
-                            <p class="card-text">조달 계획: 329건</p>
-                            <p class="card-text">조달 완료: 320건</p>
+                          <h5>발주 현황</h5>
+                          <div class="item">
+                            <div class="text">
+                              <strong>당일 확인 필요한 발주 : </strong> 1건
+                            </div>
+                          </div>
+                          <div class="item">
+                            <div class="text">
+                              <strong>발주</strong>
+                              <p>발주 수: 3908건</p>
+                              <p>진행중: 392건</p>
+                              <p>완료: 29건</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">조달 계획</h5>
-                            <p class="card-text">조달 계획: 329건</p>
-                            <p class="card-text">조달 완료: 320건</p>
+                          <h5>입고 현황</h5>
+                          <div class="item">
+                            <div class="text">
+                              <strong>당일 확인 필요한 입고 : </strong> 1건
+                            </div>
+                          </div>
+                          <div class="item">
+                            <div class="text">
+                              <strong>입고</strong>
+                              <p>총 입고수: 100개</p>
+                              <p>진행중: 10개</p>
+                              <p>완료: 90개</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">조달 계획</h5>
-                            <p class="card-text">조달 계획: 329건</p>
-                            <p class="card-text">조달 완료: 320건</p>
+                          <h5>출고 현황</h5>
+                          <div class="item">
+                            <div class="text">
+                              <strong>당일 확인 필요한 출고 : </strong> 1건
+                            </div>
+                          </div>
+                          <div class="item">
+                            <div class="text">
+                              <strong>출고</strong>
+                              <p>출고 수: 21개</p>
+                              <p>진행중: 19개</p>
+                              <p>완료: 2개</p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -184,7 +219,7 @@
                               <div id='calendar'></div>
                               <div class="container mt-5">
                                 <button type="button" class="btn cur-p btn-dark btn-color" data-bs-toggle="modal" data-bs-target="#eventModal">
-                                  일정 추가
+                                  생산 추가
                                 </button>
                               </div>
                             </div>
@@ -196,8 +231,8 @@
                           <div class="card-body">
                             <h5 class="card-title">이번달 진행률</h5>
                             <div class="peer">
-                              <div class="easy-pie-chart" data-size="80" data-percent="50" data-bar-color="#2196f3">
-                                <span style="display: inline-block; transform: translateX(10px);">50%</span>
+                              <div class="easy-pie-chart" data-size="80" data-percent="50" data-bar-color="#2196f3" style="position: relative;">
+                                <span style="position: absolute; left: 60%; transform: translateX(-50%);">50%</span>
                                 <canvas height="80" width="80"></canvas>
                               </div>
                             </div>
@@ -217,13 +252,23 @@
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="eventModalLabel">일정 추가</h5>
+                            <h5 class="modal-title" id="eventModalLabel">생산 계획 추가</h5>
                           </div>
                           <div class="modal-body">
                             <form id="eventForm">
                               <div class="mb-3">
-                                <label for="title" class="form-label">일정 제목</label>
-                                <input type="text" class="form-control" id="title" required>
+                                <label for="prdcNo" class="form-label">자재 선택</label>
+                                <select id="prdcNo" class="form-control" required>
+                                  <!-- 자재 옵션을 여기에 추가 -->
+                                </select>
+                                <div class="mb-3">
+                                  <label class="form-label">제품명</label>
+                                  <p id="prdcName"></p>  <!-- 제품명이 표시될 곳 -->
+                                </div>
+                              </div>
+                              <div class="mb-3">
+                                <label for="quantity" class="form-label">수량</label>
+                                <input type="number" class="form-control" id="quantity" required>
                               </div>
                               <div class="mb-3">
                                 <label for="startDate" class="form-label">시작 날짜</label>
@@ -234,12 +279,14 @@
                                 <input type="datetime-local" class="form-control" id="endDate" required>
                               </div>
                               <button type="submit" class="btn cur-p btn-dark btn-color">저장</button>
-                              <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">삭제</button> <!-- 삭제 버튼 -->
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             </form>
                           </div>
                         </div>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
               </div> <!-- End Main Content -->
@@ -254,6 +301,37 @@
 
                 const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
 
+                $.ajax({
+                  url: '/api/Calendar/all',
+                  method: 'GET',
+                  success: function (data) {
+                    const prdcSelect = $('#prdcNo');
+                    data.forEach(prdc => {
+                      prdcSelect.append(new Option(prdc.name, prdc.prdcno));
+                    });
+                  },
+                  error: function (xhr, status, error) {
+                    console.error('Error fetching prdc data:', error);
+                    alert('자재 목록을 불러오는 데 실패했습니다.');
+                  }
+                });
+
+                // prdcNo 선택 시 제품명 자동으로 가져오기
+                $('#prdcNo').change(function() {
+                  const selectedPrdcNo = $(this).val();
+                  $.ajax({
+                    url: `/api/Calendar/${selectedPrdcNo}`,
+                    method: 'GET',
+                    success: function (data) {
+                      $('#prdcName').text(data.name);  // 제품명을 표시할 요소
+                    },
+                    error: function (xhr, status, error) {
+                      console.error('Error fetching product name:', error);
+                      alert('제품명을 불러오는 데 실패했습니다.');
+                    }
+                  });
+                });
+
                 // FullCalendar 초기화
                 calendar = new FullCalendar.Calendar(calendarEl, {
                   initialView: 'dayGridMonth',
@@ -262,7 +340,7 @@
                   eventTextColor: '#000000',
 
                   // 날짜 클릭 시 상세보기 처리
-                  dateClick: function(info) {
+                  dateClick: function (info) {
                     const clickedDate = info.dateStr;
                     const events = calendar.getEvents().filter(event => {
                       const eventStartDate = event.start.toISOString().split('T')[0];
@@ -276,14 +354,14 @@
                     if (events.length > 0) {
                       events.forEach(event => {
                         if (event.extendedProps.prdcName) {
-                          detailsHtml += `<p>자재 이름: ${event.extendedProps.prdcName}</p>`; // 자재 이름 표시
+                          detailsHtml += `<p>자재 이름: ${event.extendedProps.prdcName}</p>`;
                         }
                         if (event.extendedProps.quantity) {
-                          detailsHtml += `<p>수량: ${event.extendedProps.quantity}</p>`; // 수량 표시
+                          detailsHtml += `<p>수량: ${event.extendedProps.quantity}</p>`;
                         }
                       });
                     } else {
-                      detailsHtml += `<p>이 날짜에 일정이 없쩌 ~~!!><</p>`;
+                      detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
                     }
 
                     $('#detailCard .card-body').html(detailsHtml);
@@ -320,63 +398,20 @@
 
                           return {
                             id: plan.planNo,
-                            title: `자재명: ${plan.prdcName}`, // 캘린더에는 자재명만 표시
+                            title: `자재명: ${plan.prdcName}`,
                             start: plan.start,
                             end: plan.end,
                             backgroundColor: backgroundColor,
                             borderColor: borderColor,
                             extendedProps: {
                               prdcName: plan.prdcName,
-                              quantity: plan['quantity+'] // 수량 정보를 추가
+                              quantity: plan['quantity+']
                             }
                           };
                         });
 
-                        // read 엔드포인트에서 데이터를 가져옴
-                        $.ajax({
-                          url: '/api/Calendar/read',
-                          method: 'GET',
-                          success: function (data) {
-                            const calendarEvents = data.map(event => {
-                              const eventId = `event-${event.id}`;
-
-                              // 로컬 스토리지에서 색상을 가져옴
-                              let storedColors = localStorage.getItem(eventId);
-                              let backgroundColor, borderColor;
-
-                              if (storedColors) {
-                                const parsedColors = JSON.parse(storedColors);
-                                backgroundColor = parsedColors.backgroundColor;
-                                borderColor = parsedColors.borderColor;
-                              } else {
-                                // 색상이 로컬 스토리지에 없으면 새로운 색상을 선택하고 저장
-                                backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                                borderColor = backgroundColor;
-
-                                localStorage.setItem(eventId, JSON.stringify({
-                                  backgroundColor: backgroundColor,
-                                  borderColor: borderColor
-                                }));
-                              }
-
-                              return {
-                                id: event.id,
-                                title: event.title,
-                                start: event.start,
-                                end: event.end,
-                                backgroundColor: backgroundColor,
-                                borderColor: borderColor
-                              };
-                            });
-
-                            // prdcPlanEvents와 calendarEvents를 합쳐서 전달
-                            successCallback([...prdcPlanEvents, ...calendarEvents]);
-                          },
-                          error: function (xhr, status, error) {
-                            console.error('Error fetching calendar events:', error);
-                            failureCallback(error);
-                          }
-                        });
+                        // prdcPlanEvents와 calendarEvents를 합쳐서 전달
+                        successCallback(prdcPlanEvents);
                       },
                       error: function (xhr, status, error) {
                         console.error('Error fetching prdcPlans:', error);
@@ -392,27 +427,30 @@
                     return { domNodes: [contentEl] };
                   },
 
-                  eventDidMount: function(info) {
+                  eventDidMount: function (info) {
                     $(info.el).css({
                       'background-color': info.event.backgroundColor + ' !important',
                       'border-color': info.event.borderColor + ' !important'
                     });
                   },
 
+                  // 이벤트 클릭 시 모달 열기 및 수정/삭제 기능 추가
                   eventClick: function (info) {
-                    var eventModalEl = $('#eventModal');
-                    var eventModal = new bootstrap.Modal(eventModalEl[0]);
+                    var prdcPlanModalEl = $('#eventModal');  // 생산계획 수정 모달로 가정
+                    var prdcPlanModal = new bootstrap.Modal(prdcPlanModalEl[0]);
 
                     currentEvent = info.event;
 
                     deleteButton.show(); // 수정 모달에서는 삭제 버튼을 표시
 
-                    $('#eventModalLabel').text('일정 수정');
-                    $('#title').val(info.event.title);
+                    $('#eventModalLabel').text('생산 계획 수정');
+                    $('#prdcNo').val(info.event.extendedProps.prdcNo); // 자재 ID를 모달에 설정
+                    $('#quantity').val(info.event.extendedProps.quantity); // 수량을 모달에 설정
                     $('#startDate').val(info.event.start.toISOString().slice(0, 16));
                     $('#endDate').val(info.event.end ? info.event.end.toISOString().slice(0, 16) : '');
 
-                    eventModal.show();
+                    prdcPlanModal.show();
+
                   }
                 });
 
@@ -449,7 +487,8 @@
                 $('#eventForm').on('submit', function (e) {
                   e.preventDefault();
 
-                  const title = $('#title').val();
+                  const prdcNo = $('#prdcNo').val();  // 자재 선택
+                  const quantity = $('#quantity').val();
                   const start = $('#startDate').val();
                   let end = $('#endDate').val();
 
@@ -461,71 +500,34 @@
 
                   const startWithTime = start + ':00';
 
-                  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-                  const event = {
-                    title: title,
-                    startDate: startWithTime,
-                    endDate: end,
-                    backgroundColor: currentEvent ? currentEvent.backgroundColor : randomColor,
-                    borderColor: currentEvent ? currentEvent.borderColor : randomColor
+                  const prdcPlanData = {
+                    prdcNo: prdcNo,
+                    quantity: quantity,
+                    startdate: startWithTime,
+                    enddate: end
                   };
 
-                  if (currentEvent) {
-                    event.id = currentEvent.id;
-
-                    $.ajax({
-                      url: '/api/Calendar/update',
-                      method: 'POST',
-                      contentType: 'application/json',
-                      data: JSON.stringify(event),
-                      success: function (data) {
-                        currentEvent.setProp('title', event.title);
-                        currentEvent.setDates(event.startDate, event.endDate);
-                        currentEvent.setProp('backgroundColor', event.backgroundColor);
-                        currentEvent.setProp('borderColor', event.borderColor);
-                        alert('일정이 수정되었습니다.');
-                        closeModal();
-                      },
-                      error: function (xhr, status, error) {
-                        console.error('Error updating event:', error);
-                        console.log('서버 응답:', xhr.responseText);
-                      }
-                    });
-                  } else {
-                    $.ajax({
-                      url: '/api/Calendar/add',
-                      method: 'POST',
-                      contentType: 'application/json',
-                      data: JSON.stringify(event),
-                      success: function (data) {
-                        const newEvent = calendar.addEvent({
-                          id: data.id,
-                          title: event.title,
-                          start: event.startDate,
-                          end: event.endDate,
-                          allDay: !event.endDate,
-                          backgroundColor: event.backgroundColor,
-                          borderColor: event.borderColor
-                        });
-
-                        console.log("새로운 이벤트 추가:", newEvent.title, newEvent.backgroundColor);
-                        calendar.render();
-                        alert('일정이 추가되었습니다.');
-                        closeModal();
-                      },
-                      error: function (xhr, status, error) {
-                        console.error('Error adding event:', error);
-                        console.log('서버 응답:', xhr.responseText);
-                      }
-                    });
-                  }
+                  $.ajax({
+                    url: '/api/Calendar/addPrdcPlan',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(prdcPlanData),
+                    success: function (data) {
+                      console.log("새로운 생산 계획 추가:", data);
+                      alert('생산 계획이 추가되었습니다.');
+                      closeModal();
+                    },
+                    error: function (xhr, status, error) {
+                      console.error('Error adding prdc plan:', error);
+                      console.log('서버 응답:', xhr.responseText);
+                    }
+                  });
                 });
 
                 deleteButton.on('click', function () {
                   if (currentEvent) {
                     $.ajax({
-                      url: '/api/Calendar/delete',
+                      url: '/api/Calendar/deletePrdcPlan',
                       method: 'POST',
                       contentType: 'application/json',
                       data: JSON.stringify({ id: currentEvent.id }),
