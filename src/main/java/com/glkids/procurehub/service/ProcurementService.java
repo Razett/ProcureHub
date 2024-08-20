@@ -3,6 +3,7 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.PrdcMtrlDetailsDTO;
 import com.glkids.procurehub.dto.ProcurementDetailsDTO;
 import com.glkids.procurehub.entity.*;
+import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.repository.PrcrRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.status.PrcrStatus;
@@ -12,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,11 +21,8 @@ import java.util.stream.Collectors;
 public class ProcurementService {
 
     private final PrcrRepository prcrRepository;
-
     private final QuotationMtrlRepository quotationMtrlRepository;
-//    public List<ProcurementDetailsDTO> getProcurementDetails() {
-//          return prcrRepository.findAllProcurements();
-//    }
+    private final OrderRepository orderRepository;
 
     public List<ProcurementDetailsDTO> getProcurementDetailsGroupMtrl() {
         List<Prcr> procurementPlans = prcrRepository.findAll();
@@ -118,9 +113,28 @@ public class ProcurementService {
             // Order에 자동 추가
             if (mtrlDto.getProcureQuantity() > 0) {
                 // orderRepository를 통해서 order 테이블에 prcrno가 일치하는 행이 있는지 먼저 확인한다
+                Order order = orderRepository.findByPrcr(prcr.getPrcrno());
+
                 // select * from order where prcr_prcrno = :prcrno; --> Order객체를 반환 --> 없으면  Order객체를 만들고, 있으면 반환한 Order 객체에 수량은 값은 다시 세팅
+                if (order == null) {
+                    order = new Order();
+                    order.setPrcr(prcr);
+                    order.setMaterial(material); // material 필드 설정 왜 why? Order엔티티에서 material 필드가 not null 임 그래서 material 를 설정해줌
+                    order.setQuantity(mtrlDto.getProcureQuantity());
+                    order.setStatus(1);
+                } else {
+                    // 기존 Order 객체의 수량 업데이트
+                    order.setQuantity(mtrlDto.getProcureQuantity());
+                    order.setMaterial(material); // material 필드 설정
+                }
+
                 // if else 끝나고 나면 해당 객체를 공통으로 save돌려버리기  --> order의 status code가 < 3 일때만 save. --> 해당 prcrno의 status를 1번으로 바꿔주기
-                System.out.println("gigi");
+                if (order.getStatus() < 3) {
+                    orderRepository.save(order);
+                }
+
+                prcr.setStatus(1);
+                prcrRepository.save(prcr);
             }
 
             // 자재 리스트에 자재 추가 (중복 방지)
