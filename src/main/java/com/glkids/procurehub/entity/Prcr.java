@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Entity
+@Setter
 public class Prcr extends BaseEntity {
 
     @Id

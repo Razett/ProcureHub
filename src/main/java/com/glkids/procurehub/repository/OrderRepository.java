@@ -15,4 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPredicateExecutor<Order> {
+
+    // prcrno에 해당하는 Order를 조회하는 쿼리
+    @Query("SELECT o FROM Order o WHERE o.prcr.prcrno = :prcrno")
+    Order findByPrcr(@Param("prcrno") Long prcrno);
+
 }
