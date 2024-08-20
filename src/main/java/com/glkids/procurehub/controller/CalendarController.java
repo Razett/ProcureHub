@@ -1,7 +1,13 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.CalendarDTO;
+import com.glkids.procurehub.dto.PrdcDTO;
+import com.glkids.procurehub.dto.PrdcPlanDTO;
 import com.glkids.procurehub.entity.Calendar;
+import com.glkids.procurehub.entity.Prdc;
+import com.glkids.procurehub.entity.PrdcPlan;
+import com.glkids.procurehub.repository.PrcrRepository;
+import com.glkids.procurehub.repository.PrdcRepository;
 import com.glkids.procurehub.service.CalendarService;
 import com.glkids.procurehub.service.PrdcPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +25,13 @@ public class CalendarController {
 
     @Autowired
     private CalendarService calendarService;
+    @Autowired
+    private PrdcPlanService prdcPlanService;
+    @Autowired
+    private PrdcRepository prdcRepository;
+    @Autowired
+    private PrcrRepository prcrRepository;
+
 
     @GetMapping("/read")
     public List<Map<String, Object>> getEvents() {
@@ -69,7 +82,34 @@ public class CalendarController {
             plan.put("start", event.getStartdate());
             plan.put("end", event.getEnddate());
             plan.put("quantity+", event.getQuantity());
+            plan.put("prdcName", event.getPrdc().getName());
             return plan;
         }).collect(Collectors.toList());
     }
+    @PostMapping("/addPrdcPlan")
+    public ResponseEntity<String> addPrdcPlan(@RequestBody PrdcPlanDTO prdcPlanDTO) {
+        prdcPlanService.createPrdcPlan(prdcPlanDTO);
+        return ResponseEntity.ok("생산 계획이 추가되었습니다.");
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<PrdcDTO>> getAllPrdc() {
+        List<Prdc> prdcList = prdcPlanService.getAllprdc();
+        List<PrdcDTO> prdcDTOList = prdcList.stream().map(prdc -> {
+            PrdcDTO prdcDTO = new PrdcDTO();
+            prdcDTO.setPrdcno(prdc.getPrdcno());
+            prdcDTO.setName(prdc.getName());
+            return prdcDTO;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(prdcDTOList);
+    }
+
+    @GetMapping("/{prdcno}")
+    public ResponseEntity<PrdcDTO> getPrdcByNo(@PathVariable Long prdcno) {
+            Prdc prdc = prdcPlanService.getPrdcByNo(prdcno);
+            PrdcDTO prdcDTO = new PrdcDTO();
+            prdcDTO.setPrdcno(prdc.getPrdcno());
+            prdcDTO.setName(prdc.getName());
+            return ResponseEntity.ok(prdcDTO);
+        }
 }
