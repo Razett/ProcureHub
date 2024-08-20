@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
                                 <div class="overflow-x-auto">
-                                    <table class="table table-bordered" style="min-width: 2300px;">
+                                    <table class="table table-bordered table-hover" style="min-width: 2300px;">
                                         <thead>
                                         <tr class="table-active text-center">
                                             <th>
@@ -97,16 +97,18 @@
                                         <th:block th:each="order, i : ${orderList}">
                                             <th:block th:each="material, j : ${order.materials}">
                                                 <tr>
-                                                    <th:block th:switch="${order.status}">
+                                                    <th:block th:switch="${material.status}">
                                                         <td th:case="4" class="text-center bgc-red-50">
+                                                        <td th:case="7" class="text-center bgc-red-50">
                                                         <td th:case="5" class="text-center bgc-yellow-50" >
+                                                        <td th:case="8" class="text-center bgc-yellow-50" >
                                                         <td th:case="2" class="text-center bgc-blue-50" >
                                                         <td th:case="*" class="text-center">
                                                     </th:block>
 
                                                         <label>
-                                                            <input id="order-codeList" type="checkbox">
-                                                            <span th:text="'P' + ${#numbers.formatInteger(order.prcrno, 6)}"></span>
+                                                            <input id="order-codeList" type="checkbox" th:disabled="${order.status > 5}">
+                                                            <span th:text="'P' + ${#numbers.formatInteger(order.prcrno + j.index, 6)}"></span>
                                                         </label>
                                                     </td>
                                                     <td class="text-center" th:text="${#temporals.format(order.reqdate, 'yyyy-MM-dd')}" th:if="${j.first}" th:rowspan="${order.materials.size()}"></td>
@@ -136,17 +138,17 @@
                                                     <td class="text-center">
                                                         <span th:text="${material.procureQuantity} + '개'"></span>
                                                     </td>
-                                                    <th:block th:if="${order.leadtime == null}">
+                                                    <th:block th:if="${material.leadtime == null}">
                                                         <td class="text-center"><a th:href="@{/contractor/quolist(type='MC', input=${material.mtrlno})}">계약 필요</a></td>
                                                     </th:block>
-                                                    <th:block th:unless="${order.leadtime == null}">
-                                                        <td class="text-center" th:text="${order.leadtime}"></td>
+                                                    <th:block th:unless="${material.leadtime == null}">
+                                                        <td class="text-center" th:text="${material.leadtime}"></td>
                                                     </th:block>
-                                                    <td class="text-center" th:text="${#temporals.format(order.moddate, 'yyyy-MM-dd')}" th:if="${j.first}"  th:rowspan="${order.materials.size()}"></td>
                                                     <td class="text-center" th:text="${#temporals.format(order.regdate, 'yyyy-MM-dd')}" th:if="${j.first}"  th:rowspan="${order.materials.size()}"></td>
-                                                    <td class="text-center" th:text="${order.statusString}"></td> <!-- order.status => order.getStatus() -->
+                                                    <td class="text-center" th:text="${#temporals.format(order.moddate, 'yyyy-MM-dd')}" th:if="${j.first}"  th:rowspan="${order.materials.size()}"></td>
+                                                    <td class="text-center" th:text="${material.statusString}"></td> <!-- order.status => order.getStatus() -->
                                                     <td class="text-center">
-                                                        <a href="#" class="icon-name">
+                                                        <a href="#" class="icon-name" th:if="${material.status < 6}">
                                                         <i class="ti-download"></i></a>
                                                     </td>
                                                 </tr>

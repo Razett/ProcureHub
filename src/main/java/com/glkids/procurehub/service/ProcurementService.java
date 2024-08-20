@@ -7,14 +7,13 @@ import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.repository.PrcrRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.status.PrcrStatus;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +23,13 @@ public class ProcurementService {
     private final QuotationMtrlRepository quotationMtrlRepository;
     private final OrderRepository orderRepository;
 
+    @Transactional
     public List<ProcurementDetailsDTO> getProcurementDetailsGroupMtrl() {
         List<Prcr> procurementPlans = prcrRepository.findAll();
 
         // prdcPlanNo를 기준으로 DTO와 자재 리스트를 관리할 맵
         Map<Long, ProcurementDetailsDTO> dtoMap = new HashMap<>();
         Map<Long, Long> mtrlQuantityMap = new HashMap<>();  // key = mtrlno, value=currentQuantity - prcr.quantity
-
-        int redCount = 0;
-        int yellowCount = 0;
 
         for (Prcr prcr : procurementPlans) {
             PrdcPlan prdcPlan = prcr.getPrdcPlan();
@@ -70,38 +67,6 @@ public class ProcurementService {
                 dtoMap.put(prdcPlanNo, dto);
             }
 
-            // LT 최대값 구하기
-            List<QuotationMtrl> qmList = quotationMtrlRepository.findByMaterial(material.getMtrlno());
-
-            int leadtime = -1;
-            if (!qmList.isEmpty()) {
-
-                for(QuotationMtrl qm : qmList) {
-                    if (qm.getLeadtime() > leadtime) {
-                        leadtime = qm.getLeadtime();
-                    }
-                }
-
-                if (leadtime != -1) {
-                    dto.setLeadtime(leadtime);
-                }
-            }
-
-            // LT + Buffer 가 현재시간과 얼마나 차이나는지에 따라 컬러값 세팅.
-            if (leadtime != -1) {
-                LocalDate now = LocalDate.now();
-                LocalDate reqdate = dto.getReqdate().toLocalDate();
-
-                if (now.plusDays(leadtime + 2 + 3).isAfter(reqdate) || now.plusDays(leadtime + 2 + 3).isEqual(reqdate)) {
-                    dto.setStatus(PrcrStatus.RED.ordinal());
-                    redCount++;
-                    // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
-                } else if (now.plusDays(leadtime + 2 + 5).isAfter(reqdate) || now.plusDays(leadtime + 2 + 5).isEqual(reqdate)) {
-                    dto.setStatus(PrcrStatus.YELLOW.ordinal());
-                    redCount++;
-                }
-            }
-
             // 각 자재에 대한 quantity를 리스트에 추가
             dto.getProductMtrlQuantity().add(prcr.getQuantity());
 
@@ -110,6 +75,7 @@ public class ProcurementService {
                     .mtrlno(material.getMtrlno())
                     .name(material.getName())
                     .standard(material.getStandard())
+                    .status(prcr.getStatus())
                     .quantity(mtrlQuantityMap.get(material.getMtrlno())) // 각 자재에 해당하는 prcr의 quantity 설정
                     // 앞선 조달 계획 처리 후 남는 재고수량과 조달 수량을 비교하여 발주 필요수량을 계산
                     .procureQuantity(mtrlQuantityMap.get(material.getMtrlno()) >= prcr.getQuantity() ? 0 : prcr.getQuantity() - mtrlQuantityMap.get(material.getMtrlno()) + 5)
@@ -133,13 +99,56 @@ public class ProcurementService {
                     order.setMaterial(material); // material 필드 설정
                 }
 
-                // if else 끝나고 나면 해당 객체를 공통으로 save돌려버리기  --> order의 status code가 < 3 일때만 save. --> 해당 prcrno의 status를 1번으로 바꿔주기
+                // if else 끝나고 나면 해당 객체를 공통으로 save돌려버리기  --> order의 status code가 < 3 일때만 save. --> 해당 prcrno의 status를 6번으로 바꿔주기
                 if (order.getStatus() < 3) {
                     orderRepository.save(order);
                 }
 
-                prcr.setStatus(1);
+                prcr.setStatus(PrcrStatus.ORDER_ADDED.ordinal());
+                mtrlDto.setStatus(PrcrStatus.ORDER_ADDED.ordinal());
                 prcrRepository.save(prcr);
+            }
+
+            // LT 최대값 구하기
+            List<QuotationMtrl> qmList = quotationMtrlRepository.findByMaterial(material.getMtrlno());
+
+            int leadtime = -1;
+
+            if (!qmList.isEmpty()) {
+                for(QuotationMtrl qm : qmList) {
+                    if (qm.getLeadtime() > leadtime) {
+                        leadtime = qm.getLeadtime();
+                    }
+                }
+            }
+            if (leadtime != -1) {
+                mtrlDto.setLeadtime(leadtime);
+            }
+
+            // LT + Buffer 가 현재시간과 얼마나 차이나는지에 따라 컬러값 세팅.
+            LocalDate now = LocalDate.now();
+            LocalDate reqdate = prcr.getReqdate().toLocalDate();
+
+            if (leadtime <= 0) {
+                leadtime = 7;
+            }
+
+            if (now.plusDays(leadtime + 2 + 3).isAfter(reqdate) || now.plusDays(leadtime + 2 + 3).isEqual(reqdate)) {
+                if (prcr.getStatus() == PrcrStatus.ORDER_ADDED.ordinal()) {
+                    mtrlDto.setStatus(PrcrStatus.RED_ORDER_ADDED.ordinal());
+                    changeStatus(prcr.getPrcrno(), PrcrStatus.RED_ORDER_ADDED); // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
+                } else {
+                    mtrlDto.setStatus(PrcrStatus.RED.ordinal());
+                    changeStatus(prcr.getPrcrno(), PrcrStatus.RED); // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
+                }
+            } else if (now.plusDays(leadtime + 2 + 5).isAfter(reqdate) || now.plusDays(leadtime + 2 + 5).isEqual(reqdate)) {
+                if (prcr.getStatus() == PrcrStatus.ORDER_ADDED.ordinal()) {
+                    mtrlDto.setStatus(PrcrStatus.YELLOW_ORDER_ADDED.ordinal());
+                    changeStatus(prcr.getPrcrno(), PrcrStatus.YELLOW_ORDER_ADDED);
+                } else {
+                    mtrlDto.setStatus(PrcrStatus.YELLOW.ordinal());
+                    changeStatus(prcr.getPrcrno(), PrcrStatus.YELLOW);
+                }
             }
 
             // 자재 리스트에 자재 추가 (중복 방지)
@@ -151,6 +160,12 @@ public class ProcurementService {
         // 최종 DTO 리스트를 생성
         return new ArrayList<>(dtoMap.values());
     }
+
+    @Transactional
+    public void changeStatus(Long prcrno , PrcrStatus prcrStatus){
+        prcrRepository.changeStatus(prcrno , prcrStatus.ordinal());
+    }
+
 }
 
 

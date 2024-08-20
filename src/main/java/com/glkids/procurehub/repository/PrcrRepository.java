@@ -1,8 +1,11 @@
 package com.glkids.procurehub.repository;
 
+import com.glkids.procurehub.dto.PrcrDTO;
 import com.glkids.procurehub.dto.ProcurementDetailsDTO;
 import com.glkids.procurehub.entity.Prcr;
+import com.glkids.procurehub.status.PrcrStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,6 +23,11 @@ public interface PrcrRepository extends JpaRepository<Prcr, Long> {
 //            "LEFT JOIN pm.material m ")
 //    List<ProcurementDetailsDTO> findAllProcurements();
 
-    List<Prcr> findAll();  // 모든 Prcr 엔티티를 조회
 
+    @Query("SELECT COUNT(p.status) AS status_count ,p.status FROM Prcr p WHERE p.status = 4 OR p.status = 5 GROUP BY p.status")
+    List<PrcrDTO> statusEmergencyCount();
+
+    @Modifying
+    @Query("UPDATE Prcr p SET p.status = :status WHERE p.prcrno = :prcrno")
+    void changeStatus(Long prcrno, Integer status);
 }
