@@ -2,7 +2,10 @@ package com.glkids.procurehub.service;
 
 
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
+import org.aspectj.weaver.ast.Or;
+
 import java.util.List;
 
 public interface OrderService {
@@ -15,7 +18,7 @@ public interface OrderService {
     List<OrderDTO> getOrderListAfter();
 
     //1-3. 대기 현황 수정
-    List<OrderDTO> update(List<OrderDTO> updateOrderList);
+    void update(List<OrderDTO> orderDTOList);
 
     //2. 발주 수동 추가
     void register(OrderDTO orderDTO);
@@ -27,7 +30,7 @@ public interface OrderService {
     List<OrderDTO> totalList();
 
     //6.발주 실행
-    List<OrderDTO> orderExecute(List<Long> ordernos);
+    List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp);
 
     default Order orderDtoToEntity(OrderDTO orderDTO) {
         Order order = Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())

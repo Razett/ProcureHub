@@ -56,4 +56,21 @@ public class OrderDTO {
         }
         return null;
     }
+
+    public Integer getIndex() {
+        int i = 0;
+
+        if (this.quotationmtrl != null && !quotationmtrlList.isEmpty()) {
+            for (QuotationMtrl quotationMtrl : quotationmtrlList) {
+                if (quotationmtrl.getQtmtno().longValue() == quotationMtrl.getQtmtno().longValue()) {
+                    return i;
+                }
+                i++;
+            }
+        } else {
+            return 0;
+        }
+
+        return 0;
+    }
 }

@@ -5,13 +5,14 @@ import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
 import com.glkids.procurehub.entity.QOrder;
 import com.glkids.procurehub.entity.QuotationMtrl;
-import com.glkids.procurehub.repository.EmpRepository;
 import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
+import com.glkids.procurehub.status.OrderStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
         QOrder qOrder = QOrder.order;
 
         BooleanBuilder builder = new BooleanBuilder();
-        BooleanExpression statusExp = qOrder.status.eq(0);
+        BooleanExpression statusExp = qOrder.status.lt(OrderStatus.CONTINUING.ordinal());
 
         orderRepository.findAll(builder.and(statusExp)).forEach(x -> {
             List<QuotationMtrl> list = quotationMtrlRepository.findByMaterial(x.getMaterial().getMtrlno());
@@ -50,21 +51,24 @@ public class OrderServiceImpl implements OrderService {
         QOrder qOrder = QOrder.order;
 
         BooleanBuilder builder = new BooleanBuilder();
-        BooleanExpression statusExp = qOrder.status.eq(1);
+        BooleanExpression statusExp = qOrder.status.gt(OrderStatus.MODIFIED.ordinal());
 
         orderRepository.findAll(builder.and(statusExp)).forEach(x -> orderDTOList.add(orderEntityToDTO(x)));
         return orderDTOList;
     }
 
+    @Transactional
     @Override
-    public List<OrderDTO> update(List<OrderDTO> updateOrderList) {
-        return List.of();
+    public void update(List<OrderDTO> orderDTOList) {
+        for (OrderDTO orderDTO : orderDTOList) {
+            QuotationMtrl qm = QuotationMtrl.builder().qtmtno(orderDTO.getQtmtno()).build();
+            orderRepository.updateOrder(qm, orderDTO.getQuantity(), OrderStatus.MODIFIED.ordinal(), orderDTO.getOrderno());
+        }
     }
 
     @Override
     public void register(OrderDTO orderDTO) {
-        Order orEntity = orderDtoToEntity(orderDTO);
-        orderRepository.save(orEntity);
+        orderRepository.save(orderDtoToEntity(orderDTO));
     }
 
     @Override
@@ -82,19 +86,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> orderExecute(List<Long> ordernos) {
+    public List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp) {
         List<OrderDTO> executeList = new ArrayList<>();
 
-        Emp emp = Emp.builder().empno(201758030L).build();
-
-        for (Long orderno : ordernos) {
-            Optional<Order> orderOptional = orderRepository.findById(orderno);
+        for (OrderDTO orderDTO : orderDTOList) {
+            Optional<Order> orderOptional = orderRepository.findById(orderDTO.getOrderno());
+            QuotationMtrl quotationMtrl = quotationMtrlRepository.findById(orderDTO.getQtmtno()).orElse(null);
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
 
                 order.setEmp(emp);
                 order.setOrderdate(LocalDateTime.now());
-                order.setStatus(1);
+                order.setQuotationmtrl(quotationMtrl);
+                order.setStatus(OrderStatus.NEEDS_INSPECTION.ordinal());
 
                 Order updatedOrder = orderRepository.save(order);
 
