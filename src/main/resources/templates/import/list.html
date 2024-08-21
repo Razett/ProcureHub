@@ -164,6 +164,7 @@
                                             <th scope="col" class="text-center">발주 코드</th>
                                             <th scope="col" class="text-center">자재 코드</th>
                                             <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center">현재 수량</th>
                                             <th scope="col" class="text-center">발주 수량</th>
                                             <th scope="col" class="text-center">입고 수량</th>
                                             <th scope="col" class="text-center">입고 상태</th>
@@ -178,6 +179,7 @@
                                                 <td class="import-code text-center" th:text="'OR' + ${#numbers.formatInteger(import.order.orderno, 6)}"></td>
                                                 <td class="import-code text-center" th:text="'MA' + ${#numbers.formatInteger(import.order.material.mtrlno, 6)}"></td>
                                                 <td class="import-code text-center" th:text="${import.order.material.name}"></td>
+                                                <td class="import-code text-end" th:text="${#numbers.formatInteger(import.order.material.quantity, 0, 'COMMA')}"></td>
                                                 <td class="import-code text-end" th:text="${#numbers.formatInteger(import.order.quantity, 0, 'COMMA')}"></td>
                                                 <td class="import-code text-end" th:text="${#numbers.formatInteger(import.quantity, 0, 'COMMA')}"></td>
                                                 <td class="import-code text-center" th:text="${import.statusString}"></td>

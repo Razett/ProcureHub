@@ -2,9 +2,9 @@ package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.entity.*;
-import com.glkids.procurehub.repository.MaterialRepository;
-import com.glkids.procurehub.repository.OrderRepository;
-import com.glkids.procurehub.repository.QuotationMtrlRepository;
+import com.glkids.procurehub.repository.*;
+import com.glkids.procurehub.status.ImportStatus;
+import com.glkids.procurehub.status.InspectionStatus;
 import com.glkids.procurehub.status.OrderStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -24,6 +24,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final QuotationMtrlRepository quotationMtrlRepository;
     private final MaterialRepository materialRepository;
+    private final OrderInspectionRepository orderInspectionRepository;
+    private final ImportRepository importRepository;
 
     @Override
     public List<OrderDTO> getOrderListBefore() {
@@ -118,6 +120,20 @@ public class OrderServiceImpl implements OrderService {
                 order.setStatus(OrderStatus.NEEDS_INSPECTION.ordinal());
 
                 Order updatedOrder = orderRepository.save(order);
+
+                OrderInspection orderInspection = OrderInspection.builder()
+                        .order(order)
+                        .status(InspectionStatus.NOT_YET.ordinal())
+                        .duedate(LocalDateTime.now().plusDays(1)).build();
+
+                orderInspectionRepository.save(orderInspection);
+
+                Imports imports = Imports.builder()
+                        .quantity(order.getQuantity())
+                        .status(ImportStatus.AUTO_GENERATED.ordinal())
+                        .order(order).build();
+
+                importRepository.save(imports);
 
                 if (updatedOrder.getOrderdate().equals(order.getOrderdate())) {
                     executeList.add(orderEntityToDTO(order));
