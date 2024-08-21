@@ -1,16 +1,29 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.dto.UserDTO;
+import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.Order;
+import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.repository.PrcrRepository;
+import com.glkids.procurehub.repository.QuotationMtrlRepository;
+import com.glkids.procurehub.service.MaterialService;
 import com.glkids.procurehub.service.OrderService;
+import com.glkids.procurehub.service.PrdcPlanService;
+import com.glkids.procurehub.service.QuotationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 발주 관리 메뉴 컨트롤러
@@ -21,6 +34,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class OrderController {
 
     private final OrderService orderService;
+    private final QuotationService quotationService;
+    private final MaterialService materialService;
+    private final QuotationMtrlRepository quotationMtrlRepository;
 
     /**
      * 발주 현황
@@ -38,18 +54,29 @@ public class OrderController {
      * 발주 수동 추가
      */
     @GetMapping("/add")
-    public void getRegister(@AuthenticationPrincipal UserDTO userDTO, OrderDTO orderDTO, Model model){
+    public String getRegister(@AuthenticationPrincipal UserDTO userDTO, @RequestParam("mtrlno") Long mtrlno, Model model){
         model.addAttribute("user", userDTO);
+        model.addAttribute("material", materialService.read(mtrlno));
+        return "order/add";
     }
 
     /**
      * 발주 수동 추가 화면에서 등록 버튼 클릭 시 발주 현황 화면으로
      */
     @PostMapping("/add")
-    public String postRegister(OrderDTO orderDTO){
+    public String postRegister(@Validated OrderDTO orderDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // 유효성 검사에서 에러가 발생하면 에러 메시지와 함께 다시 폼을 보여줌
+            return "order/add"; // 폼이 있는 뷰로 다시 이동
+        }
+
+        // MaterialDTO는 사용되지 않으므로 파라미터에서 제거하거나, 필요 시 orderDTO에 포함시키세요.
         orderService.register(orderDTO);
         return "redirect:/order/list";
     }
+
+
+
 
     /**
      * @deprecated

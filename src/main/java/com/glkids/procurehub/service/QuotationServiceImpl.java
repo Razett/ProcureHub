@@ -73,6 +73,15 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
+    public QuotationMtrlDTO quoread(Long qtmtno) {
+        Optional<QuotationMtrl> optional = quotationMtrlRepository.findById(qtmtno);
+        if(optional.isPresent()){
+            return  quotationMtrlEntityToDTO(optional.get());
+        }
+        return null;
+    }
+
+    @Override
     public QuotationDTO read(Long qtno) {
         Optional<Quotation> opquo = quotationRepository.findById(qtno);
         if(opquo.isPresent()){

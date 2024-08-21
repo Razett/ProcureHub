@@ -5,6 +5,7 @@ import com.glkids.procurehub.dto.QuotationDTO;
 import com.glkids.procurehub.dto.QuotationMtrlDTO;
 import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ContractorRepository;
+import com.glkids.procurehub.repository.MaterialRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.repository.QuotationRepository;
 import com.glkids.procurehub.status.QuotationStatus;
@@ -30,6 +31,7 @@ public class ContractorServiceImpl implements ContractorService {
 
     private final ContractorRepository contractorRepository;
     private final QuotationRepository quotationRepository;
+    private final MaterialRepository materialRepository;
 
     @Override
     public List<ContractorDTO> list() {
@@ -55,13 +57,23 @@ public class ContractorServiceImpl implements ContractorService {
         contractorRepository.save(contractorDtoToEntity(contractorDTO));
     }
 
-    @Override
     public Boolean register(ContractorDTO contractorDTO) {
+        Material material = contractorDTO.resolveMaterial(materialRepository);
+
         Contractor conEntity = contractorDtoToEntity(contractorDTO);
+
+        // 엔티티에 생성자나 다른 방법으로 Material 설정
+        // 예를 들어 생성자를 통해:
+        // conEntity = new Contractor(..., material);
+
+        // Reflection을 사용하지 않으려면 DTO나 엔티티 생성 과정에서 처리해야 합니다.
+
         contractorRepository.save(conEntity);
 
         return contractorRepository.existsById(conEntity.getCorno());
     }
+
+
 
     @Override
     public List<QuotationDTO> quoList(String type, String input) {

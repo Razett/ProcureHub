@@ -16,6 +16,8 @@ public interface QuotationService {
 
     List<QuotationMtrlDTO> readQuotationMtrlList(Long qtno); // 계약 추가화면
 
+    QuotationMtrlDTO quoread(Long qtmtno);
+
     QuotationDTO read(Long qtno);
 
     List<QuotationFileDTO> quotationFileList(Long qtno);

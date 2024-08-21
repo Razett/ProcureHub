@@ -1,21 +1,17 @@
 package com.glkids.procurehub.controller.rest;
 
-import com.glkids.procurehub.dto.QuotationDTO;
-import com.glkids.procurehub.dto.QuotationFileDTO;  // DTO 클래스 임포트
-import com.glkids.procurehub.dto.QuotationMtrlDTO;
-import com.glkids.procurehub.dto.UserDTO;
+import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.*;
+import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -23,6 +19,8 @@ public class QuotationRestController {
 
     @Autowired
     private QuotationService quotationService;
+    @Autowired
+    private QuotationMtrlRepository quotationMtrlRepository;
 
     @PostMapping(value = "/quotation/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> saveQuotation(@RequestBody QuotationDTO quotationDTO , @AuthenticationPrincipal UserDTO userDTO) {
@@ -41,4 +39,27 @@ public class QuotationRestController {
     public Boolean saveQuotationMtrl(@RequestBody List<QuotationMtrlDTO> quotationMtrlDTO , @AuthenticationPrincipal UserDTO userDTO) {
         return quotationService.saveQuotationMtrl(quotationMtrlDTO, userDTO);
     }
+
+    @GetMapping("/api/companies")
+    public List<ContractorDTO> getCompany(@RequestParam("mtrlno") Long mtrlno){
+        List<QuotationMtrl> quotationMtrls = quotationMtrlRepository.findByMaterial(mtrlno);
+
+        return quotationMtrls.stream()
+                .map(q -> new ContractorDTO(q.getQuotation().getContractor().getName()))
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/orderInfo")
+    public QuotationMtrlDTO getOrderInfo(@RequestParam("mtrlno") Long mtrlno, @RequestParam("contractorName") String contractorName) {
+        List<QuotationMtrl> quotationMtrls = quotationMtrlRepository.findByMaterial(mtrlno);
+
+        for (QuotationMtrl qm : quotationMtrls) {
+            if (qm.getQuotation().getContractor().getName().equals(contractorName)) {
+                return quotationService.quotationMtrlEntityToDTO(qm); // 필요한 정보를 DTO로 변환해서 반환
+            }
+        }
+        return null;
+    }
+
 }

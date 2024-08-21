@@ -1,10 +1,8 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.OrderDTO;
-import com.glkids.procurehub.entity.Emp;
-import com.glkids.procurehub.entity.Order;
-import com.glkids.procurehub.entity.QOrder;
-import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.entity.*;
+import com.glkids.procurehub.repository.MaterialRepository;
 import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.status.OrderStatus;
@@ -25,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final QuotationMtrlRepository quotationMtrlRepository;
+    private final MaterialRepository materialRepository;
 
     @Override
     public List<OrderDTO> getOrderListBefore() {
@@ -67,9 +66,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void register(OrderDTO orderDTO) {
-        orderRepository.save(orderDtoToEntity(orderDTO));
+    public boolean register(OrderDTO orderDTO) {
+        Order order = new Order();
+
+        // Material이 이미 존재하는지 확인
+        Material material = materialRepository.findById(orderDTO.getMaterial().getMtrlno())
+                .orElseThrow(() -> new RuntimeException("Material not found"));
+
+        order.setMaterial(material);
+        order.setEmp(orderDTO.getEmp());
+        order.setOrderdate(orderDTO.getOrderdate());
+        order.setQuantity(orderDTO.getQuantity());
+        order.setTrackingNo(orderDTO.getTrackingNo());
+        order.setStatus(orderDTO.getStatus());
+
+        // 이제 Order를 저장
+        orderRepository.save(order);
+
+        return orderRepository.existsById(order.getOrderno());
     }
+
+
 
     @Override
     public OrderDTO read(Long orderno) {
@@ -107,6 +124,7 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
+
         return executeList;
     }
 }

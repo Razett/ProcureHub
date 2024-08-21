@@ -39,6 +39,7 @@ public class OrderDTO {
     private Material material; //발주할 자재
     private QuotationMtrl quotationmtrl; //견적에서 선택한 자재
     private Long quantity; //발주 수량
+    private Long orderQuantity; //발주 수량
     private String trackingNo; //운송장 번호
     private Integer status; //발주 상태
     private LocalDateTime regdate; //DB에 생성된 날짜
@@ -73,4 +74,5 @@ public class OrderDTO {
 
         return 0;
     }
+
 }

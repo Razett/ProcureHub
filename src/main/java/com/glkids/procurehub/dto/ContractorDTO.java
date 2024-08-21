@@ -1,5 +1,7 @@
 package com.glkids.procurehub.dto;
 
+import com.glkids.procurehub.entity.Material;
+import com.glkids.procurehub.repository.MaterialRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,5 +37,15 @@ public class ContractorDTO {
     private String mngrAddress; //이메일
     private String bank; //은행명
     private String accountNum; //계좌번호
+    private Material material;
+    private Long mtrlno;
 
+    public ContractorDTO(String name) {
+        this.name = name;
+    }
+
+    public Material resolveMaterial(MaterialRepository materialRepository) {
+        return materialRepository.findById(this.mtrlno)
+                .orElseThrow(() -> new RuntimeException("Material not found"));
+    }
 }

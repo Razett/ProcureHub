@@ -21,7 +21,7 @@ public interface OrderService {
     void update(List<OrderDTO> orderDTOList);
 
     //2. 발주 수동 추가
-    void register(OrderDTO orderDTO);
+    boolean register(OrderDTO orderDTO);
 
     //4. 발주 상세 정보
     OrderDTO read(Long orderno);
@@ -31,6 +31,7 @@ public interface OrderService {
 
     //6.발주 실행
     List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp);
+
 
     default Order orderDtoToEntity(OrderDTO orderDTO) {
         Order order = Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())
