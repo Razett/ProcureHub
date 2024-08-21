@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:margin-left="http://www.w3.org/1999/xhtml"
-      xmlns:margin-rignt="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/base/base::setContent(~{this::content})}">
     <head>
         <meta charset="utf-8">
@@ -86,38 +85,46 @@
                         <h4 class="c-grey-900 mT-10 mB-30">발주 전체 내역</h4>
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
-                                <div>
-                                    <button type="button" class="btn cur-p btn-secondary btn-color"
-                                            style="float: right; margin-bottom: 10px;">
-                                        <span class="ti-download"></span><span class="icon-name"></span>&nbsp;Download
-                                    </button>
-                                </div>
-                                <table class="table table-bordered table-hover">
-                                    <thead>
+                                <table class="table table-hover" style="min-width: 1400px;">
+                                    <thead class="position-sticky top-0">
                                     <tr>
-                                        <th>발주코드</th>
-                                        <th>발주날짜</th>
-                                        <th>조달계획코드</th>
-                                        <th>납기일</th>
-                                        <th>자재코드</th>
-                                        <th>회사명</th>
-                                        <th>등록날짜</th>
-                                        <th>발주수량</th>
-                                        <th>발주상태</th>
+                                        <th scope="col" class="text-center">발주 코드</th>
+                                        <th scope="col" class="text-center">발주 날짜</th>
+                                        <th scope="col" class="text-center">발주 사원</th>
+                                        <th scope="col" class="text-center">조달 계획 코드</th>
+                                        <th scope="col" class="text-center">납기일</th>
+                                        <th scope="col" class="text-center">자재 코드</th>
+                                        <th scope="col" class="text-center">자재명</th>
+                                        <th scope="col" class="text-center">자재 수량</th>
+                                        <th scope="col" class="text-center">회사명</th>
+                                        <th scope="col" class="text-center">단가</th>
+                                        <th scope="col" class="text-center">총 금액</th>
+                                        <th scope="col" class="text-center">발주 수량</th>
+                                        <th scope="col" class="text-center">등록 날짜</th>
+                                        <th scope="col" class="text-center">발주 상태</th>
+                                        <th scope="col" class="text-center">Download</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr th:each="ordertotallist : ${orderTotalList}">
-                                        <td th:text="${ordertotallist.orderno}"></td>
-                                        <td th:text="${#temporals.format(ordertotallist.orderdate,'yyyy-MM-dd')}"></td>
-                                        <td th:text="${ordertotallist.prcr != null ? ordertotallist.prcr.getPrcrno() : 'N/A'}"></td>
-                                        <td th:text="${ordertotallist.prcr != null ? ordertotallist.prcr.getReqdate() : 'N/A'}"></td>
-                                        <td th:text="${ordertotallist.material != null ? ordertotallist.material.getMtrlno() : 'N/A'}"></td>
-                                        <td th:text="${ordertotallist.quotationmtrl.quotation != null && ordertotallist.quotationmtrl.quotation.contractor != null ? ordertotallist.quotationmtrl.quotation.contractor.name : 'N/A'}"></td>
-                                        <td th:text="${#temporals.format(ordertotallist.getRegdate(), 'yyyy-MM-dd')}">
-                                        <td th:text="${ordertotallist.quantity}"></td>
-                                        <td th:text="${ordertotallist.statusString}">
-                                    </tr>
+                                    <tbody id="tableBody">
+                                    <th:block th:each="list : ${orderTotalList}">
+                                        <tr>
+                                            <td class="import-code text-center" th:text="${list.orderno}"></td>
+                                            <td class="import-code text-center" th:text="${#temporals.format(list.orderdate, 'yyyy-MM-dd')}"></td>
+                                            <td class="import-code text-center" th:text="${list.emp?.name}"></td>
+                                            <td class="import-code text-center" th:text="${list.prcr?.prcrno}"></td>
+                                            <td class="import-code text-center" th:text="${#temporals.format(list.prcr?.regdate, 'yyyy-MM-dd')}"></td>
+                                            <td class="import-code text-center" th:text="${list.material.mtrlno}"></td>
+                                            <td class="import-code text-center" th:text="${list.material.name}"></td>
+                                            <td class="import-code text-center" th:text="${list.material.quantity}"></td>
+                                            <td th:text="${list.quotationmtrl?.quotation?.contractor?.name}"></td>
+                                            <td class="import-code text-center" th:text="${list.quotationmtrl?.unitprice}"></td>
+                                            <td class="import-code text-center" th:text="${list.quotationmtrl?.totalprice}"></td>
+                                            <td class="import-code text-center" th:text="${list.quotationmtrl?.quantity}"></td>
+                                            <td class="import-code text-center" th:text="${#temporals.format(list.regdate, 'yyyy-MM-dd')}"></td>
+                                            <td class="import-code text-center" th:text="${list.statusString}"></td>
+                                            <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
+                                        </tr>
+                                    </th:block>
                                     </tbody>
                                 </table>
                             </div>
@@ -126,3 +133,7 @@
                 </div>
             </div>
         </main>
+    </div>
+    </body>
+</th:block>
+</html>
