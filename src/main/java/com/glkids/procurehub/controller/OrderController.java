@@ -73,8 +73,11 @@ public class OrderController {
         return "redirect:/order/list";
     }
 
+    @GetMapping("/update")
+    public String update(){
 
-
+        return "order/update";
+    }
 
     /**
      * @deprecated

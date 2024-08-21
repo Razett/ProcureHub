@@ -189,7 +189,6 @@ public class MaterialController {
         model.addAttribute("title", "조달 계획");
 
         List<ProcurementDetailsDTO> procurementDetails = procurementService.getProcurementDetailsGroupMtrl();
-        System.out.println(procurementDetails);
         model.addAttribute("orderList", procurementDetails);
         model.addAttribute("materials", procurementDetails);
 

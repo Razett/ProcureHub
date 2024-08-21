@@ -195,8 +195,15 @@
                                 function calculateTotalPrice() {
                                     var unitPrice = parseFloat($('#unitPrice').val()) || 0;
                                     var orderQuantity = parseFloat($('#orderQuantity').val()) || 0;
-                                    var totalPrice = unitPrice * orderQuantity * 1.1;
+                                    var availableQuantity = parseFloat($('#availableQuantity').val()) || 0;
 
+                                    // 발주 수량이 발주 가능 수량보다 많은 경우 경고 메시지 표시
+                                    if(orderQuantity > availableQuantity){
+                                        alert('발주 수량이 발주 가능 수량을 초과했습니다.');
+                                        $('#orderQuantity').val(availableQuantity); // 발주 수량을 발주 가능 수량으로 제한
+                                        orderQuantity = availableQuantity; // 다시 계산을 위해 업데이트
+                                    }
+                                    var totalPrice = unitPrice * orderQuantity * 1.1;
                                     $('#totalPrice').val(totalPrice.toFixed(2)); // 소수점 두 자리까지 표기
                                 }
                             });

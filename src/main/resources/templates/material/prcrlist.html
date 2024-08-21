@@ -37,30 +37,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">조달 계획 목록</h4>
                                     <div class="d-flex flex-column align-items-end">
-                                        <div class="d-flex align-items-center" style="margin-bottom: 15px;">
-                                            <button class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
-                                                    type="button">
-                                                <a style="text-decoration: none; color: inherit; text-align: center;"
-                                                   th:href="@{/order/add}">발주추가</a>
-                                            </button>
-                                            <button class="btn cur-p btn-outline-secondary"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
-                                                    type="button">
-                                                <a style="text-decoration: none; color: inherit; text-align: center;"
-                                                   th:href="@{/order/update}"
-                                                   th:method="get">
-                                                    <span class="ti-pencil-alt"></span><span class="icon-name"></span>&nbsp;수정
-                                                </a>
-                                            </button>
-                                            <button class="btn cur-p btn-outline-secondary" id="execute-orders-btn"
-                                                    onclick="executeOrders()"
-                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
-                                                    type="button">
-                                                <a href="#" id="order-link"
-                                                   style="text-decoration: none; color: inherit; text-align: center;">Download</a>
-                                            </button>
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="overflow-x-auto">
@@ -69,8 +46,6 @@
                                         <tr class="table-active text-center">
                                             <th>
                                                 <label>
-                                                    <input id="order-code" onclick="toggleCheckboxes(this)"
-                                                           type="checkbox">
                                                     조달계획코드
                                                 </label>
                                             </th>
@@ -107,7 +82,6 @@
                                                     </th:block>
 
                                                         <label>
-                                                            <input id="order-codeList" type="checkbox" th:disabled="${order.status > 5}">
                                                             <span th:text="'P' + ${#numbers.formatInteger(order.prcrno + j.index, 6)}"></span>
                                                         </label>
                                                     </td>
