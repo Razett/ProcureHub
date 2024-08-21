@@ -30,4 +30,7 @@ public interface PrcrRepository extends JpaRepository<Prcr, Long> {
     @Modifying
     @Query("UPDATE Prcr p SET p.status = :status WHERE p.prcrno = :prcrno")
     void changeStatus(Long prcrno, Integer status);
+
+
+    long countByStatusIn(List<Integer> statuses);
 }

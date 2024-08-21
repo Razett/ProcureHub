@@ -148,14 +148,14 @@
                           <h5>조달 계획 현황</h5>
                           <div class="item">
                             <div class="text">
-                              <strong>당일 확인 필요한 조달계획 :</strong> 1건
+                              <strong>전체 조달계획 :</strong>
+                              <a th:href="@{/material/prcrlist}" th:text="${totalPlans}">0</a>건
                             </div>
                           </div>
                           <div class="item">
                             <div class="text">
-                              <strong>조달 계획</strong>
-                              <p>조달계획 완료: 32924건</p>
-                              <p>조달계획 미완료: 3204298건</p>
+                              <strong>긴급 조달계획:</strong> <a th:href="@{/material/prcrlist}" th:text="${redCount}">0</a>건 <br>
+                              <strong>경고 조달상태:</strong> <a th:href="@{/material/prcrlist}" th:text="${yellowCount}">0</a>건
                             </div>
                           </div>
                         </div>

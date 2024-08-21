@@ -166,6 +166,32 @@ public class ProcurementService {
         prcrRepository.changeStatus(prcrno , prcrStatus.ordinal());
     }
 
+    // 긴급 상태 (RED 및 RED_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countRedStatus() {
+        return prcrRepository.countByStatusIn(Arrays.asList(
+                PrcrStatus.RED.ordinal()
+        ));
+    }
+
+    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countYellowStatus() {
+        return prcrRepository.countByStatusIn(Arrays.asList(
+                PrcrStatus.YELLOW.ordinal()
+        ));
+    }
+//    // 만료되지 않은 모든 상태의 prcr 개수 반환 (EXPIRED 상태 제외)
+//    @Transactional
+//    public long countNonExpiredStatus() {
+//        return prcrRepository.countByStatusNot(PrcrStatus.EXPIRED.ordinal());
+//    }
+
+    // 전체 조달계획의 개수 반환
+    @Transactional
+    public long countTotalProcurementPlans() {
+        return prcrRepository.count();
+    }
 }
 
 

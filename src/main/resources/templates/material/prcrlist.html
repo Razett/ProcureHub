@@ -117,9 +117,7 @@
                                                     <td class="text-center" th:text="'MD'+${#numbers.formatInteger(order.prdcno,6)}" th:if="${j.first}"  th:rowspan="${order.materials.size()}"></td>
                                                     <td class="text-center" th:text="${order.productName}" th:if="${j.first}"  th:rowspan="${order.materials.size()}"></td>
 
-                                                    <td class="text-center">
-                                                        <span th:text="${order.productQuantity}+ '개'"></span>
-                                                    </td>
+                                                    <td class="text-center" th:text="${order.productQuantity}+ '개' " th:if="${j.first}" th:rowspan="${order.materials.size()}"></td>
                                                     <td class="text-center">
                                                         <span th:text="'MA'+${#numbers.formatInteger(material.mtrlno,6)}"></span>
                                                     </td>
@@ -148,8 +146,8 @@
                                                     <td class="text-center" th:text="${#temporals.format(order.moddate, 'yyyy-MM-dd')}" th:if="${j.first}"  th:rowspan="${order.materials.size()}"></td>
                                                     <td class="text-center" th:text="${material.statusString}"></td> <!-- order.status => order.getStatus() -->
                                                     <td class="text-center">
-                                                        <a href="#" class="icon-name" th:if="${material.status < 6}">
-                                                        <i class="ti-download"></i></a>
+                                                        <a th:href="@{/order/add(prcrno=${order.prcrno})}" class="icon-name" th:if="${material.status < 6}">
+                                                        <i class="ti-clipboard"></i></a>
                                                     </td>
                                                 </tr>
                                             </th:block>
