@@ -89,12 +89,10 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.existsById(order.getOrderno());
     }
 
-
-
     @Override
-    public OrderDTO read(Long orderno) {
+    public Order read(Long orderno) {
         Optional<Order> opOr = orderRepository.findById(orderno);
-        return opOr.map(this::orderEntityToDTO).orElse(null);
+        return opOr.get();
     }
 
     @Override
