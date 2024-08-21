@@ -82,7 +82,7 @@ public class ProcurementService {
                     .build();
 
             // Order에 자동 추가
-            if (mtrlDto.getProcureQuantity() > 0) {
+            if (mtrlDto.getProcureQuantity() > 0 && prcr.getStatus() < PrcrStatus.ORDERED.ordinal()) {
                 // orderRepository를 통해서 order 테이블에 prcrno가 일치하는 행이 있는지 먼저 확인한다
                 Order order = orderRepository.findByPrcr(prcr.getPrcrno());
 
@@ -133,21 +133,23 @@ public class ProcurementService {
                 leadtime = 7;
             }
 
-            if (now.plusDays(leadtime + 2 + 3).isAfter(reqdate) || now.plusDays(leadtime + 2 + 3).isEqual(reqdate)) {
-                if (prcr.getStatus() == PrcrStatus.ORDER_ADDED.ordinal()) {
-                    mtrlDto.setStatus(PrcrStatus.RED_ORDER_ADDED.ordinal());
-                    changeStatus(prcr.getPrcrno(), PrcrStatus.RED_ORDER_ADDED); // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
-                } else {
-                    mtrlDto.setStatus(PrcrStatus.RED.ordinal());
-                    changeStatus(prcr.getPrcrno(), PrcrStatus.RED); // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
-                }
-            } else if (now.plusDays(leadtime + 2 + 5).isAfter(reqdate) || now.plusDays(leadtime + 2 + 5).isEqual(reqdate)) {
-                if (prcr.getStatus() == PrcrStatus.ORDER_ADDED.ordinal()) {
-                    mtrlDto.setStatus(PrcrStatus.YELLOW_ORDER_ADDED.ordinal());
-                    changeStatus(prcr.getPrcrno(), PrcrStatus.YELLOW_ORDER_ADDED);
-                } else {
-                    mtrlDto.setStatus(PrcrStatus.YELLOW.ordinal());
-                    changeStatus(prcr.getPrcrno(), PrcrStatus.YELLOW);
+            if (prcr.getStatus() < 8) {
+                if (now.plusDays(leadtime + 2 + 3).isAfter(reqdate) || now.plusDays(leadtime + 2 + 3).isEqual(reqdate)) {
+                    if (prcr.getStatus() == PrcrStatus.ORDER_ADDED.ordinal()) {
+                        mtrlDto.setStatus(PrcrStatus.RED_ORDER_ADDED.ordinal());
+                        changeStatus(prcr.getPrcrno(), PrcrStatus.RED_ORDER_ADDED); // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
+                    } else {
+                        mtrlDto.setStatus(PrcrStatus.RED.ordinal());
+                        changeStatus(prcr.getPrcrno(), PrcrStatus.RED); // DB 에다가 status 바꿔버리는 prcrRepository.changeStatus(dto.getPrcrno, PrcrStatus.RED) 만들고 돌려버리기
+                    }
+                } else if (now.plusDays(leadtime + 2 + 5).isAfter(reqdate) || now.plusDays(leadtime + 2 + 5).isEqual(reqdate)) {
+                    if (prcr.getStatus() == PrcrStatus.ORDER_ADDED.ordinal()) {
+                        mtrlDto.setStatus(PrcrStatus.YELLOW_ORDER_ADDED.ordinal());
+                        changeStatus(prcr.getPrcrno(), PrcrStatus.YELLOW_ORDER_ADDED);
+                    } else {
+                        mtrlDto.setStatus(PrcrStatus.YELLOW.ordinal());
+                        changeStatus(prcr.getPrcrno(), PrcrStatus.YELLOW);
+                    }
                 }
             }
 
@@ -157,8 +159,11 @@ public class ProcurementService {
             }
         }
 
+        // DTO 리스트 생성 후 납기일(reqdate) 기준으로 정렬
+        List<ProcurementDetailsDTO> sortedDtoList = new ArrayList<>(dtoMap.values());
+        sortedDtoList.sort(Comparator.comparing(ProcurementDetailsDTO::getReqdate));
         // 최종 DTO 리스트를 생성
-        return new ArrayList<>(dtoMap.values());
+        return sortedDtoList;
     }
 
     @Transactional
