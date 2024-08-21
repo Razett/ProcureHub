@@ -9,6 +9,7 @@ import com.glkids.procurehub.status.OrderStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> totalList() {
-        List<Order> orders = orderRepository.findAll();
+        List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC,"orderno"));
         List<OrderDTO> totalList = new ArrayList<>();
         orders.forEach(x -> totalList.add(orderEntityToDTO(x)));
         return totalList;
