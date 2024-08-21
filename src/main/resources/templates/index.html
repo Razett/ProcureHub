@@ -150,13 +150,19 @@
                             <div class="card-body">
                               <h5 class="card-title">조달 계획 현황</h5>
                               <div class="mb-2">
-                                <strong>긴급 당일 확인 필요한 조달계획:</strong><span style="border-bottom: 3px solid red;"> 1건</span>
+                                <strong>긴급 상태의 조달계획:</strong>
+                                <span style="border-bottom: 3px solid red;"
+                                      th:text="${redCount} + '건'">1건</span>
+                              </div>
+                              <div class="mb-2">
+                                <strong>경고 상태의 조달계획:</strong>
+                                <span style="border-bottom: 3px solid yellow;"
+                                      th:text="${yellowCount} + '건'">1건</span>
                               </div>
                               <div class="text-muted small">
                                 <br>
                                 <strong>조달 계획</strong>
-                                <p>조달계획 완료: 32,924건</p>
-                                <p>조달계획 미완료: 3,204,298건</p>
+                                <p th:text="'전체 조달계획: ' + ${totalPlans} + '건'">조달계획 : 32,924건</p>
                               </div>
                             </div>
                           </div>
