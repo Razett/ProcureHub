@@ -222,9 +222,9 @@
                                                 <div class="col-md-3 mb-3">
                                                     <label class="form-label">검수 상태</label>
                                                     <select class="form-select" id="modal-importInspection-select">
-                                                        <option id="modal-importInspection-4" value="4">검수전</option>
-                                                        <option id="modal-importInspection-7" value="7">정상</option>
-                                                        <option id="modal-importInspection-5" value="5">입고 불량</option>
+                                                        <option id="modal-importInspection-4" value="0">검수전</option>
+                                                        <option id="modal-importInspection-7" value="1">정상</option>
+                                                        <option id="modal-importInspection-5" value="2">입고 불량</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
@@ -234,7 +234,7 @@
                                             </div>
                                             <div>
                                                 <label class="form-label">검수 내용</label>
-                                                <textarea rows="5" class="form-control"></textarea>
+                                                <textarea rows="5" class="form-control" id="modal-importInspection-content"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -256,12 +256,12 @@
                                         // console.log(data);
                                         $('#modal-table-importno').text('IM' + data.importno.toString().padStart(6, '0'));
                                         $('#modal-table-status').text(data.statusString);
-                                        $('#modal-table-arrivaldate').text(ImportService.formatDate(data.arrivaldate));
-                                        $('#modal-table-approvedate').text(ImportService.formatDate(data.approvedate));
+                                        $('#modal-table-arrivaldate').text(ImportService.formatDateTime(data.arrivaldate));
+                                        $('#modal-table-approvedate').text(ImportService.formatDateTime(data.approvedate));
                                         $('#modal-table-quantity').text(data.quantity);
 
                                         $('#modal-table-orderno').text('OR' + data.order.orderno.toString().padStart(6, '0'));
-                                        $('#modal-table-orderdate').text(ImportService.formatDate(data.order.orderdate));
+                                        $('#modal-table-orderdate').text(ImportService.formatDateTime(data.order.orderdate));
                                         $('#modal-table-corno').text(data.contractor.corno);
                                         $('#modal-table-corname').text(data.contractor.name);
                                         $('#modal-table-orderquantity').text(data.order.quantity);
@@ -272,6 +272,23 @@
                                         $('#modal-table-mtrlwrhs').text(data.order.material.materialWarehouse.name);
                                         $('#modal-table-mtrlquantity').text(data.order.material.quantity);
                                     });
+
+                                    ImportService.readInspection(id, function (data) {
+                                        console.log(data);
+                                        $('#modal-importInspection-duedate').val(ImportService.formatDate(data.duedate));
+                                        $('#modal-importInspection-emp').val(data.emp.name);
+                                        $('#modal-importInspection-select').val(data.status);
+                                        if (data.status != 0) {
+                                            $('#modal-importInspection-duedate').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-emp').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-select').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-dfc').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-content').addClass('bgc-grey-50').prop('readonly', true);
+                                        }
+                                        $('#modal-importInspection-dfc').val(data.dfcQuantity);
+                                        $('#modal-importInspection-content').val(data.content);
+
+                                    })
                                     $('#importModal').modal('show');
                                 });
 
