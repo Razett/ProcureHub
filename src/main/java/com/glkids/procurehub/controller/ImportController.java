@@ -35,6 +35,9 @@ public class ImportController {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "입고 현황");
 
+        model.addAttribute("importBeforeList", importService.getImportListBefore());
+        model.addAttribute("importAfterList", importService.getImportListAfter());
+
         return "import/list";
     }
 
@@ -53,7 +56,7 @@ public class ImportController {
      */
     @Deprecated
     @PostMapping("/update")
-    public String postUpdate() {
+    public String postUpdate(@AuthenticationPrincipal UserDTO userDTO, Model model) {
 
         return "import/list";
     }

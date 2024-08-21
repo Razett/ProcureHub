@@ -1,14 +1,14 @@
 const url = 'http://localhost:8080';
 
-var ImportService = (function (){
+var OrderService = (function (){
 
-    function readImport(importno, callback) {
-        console.log(importno);
-        console.log(JSON.stringify({importno: parseInt(importno)}));
+    function readOrder(orderno, callback) {
+        console.log(orderno);
+        console.log(JSON.stringify({orderno: parseInt(orderno)}));
         $.ajax({
             method: 'POST',
-            url: url + '/rest/import/read',
-            data: JSON.stringify({importno: parseInt(importno)}),
+            url: url + '/rest/order/read',
+            data: JSON.stringify({orderno: parseInt(orderno)}),
             contentType: 'application/json',
             success: function (data) {
                 if (callback) {
@@ -19,45 +19,17 @@ var ImportService = (function (){
         });
     }
 
-    function readInspection(importno, callback) {
-        console.log(importno);
-        console.log(JSON.stringify({importno: parseInt(importno)}));
+    function readInspection(orderno, callback) {
+        console.log(orderno);
+        console.log(JSON.stringify({orderno: parseInt(orderno)}));
         $.ajax({
             method: 'POST',
-            url: url + '/rest/import/insread',
-            data: JSON.stringify({importno: parseInt(importno)}),
+            url: url + '/rest/order/insread',
+            data: JSON.stringify({orderno: parseInt(orderno)}),
             contentType: 'application/json',
             success: function (data) {
                 if (callback) {
                     console.log(data);
-                    callback(data);
-                }
-            }
-        });
-    }
-
-    function executeImport(jsonArray, callback) {
-        $.ajax({
-            method: 'POST',
-            url: url + '/rest/import/execute',
-            data: jsonArray,
-            contentType: 'application/json',
-            success: function (data) {
-                if (callback) {
-                    callback(data);
-                }
-            }
-        });
-    }
-
-    function updateInspection(jsonObject, callback) {
-        $.ajax({
-            method: 'POST',
-            url: url + '/rest/import/insupdate',
-            data: jsonObject,
-            contentType: 'application/json',
-            success: function (data) {
-                if (callback) {
                     callback(data);
                 }
             }
@@ -113,10 +85,8 @@ var ImportService = (function (){
     }
 
     return {
-        readImport:readImport,
+        readOrder:readOrder,
         readInspection:readInspection,
-        executeImport:executeImport,
-        updateInspection:updateInspection,
         formatDate:formatDate,
         formatDateTime:formatDateTime
     };

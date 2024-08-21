@@ -1,10 +1,419 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>입고현황</h1>
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <style>
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #fff;
+                z-index: 90000;
+            }
+
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
+
+            @-webkit-keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0)
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    -webkit-transform: scale(0);
+                    transform: scale(0);
+                }
+                100% {
+                    -webkit-transform: scale(1.0);
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script defer="defer" src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <div class="row gap-20 pos-r">
+                            <div class="bgc-white p-20 mB-20 bd col-md-12">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="c-grey-900 mT-10 mB-30">입고 대기 현황</h4>
+                                    <div class="d-flex align-items-center mT-10 mB-30">
+                                        <button type="button" id="execute-import-btn"
+                                                class="btn cur-p btn-outline-secondary ms-2">
+                                            <a href="#"
+                                               style="text-decoration: none; color: inherit; text-align: center;">
+                                                도착 및 진행
+                                            </a>
+                                        </button>
+                                        <div class="dropdown d-none">
+                                            <a class="px-2 py-2 ms-2" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="">셀 서식으로 다운로드</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto overflow-y-auto" style="height: 300px;">
+                                    <table class="table table-hover" style="min-width: 1200px;">
+                                        <thead class="position-sticky top-0">
+                                        <tr class="table-active">
+                                            <th scope="col" class="text-center">입고 코드</th>
+                                            <th scope="col" class="text-center">도착일</th>
+                                            <th scope="col" class="text-center">도착 확인자</th>
+                                            <th scope="col" class="text-center">발주 코드</th>
+                                            <th scope="col" class="text-center">자재 코드</th>
+                                            <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center">현재 수량</th>
+                                            <th scope="col" class="text-center">발주 수량</th>
+                                            <th scope="col" class="text-center">입고 수량</th>
+                                            <th scope="col" class="text-center">입고 상태</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                            <th:block th:each="import : ${importBeforeList}">
+                                                <tr th:id="${import.importno}">
+                                                    <td class="text-center">
+                                                        <input type="checkbox" class="order-before-check" th:value="${import.importno}">
+                                                        <span class="c-grey-900" th:text="' IM' + ${#numbers.formatInteger(import.importno, 6)}"></span>
+                                                    </td>
+                                                    <td class="text-center">N/A</td>
+                                                    <td class="text-center">N/A</td>
+                                                    <td class="text-center" th:text="'OR' + ${#numbers.formatInteger(import.order.orderno, 6)}"></td>
+                                                    <td class="text-center" th:text="'MA' + ${#numbers.formatInteger(import.order.material.mtrlno, 6)}"></td>
+                                                    <td class="text-center" th:text="${import.order.material.name}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(import.order.material.quantity, 0, 'COMMA')}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(import.order.quantity, 0, 'COMMA')}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(import.quantity, 0, 'COMMA')}"></td>
+                                                    <td class="text-center" th:text="${import.statusString}"></td>
+                                                </tr>
+                                            </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gap-20 pos-r">
+                            <div class="bgc-white p-20 bd col-md-12">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="c-grey-900 mT-10 mB-30">입고 진행 현황</h4>
+                                    <div class="d-flex align-items-center mT-10 mB-30">
+                                        <a href="#searchGroup"
+                                           class="px-2 py-2 d-none" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="searchGroup">
+                                            <i class="c-grey-900 ti-search fa-1-25x"></i>
+                                        </a>
+                                        <div class="dropdown d-none">
+                                            <a class="px-2 py-2 ms-2" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="">셀 서식으로 다운로드</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto overflow-y-auto" style="height: 300px;">
+                                    <table class="table table-hover">
+                                        <thead class="position-sticky top-0">
+                                        <tr class="table-active">
+                                            <th scope="col" class="text-center">입고 코드</th>
+                                            <th scope="col" class="text-center">도착일</th>
+                                            <th scope="col" class="text-center">도착 확인자</th>
+                                            <th scope="col" class="text-center">발주 코드</th>
+                                            <th scope="col" class="text-center">자재 코드</th>
+                                            <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center">현재 수량</th>
+                                            <th scope="col" class="text-center">발주 수량</th>
+                                            <th scope="col" class="text-center">입고 수량</th>
+                                            <th scope="col" class="text-center">입고 상태</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="import : ${importAfterList}">
+                                            <tr th:id="${import.importno}">
+                                                <td class="import-code text-center" th:text="'IM' + ${#numbers.formatInteger(import.importno, 6)}"></td>
+                                                <td class="import-code text-center" th:text="${#temporals.format(import.arrivaldate, 'yyyy-MM-dd a hh:mm') }"></td>
+                                                <td class="import-code text-center" th:text="${import.approver != null ? import.approver.name : 'N/A'}"></td>
+                                                <td class="import-code text-center" th:text="'OR' + ${#numbers.formatInteger(import.order.orderno, 6)}"></td>
+                                                <td class="import-code text-center" th:text="'MA' + ${#numbers.formatInteger(import.order.material.mtrlno, 6)}"></td>
+                                                <td class="import-code text-center" th:text="${import.order.material.name}"></td>
+                                                <td class="import-code text-end" th:text="${#numbers.formatInteger(import.order.material.quantity, 0, 'COMMA')}"></td>
+                                                <td class="import-code text-end" th:text="${#numbers.formatInteger(import.order.quantity, 0, 'COMMA')}"></td>
+                                                <td class="import-code text-end" th:text="${#numbers.formatInteger(import.quantity, 0, 'COMMA')}"></td>
+                                                <td class="import-code text-center" th:text="${import.statusString}"></td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 입고 상세 정보 모달 -->
+                        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl"> <!-- modal-xl 클래스로 더 큰 모달 설정 -->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="importModalLabel">입고 상세정보</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="overflow-x-auto">
+                                            <table class="table table-bordered" style="min-width: 760px;">
+                                                <tr class="table-active">
+                                                    <th class="text-center">입고 코드</th>
+                                                    <th class="text-center">입고 상태</th>
+                                                    <th class="text-center">도착일</th>
+                                                    <th class="text-center">입고일</th>
+                                                    <th class="text-center">입고 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-importno">dummy</td>
+                                                    <td class="text-center" id="modal-table-status">dummy</td>
+                                                    <td class="text-center" id="modal-table-arrivaldate">dummy</td>
+                                                    <td class="text-center" id="modal-table-approvedate">dummy</td>
+                                                    <td class="text-center" id="modal-table-quantity">dummy</td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <th class="text-center">발주 코드</th>
+                                                    <th class="text-center">발주일</th>
+                                                    <th class="text-center">사업자등록번호</th>
+                                                    <th class="text-center">업체명</th>
+                                                    <th class="text-center">발주 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-orderno">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-corno">dummy</td>
+                                                    <td class="text-center" id="modal-table-corname">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderquantity">dummy</td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-bordered" style="min-width: 760px;">
+                                                <tr class="table-active">
+                                                    <th class="text-center">자재코드</th>
+                                                    <th class="text-center">자재명</th>
+                                                    <th class="text-center">자재그룹</th>
+                                                    <th class="text-center">창고위치</th>
+                                                    <th class="text-center">현재 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-mtrlno">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlname">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlgroup">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlwrhs">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <hr>
+                                        <div>
+                                            <h5>입고 검수</h5>
+                                            <div class="row">
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">검수(예정)일</label>
+                                                    <input type="text" class="form-control" id="modal-importInspection-duedate">
+                                                    <input type="hidden" class="form-control" id="modal-importInspection-nspcno">
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">검수자</label>
+                                                    <input type="text" class="form-control" id="modal-importInspection-emp">
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">검수 상태</label>
+                                                    <select class="form-select" id="modal-importInspection-select" onchange="setDfcByInspectionStatus(this)">
+                                                        <option id="modal-importInspection-4" value="0">검수 전</option>
+                                                        <option id="modal-importInspection-7" value="1">정상</option>
+                                                        <option id="modal-importInspection-5" value="2">입고 불량</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label class="form-label">불량 자재 수</label>
+                                                    <input type="number" class="form-control" id="modal-importInspection-dfc" onchange="changeInspectionStatus()">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">검수 내용</label>
+                                                <textarea rows="5" class="form-control" id="modal-importInspection-content"></textarea>
+                                            </div>
+                                            <div class="mb-3 d-flex justify-content-end d-none">
+                                                <button class="btn btn-outline-secondary" id="modal-importInspection-submit">저장</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary c-white" data-bs-dismiss="modal">확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="/js/import.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                // 입고 코드 클릭 시 모달 표시
+                                $('.import-code').on('click', function () {
+                                    var id = $(this).closest('tr').attr('id');
+                                    console.log(id);
+
+                                    ImportService.readImport(id, function (data) {
+                                        // console.log(data);
+                                        $('#modal-table-importno').text('IM' + data.importno.toString().padStart(6, '0'));
+                                        $('#modal-table-status').text(data.statusString);
+                                        $('#modal-table-arrivaldate').text(ImportService.formatDateTime(data.arrivaldate));
+                                        $('#modal-table-approvedate').text(ImportService.formatDateTime(data.approvedate));
+                                        $('#modal-table-quantity').text(data.quantity);
+
+                                        $('#modal-table-orderno').text('OR' + data.order.orderno.toString().padStart(6, '0'));
+                                        $('#modal-table-orderdate').text(ImportService.formatDateTime(data.order.orderdate));
+                                        $('#modal-table-corno').text(data.contractor.corno);
+                                        $('#modal-table-corname').text(data.contractor.name);
+                                        $('#modal-table-orderquantity').text(data.order.quantity);
+
+                                        $('#modal-table-mtrlno').text('MA' + data.order.material.mtrlno.toString().padStart(6, '0'));
+                                        $('#modal-table-mtrlname').text(data.order.material.name);
+                                        $('#modal-table-mtrlgroup').text(data.order.material.materialGroup.name);
+                                        $('#modal-table-mtrlwrhs').text(data.order.material.materialWarehouse.name);
+                                        $('#modal-table-mtrlquantity').text(data.order.material.quantity);
+                                    });
+
+                                    ImportService.readInspection(id, function (data) {
+                                        console.log(data);
+                                        $('#modal-importInspection-nspcno').val(data.importNspcNo);
+                                        $('#modal-importInspection-duedate').val(ImportService.formatDate(data.duedate));
+
+                                        if (data.emp) {
+                                            $('#modal-importInspection-emp').val(data.emp.name);
+                                        } else {
+                                            $('#modal-importInspection-emp').val('N/A');
+                                        }
+                                        $('#modal-importInspection-emp').addClass('bgc-grey-50').prop('readonly', true);
+
+                                        $('#modal-importInspection-select').val(data.status);
+
+                                        if (data.status != 0) {
+                                            $('#modal-importInspection-duedate').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-select').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-dfc').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-content').addClass('bgc-grey-50').prop('readonly', true);
+                                            $('#modal-importInspection-submit').closest('div').addClass('d-none');
+                                        } else {
+                                            $('#modal-importInspection-duedate').removeClass('bgc-grey-50').prop('readonly', false);
+                                            $('#modal-importInspection-select').removeClass('bgc-grey-50').prop('readonly', false);
+                                            $('#modal-importInspection-dfc').removeClass('bgc-grey-50').prop('readonly', false);
+                                            $('#modal-importInspection-content').removeClass('bgc-grey-50').prop('readonly', false);
+                                            $('#modal-importInspection-submit').closest('div').removeClass('d-none');
+
+                                        }
+                                        $('#modal-importInspection-dfc').val(data.dfcQuantity);
+                                        $('#modal-importInspection-content').val(data.content);
+
+                                    })
+                                    $('#importModal').modal('show');
+                                });
+
+                                $('#execute-import-btn').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var importList = [];
+
+                                    $('.order-before-check:checked').each(function () {
+                                        importList.push({
+                                            importno : $(this).val()
+                                        });
+                                    });
+
+                                    console.log(JSON.stringify(importList));
+
+                                    ImportService.executeImport(JSON.stringify(importList), function (data) {
+                                        if (data) {
+                                            window.location.href="/import/list";
+                                            console.log(data);
+                                        }
+                                    });
+                                });
+
+                                $('#modal-importInspection-submit').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var object = {
+                                        importNspcNo: $('#modal-importInspection-nspcno').val(),
+                                        status : $('#modal-importInspection-select').val(),
+                                        importno : parseInt($('#modal-table-importno').text().replace(/^IM/, ''), 10),
+                                        dfcQuantity : $('#modal-importInspection-dfc').val(),
+                                        content : $('#modal-importInspection-content').val()
+                                    }
+
+                                    ImportService.updateInspection(JSON.stringify(object), function (data) {
+                                        if (data) {
+                                            console.log(data);
+                                            // window.location.href="/import/list";
+                                        }
+                                    })
+                                })
+                            });
+                            function changeInspectionStatus() {
+                                if ($('#modal-importInspection-dfc').val()) {
+                                    $('#modal-importInspection-select').val(2);
+                                } else {
+                                    $('#modal-importInspection-select').val(1);
+                                }
+                            }
+
+                            function setDfcByInspectionStatus(element) {
+                                if (element.value == 1) {
+                                    $('#modal-importInspection-dfc').addClass('bgc-grey-50').prop('readonly', true);
+                                    $('#modal-importInspection-dfc').val('0');
+                                } else {
+                                    $('#modal-importInspection-dfc').removeClass('bgc-grey-50').prop('readonly', false);
+                                }
+                            }
+                        </script>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+    </div>
+    </body>
+</th:block>
 </html>

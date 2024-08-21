@@ -36,6 +36,7 @@ public class ImportInspectionDTO {
     private Integer dfcQuantity;
     private Emp emp;
     private Integer status;
+    private Long importno;
 
     public String getStatusString() {
         if (status != null) {

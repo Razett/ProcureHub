@@ -108,7 +108,7 @@
                                 <div class="overflow-x-auto">
                                     <table class="table table-hover" style="min-width: 1400px;">
                                         <thead class="position-sticky top-0">
-                                        <tr>
+                                        <tr class="table-active">
                                             <th scope="col" class="text-center">입고 코드</th>
                                             <th scope="col" class="text-center">도착일</th>
                                             <th scope="col" class="text-center">입고일</th>
@@ -116,6 +116,7 @@
                                             <th scope="col" class="text-center">발주 코드</th>
                                             <th scope="col" class="text-center">자재 코드</th>
                                             <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center">현재 수량</th>
                                             <th scope="col" class="text-center">발주 수량</th>
                                             <th scope="col" class="text-center">입고 수량</th>
                                             <th scope="col" class="text-center">입고 상태</th>
@@ -128,10 +129,11 @@
                                                     <td class="import-code text-center" th:text="'IM' + ${#numbers.formatInteger(import.importno, 6)}"></td>
                                                     <td class="import-code text-center" th:text="${#temporals.format(import.arrivaldate, 'yyyy-MM-dd a hh:mm') }"></td>
                                                     <td class="import-code text-center" th:text="${#temporals.format(import.approvedate, 'yyyy-MM-dd a hh:mm')}"></td>
-                                                    <td class="import-code text-center" th:text="${import.approver}"></td>
+                                                    <td class="import-code text-center" th:text="${import.approver != null ? import.approver.name : 'N/A'}"></td>
                                                     <td class="import-code text-center" th:text="'OR' + ${#numbers.formatInteger(import.order.orderno, 6)}"></td>
                                                     <td class="import-code text-center" th:text="'MA' + ${#numbers.formatInteger(import.order.material.mtrlno, 6)}"></td>
                                                     <td class="import-code text-center" th:text="${import.order.material.name}"></td>
+                                                    <td class="text-end" th:text="${#numbers.formatInteger(import.order.material.quantity, 0, 'COMMA')}"></td>
                                                     <td class="import-code text-end" th:text="${#numbers.formatInteger(import.order.quantity, 0, 'COMMA')}"></td>
                                                     <td class="import-code text-end" th:text="${#numbers.formatInteger(import.quantity, 0, 'COMMA')}"></td>
                                                     <td class="import-code text-center" th:text="${import.statusString}"></td>
@@ -155,7 +157,7 @@
                             <div class="modal-dialog modal-xl"> <!-- modal-xl 클래스로 더 큰 모달 설정 -->
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="importModalLabel">입고 상세정보</h5>
+                                        <h5 class="modal-title" id="importModalLabel">입고 상세 정보</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -207,9 +209,10 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <hr>
+                                        <br>
                                         <div>
                                             <h5>입고 검수</h5>
+                                            <br>
                                             <div class="row">
                                                 <div class="col-md-3 mb-3">
                                                     <label class="form-label">검수(예정)일</label>
@@ -228,7 +231,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
-                                                    <label class="form-label">불량 자재 수</label>
+                                                    <label class="form-label">불량 자재수</label>
                                                     <input type="number" class="form-control" id="modal-importInspection-dfc">
                                                 </div>
                                             </div>

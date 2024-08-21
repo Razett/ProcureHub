@@ -130,9 +130,9 @@
                                     </div>
                                 </div>
                                 <div style="overflow:auto; max-width:1792px; height:230px;">
-                                    <table class="table table-bordered table-hover" style="width: 100%;">
-                                        <thead>
-                                        <tr>
+                                    <table class="table table-bordered table-hover" style="width:100%;">
+                                        <thead class="position-sticky top-0">
+                                        <tr class="table-active">
                                             <th>
                                                 <input type="checkbox" id="order-code" onclick="toggleCheckboxes(this)" class="text-left">
                                                 <span class="text-center">발주코드</span>
@@ -189,9 +189,9 @@
                             <div class="bgc-white p-20 bd col-md-12">
                                 <h4 class="c-grey-900 mT-10 mB-30">진행 현황</h4>
                                 <div style="overflow:auto; max-width:1792px; height:230px;">
-                                <table id="target-table" class="table table-bordered table-hover" style="width: 100%; text-align: center;">
-                                    <thead>
-                                    <tr>
+                                <table id="target-table" class="table table-bordered table-hover" style="width:100%; text-align:center;">
+                                    <thead class="position-sticky top-0">
+                                    <tr class="table-active">
                                         <th>발주 코드</th>
                                         <th>납기일</th>
                                         <th>자재 코드</th>
@@ -202,12 +202,12 @@
                                         <th>단가</th>
                                         <th>총금액</th>
                                         <th>발주 상태</th>
-                                        <th scope="col" class="col-md-2">발주 날짜</th>
+                                        <th scope="col" class="col-md-2">발주 실행일</th>
                                     </tr>
                                     </thead>
                                     <tbody id="conTbody">
                                     <!-- 이곳에 JavaScript로 데이터를 추가 -->
-                                        <tr th:each="order : ${orderAfterList}">
+                                        <tr class="tr-continue" th:id="${order.orderno}" th:each="order : ${orderAfterList}">
                                             <td th:text="${'OR' + #numbers.formatInteger(order.orderno, 6)}"></td>
                                             <td th:text="${order.prcr != null ? #temporals.format(order.prcr.getReqdate(), 'yyyy-MM-dd') : 'N/A'}"></td>
                                             <td th:text="${order.material != null ? order.material.getMtrlno() : 'N/A'}"></td>
@@ -223,38 +223,73 @@
                                                 <span th:text="${#temporals.format(order.orderdate, 'a hh:mm')}"></span>
                                             </td>
                                         </tr>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="importModalLabel">발주 상세 정보</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <table class="table table-bordered">
-                                                        <tr class="table-active">
-                                                            <th class="text-center">안녕</th>
-                                                            <th class="text-center">나는</th>
-                                                            <th class="text-center">디우야</th>
-                                                        </tr>
-                                                        <tr class="table-active">
-                                                            <td class="text-center">우하하</td>
-                                                            <td class="text-center">졸려</td>
-                                                            <td class="text-center">집가고 싶어요</td>
-                                                        </tr>
-                                                        </table>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
-                        </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="orderModalLabel">발주 상세 정보</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-bordered" style="min-width: 760px;">
+                                                <tr class="table-active">
+                                                    <th class="text-center">발주 코드</th>
+                                                    <th class="text-center">발주 날짜</th>
+                                                    <th class="text-center">발주 사원</th>
+                                                    <th class="text-center">조달 계획 코드</th>
+                                                    <th class="text-center">납기일</th>
+                                                    <th class="text-center">등록일</th>
+                                                    <th class="text-center">검수 현황</th>
+                                                    <th class="text-center">발주 상태</th>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td class="text-center" id="modal-table-orderno">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-emp">dummy</td>
+                                                    <td class="text-center" id="modal-table-prcrno">dummy</td>
+                                                    <td class="text-center" id="modal-table-reqdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-regdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-inspectionStatus">dummy</td>
+                                                    <td class="text-center" id="modal-table-status">dummy</td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <th class="text-center">자재 코드</th>
+                                                    <th class="text-center">자재명</th>
+                                                    <th class="text-center">자재 규격</th>
+                                                    <th class="text-center">자재 수량</th>
+                                                    <th class="text-center">회사명</th>
+                                                    <th class="text-center">단가</th>
+                                                    <th class="text-center">총금액</th>
+                                                    <th class="text-center">L/T</th>
+                                                    <th class="text-center">발주 수량</th>
+                                                    <th class="text-center">발주서</th>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td class="text-center" id="modal-table-mtrlno">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlname">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlstandard">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
+                                                    <td class="text-center" id="modal-table-contractorname">dummy</td>
+                                                    <td class="text-center" id="modal-table-unitprice">dummy</td>
+                                                    <td class="text-center" id="modal-table-totalprice">dummy</td>
+                                                    <td class="text-center" id="modal-table-leadtime">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderquantity">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderdraft">dummy</td>
+                                                </tr>
+                                            </table>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script src="/js/order.js"></script>
                             <script>
                                 function toggleCheckboxes(masterCheckbox) {
                                     const isChecked = $(masterCheckbox).is(':checked');
@@ -457,13 +492,7 @@
                                     //진행 현황 클릭 시 모달창 표시(발주 상세 정보)
                                     $(document).ready(function () {
                                         $('#conTbody').on('click', 'td', function () {
-                                            var row = $(this).closest('tr');
-                                            var orderNo = row.find('td:first').text();
-                                            var materialName = row.find('td:nth-child(4)').text();
-
-                                            $('.modal-body').text('Material: ' + materialName);
-
-                                            // Show the modal
+                                            // 이미 정의된 모달을 보이게 합니다.
                                             $('#exampleModal').modal('show');
                                         });
                                     });

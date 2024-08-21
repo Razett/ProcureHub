@@ -103,7 +103,7 @@
                                                 <label class="form-label" for="inputState">자재 그룹<span class="c-red-700 fa-1x">*</span></label>
                                                 <div class="row">
                                                     <div class="mb-2 col-md-4">
-                                                        <select class="form-control" id="topGroup" name="topGrpcode"
+                                                        <select class="form-select" id="topGroup" name="topGrpcode"
                                                                 control-id="ControlID-10">
                                                             <option value="ETC">자재 그룹을 선택하세요.</option>
                                                             <th:block
@@ -115,7 +115,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-2 col-md-4">
-                                                        <select class="form-control" id="midGroup" name="midGrpcode"
+                                                        <select class="form-select" id="midGroup" name="midGrpcode"
                                                                 control-id="ControlID-10">
                                                             <option th:value="${material.materialGroup.grpcode}">...
                                                             </option>
@@ -130,7 +130,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 col-md-4">
-                                                        <select class="form-control" id="subGroup" name="grpcode"
+                                                        <select class="form-select" id="subGroup" name="grpcode"
                                                                 control-id="ControlID-10">
                                                             <option th:value="${material.materialGroup.grpcode}">...
                                                             </option>
@@ -148,7 +148,7 @@
                                             </div>
                                             <div class="mb-3 col-md-3">
                                                 <label class="form-label" for="inputState">자재 창고<span class="c-red-700 fa-1x">*</span></label>
-                                                <select id="inputState" class="form-control" name="wrhscode"
+                                                <select id="inputState" class="form-select" name="wrhscode"
                                                         control-id="ControlID-10">
                                                     <th:block th:each="warehouse : ${warehouses}">
                                                         <option th:value="${warehouse.getWrhscode()}"
