@@ -47,8 +47,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto">
-                                    <table class="table table-bordered table-hover" style="min-width: 2300px;">
+                                <div class="overflow-x-auto" style="min-height: 680px">
+                                    <table class="table table-bordered table-hover" style="min-width: 1000px;" >
                                         <thead>
                                         <tr class="table-active text-center">
                                             <th><input type="checkbox" id="selectAll"/> 출고번호</th>
@@ -65,7 +65,7 @@
                                             <th>상태코드</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="tableBody">
+                                        <tbody id="tableBody" class="text-center">
                                         <tr th:each="exp : ${export}">
                                             <td class="text-center">
                                                 <input type="checkbox" class="export-check" name="exportCheckbox" th:value="${exp.exportno}"  th:disabled="${!exp.isValidateExcute}"/>
@@ -75,7 +75,7 @@
                                             <td th:text="${exp.shipper == null ? 'N/A': exp.shipper.name}">담당자</td>
                                             <td th:text="'P' + ${#numbers.formatInteger(exp.prcr.prcrno, 6)}">조달계획코드</td>
                                             <td th:text="${#temporals.format(exp.shippeddate, 'yyyy-MM-dd')}">출고일</td>
-                                            <td th:text="${exp.prcr.material.mtrlno}"></td>
+                                            <td th:text="'MA' + ${#numbers.formatInteger(exp.prcr.material.mtrlno, 6)}"></td>
                                             <td th:text="${exp.prcr.material.name}"></td>
                                             <td th:text="${exp.prcr.material.quantity}"></td>
                                             <td th:text="${exp.quantity}">수량</td>
