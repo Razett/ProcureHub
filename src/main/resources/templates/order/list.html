@@ -227,64 +227,69 @@
                                 </table>
                                 </div>
                             </div>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                            <!-- 발주 상세 정보 모달 -->
+                            <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="orderModalLabel">발주 상세 정보</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <table class="table table-bordered" style="min-width: 760px;">
-                                                <tr class="table-active">
-                                                    <th class="text-center">발주 코드</th>
-                                                    <th class="text-center">발주 날짜</th>
-                                                    <th class="text-center">발주 사원</th>
-                                                    <th class="text-center">조달 계획 코드</th>
-                                                    <th class="text-center">납기일</th>
-                                                    <th class="text-center">등록일</th>
-                                                    <th class="text-center">검수 현황</th>
-                                                    <th class="text-center">발주 상태</th>
-                                                </tr>
-                                                <tr class="table-active">
-                                                    <td class="text-center" id="modal-table-orderno">dummy</td>
-                                                    <td class="text-center" id="modal-table-orderdate">dummy</td>
-                                                    <td class="text-center" id="modal-table-emp">dummy</td>
-                                                    <td class="text-center" id="modal-table-prcrno">dummy</td>
-                                                    <td class="text-center" id="modal-table-reqdate">dummy</td>
-                                                    <td class="text-center" id="modal-table-regdate">dummy</td>
-                                                    <td class="text-center" id="modal-table-inspectionStatus">dummy</td>
-                                                    <td class="text-center" id="modal-table-status">dummy</td>
-                                                </tr>
-                                                <tr class="table-active">
-                                                    <th class="text-center">자재 코드</th>
-                                                    <th class="text-center">자재명</th>
-                                                    <th class="text-center">자재 규격</th>
-                                                    <th class="text-center">자재 수량</th>
-                                                    <th class="text-center">회사명</th>
-                                                    <th class="text-center">단가</th>
-                                                    <th class="text-center">총금액</th>
-                                                    <th class="text-center">L/T</th>
-                                                    <th class="text-center">발주 수량</th>
-                                                    <th class="text-center">발주서</th>
-                                                </tr>
-                                                <tr class="table-active">
-                                                    <td class="text-center" id="modal-table-mtrlno">dummy</td>
-                                                    <td class="text-center" id="modal-table-mtrlname">dummy</td>
-                                                    <td class="text-center" id="modal-table-mtrlstandard">dummy</td>
-                                                    <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
-                                                    <td class="text-center" id="modal-table-contractorname">dummy</td>
-                                                    <td class="text-center" id="modal-table-unitprice">dummy</td>
-                                                    <td class="text-center" id="modal-table-totalprice">dummy</td>
-                                                    <td class="text-center" id="modal-table-leadtime">dummy</td>
-                                                    <td class="text-center" id="modal-table-orderquantity">dummy</td>
-                                                    <td class="text-center" id="modal-table-orderdraft">dummy</td>
-                                                </tr>
-                                            </table>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기
-                                            </button>
+                                            <div class="overflow-x-auto">
+                                                <table class="table table-bordered" style="min-width: 760px;">
+                                                    <tr class="table-active">
+                                                        <th class="text-center">발주 코드</th>
+                                                        <th class="text-center">발주 날짜</th>
+                                                        <th class="text-center">발주 사원</th>
+                                                        <th class="text-center">조달 계획 코드</th>
+                                                        <th class="text-center">납기일</th>
+                                                        <th class="text-center">등록일</th>
+                                                        <th class="text-center">검수 현황</th>
+                                                        <th class="text-center">발주 상태</th>
+                                                        <th class="text-center">발주서</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center" id="modal-table-orderno">dummy</td>
+                                                        <td class="text-center" id="modal-table-orderdate">dummy</td>
+                                                        <td class="text-center" id="modal-table-emp">dummy</td>
+                                                        <td class="text-center" id="modal-table-prcrno">dummy</td>
+                                                        <td class="text-center" id="modal-table-reqdate">dummy</td>
+                                                        <td class="text-center" id="modal-table-regdate">dummy</td>
+                                                        <td class="text-center" id="modal-table-inspectionStatus">dummy</td>
+                                                        <td class="text-center" id="modal-table-status">dummy</td>
+                                                        <td class="col-md-1 text-center" id="modal-table-orderdraft">
+                                                            <span class="ti-check-box"></span><span class="icon-name"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="table-active">
+                                                        <th class="text-center">자재 코드</th>
+                                                        <th class="text-center">자재명</th>
+                                                        <th class="text-center">자재 규격</th>
+                                                        <th class="text-center">자재 수량</th>
+                                                        <th class="text-center">회사명</th>
+                                                        <th class="text-center">단가</th>
+                                                        <th class="text-center">총금액</th>
+                                                        <th class="text-center">L/T</th>
+                                                        <th class="text-center">발주 수량</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center" id="modal-table-mtrlno">dummy</td>
+                                                        <td class="text-center" id="modal-table-mtrlname">dummy</td>
+                                                        <td class="text-center" id="modal-table-mtrlstandard">dummy</td>
+                                                        <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
+                                                        <td class="text-center" id="modal-table-contractorname">dummy</td>
+                                                        <td class="text-center" id="modal-table-unitprice">dummy</td>
+                                                        <td class="text-center" id="modal-table-totalprice">dummy</td>
+                                                        <td class="text-center" id="modal-table-leadtime">dummy</td>
+                                                        <td class="text-center" id="modal-table-orderquantity">dummy</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                         </div>
                                     </div>
                                 </div>
@@ -326,6 +331,7 @@
 
                                 //체크박스가 체크된 항목들의 값 중 발주코드, 회사명 저장
                                 $(document).ready(function () {
+
                                     function getOrder() {
                                         var excuteOrderArray = [];
 
@@ -488,13 +494,44 @@
                                             }
                                         });
                                     });
+                                    //진행 현황 클릭 시 모달 표시(발주 상세 정보)
+                                    $('.tr-continue').on('click', function () {
+                                        var id = $(this).closest('tr').attr('id');
 
-                                    //진행 현황 클릭 시 모달창 표시(발주 상세 정보)
-                                    $(document).ready(function () {
-                                        $('#conTbody').on('click', 'td', function () {
-                                            // 이미 정의된 모달을 보이게 합니다.
-                                            $('#exampleModal').modal('show');
+                                        OrderService.readOrder(id, function (data) {
+                                            console.log(data);
+                                            $('#modal-table-orderno').text('OR' + data.orderno.toString().padStart(6, '0'));
+                                            $('#modal-table-orderdate').text(OrderService.formatDate(data.orderdate));
+                                            $('#modal-table-emp').text(data.quotationmtrl.emp.name);
+                                            if (data.prcr){
+                                                $('#modal-table-prcrno').text(data.prcr.prcrno);
+                                            } else {
+                                                $('#modal-table-prcrno').text(null);
+                                            }
+                                            if (data.prcr){
+                                                $('#modal-table-reqdate').text(OrderService.formatDate(data.prcr.reqdate));
+                                            } else {
+                                                $('#modal-table-reqdate').text(null);
+                                            }
+                                            $('#modal-table-regdate').text(OrderService.formatDate(data.regdate));
+                                            $('#modal-table-inspectionStatus').text();
+                                            $('#modal-table-status').text(data.status);
+
+                                            $('#modal-table-mtrlno').text(data.quotationmtrl.material.mtrlno);
+                                            $('#modal-table-mtrlname').text(data.quotationmtrl.material.name);
+                                            $('#modal-table-mtrlstandard').text(data.quotationmtrl.material.standard);
+                                            $('#modal-table-mtrlquantity').text(data.quotationmtrl.material.quantity);
+                                            $('#modal-table-contractorname').text(data.quotationmtrl.quotation.contractor.name);
+                                            $('#modal-table-unitprice').text(data.quotationmtrl.unitprice);
+                                            $('#modal-table-totalprice').text(data.quotationmtrl.totalprice);
+                                            $('#modal-table-leadtime').text(data.quotationmtrl.leadtime);
+                                            $('#modal-table-orderquantity').text(data.quantity);
+
+
                                         });
+
+
+                                        $('#orderModal').modal('show');
                                     });
                                 });
                             </script>

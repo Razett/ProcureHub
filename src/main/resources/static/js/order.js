@@ -1,13 +1,12 @@
 const url = 'http://localhost:8080';
 
 var OrderService = (function (){
-
     function readOrder(orderno, callback) {
         console.log(orderno);
         console.log(JSON.stringify({orderno: parseInt(orderno)}));
         $.ajax({
             method: 'POST',
-            url: url + '/rest/order/read',
+            url: '/rest/order/read',
             data: JSON.stringify({orderno: parseInt(orderno)}),
             contentType: 'application/json',
             success: function (data) {

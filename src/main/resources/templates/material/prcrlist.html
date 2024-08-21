@@ -121,7 +121,7 @@
                                                     <td class="text-center" th:text="${material.statusString}"></td> <!-- order.status => order.getStatus() -->
                                                     <td class="text-center">
                                                         <a th:href="@{/order/add(mtrlno=${material.mtrlno})}" class="icon-name" th:if="${material.status < 6}">
-                                                        <i class="ti-download"></i></a>
+                                                        <i class="ti-clipboard"></i></a>
                                                     </td>
                                                 </tr>
                                             </th:block>

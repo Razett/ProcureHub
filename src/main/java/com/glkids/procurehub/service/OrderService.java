@@ -25,7 +25,7 @@ public interface OrderService {
     boolean register(OrderDTO orderDTO);
 
     //4. 발주 상세 정보
-    OrderDTO read(Long orderno);
+    Order read(Long orderno);
 
     //5. 발주 전체 내역 목록
     List<OrderDTO> totalList();
