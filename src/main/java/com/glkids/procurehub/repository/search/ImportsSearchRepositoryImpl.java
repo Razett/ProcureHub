@@ -50,8 +50,11 @@ public class ImportsSearchRepositoryImpl extends QuerydslRepositorySupport imple
 
         BooleanBuilder builder = new BooleanBuilder();
         BooleanExpression searchExp = null;
+        BooleanExpression statusExp = qImport.status.gt(ImportStatus.NEEDS_INSPECTION.ordinal());
 
         List<BooleanExpression> booleanExpressions = new ArrayList<>();
+
+        builder.and(statusExp);
 
         if ((input == null || type == null) || input.isEmpty()) {
             return builder.and(qImport.importno.gt(0L));

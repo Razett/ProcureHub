@@ -36,6 +36,34 @@ var ImportService = (function (){
         });
     }
 
+    function executeImport(jsonArray, callback) {
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/import/execute',
+            data: jsonArray,
+            contentType: 'application/json',
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
+    function updateInspection(jsonObject, callback) {
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/import/insupdate',
+            data: jsonObject,
+            contentType: 'application/json',
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
+
     function formatDateTime(dateString) {
         // 입력된 문자열을 Date 객체로 변환합니다.
         const date = new Date(dateString);
@@ -87,6 +115,8 @@ var ImportService = (function (){
     return {
         readImport:readImport,
         readInspection:readInspection,
+        executeImport:executeImport,
+        updateInspection:updateInspection,
         formatDate:formatDate,
         formatDateTime:formatDateTime
     };
