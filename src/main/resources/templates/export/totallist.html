@@ -125,7 +125,7 @@
                                                     <td class="text-center" th:text="'EX' + ${#numbers.formatInteger(export.exportno, 6)}"></td>
                                                     <td class="text-center" th:text="${#temporals.format(export.duedate, 'yyyy-MM-dd a hh:mm')}"></td>
                                                     <td class="text-center" th:text="${#temporals.format(export.shippeddate, 'yyyy-MM-dd a hh:mm')}"></td>
-                                                    <td class="text-center" th:text="${export.shipper}"></td>
+                                                    <td class="text-center" th:text="${export.shipper != null ? export.shipper.name : 'N/A'}"></td>
                                                     <td class="text-center" th:text="'MA' + ${#numbers.formatInteger(export.prcr.material.mtrlno, 6)}"></td>
                                                     <td class="text-center" th:text="${export.prcr.material.name}"></td>
                                                     <td class="text-end" th:text="${#numbers.formatInteger(export.quantity, 0, 'COMMA')}"></td>
@@ -212,7 +212,7 @@
                                         $('#modal-table-prcrno').text('P' + data.prcr.prcrno.toString().padStart(6, '0'));
                                         $('#modal-table-prcrdate').text(ExportService.formatDate(data.prcr.reqdate));
                                         $('#modal-table-shippeddate').text(ExportService.formatDate(data.shippeddate));
-                                        $('#modal-table-shipper').text(data.shipper);
+                                        $('#modal-table-shipper').text(data.shipper.name);
 
                                         $('#modal-table-mtrlno').text('MA' + data.prcr.material.mtrlno.toString().padStart(6, '0'));
                                         $('#modal-table-mtrlname').text(data.prcr.material.name);

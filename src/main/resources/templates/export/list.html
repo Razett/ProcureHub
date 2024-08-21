@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>출고 요청현황</h1>
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name="viewport">
+        <title>Home</title>
+        <script crossorigin="anonymous"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+                src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+        <script defer="defer" src="/js/main.js"></script>
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
+    </script>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+
+        <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <div class="row gap-20 pos-r">
+                            <div class="bgc-white p-20 bd col-md-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="c-grey-900 mT-10 mB-30" style="margin-bottom: 0;">출고 현황</h4>
+                                    <div class="d-flex flex-column align-items-end">
+                                        <div class="d-flex align-items-center" style="margin-bottom: 15px;">
+                                            <button class="btn cur-p btn-outline-secondary"
+                                                    id="excute-button"
+                                                    style="width: 90px; height: 30px; margin-right: 10px; display: flex; align-items: center; justify-content: center; line-height: 30px;"
+                                                    type="button">
+                                                출고 처리
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="table table-bordered table-hover" style="min-width: 2300px;">
+                                        <thead>
+                                        <tr class="table-active text-center">
+                                            <th><input type="checkbox" id="selectAll"/> 출고번호</th>
+                                            <th>요청일</th>
+                                            <th>담당자</th>
+                                            <th>조달계획코드</th>
+                                            <th>출고일</th>
+                                            <th>자재코드</th>
+                                            <th>자재명</th>
+                                            <th>현재 수량</th>
+                                            <th>요청 수량</th>
+                                            <th>등록일</th>
+                                            <th>수정일</th>
+                                            <th>상태코드</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                        <tr th:each="exp : ${export}">
+                                            <td class="text-center">
+                                                <input type="checkbox" class="export-check" name="exportCheckbox" th:value="${exp.exportno}"  th:disabled="${!exp.isValidateExcute}"/>
+                                                <span th:text="'EX' + ${#numbers.formatInteger(exp.exportno, 6)}"></span>
+                                            </td>
+                                            <td th:text="${#temporals.format(exp.duedate, 'yyyy-MM-dd')}"></td>
+                                            <td th:text="${exp.shipper == null ? 'N/A': exp.shipper.name}">담당자</td>
+                                            <td th:text="'P' + ${#numbers.formatInteger(exp.prcr.prcrno, 6)}">조달계획코드</td>
+                                            <td th:text="${#temporals.format(exp.shippeddate, 'yyyy-MM-dd')}">출고일</td>
+                                            <td th:text="${exp.prcr.material.mtrlno}"></td>
+                                            <td th:text="${exp.prcr.material.name}"></td>
+                                            <td th:text="${exp.prcr.material.quantity}"></td>
+                                            <td th:text="${exp.quantity}">수량</td>
+                                            <td th:text="${#temporals.format(exp.registerdate, 'yyyy-MM-dd')}">등록일</td>
+                                            <td th:text="${#temporals.format(exp.moddate, 'yyyy-MM-dd')}">수정일</td>
+                                            <td th:text="${exp.status}">상태코드</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="/js/export.js"></script>
+                        <script>
+                            // 전체 선택 기능
+                            $(document).ready(function() {
+
+                                $('#selectAll').click(function() {
+                                    var isChecked = $(this).prop('checked');
+                                    $('input[name="exportCheckbox"]').prop('checked', isChecked);
+                                });
+
+                                $('#tableBody').on('click', 'tr', function(e) {
+                                    // 클릭한 요소가 체크박스가 아닌 경우에만 실행
+                                    if (!$(e.target).is('input[type="checkbox"]')) {
+                                        var checkbox = $(this).find('input[name="exportCheckbox"]');
+                                        checkbox.prop('checked', !checkbox.prop('checked'));
+                                    }
+                                });
+
+                                $('#excute-button').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    console.log(JSON.stringify(getCheckedExportNo()));
+
+                                    ExportService.excuteExport(JSON.stringify(getCheckedExportNo()), function (data) {
+                                        if (data) {
+                                            window.location.href='/export/list'
+                                        }
+                                    })
+                                })
+                            });
+                            // 행 클릭 시 체크박스 선택/해제
+
+                            function getCheckedExportNo() {
+                                var exportnoList = [];
+                                $('.export-check:checked').each(function () {
+                                    exportnoList.push({
+                                        exportno: $(this).val()
+                                    });
+                                });
+                                return exportnoList;
+                            }
+                        </script>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+
+        <!-- ### $App Screen Footer ### -->
+        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+        <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                              title="Colorlib">Colorlib</a>. All rights reserved.</span>
+        </footer>
+    </div>
+    </body>
+</th:block>
 </html>

@@ -19,6 +19,20 @@ var ExportService = (function (){
         });
     }
 
+    function excuteExport(jsonArray, callback) {
+
+        $.ajax({
+            method: 'POST',
+            url: url + '/rest/export/ship',
+            data: jsonArray,
+            contentType: 'application/json',
+            success: function (data) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
     function formatDate(dateString) {
         // 입력된 문자열을 Date 객체로 변환합니다.
         const date = new Date(dateString);
@@ -45,6 +59,7 @@ var ExportService = (function (){
 
     return {
         readExport:readExport,
+        excuteExport:excuteExport,
         formatDate:formatDate
     };
 })();

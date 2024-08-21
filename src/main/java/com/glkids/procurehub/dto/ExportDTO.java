@@ -3,10 +3,7 @@ package com.glkids.procurehub.dto;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Prcr;
 import com.glkids.procurehub.status.ExportStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Data
+@Setter
 public class ExportDTO {
 
     private Long exportno;
@@ -37,6 +35,7 @@ public class ExportDTO {
     private LocalDateTime shippeddate;
     private LocalDateTime duedate;
     private LocalDateTime registerdate;
+    private LocalDateTime moddate;
     private Integer status;
 
     public String getStatusString() {
@@ -48,5 +47,9 @@ public class ExportDTO {
             }
         }
         return null;
+    }
+
+    public boolean getIsValidateExcute() {
+        return this.prcr.getMaterial().getQuantity() >= this.quantity;
     }
 }

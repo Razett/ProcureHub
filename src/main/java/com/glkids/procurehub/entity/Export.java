@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Entity
+@Setter
 public class Export extends BaseEntity {
 
     @Id
@@ -53,4 +54,5 @@ public class Export extends BaseEntity {
 
     @Column(nullable = false)
     private Integer status;
+
 }

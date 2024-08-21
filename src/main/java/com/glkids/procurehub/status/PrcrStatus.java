@@ -16,7 +16,12 @@ public enum PrcrStatus {
     RED_ORDER_ADDED("긴급(발주 추가됨)"),
     YELLOW_ORDER_ADDED("경고(발주 추가됨)"),
     ORDERED("발주 진행중"),
-    EXPIRED("만료됨");
+    RED_ORDERED("긴급(발주 진행중)"),
+    YELLO_ORDERED("경고(발주 진행중)"),
+    IMPORT("입고중"),
+    EXPORT("출고중"),
+    EXPIRED("만료됨"),
+    FINISHED("완료");
 
     private final String value;
 }
