@@ -223,6 +223,34 @@
                                                 <span th:text="${#temporals.format(order.orderdate, 'a hh:mm')}"></span>
                                             </td>
                                         </tr>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="importModalLabel">발주 상세 정보</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-bordered">
+                                                        <tr class="table-active">
+                                                            <th class="text-center">안녕</th>
+                                                            <th class="text-center">나는</th>
+                                                            <th class="text-center">디우야</th>
+                                                        </tr>
+                                                        <tr class="table-active">
+                                                            <td class="text-center">우하하</td>
+                                                            <td class="text-center">졸려</td>
+                                                            <td class="text-center">집가고 싶어요</td>
+                                                        </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tbody>
                                 </table>
                             </div>
@@ -423,6 +451,20 @@
 
                                                 window.location.href='/order/list';
                                             }
+                                        });
+                                    });
+
+                                    //진행 현황 클릭 시 모달창 표시(발주 상세 정보)
+                                    $(document).ready(function () {
+                                        $('#conTbody').on('click', 'td', function () {
+                                            var row = $(this).closest('tr');
+                                            var orderNo = row.find('td:first').text();
+                                            var materialName = row.find('td:nth-child(4)').text();
+
+                                            $('.modal-body').text('Material: ' + materialName);
+
+                                            // Show the modal
+                                            $('#exampleModal').modal('show');
                                         });
                                     });
                                 });
