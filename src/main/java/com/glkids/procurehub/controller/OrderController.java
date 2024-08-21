@@ -34,9 +34,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final QuotationService quotationService;
     private final MaterialService materialService;
-    private final QuotationMtrlRepository quotationMtrlRepository;
 
     /**
      * 발주 현황
@@ -92,9 +90,10 @@ public class OrderController {
      * 발주 전체 내역
      */
     @GetMapping("/totallist")
-    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model, OrderDTO orderDTO){
+    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model){
         model.addAttribute("user", userDTO);
         model.addAttribute("orderTotalList", orderService.totalList());
+        System.out.println("회사"+ orderService.totalList());
         return "/order/totallist";
     }
 

@@ -4,6 +4,7 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
+import com.glkids.procurehub.entity.QuotationMtrl;
 import org.aspectj.weaver.ast.Or;
 
 import java.util.List;
@@ -43,9 +44,20 @@ public interface OrderService {
     }
 
     default OrderDTO orderEntityToDTO(Order entity) {
-        return OrderDTO.builder().orderno(entity.getOrderno()).emp(entity.getEmp()).orderdate(entity.getOrderdate())
-                .prcr(entity.getPrcr()).material(entity.getMaterial()).quotationmtrl(entity.getQuotationmtrl()).quantity(entity.getQuantity())
-                .trackingNo(entity.getTrackingNo()).status(entity.getStatus()).regdate(entity.getRegdate()).moddate(entity.getModdate()).build();
+        QuotationMtrl quotationmtrl = entity.getQuotationmtrl();
+        return OrderDTO.builder()
+                .orderno(entity.getOrderno())
+                .emp(entity.getEmp())
+                .orderdate(entity.getOrderdate())
+                .prcr(entity.getPrcr())
+                .material(entity.getMaterial())
+                .quotationmtrl(entity.getQuotationmtrl())
+                .quantity(entity.getQuantity())
+                .trackingNo(entity.getTrackingNo())
+                .status(entity.getStatus())
+                .regdate(entity.getRegdate())
+                .moddate(entity.getModdate())
+                .build();
 
     }
 

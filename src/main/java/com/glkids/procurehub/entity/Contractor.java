@@ -54,4 +54,5 @@ public class Contractor extends BaseEntity{
 
     @Column(length = 20, nullable = true)
     private String accountNum;
+
 }
