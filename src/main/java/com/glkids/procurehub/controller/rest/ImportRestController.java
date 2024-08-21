@@ -1,6 +1,7 @@
 package com.glkids.procurehub.controller.rest;
 
 import com.glkids.procurehub.dto.ImportDTO;
+import com.glkids.procurehub.dto.ImportInspectionDTO;
 import com.glkids.procurehub.service.ImportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,5 +21,10 @@ public class ImportRestController {
     @PostMapping(value = "read", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImportDTO> read(@RequestBody ImportDTO importDTO) {
         return ResponseEntity.ok(importService.readRestful(importDTO.getImportno()));
+    }
+
+    @PostMapping(value = "insread", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ImportInspectionDTO> readInspection(@RequestBody ImportDTO importDTO) {
+        return ResponseEntity.ok(importService.readInspection(importDTO.getImportno()));
     }
 }

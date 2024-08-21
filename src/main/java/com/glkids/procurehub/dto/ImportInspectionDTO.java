@@ -3,6 +3,7 @@ package com.glkids.procurehub.dto;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Imports;
 import com.glkids.procurehub.status.ImportStatus;
+import com.glkids.procurehub.status.InspectionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,9 +39,9 @@ public class ImportInspectionDTO {
 
     public String getStatusString() {
         if (status != null) {
-            for (ImportStatus importStatus : ImportStatus.values()) {
-                if (importStatus.ordinal() == status) {
-                    return importStatus.getValue();
+            for (InspectionStatus inspectionStatus : InspectionStatus.values()) {
+                if (inspectionStatus.ordinal() == status) {
+                    return inspectionStatus.getValue();
                 }
             }
         }
