@@ -160,115 +160,186 @@
       <div id="mainContent">
         <div class="full-container">
           <th:block th:fragment="content">
-            <div class="row">
-              <!-- Main Content -->
-              <div class="col-md-10">
-                <div class="container mt-4">
-                  <div class="row">
-                    <div class="row bgc-grey-100">
-                      <!-- 조달 계획 현황 -->
-                      <div class="col-md-3 d-flex justify-content-center">
-                        <div class="card flex-fill shadow-sm rounded">
-                          <div class="card-body">
-                            <h5 class="card-title">조달 계획 현황</h5>
-                            <div class="mb-2">
-                              <strong>긴급 상태의 조달계획:</strong>
-                              <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50" th:text="${redCount} + '건'"></span>
-                            </div>
-                            <div class="mb-2">
-                              <strong>경고 상태의 조달계획:</strong>
-                              <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50" th:text="${yellowCount} + '건'"></span>
-                            </div>
-                            <div class="text-muted small">
-                              <strong>전체 조달계획:</strong>
-                              <span th:text="${totalPlans} + '건'" class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- 발주 현황 -->
-                      <div class="col-md-3 d-flex justify-content-center">
-                        <div class="card flex-fill shadow-sm rounded">
-                          <div class="card-body">
-                            <h5 class="card-title">발주 현황</h5>
-                            <div class="mb-2">
-                              <strong>긴급 당일 확인 필요한 발주:</strong>
-                              <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50">1건</span>
-                            </div>
-                            <div class="text-muted small">
-                              발주수: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span><br>
-                              진행중: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span><br>
-                              완료: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- 입고 현황 -->
-                      <div class="col-md-3 d-flex justify-content-center">
-                        <div class="card flex-fill shadow-sm rounded" >
-                          <div class="card-body">
-                            <h5 class="card-title">입고 현황</h5>
-                            <div class="mb-2">
-                              <strong>긴급 당일 확인 필요한 입고:</strong>
-                              <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50">1건</span>
-                            </div>
-                            <div class="text-muted small">
-                              총 입고수: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span><br>
-                              진행중: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span><br>
-                              완료: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- 출고 현황 -->
-                      <div class="col-md-3 d-flex justify-content-center">
-                        <div class="card flex-fill shadow-sm rounded">
-                          <div class="card-body">
-                            <h5 class="card-title">출고 현황</h5>
-                            <div class="mb-2">
-                              <strong>긴급 당일 필요한 출고:</strong>
-                              <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50">1건</span>
-                            </div>
-                            <div class="text-muted small">
-                              출고 수: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span><br>
-                              진행중: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span><br>
-                              완료: <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50">23건</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- 다른 카드들 추가 -->
+            <div class="row gap-20 pos-r mB-20">
+              <div class="col-md-3">
+                <div class="layers bd bgc-white p-20">
+                  <div class="layer w-100 mB-10">
+                    <h5 class="lh-1">조달계획</h5>
                   </div>
-                  <div class="row mt-4">
-                    <div class="col-md-9">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title">생산 계획</h5>
-                          <div class="calendar">
-                            <div id='calendar'></div>
-                            <div class="container mt-5">
-                              <button type="button" class="btn cur-p btn-dark btn-color" data-bs-toggle="modal" data-bs-target="#eventModal">
-                                생산 추가
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                  <div class="layer w-100">
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-red-700">긴급</span> 상태의 조달 계획</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${redCount} + '건'"></span>
                       </div>
                     </div>
-                    <div class="col-md-3">
-                      <div class="card bg-white shadow-sm rounded-3" id="detailCard" style="border: none;">
-                        <div class="card-body">
-                          <h5 class="card-title text-info">상세보기</h5>
-                          <p class="text-secondary">날짜를 선택하세요</p>
-                        </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-orange-700">경고</span> 상태의 조달 계획</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${yellowCount} + '건'"></span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-blue-700">자동 수정됨</span> 상태의 조달 계획</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${totalPlans} + '건'"></span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span>전체 조달 계획</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalPlans} + '건'"></span>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="layers bd bgc-white p-20">
+                  <div class="layer w-100 mB-10">
+                    <h5 class="lh-1">발주</h5>
+                  </div>
+                  <div class="layer w-100">
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-red-700">긴급</span> 상태의 발주</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">1건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-orange-700">검수 필요</span> 상태의 발주</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500">1건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-blue-700">자동 수정됨</span> 상태의 발주</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600">5건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span>전체 대기 및 진행 중인 발주</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600">32건</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="layers bd bgc-white p-20">
+                  <div class="layer w-100 mB-10">
+                    <h5 class="lh-1">입고</h5>
+                  </div>
+                  <div class="layer w-100">
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-red-700">긴급</span> 상태의 입고</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">1건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-orange-700">검수 필요</span> 상태의 입고</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500">1건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-blue-700">자동 수정됨</span> 상태의 입고</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600">5건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span>전체 대기 및 진행 중인 입고</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600">32건</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="layers bd bgc-white p-20 h-100">
+                  <div class="layer w-100 mB-10">
+                    <h5 class="lh-1">출고</h5>
+                  </div>
+                  <div class="layer w-100">
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span><span class="c-red-700">대기</span> 상태의 출고</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">1건</span>
+                      </div>
+                    </div>
+                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                      <div class="peer peer-greed">
+                        <span>전체 출고</span>
+                      </div>
+                      <div class="peer">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600">32건</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row pos-r">
+              <div class="col-md-9">
+                <div class="bgc-white p-20 bd">
+                  <div>
+                    <div class="d-flex justify-content-between align-items-center mT-10 mB-30">
+                      <h5 class="lh-1">생산 계획</h5>
+                      <button type="button" class="btn cur-p btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">
+                        생산 계획 추가
+                      </button>
+                    </div>
+                    <div class="calendar">
+                      <div id='calendar'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="bgc-white p-20 bd" id="detailCard">
+                    <h5 class="mT-10 mB-5">상세보기</h5>
+                  <div id="prdc-detail-body" class="mT-10 mB-25">
+                    <span class="c-grey-900">날짜를 선택하세요</span>
+                  </div>
+                </div>
+              </div>
+            </div>
                   <!-- 생산 추가 모달 -->
                   <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -280,13 +351,13 @@
                           <form id="eventForm">
                             <div class="mb-3">
                               <label for="prdcNo" class="form-label">제품 선택</label>
-                              <select id="prdcNo" class="form-control" required>
+                              <select id="prdcNo" class="form-select" required>
                                 <!-- 자재 옵션을 여기에 추가 -->
                               </select>
-                              <div class="mb-3">
-                                <label class="form-label">제품명</label>
-                                <p id="prdcName"></p>  <!-- 제품명이 표시될 곳 -->
-                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">제품명</label>
+                              <input class="form-control bgc-grey-50" id="prdcName" readonly>  <!-- 제품명이 표시될 곳 -->
                             </div>
                             <div class="mb-3">
                               <label for="quantity" class="form-label">수량</label>
@@ -300,8 +371,10 @@
                               <label for="endDate" class="form-label">종료 날짜</label>
                               <input type="datetime-local" class="form-control" id="endDate" required>
                             </div>
-                            <button type="submit" class="btn cur-p btn-dark btn-color">저장</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                              <button type="submit" class="btn cur-p btn-primary c-white">저장</button>
+                            </div>
                           </form>
                         </div>
                       </div>
@@ -317,35 +390,30 @@
                         <div class="modal-body">
                           <form id="editPrdcPlanForm">
                             <div class="mb-3">
-                              <label for="editPrdcName" class="form-label">자재 이름</label>
-                              <input type="text" class="form-control" id="editPrdcName" readonly> <!-- 이름 읽기 전용 -->
+                              <label for="editPrdcName" class="form-label">제품명</label>
+                              <input type="text" class="form-control bgc-grey-50" id="editPrdcName" readonly> <!-- 이름 읽기 전용 -->
                             </div>
                             <div class="mb-3">
                               <label for="editStartDate" class="form-label">시작 날짜</label>
-                              <input type="datetime-local" class="form-control" id="editStartDate" readonly> <!-- 시작 날짜 읽기 전용 -->
+                              <input type="datetime-local" class="form-control bgc-grey-50" id="editStartDate" readonly> <!-- 시작 날짜 읽기 전용 -->
                             </div>
                             <div class="mb-3">
                               <label for="editEndDate" class="form-label">종료 날짜</label>
-                              <input type="datetime-local" class="form-control" id="editEndDate" readonly> <!-- 종료 날짜 읽기 전용 -->
+                              <input type="datetime-local" class="form-control bgc-grey-50" id="editEndDate" readonly> <!-- 종료 날짜 읽기 전용 -->
                             </div>
                             <div class="mb-3">
                               <label for="editQuantity" class="form-label">수량</label>
                               <input type="number" class="form-control" id="editQuantity" required> <!-- 수량 수정 가능 -->
                             </div>
-                            <button type="submit" class="btn cur-p btn-dark btn-color">수정</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                              <button type="submit" class="btn cur-p btn-primary c-white">수정</button>
+                            </div>
                           </form>
                         </div>
                       </div>
                     </div>
                   </div>
-
-
-
-
-                </div>
-              </div>
-            </div> <!-- End Main Content -->
             <style>
               /* FullCalendar 날짜와 요일 색상 스타일링 */
               .fc-daygrid-day-number, .fc-col-header-cell-cushion {
@@ -384,7 +452,7 @@
                     url: `/api/Calendar/${selectedPrdcNo}`,
                     method: 'GET',
                     success: function (data) {
-                      $('#prdcName').text(data.name);  // 제품명을 표시할 요소
+                      $('#prdcName').val(data.name);  // 제품명을 표시할 요소
                     },
                     error: function (xhr, status, error) {
                       console.error('Error fetching product name:', error);
@@ -411,11 +479,11 @@
                       return clickedDate >= eventStartDate && clickedDate <= eventEndDate;
                     });
 
-                    let detailsHtml = `<h5 class="card-title">상세보기</h5><p>${clickedDate}</p>`;
+                    let detailsHtml = `<p>${clickedDate}</p>`;
                     if (events.length > 0) {
                       events.forEach(event => {
                         if (event.extendedProps.prdcName) {
-                          detailsHtml += `<p>자재 이름: ${event.extendedProps.prdcName}</p>`;
+                          detailsHtml += `<p>제품명: ${event.extendedProps.prdcName}</p>`;
                         }
                         if (event.extendedProps.quantity) {
                           detailsHtml += `<p>수량: ${event.extendedProps.quantity}</p>`;
@@ -425,7 +493,7 @@
                       detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
                     }
 
-                    $('#detailCard .card-body').html(detailsHtml);
+                    $('#prdc-detail-body').html(detailsHtml);
                   },
 
                   // 서버에서 이벤트 데이터를 가져오는 처리
