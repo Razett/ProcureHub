@@ -42,7 +42,7 @@ public class OrderDTO {
     private Long orderQuantity; //발주 수량
     private String trackingNo; //운송장 번호
     private Integer status; //발주 상태
-    private LocalDateTime regdate; //DB에 생성된 날짜
+    private LocalDateTime regdate; //DB에 생성된 날짜(등록일)
     private LocalDateTime moddate; //마지막 수정된 날짜
     private Long qtmtno;
     private List<QuotationMtrl> quotationmtrlList;
