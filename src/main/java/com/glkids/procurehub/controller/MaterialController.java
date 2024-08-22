@@ -1,17 +1,13 @@
 package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.MaterialDTO;
-import com.glkids.procurehub.dto.MaterialGroupDTO;
 import com.glkids.procurehub.dto.ProcurementDetailsDTO;
 import com.glkids.procurehub.dto.UserDTO;
-import com.glkids.procurehub.entity.Material;
-import com.glkids.procurehub.entity.MaterialFile;
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
-import com.glkids.procurehub.repository.MaterialGroupRepository;
-import com.glkids.procurehub.repository.MaterialWarehouseRepository;
 import com.glkids.procurehub.service.MaterialService;
-import com.glkids.procurehub.service.MaterialServiceImpl;
+import com.glkids.procurehub.service.PrdcService;
+import com.glkids.procurehub.service.PrdcServiceImpl;
 import com.glkids.procurehub.service.ProcurementService;
 import com.glkids.procurehub.status.MaterialStatus;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -34,6 +29,8 @@ public class MaterialController {
 
     private final MaterialService materialService;
     private final ProcurementService procurementService;
+    private final PrdcServiceImpl materialServiceImpl;
+    private final PrdcService prdcService;
 
     /**
      * 자재 목록
@@ -59,6 +56,7 @@ public class MaterialController {
         model.addAttribute("material", materialDTO);
         model.addAttribute("materialGroupDirection", materialService.getMaterialGroupDirection(materialDTO.getMaterialGroup()));
         model.addAttribute("materialFileList", materialService.materialFileList(mtrlno));
+        model.addAttribute("prdcMtrlList", prdcService.getPrdcmtrlByMtrl(mtrlno));
         return "material/read";
     }
 

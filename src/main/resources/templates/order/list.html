@@ -294,25 +294,34 @@
                                                     <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal">추가</button>
                                                 </div>
                                                 <br>
-                                                <div>
+                                                <div th:each="orderInspection, stat  : ${orderInspectionReadList}">
                                                     <div class="row alert alert-light">
-                                                        <div class="col-md-4 mb-3">
-                                                            <b>3</b>
+                                                        <h5 th:text="${stat.count} + '.'"></h5>
+                                                        <br>
+                                                        <div class="col-md-4 mb-1">
                                                             <label class="form-label">검수(예정)일</label>
-                                                            <input type="text" class="form-control bgc-grey-50" readonly="">
+                                                            <input type="text" class="form-control bgc-grey-50" th:value="${#temporals.format(orderInspection.getDuedate(), 'yyyy-MM-dd')}">
                                                         </div>
-                                                        <div class="col-md-4 mb-3">
+                                                        <div class="col-md-4 mb-1">
                                                             <label class="form-label">검수자</label>
-                                                            <input type="text" class="form-control bgc-grey-50" readonly="">
+                                                            <input type="text" class="form-control bgc-grey-50" th:value="${orderInspection.getInspector() != null} ? ${orderInspection.getInspector()} : 'N/A'">
                                                         </div>
-                                                        <div class="col-md-4 mb-3">
+                                                        <div class="col-md-4 mb-1">
                                                             <label class="form-label">검수 상태</label>
-                                                            <input type="text" class="form-control bgc-grey-50" readonly="">
+                                                            <select class="form-select">
+                                                                <option selected>검수 상태</option>
+                                                                <option value="0">검수전</option>
+                                                                <option value="1">정상</option>
+                                                            </select>
                                                         </div>
                                                         <br>
-                                                        <div class="col-md-12 mb-3">
+                                                        <div class="col-md-12 mb-1">
                                                             <label class="form-label">검수 내용</label>
-                                                            <input type="text" class="form-control bgc-grey-50" id="modal-importInspection-duedate" readonly="">
+                                                            <textarea rows="3" class="form-control" th:text="${orderInspection.getContent() != null ? orderInspection.getContent() : 'N/A'}"></textarea>
+                                                            <br>
+                                                            <div class="d-flex align-items-center">
+                                                                <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal">저장</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

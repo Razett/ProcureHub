@@ -4,6 +4,7 @@ import com.glkids.procurehub.dto.ProcurementDetailsDTO;
 import com.glkids.procurehub.entity.PrdcMtrl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface PrdcMtrlRepository extends JpaRepository<PrdcMtrl, Long> {
 //            "m.mtrlno, m.name, m.standard, m.quantity, p.quantity, p.status, p.regdate, p.moddate")
 //    List<ProcurementDetailsDTO> findProcurementDetails();
 
+    @Query("select pm from PrdcMtrl pm where pm.material.mtrlno = :mtrlno")
+    List<PrdcMtrl> findByMtrlno(@Param("mtrlno") Long mtrlno);
 }

@@ -1,6 +1,7 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.dto.OrderInspectionDTO;
 import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.*;
 import com.glkids.procurehub.status.ImportStatus;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    private final ProcurementService procurementService;
     private final OrderRepository orderRepository;
     private final QuotationMtrlRepository quotationMtrlRepository;
     private final MaterialRepository materialRepository;
@@ -99,6 +101,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderInspectionDTO> inspectionRead() {
+        List<OrderInspection> orderInspectionList = orderInspectionRepository.findAll();
+        List<OrderInspectionDTO> orderInspectionDTOList = new ArrayList<>();
+        orderInspectionList.forEach(x->orderInspectionDTOList.add(orderInspectionEntityToDTO(x)));
+        return orderInspectionDTOList;
+    }
+
+    @Override
     public List<OrderDTO> totalList() {
         List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC,"orderno"));
         List<OrderDTO> totalList = new ArrayList<>();
@@ -106,6 +116,7 @@ public class OrderServiceImpl implements OrderService {
         return totalList;
     }
 
+    @Transactional
     @Override
     public List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp) {
         List<OrderDTO> executeList = new ArrayList<>();
@@ -123,6 +134,7 @@ public class OrderServiceImpl implements OrderService {
 
                 Order updatedOrder = orderRepository.save(order);
 
+                // 입고 검수 건 기본 한 개 추가.
                 OrderInspection orderInspection = OrderInspection.builder()
                         .order(order)
                         .status(InspectionStatus.NOT_YET.ordinal())
@@ -130,12 +142,17 @@ public class OrderServiceImpl implements OrderService {
 
                 orderInspectionRepository.save(orderInspection);
 
+                // 입고 대기 항목 추가
                 Imports imports = Imports.builder()
                         .quantity(order.getQuantity())
                         .status(ImportStatus.AUTO_GENERATED.ordinal())
                         .order(order).build();
 
                 importRepository.save(imports);
+
+                if (order.getPrcr() != null) {
+                    procurementService.changeStatus(order.getPrcr().getPrcrno(), PrcrStatus.ORDERED);
+                }
 
                 if (updatedOrder.getOrderdate().equals(order.getOrderdate())) {
                     executeList.add(orderEntityToDTO(order));
@@ -144,6 +161,11 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return executeList;
+    }
+
+    @Override
+    public void changeStatus(Long orderno, OrderStatus orderStatus) {
+        orderRepository.changeStatus(orderno, orderStatus.ordinal());
     }
 
     @Transactional

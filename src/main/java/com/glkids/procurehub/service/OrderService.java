@@ -2,9 +2,13 @@ package com.glkids.procurehub.service;
 
 
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.dto.OrderInspectionDTO;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
+import com.glkids.procurehub.entity.OrderInspection;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.status.OrderStatus;
+import com.glkids.procurehub.status.QuotationStatus;
 import org.aspectj.weaver.ast.Or;
 
 import java.util.List;
@@ -27,12 +31,16 @@ public interface OrderService {
     //4. 발주 상세 정보
     Order read(Long orderno);
 
-    //5. 발주 전체 내역 목록
+    //5. 발주 진척 검수
+    List<OrderInspectionDTO> inspectionRead();
+
+    //6. 발주 전체 내역 목록
     List<OrderDTO> totalList();
 
-    //6.발주 실행
+    //7.발주 실행
     List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp);
 
+    void changeStatus(Long orderno, OrderStatus orderStatus);
 
     default Order orderDtoToEntity(OrderDTO orderDTO) {
         Order order = Order.builder().orderno(orderDTO.getOrderno()).emp(orderDTO.getEmp())
@@ -59,6 +67,21 @@ public interface OrderService {
                 .moddate(entity.getModdate())
                 .build();
 
+    }
+
+    default OrderInspection orderInspectionDTOToEntity(OrderInspectionDTO orderInspectionDTO){
+        OrderInspection orderInspection = OrderInspection.builder().nspcno(orderInspectionDTO.getNspcno()).order(orderInspectionDTO.getOrder())
+                .duedate(orderInspectionDTO.getDuedate()).content(orderInspectionDTO.getContent()).inspector(orderInspectionDTO.getInspector())
+                .status(orderInspectionDTO.getStatus()).build();
+
+        return  orderInspection;
+    }
+
+    default OrderInspectionDTO orderInspectionEntityToDTO(OrderInspection entity){
+        return  OrderInspectionDTO.builder()
+                .nspcno(entity.getNspcno()).order(entity.getOrder()).duedate(entity.getDuedate())
+                .content(entity.getContent()).inspector(entity.getInspector()).status(entity.getStatus())
+                .build();
     }
 
 }

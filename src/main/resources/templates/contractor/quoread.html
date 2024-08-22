@@ -87,26 +87,30 @@
                                     <div class="d-flex mb-3">
                                         <div>
                                             <label class="form-label">견적 코드</label><br>
+                                            <i class="c-grey-600 ti-key me-1"></i>
                                             <span class="text-black fa-1-25x"
                                                   th:text="'QT' + ${#numbers.formatInteger(quotation.qtno, 6)}"></span><br>
                                         </div>
                                         <div class="ms-5">
                                             <label class="form-label">상태</label><br>
+                                            <i class="c-grey-600 ti-face-smile me-1"></i>
                                             <span class="text-black fa-1-25x" th:text="${quotation.getQuotationStatusString()}"></span>
                                             <a th:if="${quotation.status == 2}" tabindex="0" class="px-2 py-2" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="계약 정보" th:attr="data-bs-content=${#temporals.format(agreementList.get(0).startdate, 'yyyy-MM-dd') + ' 부터 ' + #temporals.format(agreementList.get(0).enddate, 'yyyy-MM-dd') + ' 까지'}">
-                                                <i class="c-grey-700 ti-info-alt fa-1x"></i>
+                                                <i class="c-blue-700 ti-info-alt fa-1x"></i>
                                             </a>
                                             <br>
                                         </div>
                                     </div>
-                                    <div class="d-flex mb-3">
-                                        <div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label class="form-label">등록일</label><br>
+                                            <i class="c-grey-600 ti-calendar me-1"></i>
                                             <span class="text-black fa-1-25x"
                                                   th:text="${#temporals.format(quotation.regdate , 'yyyy-MM-dd a hh:mm')}"></span><br>
                                         </div>
-                                        <div class="ms-5">
+                                        <div class="col-md-6">
                                             <label class="form-label">최근 수정일</label><br>
+                                            <i class="c-grey-600 ti-calendar me-1"></i>
                                             <span class="text-black fa-1-25x"
                                                   th:text="${#temporals.format(quotation.moddate , 'yyyy-MM-dd a hh:mm')}"></span><br>
                                         </div>
@@ -115,6 +119,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">세부 내용</label><br>
                                             <div class="mb-3 overflow-y-auto overflow-x-hidden h-11/2r">
+                                                <i class="c-grey-600 ti-align-left me-1"></i>
                                                 <span class="text-black fa-1-25x" th:text="${quotation.content}"></span>
                                             </div>
                                         </div>
@@ -135,15 +140,18 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">업체명</label><br>
+                                        <i class="c-grey-600 ti-briefcase me-1"></i>
                                         <span class="text-black fa-1-25x" th:text="${quotation.contractor.name}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">사업자 등록번호</label><br>
+                                        <i class="c-grey-600 ti-key me-1"></i>
                                         <span class="text-black fa-1-25x"
                                               th:text="${quotation.contractor.corno}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">내선번호</label><br>
+                                        <i class="c-grey-600 ti-mobile me-1"></i>
                                         <span class="text-black fa-1-25x"
                                               th:text="${quotation.contractor.phone}"></span>
                                     </div>
