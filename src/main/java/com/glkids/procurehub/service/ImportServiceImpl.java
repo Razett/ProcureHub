@@ -226,7 +226,7 @@ public class ImportServiceImpl implements ImportService {
         ));
     }
 
-    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    //긴급상태의 입고
     @Transactional
     public long countYellowStatus() {
         return importRepository.countByStatusIn(Arrays.asList(
@@ -234,7 +234,7 @@ public class ImportServiceImpl implements ImportService {
         ));
     }
 
-    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    // 검수 필요 상태의 입고
     @Transactional
     public long countBlueStatus() {
         return importRepository.countByStatusIn(Arrays.asList(
@@ -242,9 +242,12 @@ public class ImportServiceImpl implements ImportService {
         ));
     }
 
-    // 전체 입고계획의 개수 반환
+    // 전채 대기 및 진행중인 입고
     @Transactional
     public long countTotalImport() {
-        return importRepository.count();
+        return importRepository.countByStatusIn(Arrays.asList(
+                OrderStatus.AUTO_MODIFIED.ordinal(),
+                OrderStatus.AUTO_GENERATED.ordinal()
+        ));
     }
 }

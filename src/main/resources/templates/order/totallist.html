@@ -118,8 +118,8 @@
                                             <td class="import-code text-center" th:text="${list.material.quantity}"></td>
                                             <td th:text="${list.quotationmtrl?.quotation?.contractor?.name}"></td>
                                             <td class="import-code text-center" th:text="${list.quotationmtrl?.unitprice}"></td>
-                                            <td class="import-code text-center" th:text="${list.quotationmtrl?.totalprice}"></td>
-                                            <td class="import-code text-center" th:text="${list.quotationmtrl?.quantity}"></td>
+                                            <td class="import-code text-center" th:text="${list.quotationmtrl != null ? list.quotationmtrl.unitprice * list.quantity : ''}"></td>
+                                            <td class="import-code text-center" th:text="${list.quantity}"></td>
                                             <td class="import-code text-center" th:text="${#temporals.format(list.regdate, 'yyyy-MM-dd')}"></td>
                                             <td class="import-code text-center" th:text="${list.statusString}"></td>
                                             <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
