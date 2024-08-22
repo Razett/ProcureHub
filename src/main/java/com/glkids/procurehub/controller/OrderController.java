@@ -45,6 +45,7 @@ public class OrderController {
         model.addAttribute("title", "발주 현황");
         model.addAttribute("orderBeforeList", orderService.getOrderListBefore());
         model.addAttribute("orderAfterList", orderService.getOrderListAfter());
+        model.addAttribute("orderInspectionReadList", orderService.inspectionRead());
         return "order/list";
     }
 
@@ -79,15 +80,15 @@ public class OrderController {
         return "order/update";
     }
 
-    /**
-     * @deprecated
-     * 발주 상세 정보
-     */
-    @Deprecated
-    @GetMapping("/read")
-    public void getRead(Long orderno, Model model){
-        model.addAttribute("orderRead", orderService.read(orderno));
-    }
+//    /**
+//     * @deprecated
+//     * 발주 상세 정보
+//     */
+//    @Deprecated
+//    @GetMapping("/read")
+//    public void getRead(Long orderno, Model model){
+//        model.addAttribute("orderRead", orderService.read(orderno));
+//    }
 
     /**
      * 발주 전체 내역
