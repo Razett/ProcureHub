@@ -1,6 +1,7 @@
 package com.glkids.procurehub.service;
 
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.dto.OrderInspectionDTO;
 import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.*;
 import com.glkids.procurehub.status.ImportStatus;
@@ -97,6 +98,14 @@ public class OrderServiceImpl implements OrderService {
     public Order read(Long orderno) {
         Optional<Order> opOr = orderRepository.findById(orderno);
         return opOr.get();
+    }
+
+    @Override
+    public List<OrderInspectionDTO> inspectionRead() {
+        List<OrderInspection> orderInspectionList = orderInspectionRepository.findAll();
+        List<OrderInspectionDTO> orderInspectionDTOList = new ArrayList<>();
+        orderInspectionList.forEach(x->orderInspectionDTOList.add(orderInspectionEntityToDTO(x)));
+        return orderInspectionDTOList;
     }
 
     @Override

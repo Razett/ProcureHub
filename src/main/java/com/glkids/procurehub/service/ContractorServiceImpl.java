@@ -58,7 +58,6 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     public Boolean register(ContractorDTO contractorDTO) {
-        Material material = contractorDTO.resolveMaterial(materialRepository);
 
         Contractor conEntity = contractorDtoToEntity(contractorDTO);
 
