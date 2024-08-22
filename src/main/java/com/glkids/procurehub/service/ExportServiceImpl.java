@@ -20,10 +20,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,5 +126,18 @@ public class ExportServiceImpl implements ExportService {
             prcrRepository.save(procurementPlan);
             materialRepository.save(material);
         }
+    }
+
+    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countRedStatus() {
+        return exportRepository.countByStatusIn(Arrays.asList(
+                ExportStatus.AUTO_GENERATED.ordinal()
+        ));
+    }
+
+    @Transactional
+    public long countTotalStatus() {
+        return exportRepository.count();
     }
 }

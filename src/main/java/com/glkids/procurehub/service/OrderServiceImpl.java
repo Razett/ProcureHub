@@ -6,6 +6,7 @@ import com.glkids.procurehub.repository.*;
 import com.glkids.procurehub.status.ImportStatus;
 import com.glkids.procurehub.status.InspectionStatus;
 import com.glkids.procurehub.status.OrderStatus;
+import com.glkids.procurehub.status.PrcrStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final MaterialRepository materialRepository;
     private final OrderInspectionRepository orderInspectionRepository;
     private final ImportRepository importRepository;
+    private final PrcrRepository prcrRepository;
 
     @Override
     public List<OrderDTO> getOrderListBefore() {
@@ -141,5 +144,34 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return executeList;
+    }
+
+    @Transactional
+    public long countRedStatus() {
+        return prcrRepository.countByStatusIn(Arrays.asList(
+                PrcrStatus.RED_ORDER_ADDED.ordinal()
+        ));
+    }
+
+    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countYellowStatus() {
+        return orderRepository.countByStatusIn(Arrays.asList(
+                OrderStatus.AUTO_GENERATED.ordinal()
+        ));
+    }
+
+    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countBlueStatus() {
+        return orderRepository.countByStatusIn(Arrays.asList(
+                OrderStatus.AUTO_MODIFIED.ordinal()
+        ));
+    }
+
+    // 전체 조달계획의 개수 반환
+    @Transactional
+    public long countTotalOrder() {
+        return orderRepository.count();
     }
 }

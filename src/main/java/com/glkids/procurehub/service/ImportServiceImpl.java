@@ -8,9 +8,11 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ImportInspectionRepository;
 import com.glkids.procurehub.repository.ImportRepository;
 import com.glkids.procurehub.repository.MaterialRepository;
+import com.glkids.procurehub.repository.PrcrRepository;
 import com.glkids.procurehub.status.ImportStatus;
 import com.glkids.procurehub.status.InspectionStatus;
 import com.glkids.procurehub.status.OrderStatus;
+import com.glkids.procurehub.status.PrcrStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +36,7 @@ public class ImportServiceImpl implements ImportService {
     private final ImportInspectionRepository importInspectionRepository;
     private final MaterialService materialService;
     private final MaterialRepository materialRepository;
+    private final PrcrRepository prcrRepository;
 
     @Deprecated
     @Override
@@ -205,5 +209,34 @@ public class ImportServiceImpl implements ImportService {
             importInspectionRepository.save(importInspection);
         }
         return true;
+    }
+
+    @Transactional
+    public long countRedStatus() {
+        return prcrRepository.countByStatusIn(Arrays.asList(
+                PrcrStatus.RED_ORDER_ADDED.ordinal()
+        ));
+    }
+
+    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countYellowStatus() {
+        return importRepository.countByStatusIn(Arrays.asList(
+                OrderStatus.AUTO_GENERATED.ordinal()
+        ));
+    }
+
+    // 경고 상태 (YELLOW 및 YELLOW_ORDER_ADDED)의 prcr 개수 반환
+    @Transactional
+    public long countBlueStatus() {
+        return importRepository.countByStatusIn(Arrays.asList(
+                OrderStatus.AUTO_MODIFIED.ordinal()
+        ));
+    }
+
+    // 전체 입고계획의 개수 반환
+    @Transactional
+    public long countTotalImport() {
+        return importRepository.count();
     }
 }

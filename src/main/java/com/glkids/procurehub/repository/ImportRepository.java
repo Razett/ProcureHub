@@ -19,4 +19,7 @@ public interface ImportRepository extends JpaRepository<Imports, Long>, Querydsl
     @Modifying
     @Query("update Imports i set i.status = :status where i.importno = :importno")
     Integer changeStatus(@Param("importno") Long importno, @Param("status") Integer status);
+
+    long countByStatusIn(List<Integer> statuses);
+
 }
