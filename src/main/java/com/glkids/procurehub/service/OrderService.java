@@ -5,6 +5,8 @@ import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Order;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.status.OrderStatus;
+import com.glkids.procurehub.status.QuotationStatus;
 import org.aspectj.weaver.ast.Or;
 
 import java.util.List;
@@ -32,6 +34,8 @@ public interface OrderService {
 
     //6.발주 실행
     List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp);
+
+    void changeStatus(Long orderno, OrderStatus orderStatus);
 
 
     default Order orderDtoToEntity(OrderDTO orderDTO) {

@@ -82,11 +82,11 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <div class="row gap-20 pos-r">
+                        <div class="row gap-20 pos-r mB-10">
                             <div class="col-md-6">
                                 <div class="bgc-white p-20 bd h-100">
                                     <div class="d-flex justify-content-between">
-                                        <h1 class="c-grey-900 mT-10 mB-30" th:text="${material.name}"></h1>
+                                        <h4 class="c-grey-900 mT-10 mB-30" th:text="${material.name}"></h4>
                                         <div class=" mT-10 mB-30">
                                             <a th:href="@{/material/update(mtrlno=${material.mtrlno})}"
                                                class="px-2 py-2" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -97,12 +97,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="inputMtrlCode">자재 코드</label><br>
+                                        <i class="c-grey-600 ti-key me-1"></i>
                                         <span class="text-black fa-1-25x" id="inputMtrlCode"
                                               th:text="'MA' + ${#numbers.formatInteger(material.mtrlno, 6)}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">자재 그룹</label><br>
                                         <div class="d-flex align-items-center">
+                                        <i class="c-grey-600 ti-layers me-2"></i>
                                             <th:block th:each="materialGroup, i : ${materialGroupDirection}">
                                                 <span class="text-black fa-1-25x"
                                                       th:text="${materialGroup.name}"></span>
@@ -113,17 +115,20 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="inputMtrlStd">자재 규격</label><br>
+                                        <i class="c-grey-600 ti-ruler-alt me-1"></i>
                                         <span class="text-black fa-1-25x" id="inputMtrlStd"
                                               th:text="${material.standard}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="inputMtrlQuantity">수량</label><br>
+                                        <i class="c-grey-600 ti-heart me-1"></i>
                                         <span class="text-black fa-1-25x" id="inputMtrlQuantity"
                                               th:text="${material.quantity}"></span>
                                     </div>
                                     <div class="mb-3 d-flex">
                                         <div>
                                             <label class="form-label" for="inputMtrlWrhscode">창고 코드</label><br>
+                                            <i class="c-grey-600 ti-folder me-1"></i>
                                             <span class="text-black fa-1-25x" id="inputMtrlWrhscode"
                                                   th:text="${material.materialWarehouse.wrhscode}"></span>
                                         </div>
@@ -199,6 +204,43 @@
                                     <th:block th:unless="${materialFileList.size() != 0}">
                                         <span class="text-black fa-1x">추가된 도면이 없습니다...</span>
                                         <a id="inputMaterialFile" href="#" class="fa-1x">도면 추가하기</a>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gap-20 pos-r">
+                            <div class="col-md-4">
+                                <div class="bgc-white p-20 bd h-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="c-grey-900 mT-10 mB-30">제품 정보</h4>
+                                        <div class=" mT-10 mB-30">
+                                            <a th:href="@{/material/update(mtrlno=${material.mtrlno})}"
+                                               class="px-2 py-2 d-none" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               data-bs-original-title="자재 수정">
+                                                <i class="c-grey-900 ti-pencil-alt fa-1-25x"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <th:block th:if="${prdcMtrlList.size() > 0}">
+                                        <div>
+                                            <table class="table table-hover">
+                                                <thead class="position-sticky top-0">
+                                                <tr class="table-active">
+                                                    <th class="text-center">제품명</th>
+                                                    <th class="text-center">자재 소모량</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="prdcMtrl : ${prdcMtrlList}">
+                                                    <td th:text="${prdcMtrl.prdc.name}" class="text-center"></td>
+                                                    <td th:text="${prdcMtrl.quantity}" class="text-center"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:unless="${prdcMtrlList.size() > 0}">
+                                        <span>이 자재가 사용된 제품이 존재하지 않습니다.</span>
                                     </th:block>
                                 </div>
                             </div>

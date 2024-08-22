@@ -76,15 +76,19 @@
                                     </a>
                                     <div class="mb-3">
                                         <label class="form-label">사업자 등록번호</label><br>
+                                        <i class="c-grey-600 ti-key me-1"></i>
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.corno}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">내선번호</label><br>
+                                        <i class="c-grey-600 ti-mobile me-1"></i>
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.phone}"></span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">주소</label><br>
+                                        <i class="c-grey-600 ti-location-pin me-1"></i>
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.address1}"></span> <br>
+                                        <i class="c-grey-600 ps-3 ms-1 me-1"></i>
                                         <span class="text-black fa-1-25x" th:if="${contractorRead.address2 != null and !contractorRead.address2.isEmpty()}" th:text="${contractorRead.address2}"></span>
                                     </div>
                                 </div>
@@ -94,14 +98,17 @@
                                             <h4 class="c-grey-900 mT-10 mB-30">담당자</h4>
                                             <div class="mb-3">
                                                 <label class="form-label">이름</label><br>
+                                                <i class="c-grey-600 ti-user me-1"></i>
                                                 <span class="text-black fa-1-25x" th:text="${contractorRead.mngrName != null and !contractorRead.mngrName.isEmpty() ? contractorRead.mngrName : 'N/A'}"></span>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">연락처</label><br>
+                                                <i class="c-grey-600 ti-mobile me-1"></i>
                                                 <span class="text-black fa-1-25x" th:text="${contractorRead.mngrPhone != null and !contractorRead.mngrPhone.isEmpty() ? contractorRead.mngrPhone : 'N/A'}"></span>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">이메일</label><br>
+                                                <i class="c-grey-600 ti-email me-1"></i>
                                                 <span class="text-black fa-1-25x" th:text="${contractorRead.mngrAddress != null and !contractorRead.mngrAddress.isEmpty() ? contractorRead.mngrAddress : 'N/A'}"></span>
                                             </div>
                                         </div>
@@ -111,10 +118,12 @@
                                             <h4 class="c-grey-900 mT-10 mB-30">결제 정보</h4>
                                             <div class="mb-3">
                                                 <label class="form-label">은행</label><br>
+                                                <i class="c-grey-600 ti-money me-1"></i>
                                                 <span class="text-black fa-1-25x" th:text="${contractorRead.bank != null and !contractorRead.bank.isEmpty() ? contractorRead.bank : 'N/A'}"></span>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">계좌번호</label><br>
+                                                <i class="c-grey-600 ti-shortcode me-1"></i>
                                                 <span class="text-black fa-1-25x" th:text="${contractorRead.accountNum != null and !contractorRead.accountNum.isEmpty() ? contractorRead.accountNum : 'N/A'}"></span>
                                             </div>
                                         </div>

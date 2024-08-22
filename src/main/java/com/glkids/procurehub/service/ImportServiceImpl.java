@@ -8,9 +8,11 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ImportInspectionRepository;
 import com.glkids.procurehub.repository.ImportRepository;
 import com.glkids.procurehub.repository.MaterialRepository;
+import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.status.ImportStatus;
 import com.glkids.procurehub.status.InspectionStatus;
 import com.glkids.procurehub.status.OrderStatus;
+import com.glkids.procurehub.status.PrcrStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ImportServiceImpl implements ImportService {
 
+    private final ProcurementService procurementService;
+    private final OrderService orderService;
     private final ImportRepository importRepository;
     private final ImportInspectionRepository importInspectionRepository;
     private final MaterialService materialService;
@@ -195,6 +199,11 @@ public class ImportServiceImpl implements ImportService {
                     .status(ImportStatus.NEEDS_INSPECTION.ordinal()).build();
 
             importRepository.save(newImports);
+            orderService.changeStatus(imports.getOrder().getOrderno(), OrderStatus.OK);
+
+            if (imports.getOrder().getPrcr() != null) {
+                procurementService.changeStatus(imports.getOrder().getPrcr().getPrcrno(), PrcrStatus.IMPORT);
+            }
 
             ImportInspection importInspection = ImportInspection.builder()
                     .imports(Imports.builder().importno(importDTO.getImportno()).build())
