@@ -172,7 +172,9 @@
                         <span><span class="c-red-700">긴급</span> 상태의 조달 계획</span>
                       </div>
                       <div class="peer">
+                        <a href="/material/prcrlist">
                         <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${redCount} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -180,7 +182,9 @@
                         <span><span class="c-orange-700">경고</span> 상태의 조달 계획</span>
                       </div>
                       <div class="peer">
+                        <a href="/material/prcrlist">
                         <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${yellowCount} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -188,7 +192,9 @@
                         <span><span class="c-blue-700">자동 수정됨</span> 상태의 조달 계획</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${totalPlans} + '건'"></span>
+                        <a href="/material/prcrlist">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${BlueCount} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -196,7 +202,9 @@
                         <span>전체 조달 계획</span>
                       </div>
                       <div class="peer">
+                        <a href="/material/prcrlist">
                         <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalPlans} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -214,7 +222,9 @@
                         <span><span class="c-red-700">긴급</span> 상태의 발주</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">1건</span>
+                        <a href="/order/list">
+                          <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${orderRedCount} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -222,7 +232,9 @@
                         <span><span class="c-orange-700">검수 필요</span> 상태의 발주</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500">1건</span>
+                        <a href="/order/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${orderYellowCount} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -230,7 +242,9 @@
                         <span><span class="c-blue-700">자동 수정됨</span> 상태의 발주</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600">5건</span>
+                        <a href="/order/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${orderBlueCount} + '건'"></span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -238,7 +252,9 @@
                         <span>전체 대기 및 진행 중인 발주</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600">32건</span>
+                        <a href="/order/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalOrder} + '건'">32건</span>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -256,7 +272,9 @@
                         <span><span class="c-red-700">긴급</span> 상태의 입고</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">1건</span>
+                        <a href="/import/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${importRedCount} + '건'">1건</span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -264,7 +282,9 @@
                         <span><span class="c-orange-700">검수 필요</span> 상태의 입고</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500">1건</span>
+                        <a href="/import/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${importYellowCount} + '건'">1건</span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -272,7 +292,9 @@
                         <span><span class="c-blue-700">자동 수정됨</span> 상태의 입고</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600">5건</span>
+                        <a href="/import/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${importBlueCount} + '건'">5건</span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -280,7 +302,9 @@
                         <span>전체 대기 및 진행 중인 입고</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600">32건</span>
+                        <a href="/import/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalImport} + '건'">32건</span>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -298,7 +322,9 @@
                         <span><span class="c-red-700">대기</span> 상태의 출고</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">1건</span>
+                        <a href="/export/list">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${exportRedCount} + '건'">1건</span>
+                        </a>
                       </div>
                     </div>
                     <div class="peers ai-sb fxw-nw align-items-center mb-2">
@@ -306,7 +332,9 @@
                         <span>전체 출고</span>
                       </div>
                       <div class="peer">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600">32건</span>
+                        <a href="/export/totallist">
+                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalExport} + '건'">32건</span>
+                        </a>
                       </div>
                     </div>
                   </div>

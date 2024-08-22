@@ -6,6 +6,7 @@ import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.repository.PrcrRepository;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
+import com.glkids.procurehub.status.OrderStatus;
 import com.glkids.procurehub.status.PrcrStatus;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +96,9 @@ public class ProcurementService {
                     order.setStatus(0);
                 } else {
                     // 기존 Order 객체의 수량 업데이트
+                    if(order.getQuantity().longValue() != mtrlDto.getProcureQuantity()) {
+                        order.setStatus(OrderStatus.AUTO_MODIFIED.ordinal());
+                    }
                     order.setQuantity(mtrlDto.getProcureQuantity());
                     order.setMaterial(material); // material 필드 설정
                 }
@@ -186,6 +190,14 @@ public class ProcurementService {
                 PrcrStatus.YELLOW.ordinal()
         ));
     }
+
+    @Transactional
+    public long countBlueStatus() {
+        return prcrRepository.countByStatusIn(Arrays.asList(
+                PrcrStatus.AUTO_MODIFIED.ordinal()
+        ));
+    }
+
 //    // 만료되지 않은 모든 상태의 prcr 개수 반환 (EXPIRED 상태 제외)
 //    @Transactional
 //    public long countNonExpiredStatus() {
