@@ -86,7 +86,7 @@
                                         <input type="hidden" name="status" value="1" />
                                         <div class="mb-3">
                                             <label>자재코드</label>
-                                            <input th:value="${material.mtrlno}" type="text" class="form-control" name="material"  id="materialInput" control-id="ControlID-1">
+                                            <input th:value="${material?.mtrlno}" type="text" class="form-control" name="material"  id="materialInput" control-id="ControlID-1">
                                         </div>
                                         <div id="autocomplete-suggestions2" class="autocomplete-suggestions2"></div>
                                         <div class="mb-3">
@@ -147,6 +147,11 @@
                                     calculateTotalPrice();
                                 });
 
+                                $('#materialInput').on('input', function () {
+                                    mtrlno = $(this).val()
+                                    fetchCompanies(mtrlno)
+                                })
+
                                 // 회사 목록을 가져오는 함수
                                 function fetchCompanies(mtrlno) {
                                     $.ajax({
@@ -169,7 +174,6 @@
                                         }
                                     });
                                 }
-
                                 // 선택된 회사에 따른 발주 정보를 가져오는 함수
                                 function fetchOrderInfo(mtrlno, contractorName) {
                                     $.ajax({
@@ -206,7 +210,9 @@
                                     var totalPrice = unitPrice * orderQuantity * 1.1;
                                     $('#totalPrice').val(totalPrice.toFixed(2)); // 소수점 두 자리까지 표기
                                 }
+
                             });
+
                         </script>
 
                     </th:block>

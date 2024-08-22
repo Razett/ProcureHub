@@ -52,9 +52,12 @@ public class OrderController {
      * 발주 수동 추가
      */
     @GetMapping("/add")
-    public String getRegister(@AuthenticationPrincipal UserDTO userDTO, @RequestParam("mtrlno") Long mtrlno, Model model){
+    public String getRegister(@AuthenticationPrincipal UserDTO userDTO, Long mtrlno, Model model){
         model.addAttribute("user", userDTO);
-        model.addAttribute("material", materialService.read(mtrlno));
+        if (mtrlno != null)
+            model.addAttribute("material", materialService.read(mtrlno));
+        else
+            model.addAttribute("material", null);
         return "order/add";
     }
 
