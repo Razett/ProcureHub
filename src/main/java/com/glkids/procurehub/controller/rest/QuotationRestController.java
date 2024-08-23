@@ -22,6 +22,12 @@ public class QuotationRestController {
     @Autowired
     private QuotationMtrlRepository quotationMtrlRepository;
 
+    /**
+     * 견적서 저장
+     * @param quotationDTO
+     * @param userDTO
+     * @return
+     */
     @PostMapping(value = "/quotation/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> saveQuotation(@RequestBody QuotationDTO quotationDTO , @AuthenticationPrincipal UserDTO userDTO) {
         quotationDTO.setEmp(userDTO.getEmp());
@@ -29,12 +35,23 @@ public class QuotationRestController {
         return ResponseEntity.ok(savedQuotation.getQtno());
     }
 
+    /**
+     * 견적서파일
+     * @param quotationFileDTO
+     * @return
+     */
     @PostMapping(value = "/quotationFile/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveQuotationFile(@RequestBody QuotationFileDTO quotationFileDTO) {
         QuotationFile savedFile = quotationService.saveQuotationFile(quotationFileDTO);
         return ResponseEntity.ok("파일저장 아이디는 : " + savedFile.getQtfno());
     }
 
+    /**
+     * 견적서의 자재정보 저장
+     * @param quotationMtrlDTO
+     * @param userDTO
+     * @return
+     */
     @PostMapping("/quotationMtrl/save")
     public Boolean saveQuotationMtrl(@RequestBody List<QuotationMtrlDTO> quotationMtrlDTO , @AuthenticationPrincipal UserDTO userDTO) {
         return quotationService.saveQuotationMtrl(quotationMtrlDTO, userDTO);

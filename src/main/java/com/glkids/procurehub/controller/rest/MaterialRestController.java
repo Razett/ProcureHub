@@ -22,6 +22,11 @@ public class MaterialRestController {
     private final MaterialService materialService;
     private final MaterialServiceImpl materialServiceImpl;
 
+    /**
+     *선택한 그룹의 하위그룹 조회
+     * @param grpcode
+     * @return
+     */
     @GetMapping("/childgroup")
     public List<MaterialGroupDTO> getChildGroupList(String grpcode) {
         return materialService.getChildMaterialGroups(grpcode);
@@ -34,6 +39,11 @@ public class MaterialRestController {
         return materialService.readByFetch(mtrlno);
     }
 
+    /**
+     * 자재 자동 완성을 위한 자재 번호 기반 검색 기능
+     * @param mtrlno
+     * @return
+     */
     @GetMapping("/search")
     public List<MaterialDTO> search(@RequestParam("mtrlno") Long mtrlno) {
         return Collections.singletonList(materialService.readByFetch(mtrlno));

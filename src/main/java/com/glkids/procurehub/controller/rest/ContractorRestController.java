@@ -30,7 +30,6 @@ public class ContractorRestController {
      * @param name 회사명
      * @return 회사 정보 DTO
      */
-
     @GetMapping("/contractor/findByNameContaining")
     public List<ContractorDTO> searchContractorByName(@RequestParam("name") String name) {
         System.out.println(contractorService.findByNameContaining(name));
@@ -45,6 +44,11 @@ public class ContractorRestController {
         return contractorRepository.findByCornoContaining(corno);
     }
 
+    /**
+     * 회사번호로 검색시 회사명이 뜨게하는 API
+     * @param corno
+     * @return
+     */
     @GetMapping("/contractor/details")
     public Contractor getContractorDetails(@RequestParam Long corno) {
         Contractor contractor = contractorRepository.findByCorno(corno).stream().findFirst().orElse(null);

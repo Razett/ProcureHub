@@ -26,7 +26,7 @@ public class CalendarController {
     @Autowired
     private PrdcPlanService prdcPlanService;
 
-
+    @Deprecated
     @GetMapping("/read")
     public List<Map<String, Object>> getEvents() {
         return calendarService.getAllCalendar().stream().map(event -> {
@@ -38,7 +38,7 @@ public class CalendarController {
             return eventData;
         }).collect(Collectors.toList());
     }
-
+    @Deprecated
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> addEvent(@RequestBody CalendarDTO calendarDTO) {
         Calendar calendar = new Calendar();
@@ -54,13 +54,13 @@ public class CalendarController {
 
         return ResponseEntity.ok(response);
     }
-
+    @Deprecated
     @PostMapping("/update")
     public Calendar updateCalendar(@RequestBody Calendar calendar) {
         // 여기서 calendar 객체는 backgroundColor와 borderColor 필드를 무시하고 매핑됩니다.
         return calendarService.updateCalendar(calendar);
     }
-
+    @Deprecated
     @PostMapping("/delete")  // 삭제 시 사용할 API
     public void deleteCalendar(@RequestBody Map<String, Long> requestData) {
         Long eventId = requestData.get("id");

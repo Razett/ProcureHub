@@ -21,6 +21,11 @@ public class ExportRestController {
 
     private final ExportService exportService;
 
+    /**
+     * 출고 1건 조회
+     * @param exportdto
+     * @return
+     */
     @PostMapping(value = "/read", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExportDTO> read(@RequestBody ExportDTO exportdto) {
         return ResponseEntity.ok(exportService.read(exportdto.getExportno()));

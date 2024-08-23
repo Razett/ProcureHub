@@ -21,6 +21,12 @@ public class OrderRestController {
 
     private final OrderService orderService;
 
+    /**
+     *
+     * @param userDTO
+     * @param orderDTOList
+     * @return
+     */
     @PostMapping(value = "/list", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<OrderDTO>> orderExecute(@AuthenticationPrincipal UserDTO userDTO, @RequestBody List<OrderDTO> orderDTOList) {
         return ResponseEntity.ok(orderService.orderExecute(orderDTOList, userDTO.getEmp()));

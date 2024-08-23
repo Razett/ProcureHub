@@ -22,21 +22,43 @@ public class ImportRestController {
 
     private final ImportService importService;
 
+    /**
+     * 입고건 1건 조회
+     * @param importDTO
+     * @return
+     */
     @PostMapping(value = "read", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImportDTO> read(@RequestBody ImportDTO importDTO) {
         return ResponseEntity.ok(importService.readRestful(importDTO.getImportno()));
     }
 
+    /**
+     * 해당 입고건의 입고 검수건 조회
+     * @param importDTO
+     * @return
+     */
     @PostMapping(value = "insread", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImportInspectionDTO> readInspection(@RequestBody ImportDTO importDTO) {
         return ResponseEntity.ok(importService.readInspection(importDTO.getImportno()));
     }
 
+    /**
+     * 입고처리
+     * @param userDTO
+     * @param list
+     * @return
+     */
     @PostMapping(value = "execute", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> execute(@AuthenticationPrincipal UserDTO userDTO, @RequestBody List<ImportDTO> list) {
         return ResponseEntity.ok(importService.executeImport(list, userDTO.getEmp()));
     }
 
+    /**
+     * 입고 검수처리
+     * @param userDTO
+     * @param importInspectionDTO
+     * @return
+     */
     @PostMapping(value = "insupdate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> updateInspection(@AuthenticationPrincipal UserDTO userDTO, @RequestBody ImportInspectionDTO importInspectionDTO) {
         return ResponseEntity.ok(importService.updateInspection(importInspectionDTO, userDTO.getEmp()));
