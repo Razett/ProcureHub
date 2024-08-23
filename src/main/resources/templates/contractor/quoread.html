@@ -366,7 +366,7 @@
 
                                 function registerMaterialFile(metadata) {
                                     $.ajax({
-                                        url: '/quotationFile/save',
+                                        url: 'http://m-it.iptime.org:8030/quotationFile/save',
                                         type: 'POST',
                                         data: JSON.stringify(metadata),
                                         processData: false,

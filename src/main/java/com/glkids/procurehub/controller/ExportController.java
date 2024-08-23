@@ -31,7 +31,7 @@ public class ExportController {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "출고 현황");
         model.addAttribute("export" , exportService.getExportListBefore());
-        return "export/list";
+        return "/export/list";
     }
 
     /**

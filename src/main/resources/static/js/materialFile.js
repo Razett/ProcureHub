@@ -1,4 +1,4 @@
-const server_url = 'http://192.168.1.25:8081';
+const server_url = 'http://m-it.iptime.org:8028';
 $(document).ready(function () {
     var selectedSuggestionIndex = -1;
     var MaterialId = $("#inputMtrlCode").val()
@@ -40,7 +40,7 @@ $(document).ready(function () {
     // 메타데이터를 메인 서버로 전송하는 함수
     function sendFileMetadataToMainServer(metadata) {
         $.ajax({
-            url: 'http://localhost:8080/quotationFile/save',
+            url: 'http://m-it.iptime.org:8030/quotationFile/save',
             type: 'POST',
             data: JSON.stringify(metadata),
             contentType: 'application/json',

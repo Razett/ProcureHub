@@ -24,6 +24,6 @@ public class EmpRepositoryTest {
     @Test
     public void initSave() {
         List<Dept> depts = deptRepository.findAll();
-        empRepository.save(Emp.builder().empno(201941049L).name("최지우").pw(passwordEncoder.encode("1127")).dept(depts.get(0)).build());
+        empRepository.save(Emp.builder().empno(201758030L).name("정지원").pw(passwordEncoder.encode("1234")).dept(depts.get(0)).build());
     }
 }

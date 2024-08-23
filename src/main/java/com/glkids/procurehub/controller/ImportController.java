@@ -38,7 +38,7 @@ public class ImportController {
         model.addAttribute("importBeforeList", importService.getImportListBefore());
         model.addAttribute("importAfterList", importService.getImportListAfter());
 
-        return "import/list";
+        return "/import/list";
     }
 
     /**
@@ -58,7 +58,7 @@ public class ImportController {
     @PostMapping("/update")
     public String postUpdate(@AuthenticationPrincipal UserDTO userDTO, Model model) {
 
-        return "import/list";
+        return "/import/list";
     }
 
     /**
@@ -79,7 +79,7 @@ public class ImportController {
         model.addAttribute("title", "입고 전체");
         model.addAttribute("importList", importService.totalList(type, input));
 
-        return "import/totallist";
+        return "/import/totallist";
     }
 
     @GetMapping("/importForm")

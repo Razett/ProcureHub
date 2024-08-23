@@ -46,7 +46,7 @@ public class OrderController {
         model.addAttribute("orderBeforeList", orderService.getOrderListBefore());
         model.addAttribute("orderAfterList", orderService.getOrderListAfter());
         model.addAttribute("orderInspectionReadList", orderService.inspectionRead());
-        return "order/list";
+        return "/order/list";
     }
 
     /**
@@ -59,7 +59,7 @@ public class OrderController {
             model.addAttribute("material", materialService.read(mtrlno));
         else
             model.addAttribute("material", null);
-        return "order/add";
+        return "/order/add";
     }
 
     /**
@@ -69,7 +69,7 @@ public class OrderController {
     public String postRegister(@Validated OrderDTO orderDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 유효성 검사에서 에러가 발생하면 에러 메시지와 함께 다시 폼을 보여줌
-            return "order/add"; // 폼이 있는 뷰로 다시 이동
+            return "/order/add"; // 폼이 있는 뷰로 다시 이동
         }
 
         // MaterialDTO는 사용되지 않으므로 파라미터에서 제거하거나, 필요 시 orderDTO에 포함시키세요.
@@ -80,7 +80,7 @@ public class OrderController {
     @GetMapping("/update")
     public String update(){
 
-        return "order/update";
+        return "/order/update";
     }
 
 //    /**

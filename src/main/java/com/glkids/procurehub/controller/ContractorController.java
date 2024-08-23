@@ -70,9 +70,11 @@ public class ContractorController {
      * 업체 등록 화면
      */
     @GetMapping("/register")
-    public void getRegister(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+    public String getRegister(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "업체 등록");
+
+        return "/contractor/register";
     }
 
     /**
@@ -128,11 +130,13 @@ public class ContractorController {
      * 견적 등록
      */
     @GetMapping("/quoregister")
-    public void getQuoRegister(@AuthenticationPrincipal UserDTO userDTO, Long corno, Model model) {
+    public String getQuoRegister(@AuthenticationPrincipal UserDTO userDTO, Long corno, Model model) {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "견적 등록");
         model.addAttribute("emp" , userDTO.getEmp().getEmpno());
         model.addAttribute("ContractNum", corno);
+
+        return "/contractor/quoregister";
     }
 
     /**

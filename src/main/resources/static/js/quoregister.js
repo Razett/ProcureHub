@@ -21,7 +21,7 @@ $(document).ready(function () {
     }
     function fetchContractorDetailsByCorno(corno) {
         $.ajax({
-            url: `/contractor/details?corno=${corno}`,
+            url: `http://m-it.iptime.org:8030/contractor/details?corno=${corno}`,
             method: 'GET',
             success: function (item) {
                 if (item) {
@@ -86,7 +86,7 @@ $(document).ready(function () {
     // 회사명 자동완성 요청을 보내는 함수
     function fetchSuggestions(query) {
         $.ajax({
-            url: '/contractor/findByNameContaining',
+            url: 'http://m-it.iptime.org:8030/contractor/findByNameContaining',
             type: 'GET',
             data: { name: query },
             success: function (data) {
@@ -126,7 +126,7 @@ $(document).ready(function () {
     // 사업자 등록번호로 자동완성
     function fetchConNumSuggestions(corno) {
         $.ajax({
-            url: '/contractor/findByCornoContaining',
+            url: 'http://m-it.iptime.org:8030/contractor/findByCornoContaining',
             type: 'GET',
             data: { corno: corno },
             success: function (data) {
@@ -154,7 +154,7 @@ $(document).ready(function () {
     // 자재코드 자동완성 요청을 보내는 함수
     function fetchMaterialSuggestions(mtrlno, inputElement) {
         $.ajax({
-            url: '/rest/material/search',
+            url: 'http://m-it.iptime.org:8030/rest/material/search',
             type: 'GET',
             data: { mtrlno: mtrlno },
             success: function (data) {
@@ -182,7 +182,7 @@ $(document).ready(function () {
     // 자재명 자동완성 요청을 보내는 함수
     function fetchMaterialNameSuggestions(name, inputElement) {
         $.ajax({
-            url: '/rest/material/searchByName',
+            url: 'http://m-it.iptime.org:8030/rest/material/searchByName',
             type: 'GET',
             data: { name: name },
             success: function (data) {
@@ -408,7 +408,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: 'http://localhost:8080/quotation/save',
+            url: 'http://m-it.iptime.org:8030/quotation/save',
             type: 'POST',
             data: JSON.stringify(quotationData),
             contentType: 'application/json',
@@ -494,7 +494,7 @@ $(document).ready(function () {
     // 메타데이터를 메인 서버로 전송하는 함수
     function sendFileMetadataToMainServer(metadata) {
         $.ajax({
-            url: 'http://localhost:8080/quotationFile/save',
+            url: 'http://m-it.iptime.org:8030/quotationFile/save',
             type: 'POST',
             data: JSON.stringify(metadata),
             contentType: 'application/json',
@@ -512,7 +512,7 @@ $(document).ready(function () {
     function saveQuotationMtrl(quotationMtrlDataArray) {
         console.log(JSON.stringify(quotationMtrlDataArray))
         $.ajax({
-            url: 'http://localhost:8080/quotationMtrl/save',
+            url: 'http://m-it.iptime.org:8030/quotationMtrl/save',
             type: 'POST',
             data: JSON.stringify(quotationMtrlDataArray),
             contentType: 'application/json',

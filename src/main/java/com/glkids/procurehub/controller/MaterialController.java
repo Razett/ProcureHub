@@ -57,7 +57,7 @@ public class MaterialController {
         model.addAttribute("materialGroupDirection", materialService.getMaterialGroupDirection(materialDTO.getMaterialGroup()));
         model.addAttribute("materialFileList", materialService.materialFileList(mtrlno));
         model.addAttribute("prdcMtrlList", prdcService.getPrdcmtrlByMtrl(mtrlno));
-        return "material/read";
+        return "/material/read";
     }
 
     /**
@@ -89,14 +89,14 @@ public class MaterialController {
         materialService.update(materialDTO);
         redirectAttributes.addFlashAttribute("msg", "수정되었습니다.");
 
-        return "redirect:read?mtrlno=" + materialDTO.getMtrlno();
+        return "redirect:/material/read?mtrlno=" + materialDTO.getMtrlno();
     }
 
     @PostMapping("/delete")
     public String delete(Long mtrlno, RedirectAttributes redirectAttributes) {
         materialService.delete(mtrlno);
         redirectAttributes.addFlashAttribute("msg", "삭제되었습니다.");
-        return "redirect:material/list" ;
+        return "redirect:/material/list" ;
     }
 
     /**
@@ -109,7 +109,7 @@ public class MaterialController {
 
         model.addAttribute("warehouses",materialService.getWarehouses());
         model.addAttribute("topMaterialGroups", materialService.getMaterialGroupsByDepth(0));
-        return "material/register";
+        return "/material/register";
     }
 
     /**
@@ -137,12 +137,13 @@ public class MaterialController {
      * 그룹 목록
      */
     @GetMapping("/grouplist")
-    public void groupList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+    public String groupList(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 그룹");
 
         model.addAttribute("materialGroups", materialService.getAllMaterialGroups());
 
+        return "/material/grouplist";
     }
 
     /**
@@ -160,11 +161,13 @@ public class MaterialController {
      * 창고 목록
      */
     @GetMapping("/warehouselist")
-    public void warehouseList(@AuthenticationPrincipal UserDTO userDTO, Model model , MaterialWarehouse materialWarehouse) {
+    public String warehouseList(@AuthenticationPrincipal UserDTO userDTO, Model model , MaterialWarehouse materialWarehouse) {
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "자재 창고");
 
         model.addAttribute("warehouses", materialService.getWarehouses());
+
+        return "/material/warehouselist";
     }
 
     /**
@@ -190,7 +193,7 @@ public class MaterialController {
         model.addAttribute("orderList", procurementDetails);
         model.addAttribute("materials", procurementDetails);
 
-        return "material/prcrlist";  // prcrlist.html 뷰로 이동
+        return "/material/prcrlist";  // prcrlist.html 뷰로 이동
     }
 
     /**
