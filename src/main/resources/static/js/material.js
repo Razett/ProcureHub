@@ -1,4 +1,4 @@
-const url = 'http://localhost:8080';
+const url = 'http://m-it.iptime.org:8030';
 
 var materialGroupService = (function (){
 

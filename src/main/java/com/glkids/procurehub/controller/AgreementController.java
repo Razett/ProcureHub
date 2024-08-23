@@ -39,7 +39,7 @@ public class AgreementController {
         model.addAttribute("qtno", quotationService.read(qtno));
         model.addAttribute("qtnomtrl", quotationService.readQuotationMtrlList(qtno));
 
-        return "agreement/register";
+        return "/agreement/register";
     }
 
     @PostMapping("/register")

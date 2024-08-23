@@ -21,9 +21,9 @@ public class CustomErrorController implements ErrorController {
             Integer statusCode = Integer.valueOf(status.toString());
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                return "error/404"; // templates/404.html을 렌더링
+                return "/error/404"; // templates/404.html을 렌더링
             }
         }
-        return "error/404"; // templates/error.html을 렌더링
+        return "/error/404"; // templates/error.html을 렌더링
     }
 }

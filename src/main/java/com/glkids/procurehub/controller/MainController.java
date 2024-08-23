@@ -44,11 +44,11 @@ public class MainController {
         model.addAttribute("exportRedCount" , exportServiceImpl.countRedStatus());
         model.addAttribute("totalExport" , exportServiceImpl.countTotalStatus());
 
-        return "index";
+        return "/index";
     }
 
     @GetMapping("/login")
-    public void login(){
-
+    public String login(){
+        return "/login";
     }
 }

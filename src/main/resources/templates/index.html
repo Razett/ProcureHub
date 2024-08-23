@@ -459,7 +459,7 @@
                 const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
 
                 $.ajax({
-                  url: '/api/Calendar/all',
+                  url: 'http://m-it.iptime.org:8030/api/Calendar/all',
                   method: 'GET',
                   success: function (data) {
                     const prdcSelect = $('#prdcNo');
@@ -477,7 +477,7 @@
                 $('#prdcNo').change(function() {
                   const selectedPrdcNo = $(this).val();
                   $.ajax({
-                    url: `/api/Calendar/${selectedPrdcNo}`,
+                    url: `http://m-it.iptime.org:8030/api/Calendar/${selectedPrdcNo}`,
                     method: 'GET',
                     success: function (data) {
                       $('#prdcName').val(data.name);  // 제품명을 표시할 요소
@@ -528,7 +528,7 @@
                   events: function (fetchInfo, successCallback, failureCallback) {
                     // prdcPlans 엔드포인트에서 데이터를 가져옴
                     $.ajax({
-                      url: '/api/Calendar/prdcPlans',
+                      url: 'http://m-it.iptime.org:8030/api/Calendar/prdcPlans',
                       method: 'GET',
                       success: function (data) {
                         const prdcPlanEvents = data.map(plan => {
@@ -617,7 +617,7 @@
                       };
 
                       $.ajax({
-                        url: '/api/Calendar/updatePrdcPlan',
+                        url: 'http://m-it.iptime.org:8030/api/Calendar/updatePrdcPlan',
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(prdcPlanData),
@@ -689,7 +689,7 @@
                   };
 
                   $.ajax({
-                    url: '/api/Calendar/addPrdcPlan',
+                    url: 'http://m-it.iptime.org:8030/api/Calendar/addPrdcPlan',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(prdcPlanData),
@@ -708,7 +708,7 @@
                 deleteButton.on('click', function () {
                   if (currentEvent) {
                     $.ajax({
-                      url: '/api/Calendar/deletePrdcPlan',
+                      url: 'http://m-it.iptime.org:8030/api/Calendar/deletePrdcPlan',
                       method: 'POST',
                       contentType: 'application/json',
                       data: JSON.stringify({ id: currentEvent.id }),

@@ -35,7 +35,7 @@ public class MaterialServiceImpl implements MaterialService {
         List<MaterialDTO> materialDTOList = new ArrayList<>();
 //        materialRepository.findAll().forEach(material -> {materialDTOList.add(materialEntityToDTO(Optional.ofNullable(material)));});
 
-        Page<Object[]> result = materialRepository.searchMaterial(input, PageRequest.of(0, 50, Sort.by(Sort.Direction.ASC, "mtrlno")));
+        Page<Object[]> result = materialRepository.searchMaterial(input, PageRequest.of(0, 500, Sort.by(Sort.Direction.ASC, "mtrlno")));
         result.getContent().forEach(object -> {
             materialDTOList.add(materialObjectToDto(object));
         });
