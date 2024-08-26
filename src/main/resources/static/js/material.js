@@ -1,4 +1,5 @@
-const url = 'http://m-it.iptime.org:8030';
+// const url = 'http://m-it.iptime.org:8030';
+const url = '';
 
 var materialGroupService = (function (){
 

@@ -1,11 +1,10 @@
-package com.glkids.procurehub.controller;
+package com.glkids.procurehub.controller.rest;
 
 import com.glkids.procurehub.dto.CalendarDTO;
 import com.glkids.procurehub.dto.PrdcDTO;
 import com.glkids.procurehub.dto.PrdcPlanDTO;
 import com.glkids.procurehub.entity.Calendar;
 import com.glkids.procurehub.entity.Prdc;
-import com.glkids.procurehub.entity.PrdcPlan;
 import com.glkids.procurehub.service.CalendarService;
 import com.glkids.procurehub.service.PrdcPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/Calendar")
-public class CalendarController {
+@RequestMapping("/rest/calendar")
+public class CalendarRestController {
 
     @Autowired
     private CalendarService calendarService;

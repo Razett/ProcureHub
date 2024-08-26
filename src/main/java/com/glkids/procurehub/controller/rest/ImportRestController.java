@@ -27,7 +27,7 @@ public class ImportRestController {
      * @param importDTO
      * @return
      */
-    @PostMapping(value = "read", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/read", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImportDTO> read(@RequestBody ImportDTO importDTO) {
         return ResponseEntity.ok(importService.readRestful(importDTO.getImportno()));
     }
@@ -37,7 +37,7 @@ public class ImportRestController {
      * @param importDTO
      * @return
      */
-    @PostMapping(value = "insread", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/insread", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImportInspectionDTO> readInspection(@RequestBody ImportDTO importDTO) {
         return ResponseEntity.ok(importService.readInspection(importDTO.getImportno()));
     }
@@ -48,7 +48,7 @@ public class ImportRestController {
      * @param list
      * @return
      */
-    @PostMapping(value = "execute", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/execute", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> execute(@AuthenticationPrincipal UserDTO userDTO, @RequestBody List<ImportDTO> list) {
         return ResponseEntity.ok(importService.executeImport(list, userDTO.getEmp()));
     }
@@ -59,7 +59,7 @@ public class ImportRestController {
      * @param importInspectionDTO
      * @return
      */
-    @PostMapping(value = "insupdate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/insupdate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> updateInspection(@AuthenticationPrincipal UserDTO userDTO, @RequestBody ImportInspectionDTO importInspectionDTO) {
         return ResponseEntity.ok(importService.updateInspection(importInspectionDTO, userDTO.getEmp()));
     }

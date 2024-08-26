@@ -96,7 +96,7 @@ public class ImportController {
      */
     @GetMapping("/checkstatus")
     public String checkStatus(){
-        return "import/checkstatus";
+        return "/import/checkstatus";
     }
 
 }

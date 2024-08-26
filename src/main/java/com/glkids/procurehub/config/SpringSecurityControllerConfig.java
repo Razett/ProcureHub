@@ -20,11 +20,11 @@ public class SpringSecurityControllerConfig {
             model.addAttribute("logoutMsg", "You have been logged out successfully.");
         }
 
-        return "login"; // login.html (Thymeleaf 템플릿)
+        return "/login"; // login.html (Thymeleaf 템플릿)
     }
 
     @GetMapping("/")
     public String homePage() {
-        return "index"; // home.html (로그인 후의 홈 페이지)
+        return "/index"; // home.html (로그인 후의 홈 페이지)
     }
 }
