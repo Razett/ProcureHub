@@ -2,13 +2,11 @@ package com.glkids.procurehub.controller;
 
 import com.glkids.procurehub.dto.MaterialDTO;
 import com.glkids.procurehub.dto.ProcurementDetailsDTO;
+import com.glkids.procurehub.dto.StatisticsDTO;
 import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.MaterialGroup;
 import com.glkids.procurehub.entity.MaterialWarehouse;
-import com.glkids.procurehub.service.MaterialService;
-import com.glkids.procurehub.service.PrdcService;
-import com.glkids.procurehub.service.PrdcServiceImpl;
-import com.glkids.procurehub.service.ProcurementService;
+import com.glkids.procurehub.service.*;
 import com.glkids.procurehub.status.MaterialStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +29,7 @@ public class MaterialController {
     private final ProcurementService procurementService;
     private final PrdcServiceImpl materialServiceImpl;
     private final PrdcService prdcService;
+    private final StatisticsService statisticsService;
 
     /**
      * 자재 목록
@@ -57,6 +56,13 @@ public class MaterialController {
         model.addAttribute("materialGroupDirection", materialService.getMaterialGroupDirection(materialDTO.getMaterialGroup()));
         model.addAttribute("materialFileList", materialService.materialFileList(mtrlno));
         model.addAttribute("prdcMtrlList", prdcService.getPrdcmtrlByMtrl(mtrlno));
+
+        List<StatisticsDTO> importStat = statisticsService.getMonthImportInspectionByMaterial(mtrlno);
+        List<StatisticsDTO> exportStat = statisticsService.getMonthExportByMaterial(mtrlno);
+        model.addAttribute("importsStatisticsList", importStat);
+        model.addAttribute("exportsStatisticsList", exportStat);
+        model.addAttribute("totalStatisticsList", statisticsService.getMaterialQuantityStatistics(materialDTO, importStat, exportStat));
+
         return "/material/read";
     }
 

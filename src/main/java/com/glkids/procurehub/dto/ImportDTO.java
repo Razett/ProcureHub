@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -43,6 +44,9 @@ public class ImportDTO {
     private Integer status;
 
     private Contractor contractor;
+
+    // 월별 입고 수량 저장용
+    private String month;
 
     public String getStatusString() {
         if (status != null) {

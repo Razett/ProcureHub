@@ -244,6 +244,14 @@
                                     </th:block>
                                 </div>
                             </div>
+                            <div class="col-md-8">
+                                <div class="bgc-white p-20 bd">
+                                    <h4 class="mT-10 c-grey-900">재고 변화량</h4>
+                                    <div class="mT-30">
+                                        <canvas id="custom-line-chart" height="200" style="display: block; box-sizing: border-box; height: 200px; width: 600px;" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal fade" id="materialModal" tabindex="-1"
                              aria-labelledby="warehouseAddModalLabel" aria-hidden="true">
@@ -347,6 +355,57 @@
                                     });
                                 }
                             });
+                        </script>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script src="/js/chart_service.js"></script>
+                        <script>
+                            var ctx = document.getElementById('custom-line-chart').getContext('2d');
+
+                            const labels = [
+                                `[[${importsStatisticsList.get(0).month}]]`,
+                                '[[${importsStatisticsList.get(1).month}]]',
+                                '[[${importsStatisticsList.get(2).month}]]',
+                                '[[${importsStatisticsList.get(3).month}]]',
+                                '[[${importsStatisticsList.get(4).month}]]',
+                                '[[${importsStatisticsList.get(5).month}]]'
+                            ];
+
+                            const datas = [
+                                [
+                                    [[${importsStatisticsList.get(0).quantity}]],
+                                    [[${importsStatisticsList.get(1).quantity}]],
+                                    [[${importsStatisticsList.get(2).quantity}]],
+                                    [[${importsStatisticsList.get(3).quantity}]],
+                                    [[${importsStatisticsList.get(4).quantity}]],
+                                    [[${importsStatisticsList.get(5).quantity}]]
+                                ],
+                                [
+                                    [[${exportsStatisticsList.get(0).quantity}]],
+                                    [[${exportsStatisticsList.get(1).quantity}]],
+                                    [[${exportsStatisticsList.get(2).quantity}]],
+                                    [[${exportsStatisticsList.get(3).quantity}]],
+                                    [[${exportsStatisticsList.get(4).quantity}]],
+                                    [[${exportsStatisticsList.get(5).quantity}]]
+                                ],
+                                [
+                                    [[${totalStatisticsList.get(0).quantity}]],
+                                    [[${totalStatisticsList.get(1).quantity}]],
+                                    [[${totalStatisticsList.get(2).quantity}]],
+                                    [[${totalStatisticsList.get(3).quantity}]],
+                                    [[${totalStatisticsList.get(4).quantity}]],
+                                    [[${totalStatisticsList.get(5).quantity}]]
+                                ]
+                            ];
+
+                            const labelStrs = [
+                                '입고', '출고', '합계'
+                            ]
+
+                            const colors = [
+                                'blue', 'red', 'green'
+                            ]
+
+                            chartService.lineChart(ctx, labels, labelStrs, datas, colors);
                         </script>
                     </th:block>
                 </div>

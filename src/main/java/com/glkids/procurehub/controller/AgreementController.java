@@ -33,7 +33,7 @@ public class AgreementController {
 
 
     @GetMapping("/register")
-    public String register(@AuthenticationPrincipal UserDTO userDTO, Model model, @RequestParam("qtno") Long qtno ) {
+    public String register(@AuthenticationPrincipal UserDTO userDTO, Model model, @RequestParam("qtno") Long qtno) {
         model.addAttribute("user", userDTO);
 
         model.addAttribute("qtno", quotationService.read(qtno));
@@ -51,6 +51,11 @@ public class AgreementController {
 
         agreementDTO.setStartdate(LocalDate.parse(startdateText, formatter).atStartOfDay());
         agreementDTO.setEnddate(LocalDate.parse(enddateText, formatter).atStartOfDay());
+
+        if (agreementDTO.getStartdate().isAfter(agreementDTO.getEnddate()) || agreementDTO.getEnddate().isEqual(agreementDTO.getStartdate())) {
+            redirectAttributes.addFlashAttribute("msg", "계약등록에 실패하였습니다. 계약 시작일과 종료일을 확인하세요.");
+            return "redirect:/agreement/register?qtno=" + agreementDTO.getQtno();
+        }
 
         Boolean result = agreementService.register(agreementDTO);
         if (result) {

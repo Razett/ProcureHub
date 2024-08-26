@@ -4,6 +4,7 @@ package com.glkids.procurehub.service;
 import com.glkids.procurehub.dto.ImportDTO;
 import com.glkids.procurehub.dto.ImportInspectionDTO;
 import com.glkids.procurehub.dto.MaterialDTO;
+import com.glkids.procurehub.dto.StatisticsDTO;
 import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.repository.ImportInspectionRepository;
 import com.glkids.procurehub.repository.ImportRepository;
@@ -17,17 +18,17 @@ import com.glkids.procurehub.status.PrcrStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
