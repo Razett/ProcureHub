@@ -3,6 +3,8 @@ package com.glkids.procurehub.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * <b>부서</b>
  *
@@ -15,7 +17,8 @@ import lombok.*;
 @ToString
 @Getter
 @Entity
-public class Dept extends BaseEntity {
+public class Dept extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

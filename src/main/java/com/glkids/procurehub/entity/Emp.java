@@ -3,6 +3,8 @@ package com.glkids.procurehub.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * <b>사원</b>
  *
@@ -18,7 +20,8 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-public class Emp extends BaseEntity {
+public class Emp extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private Long empno;
