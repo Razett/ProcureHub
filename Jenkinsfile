@@ -1,9 +1,3 @@
-// pipeline 블록 외부에서 Groovy 변수를 선언합니다.
-def SERVER_LIST = [
-    "m-it.iptime.org:8030",
-    "m-it.iptime.org:8025"
-]
-
 pipeline {
     agent any
 
@@ -31,6 +25,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    // SERVER_LIST를 script 블록 내부에서 선언
+                    def SERVER_LIST = [
+                        "m-it.iptime.org:8030",
+                        "m-it.iptime.org:8025"
+                    ]
+
                     for (server in SERVER_LIST) {
                         def (serverAddress, port) = server.split(':')
                         echo "Deploying to ${serverAddress}:${port}"
@@ -55,6 +55,11 @@ pipeline {
         stage('Post-deployment Cleanup') {
             steps {
                 script {
+                    def SERVER_LIST = [
+                        "m-it.iptime.org:8030",
+                        "m-it.iptime.org:8025"
+                    ]
+
                     for (server in SERVER_LIST) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
