@@ -164,16 +164,18 @@
               .employee-info {
                 width: 100%;
                 border-collapse: collapse;
-                margin: 20px 0;
+                margin: 0 auto; /* 테이블을 페이지 가운데로 정렬 */
                 font-size: 1em;
                 text-align: left;
               }
               .employee-info th, .employee-info td {
                 border: 1px solid #dddddd;
                 padding: 8px;
+                text-align: center; /* 모든 테이블 헤더와 데이터 셀의 내용 가운데 정렬 */
               }
               .employee-info th {
-                background-color: #f2f2f2;
+                background-color: rgba(255, 185, 196, 0.8);
+                text-align: center; /* 모든 테이블 헤더와 데이터 셀의 내용 가운데 정렬 */
               }
             </style>
             <div class="row gap-20 pos-r mB-20">
@@ -398,6 +400,7 @@
                             <th>사원</th>
                             <th>입고 처리 건 수</th>
                             <th>출고 처리 건 수</th>
+                            <th>발주 처리 건 수</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -406,6 +409,7 @@
                               <td th:text="${empCount.name}"></td>
                               <td th:text="${empCount.importCount} + ' 건'"></td>
                               <td th:text="${empCount.exportCount} + ' 건'"></td>
+                              <td th:text=" 건"></td>
                             </tr>
                           </th:block>
                           </tbody>
