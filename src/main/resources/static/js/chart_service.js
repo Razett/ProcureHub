@@ -291,10 +291,17 @@ var chartService = (function () {
                 datasets: datasets
             },
             options: {
+                responsive: true, // 차트 크기가 자동으로 조절되도록 설정
+                maintainAspectRatio: true, // 차트의 가로 세로 비율을 유지하지 않음
+
                 scales: {
                     y: {
-                        beginAtZero: true // y축이 0부터 시작하도록 설정
+                        beginAtZero: false // y축이 0부터 시작하도록 설정
                     }
+                },
+                animation: {
+                    duration: 500, // 애니메이션 지속 시간을 설정
+                    easing: 'ease-in-out' // 애니메이션의 변화 속도 설정
                 }
             }
         });

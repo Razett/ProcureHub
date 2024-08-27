@@ -165,7 +165,7 @@
             <li class="nav-item dropdown">
               <a class="dropdown-toggle" href="#">
                 <span class="icon-holder">
-                  <i class="c-orange-500 ti-hummer"></i>
+                  <i class="c-orange-500 ti-package"></i>
                 </span>
                 <span class="title"><strong>자재 관리</strong></span>
                 <span class="arrow">
@@ -310,19 +310,22 @@
                 </li>
               </ul>
 
-              <li class="nav-item dropdown d-none">
+              <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                   <span class="icon-holder">
-                    <i class="c-indigo-500 ti-bar-chart"></i>
+                    <i class="c-indigo-500 ti-hummer"></i>
                     </span>
-                  <span class="title"><strong>통계</strong></span>
+                  <span class="title"><strong>도구</strong></span>
                   <span class="arrow">
                       <i class="ti-angle-right"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="sidebar-link" th:href="@{statistics/graph}">재고 금액 통계</a>
+                    <a class="sidebar-link" th:href="@{/utils/graph}">재고 금액 통계</a>
+                  </li>
+                  <li>
+                    <a class="sidebar-link" th:href="@{/utils/calculator}">생산 계획 계산기</a>
                   </li>
                 </ul>
               </li>

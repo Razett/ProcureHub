@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * 통계 메뉴 컨트롤러
  */
-@RequestMapping("/statistics")
+@RequestMapping("/utils")
 @Controller
-public class StatisticsController {
+public class UtilsController {
 
     /**
      * 통계 화면
@@ -21,6 +21,6 @@ public class StatisticsController {
     public String graph(@AuthenticationPrincipal UserDTO userDTO, Model model) {
 
         model.addAttribute("user", userDTO);
-        return "/statistics/graph";
+        return "/utils/graph";
     }
 }
