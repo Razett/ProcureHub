@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         QOrder qOrder = QOrder.order;
 
         BooleanBuilder builder = new BooleanBuilder();
-        BooleanExpression statusExp = qOrder.status.gt(OrderStatus.MODIFIED.ordinal());
+        BooleanExpression statusExp = qOrder.status.gt(OrderStatus.MODIFIED.ordinal()).and(qOrder.status.lt(OrderStatus.OK.ordinal()));
 
         orderRepository.findAll(builder.and(statusExp)).forEach(x -> orderDTOList.add(orderEntityToDTO(x)));
         return orderDTOList;
@@ -95,17 +92,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order read(Long orderno) {
+    public OrderDTO read(Long orderno) {
         Optional<Order> opOr = orderRepository.findById(orderno);
-        return opOr.get();
+        if (opOr.isPresent()) {
+            Order order = opOr.get();
+            QuotationMtrl qtmt = order.getQuotationmtrl();
+            OrderDTO dto = OrderDTO.builder().orderno(order.getOrderno())
+                    .emp(order.getEmp())
+                    .orderdate(order.getOrderdate())
+                    .quantity(order.getQuantity())
+                    .material(order.getMaterial())
+                    .quotationmtrl(QuotationMtrl.builder().qtmtno(qtmt.getQtmtno()).unitprice(qtmt.getUnitprice()).leadtime(qtmt.getLeadtime()).build())
+                    .contractorName(qtmt.getQuotation().getContractor().getName())
+                    .status(order.getStatus())
+                    .regdate(order.getRegdate())
+                    .moddate(order.getModdate()).build();
+
+            if (order.getPrcr() != null) {
+                dto.setPrcr(Prcr.builder().prcrno(order.getPrcr().getPrcrno()).reqdate(order.getPrcr().getReqdate()).build());
+            }
+            return dto;
+        }
+        return null;
     }
 
     @Override
-    public List<OrderInspectionDTO> inspectionRead() {
-        List<OrderInspection> orderInspectionList = orderInspectionRepository.findAll();
-        List<OrderInspectionDTO> orderInspectionDTOList = new ArrayList<>();
-        orderInspectionList.forEach(x->orderInspectionDTOList.add(orderInspectionEntityToDTO(x)));
-        return orderInspectionDTOList;
+    public List<OrderInspectionDTO> inspectionRead(Long orderno) {
+        List<OrderInspectionDTO> list = new ArrayList<>();
+
+        orderInspectionRepository.readOrderInspectionByOrderno(orderno).forEach(ins -> {
+            OrderInspectionDTO dto = OrderInspectionDTO.builder()
+                    .nspcno(ins.getNspcno())
+                    .duedate(ins.getDuedate())
+                    .status(ins.getStatus())
+                    .content(ins.getContent())
+                    .build();
+            if (ins.getInspector() != null) {
+                dto.setInspector(ins.getInspector());
+            }
+            list.add(dto);
+        });
+
+        return list;
     }
 
     @Override

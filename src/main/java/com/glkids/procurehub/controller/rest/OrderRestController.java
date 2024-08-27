@@ -1,8 +1,10 @@
 package com.glkids.procurehub.controller.rest;
 
 import com.glkids.procurehub.dto.OrderDTO;
+import com.glkids.procurehub.dto.OrderInspectionDTO;
 import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Order;
+import com.glkids.procurehub.entity.OrderInspection;
 import com.glkids.procurehub.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,14 +40,14 @@ public class OrderRestController {
     }
 
     @PostMapping(value = "/read", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Order> orderRead(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<OrderDTO> orderRead(@RequestBody OrderDTO orderDTO){
         return ResponseEntity.ok(orderService.read(orderDTO.getOrderno()));
     }
 
-
-
-
-
+    @PostMapping(value = "/insread", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<OrderInspectionDTO>> orderInsRead(@RequestBody OrderDTO orderDTO){
+        return ResponseEntity.ok(orderService.inspectionRead(orderDTO.getOrderno()));
+    }
 
 
 }
