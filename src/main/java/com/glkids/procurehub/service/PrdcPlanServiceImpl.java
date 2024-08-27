@@ -8,8 +8,11 @@ import com.glkids.procurehub.repository.PrdcPlanRepository;
 import com.glkids.procurehub.repository.PrdcRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -66,6 +69,11 @@ public class PrdcPlanServiceImpl implements PrdcPlanService {
                 .build();
 
         return prdcPlanRepository.save(prdcPlan);
+    }
+
+    @Override
+    public List<Map<String, Object>> getTotalQuantityByPrdcNameForMonth(LocalDateTime startDate, LocalDateTime endDate) {
+        return prdcPlanRepository.findTotalQuantityByPrdcNameBetweenDates(startDate,endDate);
     }
 
     public Long updatePrdcPlan (PrdcPlanDTO prdcPlanDTO) {

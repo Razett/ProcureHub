@@ -8,7 +8,9 @@ import com.glkids.procurehub.entity.Prcr;
 import com.glkids.procurehub.entity.Prdc;
 import com.glkids.procurehub.entity.PrdcPlan;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface PrdcPlanService {
     //1. 업체 목록
@@ -21,6 +23,9 @@ public interface PrdcPlanService {
     List<Prdc> getAllprdc();
 
     PrdcPlan createPrdcPlan(PrdcPlanDTO prdcPlanDTO);
+
+    // 생산계획 도넛 그래프
+    List<Map<String, Object>>  getTotalQuantityByPrdcNameForMonth (LocalDateTime startDate , LocalDateTime endDate);
 
     Long updatePrdcPlan (PrdcPlanDTO prdcPlanDTO);
     default PrdcPlanDTO PrdcPlanEntityToDTO(PrdcPlan entity) {
