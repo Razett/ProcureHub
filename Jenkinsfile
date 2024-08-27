@@ -4,10 +4,6 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
         BRANCH = 'main'
-        SERVER_LIST = [
-            "m-it.iptime.org:8030",
-            "m-it.iptime.org:8025"
-        ] // 배포할 서버 목록
         DEPLOY_PATH = '/home/mit' // 홈 디렉토리 내 배포할 경로
         APP_NAME = 'GoldenKids.jar' // 애플리케이션 JAR 파일 이름
         SSH_CREDENTIALS_ID = 'your_ssh_credentials_id' // SSH credentials ID
@@ -29,8 +25,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    for (server in SERVER_LIST) {
-                        def (serverAddress, port) = server.split(':')
+                    def serverList = [
+                        "m-it.iptime.org:8030",
+                        "m-it.iptime.org:8025"
+                    ] // 배포할 서버 목록
+
+                    def deployToServer = { serverAddress, port ->
                         echo "Deploying to ${serverAddress}:${port}"
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
@@ -46,6 +46,11 @@ pipeline {
                             """
                         }
                     }
+
+                    for (server in serverList) {
+                        def (serverAddress, port) = server.split(':')
+                        deployToServer(serverAddress, port)
+                    }
                 }
             }
         }
@@ -53,7 +58,12 @@ pipeline {
         stage('Post-deployment Cleanup') {
             steps {
                 script {
-                    for (server in SERVER_LIST) {
+                    def serverList = [
+                        "m-it.iptime.org:8030",
+                        "m-it.iptime.org:8025"
+                    ] // 배포할 서버 목록
+
+                    for (server in serverList) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
