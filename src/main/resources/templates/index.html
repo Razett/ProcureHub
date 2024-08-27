@@ -161,21 +161,41 @@
         <div class="full-container">
           <th:block th:fragment="content">
             <style>
+              /* 테이블 스타일 */
               .employee-info {
                 width: 100%;
                 border-collapse: collapse;
-                margin: 0 auto; /* 테이블을 페이지 가운데로 정렬 */
-                font-size: 1em;
+                margin: 20px 0;
+                font-size: 15px;
                 text-align: left;
               }
-              .employee-info th, .employee-info td {
-                border: 1px solid #dddddd;
-                padding: 8px;
-                text-align: center; /* 모든 테이블 헤더와 데이터 셀의 내용 가운데 정렬 */
-              }
-              .employee-info th {
+
+              .employee-info thead tr {
                 background-color: rgba(255, 185, 196, 0.8);
-                text-align: center; /* 모든 테이블 헤더와 데이터 셀의 내용 가운데 정렬 */
+                color: #ffffff;
+                text-align: center;
+                font-weight: bold;
+              }
+
+              .employee-info th, .employee-info td {
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                text-align: center; /* 텍스트를 가운데 정렬 */
+              }
+
+              .employee-info tbody tr {
+                border-bottom: 1px solid #dddddd;
+              }
+
+              .employee-info tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+              }
+
+              .employee-info tbody tr:hover {
+                background-color: #f1f1f1;
+              }
+              .employee-info thead th.ti-user {
+                width: 90px; /* '사원' 열의 너비 설정 */
               }
             </style>
             <div class="row gap-20 pos-r mB-20">
@@ -406,7 +426,7 @@
                         <table class="employee-info">
                           <thead>
                           <tr>
-                            <th>사원</th>
+                            <th class="ti-user">사원</th>
                             <th>입고 처리 건 수</th>
                             <th>출고 처리 건 수</th>
                             <th>발주 처리 건 수</th>
@@ -418,7 +438,7 @@
                               <td th:text="${empCount.name}"></td>
                               <td th:text="${empCount.importCount} + ' 건'"></td>
                               <td th:text="${empCount.exportCount} + ' 건'"></td>
-                              <td th:text=" 건"></td>
+                              <td th:text="${empCount.orderCount}"></td>
                             </tr>
                           </th:block>
                           </tbody>
