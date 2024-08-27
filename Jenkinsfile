@@ -4,9 +4,13 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
         BRANCH = 'master'
-        DEPLOY_PATH = '/home/mit' // 홈 디렉토리 내 배포할 경로
-        APP_NAME = 'GoldenKids.jar' // 애플리케이션 JAR 파일 이름
-        SSH_CREDENTIALS_ID = 'your_ssh_credentials_id' // SSH credentials ID
+        SERVER_LIST = [
+            "m-it.iptime.org:8030",
+            "m-it.iptime.org:8025"
+        ]
+        DEPLOY_PATH = '/home/mit'
+        APP_NAME = 'GoldenKids.jar'
+        SSH_CREDENTIALS_ID = 'your_ssh_credentials_id'
     }
 
     stages {
@@ -18,19 +22,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './gradlew clean build' // 또는 mvnw clean package
+                sh './gradlew clean build'
             }
         }
 
         stage('Deploy') {
             steps {
                 script {
-                    def serverList = [
-                        "m-it.iptime.org:8030",
-                        "m-it.iptime.org:8025"
-                    ] // 배포할 서버 목록
-
-                    def deployToServer = { serverAddress, port ->
+                    for (server in SERVER_LIST) {
+                        def (serverAddress, port) = server.split(':')
                         echo "Deploying to ${serverAddress}:${port}"
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
@@ -46,11 +46,6 @@ pipeline {
                             """
                         }
                     }
-
-                    for (server in serverList) {
-                        def (serverAddress, port) = server.split(':')
-                        deployToServer(serverAddress, port)
-                    }
                 }
             }
         }
@@ -58,12 +53,7 @@ pipeline {
         stage('Post-deployment Cleanup') {
             steps {
                 script {
-                    def serverList = [
-                        "m-it.iptime.org:8030",
-                        "m-it.iptime.org:8025"
-                    ] // 배포할 서버 목록
-
-                    for (server in serverList) {
+                    for (server in SERVER_LIST) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
