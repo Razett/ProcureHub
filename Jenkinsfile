@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
-        BRANCH = 'main'
+        BRANCH = 'master'
         DEPLOY_PATH = '/home/mit' // 홈 디렉토리 내 배포할 경로
         APP_NAME = 'GoldenKids.jar' // 애플리케이션 JAR 파일 이름
         SSH_CREDENTIALS_ID = 'your_ssh_credentials_id' // SSH credentials ID
