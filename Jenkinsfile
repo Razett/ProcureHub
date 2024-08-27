@@ -4,14 +4,16 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
         BRANCH = 'master'
-        SERVER_LIST = [
-            "m-it.iptime.org:8030",
-            "m-it.iptime.org:8025"
-        ]
         DEPLOY_PATH = '/home/mit'
         APP_NAME = 'GoldenKids.jar'
         SSH_CREDENTIALS_ID = 'your_ssh_credentials_id'
     }
+
+    // SERVER_LIST 변수를 environment 블록 바깥에 선언합니다.
+    def SERVER_LIST = [
+        "m-it.iptime.org:8030",
+        "m-it.iptime.org:8025"
+    ]
 
     stages {
         stage('Checkout') {
