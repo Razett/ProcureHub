@@ -13,7 +13,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Git에서 코드 체크아웃
-                git url: 'https://github.com/YourRepo/YourProject.git', branch: 'main'
+                git url: 'https://github.com/Razett/ProcureHub.git', branch: 'main'
             }
         }
 
