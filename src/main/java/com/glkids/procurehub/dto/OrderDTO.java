@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +46,11 @@ public class OrderDTO {
     private LocalDateTime regdate; //DB에 생성된 날짜(등록일)
     private LocalDateTime moddate; //마지막 수정된 날짜
     private Long qtmtno;
-    private List<QuotationMtrl> quotationmtrlList;
+
+    @Builder.Default
+    private List<QuotationMtrl> quotationmtrlList = new ArrayList<>();
+
+    private String contractorName;
 
     public String getStatusString() {
         if (status != null) {

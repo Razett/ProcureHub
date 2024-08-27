@@ -29,10 +29,10 @@ public interface OrderService {
     boolean register(OrderDTO orderDTO);
 
     //4. 발주 상세 정보
-    Order read(Long orderno);
+    OrderDTO read(Long orderno);
 
     //5. 발주 진척 검수
-    List<OrderInspectionDTO> inspectionRead();
+    List<OrderInspectionDTO> inspectionRead(Long orderno);
 
     //6. 발주 전체 내역 목록
     List<OrderDTO> totalList();

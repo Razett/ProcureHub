@@ -1,12 +1,10 @@
 package com.glkids.procurehub.service;
 
+import com.glkids.procurehub.dto.EmpCountDTO;
 import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.repository.EmpRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,4 +44,18 @@ public class EmpServiceImpl implements EmpService, UserDetailsService {
             empRepository.save(emp);
         }
     }
+
+    @Override
+    public List<String> list() {
+        List<Emp> emps = empRepository.findAll();
+        List<String> empDTOS = new ArrayList<>();
+        emps.forEach(x -> empDTOS.add(x.getName()));
+        return empDTOS;
+    }
+
+    @Override
+    public List<EmpCountDTO> getEmpCounts() {
+        return empRepository.findEmpCounts();
+    }
+
 }

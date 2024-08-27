@@ -1,5 +1,6 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.EmpDTO;
 import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.service.*;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
@@ -18,13 +21,14 @@ public class MainController {
 
     private final ProcurementService procurementService;
     private final OrderServiceImpl orderServiceimpl;
-    private final ExportServiceImpl exportServImpl;
+    private final EmpService empService;
     private final ImportServiceImpl importServiceImpl;
     private final ExportServiceImpl exportServiceImpl;
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal UserDTO userDTO, Model model) {
+    public String index(@AuthenticationPrincipal UserDTO userDTO, Model model, EmpDTO empDTO) {
         model.addAttribute("user", userDTO);
+        model.addAttribute("empCount" , empService.getEmpCounts());
 
         model.addAttribute("redCount", procurementService.countRedStatus()); // 긴급 상태 개수
         model.addAttribute("yellowCount", procurementService.countYellowStatus()); // 경고 상태 개수
