@@ -307,7 +307,62 @@ var chartService = (function () {
         });
     }
 
+    function doughnutChart(ctxElement, labels, labelStrs, datas, colors) {
+        const datasets = [];
+
+        var bgcArray = []
+        var borArray = []
+
+        for (let i = 0; i < colors.length; i++) {
+            bgcArray.push(COLORS[colors[i] + '-200']);
+            borArray.push(COLORS[colors[i] + '-200']);
+        }
+
+            datasets.push({
+                label: labelStrs, // 데이터셋의 레이블
+                data: datas, // 데이터 값
+                backgroundColor: bgcArray,
+                borderColor: borArray,
+                borderWidth: 2
+            });
+
+        new Chart(ctxElement, {
+            type: 'doughnut', // 차트의 종류 (라인 차트)
+            data: {
+                labels: labels, // x축 레이블
+                datasets: datasets
+            },
+            options: {
+                responsive: true, // 차트 크기가 자동으로 조절되도록 설정
+                maintainAspectRatio: true, // 차트의 가로 세로 비율을 유지하지 않음
+
+                scales: {
+                    y: {
+                        display: false, // y축의 눈금 표시 설정
+                        ticks: {
+                            display: false, //y축 기준 데이터 표시 설정
+                        },
+                    },
+                },
+                animation: {
+                    duration: 500, // 애니메이션 지속 시간을 설정
+                    easing: 'ease-in-out' // 애니메이션의 변화 속도 설정
+                },
+                plugins: {
+                    legend: {
+                        position: 'top', // 범례 위치 설정
+                        labels: {
+                            fontColor: COLORS['grey-600'], // 범례 레이블 글자 색상 설정
+                            fontSize: 14 // 범례 레이블 글자 크기 설정
+                        }
+                    },
+                }
+            }
+        });
+    }
+
     return {
-        lineChart:lineChart
+        lineChart:lineChart,
+        doughnutChart:doughnutChart
     };
 })();

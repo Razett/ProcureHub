@@ -360,11 +360,28 @@
               </div>
 
               <div class="col-md-6 h-100">
-                <div class="layers bd bgc-white p-20 mB-20">
-                  <div class="layer w-100 mB-10">
-                    <h5 class="lh-1">그래프 1</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="layers bd bgc-white p-20 mB-20">
+                      <div class="layer w-100 mB-10">
+                        <h5 class="lh-1">월간 제품 생산 수</h5>
+                      </div>
+                      <div>
+                        <canvas id="prdc-pie-chart" class="p-10" height="300" style="display: block; box-sizing: border-box; height: 300px; width: 300px;" width="300"></canvas>
+                      </div>
+                    </div>
                   </div>
-                  <div>그래프 공간</div>
+
+                  <div class="col-md-6">
+                    <div class="layers bd bgc-white p-20 mB-20">
+                      <div class="layer w-100 mB-10">
+                        <h5 class="lh-1">그래프 1</h5>
+                      </div>
+                      <div>
+                        <canvas id="pie-chart2" height="200" style="display: block; box-sizing: border-box; height: 200px; width: 200px;" width="200"></canvas>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="layers bd bgc-white p-20">
@@ -468,6 +485,7 @@
                 color: #000000 !important;
               }
             </style>
+            <script src="/js/chart_service.js"></script>
             <script>
               let calendar;
               let currentEvent;
@@ -745,6 +763,28 @@
                   }
                 });
               });
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="/js/statistics.js"></script>
+            <script>
+              var ctx = document.getElementById('prdc-pie-chart').getContext('2d');
+
+              StatisticsService.getPrdcPlanStat(function (data) {
+                const labels = data.map(item => item.prdcName);
+                const datas = data.map(item => item.totalQuantity);
+
+                const labelStrs = [
+                  '제품 수량'
+                ]
+
+                const colors = [
+                  'red', 'blue', 'yellow', 'green', 'deep-orange', 'purple', 'grey'
+                ]
+
+                chartService.doughnutChart(ctx, labels, labelStrs, datas, colors);
+              })
+
+
             </script>
           </th:block>
         </div> <!-- End Container -->
