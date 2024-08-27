@@ -86,6 +86,16 @@
                                                 도착 및 진행
                                             </a>
                                         </button>
+                                        <button type="button" id="update-import-btn" class="btn cur-p btn-outline-secondary ms-2">
+                                            수정
+                                        </button>
+                                        <button type="button" id="save-import-btn" class="btn cur-p btn-outline-secondary ms-2 d-none">
+                                            저장
+                                        </button>
+                                        <button type="button" id="cancel-import-btn" class="btn cur-p btn-outline-secondary ms-2 d-none">
+                                            취소
+                                        </button>
+
                                         <div class="dropdown d-none">
                                             <a class="px-2 py-2 ms-2" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="c-grey-900 ti-more-alt fa-1-25x"></i>
@@ -297,7 +307,6 @@
                                     console.log(id);
 
                                     ImportService.readImport(id, function (data) {
-                                        // console.log(data);
                                         $('#modal-table-importno').text('IM' + data.importno.toString().padStart(6, '0'));
                                         $('#modal-table-status').text(data.statusString);
                                         $('#modal-table-arrivaldate').text(ImportService.formatDateTime(data.arrivaldate));
@@ -348,7 +357,7 @@
                                         $('#modal-importInspection-dfc').val(data.dfcQuantity);
                                         $('#modal-importInspection-content').val(data.content);
 
-                                    })
+                                    });
                                     $('#importModal').modal('show');
                                 });
 
@@ -382,33 +391,102 @@
                                         importno : parseInt($('#modal-table-importno').text().replace(/^IM/, ''), 10),
                                         dfcQuantity : $('#modal-importInspection-dfc').val(),
                                         content : $('#modal-importInspection-content').val()
-                                    }
+                                    };
 
                                     ImportService.updateInspection(JSON.stringify(object), function (data) {
                                         if (data) {
                                             console.log(data);
                                             window.location.href="/import/list";
                                         }
-                                    })
-                                })
-                            });
-                            function changeInspectionStatus() {
-                                if ($('#modal-importInspection-dfc').val()) {
-                                    $('#modal-importInspection-select').val(2);
-                                } else {
-                                    $('#modal-importInspection-select').val(1);
-                                }
-                            }
+                                    });
+                                });
 
-                            function setDfcByInspectionStatus(element) {
-                                if (element.value == 1) {
-                                    $('#modal-importInspection-dfc').addClass('bgc-grey-50').prop('readonly', true);
-                                    $('#modal-importInspection-dfc').val('0');
-                                } else {
-                                    $('#modal-importInspection-dfc').removeClass('bgc-grey-50').prop('readonly', false);
+                                function changeInspectionStatus() {
+                                    if ($('#modal-importInspection-dfc').val()) {
+                                        $('#modal-importInspection-select').val(2);
+                                    } else {
+                                        $('#modal-importInspection-select').val(1);
+                                    }
                                 }
-                            }
+
+                                function setDfcByInspectionStatus(element) {
+                                    if (element.value == 1) {
+                                        $('#modal-importInspection-dfc').addClass('bgc-grey-50').prop('readonly', true);
+                                        $('#modal-importInspection-dfc').val('0');
+                                    } else {
+                                        $('#modal-importInspection-dfc').removeClass('bgc-grey-50').prop('readonly', false);
+                                    }
+                                }
+
+                                var updateImportno = [];
+                                var quantity = [];
+
+                                $('#update-import-btn').on('click', function (){
+                                    $(this).addClass("d-none");
+                                    $('#save-import-btn').removeClass("d-none");
+                                    $('#cancel-import-btn').removeClass("d-none");
+
+                                    $('#tableBody tr').each(function (){
+                                        updateImportno.push($(this).find('.order-before-check').val());
+                                        quantity.push($(this).find('td').eq(7).text().trim());
+                                    });
+
+                                    $('#tableBody tr').each(function (){
+                                        const quantityCell = $(this).find('td').eq(8);
+                                        const importQuantity = quantityCell.text().trim();
+
+                                        quantityCell.html(`<input type="number" class= "form-control quantity-input" value="${importQuantity}" onchange="inputQuantityListener(this)" />`);
+                                    });
+                                });
+
+                                $('#save-import-btn').on('click', function () {
+                                    $(this).addClass("d-none");
+                                    $('#cancel-import-btn').addClass("d-none");
+                                    $('#update-import-btn').removeClass("d-none");
+
+                                    var updatedData = [];
+
+                                    $('#tableBody tr').each(function () {
+                                        const importno = $(this).find('.order-before-check').val();
+                                        const updatedQuantity = $(this).find('.quantity-input').val();
+
+                                        updatedData.push({
+                                            importno: importno,
+                                            order: {  // OrderDTO 객체를 중첩하여 전송
+                                                quantity: updatedQuantity
+                                            }
+                                        });
+                                    });
+
+                                    $.ajax({
+                                        url: '/rest/import/update',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(updatedData),
+                                        success: function (response) {
+                                            alert('수정되었습니다.');
+                                            window.location.href='/import/list';
+                                        },
+                                        error: function (error) {
+                                            console.error('업데이트 실패:', error);
+                                            alert('업데이트 중 오류가 발생했습니다.');
+                                        }
+                                    });
+                                });
+
+                                $('#cancel-import-btn').on('click', function () {
+                                    $(this).addClass("d-none");
+                                    $('#save-import-btn').addClass("d-none");
+                                    $('#update-import-btn').removeClass("d-none");
+
+                                    $('#tableBody tr').each(function (index) {
+                                        const quantityCell = $(this).find('td').eq(8);
+                                        quantityCell.text(quantity[index]);
+                                    });
+                                });
+                            });
                         </script>
+
                     </th:block>
                 </div>
             </div>

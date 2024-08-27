@@ -140,6 +140,13 @@ public class ImportServiceImpl implements ImportService {
     }
 
     @Override
+    public void update(List<ImportDTO> importDTOList) {
+        for (ImportDTO importDTO : importDTOList) {
+            importRepository.updateQuantityByImportno(importDTO.getImportno(), importDTO.getOrder().getQuantity());
+        }
+    }
+
+    @Override
     public ImportInspectionDTO readInspection(Long importno) {
         List<ImportInspection> list = importInspectionRepository.findByImportNo(importno);
 

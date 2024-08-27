@@ -24,6 +24,8 @@ public interface ImportService {
 
     ImportDTO readRestful(Long importno);
 
+    void update(List<ImportDTO> importDTOList);
+
     ImportInspectionDTO readInspection(Long importno);
 
     Boolean updateInspection(ImportInspectionDTO inspectionDTO, Emp emp);

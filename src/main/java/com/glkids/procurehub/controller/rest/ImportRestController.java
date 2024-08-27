@@ -63,4 +63,20 @@ public class ImportRestController {
     public ResponseEntity<Boolean> updateInspection(@AuthenticationPrincipal UserDTO userDTO, @RequestBody ImportInspectionDTO importInspectionDTO) {
         return ResponseEntity.ok(importService.updateInspection(importInspectionDTO, userDTO.getEmp()));
     }
+
+    /**
+     * 입고 수량 업데이트
+     *
+     * @param importDTOList 업데이트할 입고 데이터 목록
+     * @return 성공 또는 실패 상태 반환
+     */
+    @PostMapping(value = "/update", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Void> updateImports(@RequestBody List<ImportDTO> importDTOList) {
+        try {
+            importService.update(importDTOList);
+            return ResponseEntity.ok().build();  // 성공 시 200 OK 응답 반환
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();  // 실패 시 400 Bad Request 응답 반환
+        }
+    }
 }

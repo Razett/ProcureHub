@@ -2,6 +2,7 @@ package com.glkids.procurehub.repository;
 
 import com.glkids.procurehub.entity.Imports;
 import com.glkids.procurehub.repository.search.ImportsSearchRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,8 @@ public interface ImportRepository extends JpaRepository<Imports, Long>, Querydsl
 
     long countByStatusIn(List<Integer> statuses);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Imports i SET i.quantity = :quantity WHERE i.importno = :importno")
+    void updateQuantityByImportno(@Param("importno") Long importno, @Param("quantity") Long quantity);
 }
