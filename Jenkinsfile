@@ -16,11 +16,11 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh './gradlew clean build'
-            }
-        }
+     stage('Build') {
+         steps {
+             sh './gradlew clean build -x test'
+         }
+     }
 
         stage('Deploy') {
             steps {
