@@ -45,7 +45,7 @@ public class OrderController {
         model.addAttribute("title", "발주 현황");
         model.addAttribute("orderBeforeList", orderService.getOrderListBefore());
         model.addAttribute("orderAfterList", orderService.getOrderListAfter());
-        model.addAttribute("orderInspectionReadList", orderService.inspectionRead());
+
         return "/order/list";
     }
 

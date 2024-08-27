@@ -3,8 +3,6 @@ const url = '';
 
 var OrderService = (function (){
     function readOrder(orderno, callback) {
-        console.log(orderno);
-        console.log(JSON.stringify({orderno: parseInt(orderno)}));
         $.ajax({
             method: 'POST',
             url: '/rest/order/read',
@@ -29,7 +27,7 @@ var OrderService = (function (){
             contentType: 'application/json',
             success: function (data) {
                 if (callback) {
-                    console.log(data);
+                    // console.log(data);
                     callback(data);
                 }
             }
