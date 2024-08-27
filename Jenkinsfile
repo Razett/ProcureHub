@@ -2,59 +2,71 @@ pipeline {
     agent any
 
     environment {
-        // 서버 주소와 관련된 환경 변수 설정
-        SERVER1 = 'm-it.iptime.org'
-        SERVER2 = 'm-it.iptime.org'
-        PORT1 = '8030'
-        PORT2 = '8025'
+        GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
+        BRANCH = 'main'
+        SERVER_LIST = [
+            "m-it.iptime.org:8030",
+            "m-it.iptime.org:8025"
+        ] // 배포할 서버 목록
+        DEPLOY_PATH = '/home/mit' // 홈 디렉토리 내 배포할 경로
+        APP_NAME = 'GoldenKids.jar' // 애플리케이션 JAR 파일 이름
+        SSH_CREDENTIALS_ID = 'your_ssh_credentials_id' // SSH credentials ID
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Git에서 코드 체크아웃
-                git url: 'https://github.com/Razett/ProcureHub.git', branch: 'main'
+                git branch: "${BRANCH}", url: "${GIT_REPO}"
             }
         }
 
         stage('Build') {
             steps {
-                // Gradle 빌드
-                script {
-                    // Gradle Wrapper 사용 (권장)
-                    sh './gradlew build'
-                }
+                sh './gradlew clean build' // 또는 mvnw clean package
             }
         }
 
-        stage('Deploy to Server 1') {
+        stage('Deploy') {
             steps {
-                // 서버 1에 배포 (롤링 배포를 위한 예제)
                 script {
-                    deployToServer(SERVER1, PORT1)
+                    for (server in SERVER_LIST) {
+                        def (serverAddress, port) = server.split(':')
+                        echo "Deploying to ${serverAddress}:${port}"
+                        sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                            sh """
+                            scp build/libs/${APP_NAME} root@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
+                            ssh root@${serverAddress} << EOF
+                            cd ${DEPLOY_PATH}
+                            if [ -f "${APP_NAME}" ]; then
+                                mv ${APP_NAME} backup_${APP_NAME}
+                            fi
+                            mv new_${APP_NAME} ${APP_NAME}
+                            nohup java -jar ${APP_NAME} > app.log 2>&1 &
+                            EOF
+                            """
+                        }
+                    }
                 }
             }
         }
 
-        stage('Deploy to Server 2') {
+        stage('Post-deployment Cleanup') {
             steps {
-                // 서버 2에 배포 (롤링 배포를 위한 예제)
                 script {
-                    deployToServer(SERVER2, PORT2)
+                    for (server in SERVER_LIST) {
+                        def (serverAddress, port) = server.split(':')
+                        sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                            sh """
+                            ssh root@${serverAddress} << EOF
+                            if [ -f "${DEPLOY_PATH}/backup_${APP_NAME}" ]; then
+                                rm ${DEPLOY_PATH}/backup_${APP_NAME}
+                            fi
+                            EOF
+                            """
+                        }
+                    }
                 }
             }
         }
-    }
-
-    // Deploy 단계에서 사용할 함수 정의
-    def deployToServer(server, port) {
-        // 롤링 배포를 수행하는 커맨드 예제
-        // 여기에 실제 배포 명령어를 입력
-        echo "Deploying to ${server}:${port}"
-        sh """
-        curl -X POST http://${server}:${port}/deploy \
-            -F 'file=@build/libs/your-app.jar' \
-            -F 'version=${env.BUILD_NUMBER}'
-        """
     }
 }
