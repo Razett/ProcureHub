@@ -1,3 +1,9 @@
+// pipeline 블록 외부에서 Groovy 변수를 선언합니다.
+def SERVER_LIST = [
+    "m-it.iptime.org:8030",
+    "m-it.iptime.org:8025"
+]
+
 pipeline {
     agent any
 
@@ -8,12 +14,6 @@ pipeline {
         APP_NAME = 'GoldenKids.jar'
         SSH_CREDENTIALS_ID = 'your_ssh_credentials_id'
     }
-
-    // SERVER_LIST 변수를 environment 블록 바깥에 선언합니다.
-    def SERVER_LIST = [
-        "m-it.iptime.org:8030",
-        "m-it.iptime.org:8025"
-    ]
 
     stages {
         stage('Checkout') {
