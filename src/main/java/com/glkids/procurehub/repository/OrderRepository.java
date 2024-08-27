@@ -31,4 +31,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
     @Modifying
     @Query("update Order o set o.status = :status where o.orderno = :orderno")
     void changeStatus(@Param("orderno") Long orderno, @Param("status") Integer status);
+
+
 }

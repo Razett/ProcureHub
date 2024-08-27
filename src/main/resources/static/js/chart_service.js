@@ -345,7 +345,7 @@ var chartService = (function () {
                     },
                 },
                 animation: {
-                    duration: 500, // 애니메이션 지속 시간을 설정
+                    duration: 1200, // 애니메이션 지속 시간을 설정
                     easing: 'ease-in-out' // 애니메이션의 변화 속도 설정
                 },
                 plugins: {

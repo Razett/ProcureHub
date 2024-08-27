@@ -160,6 +160,22 @@
       <div id="mainContent">
         <div class="full-container">
           <th:block th:fragment="content">
+            <style>
+              .employee-info {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 1em;
+                text-align: left;
+              }
+              .employee-info th, .employee-info td {
+                border: 1px solid #dddddd;
+                padding: 8px;
+              }
+              .employee-info th {
+                background-color: #f2f2f2;
+              }
+            </style>
             <div class="row gap-20 pos-r mB-20">
               <div class="col-md-3">
                 <div class="layers bd bgc-white p-20">
@@ -375,10 +391,25 @@
                   <div class="col-md-6">
                     <div class="layers bd bgc-white p-20 mB-20">
                       <div class="layer w-100 mB-10">
-                        <h5 class="lh-1">그래프 1</h5>
-                      </div>
-                      <div>
-                        <canvas id="pie-chart2" height="200" style="display: block; box-sizing: border-box; height: 200px; width: 200px;" width="200"></canvas>
+                        <h5 class="lh-1">일일 업무 현황</h5><br>
+                        <table class="employee-info">
+                          <thead>
+                          <tr>
+                            <th>사원</th>
+                            <th>입고 처리 건 수</th>
+                            <th>출고 처리 건 수</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <th:block th:each="empCount : ${empCount}">
+                            <tr>
+                              <td th:text="${empCount.name}"></td>
+                              <td th:text="${empCount.importCount} + ' 건'"></td>
+                              <td th:text="${empCount.exportCount} + ' 건'"></td>
+                            </tr>
+                          </th:block>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
