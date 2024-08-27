@@ -4,10 +4,6 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
         BRANCH = 'master'
-        SERVER_LIST = [
-            "m-it.iptime.org:8030",
-            "m-it.iptime.org:8025"
-        ]
         DEPLOY_PATH = '/home/mit'
         APP_NAME = 'GoldenKids.jar'
         SSH_CREDENTIALS_ID = 'your_ssh_credentials_id'
@@ -29,7 +25,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    for (server in SERVER_LIST) {
+                    // Define SERVER_LIST within the script block
+                    def serverList = [
+                        "m-it.iptime.org:8030",
+                        "m-it.iptime.org:8025"
+                    ]
+
+                    // Iterate over SERVER_LIST and perform deployment
+                    for (server in serverList) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
@@ -52,7 +55,12 @@ pipeline {
         stage('Post-deployment Cleanup') {
             steps {
                 script {
-                    for (server in SERVER_LIST) {
+                    def serverList = [
+                        "m-it.iptime.org:8030",
+                        "m-it.iptime.org:8025"
+                    ]
+
+                    for (server in serverList) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
