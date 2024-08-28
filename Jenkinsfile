@@ -88,8 +88,6 @@ pipeline {
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
                             nohup java -jar ${RELEASE_NAME} > log.log &
-                            disown
-                            echo "start jar" << EOF
                             exit
                             EOF
                             """
