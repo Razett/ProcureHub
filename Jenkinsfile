@@ -81,13 +81,14 @@ pipeline {
                             // Step 2: Execute commands on the remote server after the file has been copied
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
-
                             cd ${DEPLOY_PATH}
+                            ehco "mv release to backup_release"
                             if [ -f "${RELEASE_NAME}" ]; then
                                 mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
                             nohup java -jar ${RELEASE_NAME} > log.log &
+                            echo "start jar"
                             exit
                             EOF
                             """
@@ -110,8 +111,10 @@ pipeline {
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
-                            if [ -f "${DEPLOY_PATH}/backup_${RELEASE_NAME}" ]; then
-                                rm -rf ${DEPLOY_PATH}/backup_${RELEASE_NAME}
+                            cd ${DEPLOY_PATH}
+                            ehco "rm backup_release"
+                            if [ -f "backup_${RELEASE_NAME}" ]; then
+                                rm backup_${RELEASE_NAME}
                             fi
                             exit
                             EOF
