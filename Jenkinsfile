@@ -49,7 +49,7 @@ pipeline {
                                 mv ${APP_NAME} backup_${APP_NAME}
                             fi
                             mv new_${APP_NAME} ${APP_NAME}
-                            nohup java -jar ${APP_NAME} > app.log 2>&1 &
+                            java -jar ${APP_NAME} &
                             EOF
                             """
                         }
