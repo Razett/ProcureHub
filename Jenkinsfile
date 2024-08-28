@@ -16,9 +16,32 @@ pipeline {
             }
         }
 
+        stage('Prepare environment') {
+            steps {
+                script {
+                    // application-secret.properties 파일 생성
+                    writeFile file: 'application-secret.properties', text: """
+                        spring.application.name=ProcureHub
+
+                        # Database
+                        spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+                        #spring.datasource.url=jdbc:mariadb://3.34.94.105:3306/ProcureHUB
+                        spring.datasource.url=jdbc:mariadb://m-it.iptime.org:8026/ProcureHUB
+                        spring.datasource.username=dev
+                        spring.datasource.password=glkids1234
+
+                        # Redis
+                        spring.data.redis.host=3.34.94.105
+                        spring.data.redis.password=glkids1234
+                        spring.data.redis.port=6379
+                    """
+                }
+            }
+        }
+
         stage('Build') {
             steps {
-                sh './gradlew clean build -Dspring.config.location=/var/lib/jenkins/secure/application_secret.properties -x test'
+                sh './gradlew clean build -x test'
             }
         }
 
