@@ -18,7 +18,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './gradlew clean build -Dspring.config.location=/var/jenkins/secure/application_secret.properties -x test'
+                sh './gradlew clean build -Dspring.config.location=/var/lib/jenkins/secure/application_secret.properties -x test'
             }
         }
 
