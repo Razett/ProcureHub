@@ -37,7 +37,7 @@ pipeline {
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
                             scp -P ${port} -o StrictHostKeyChecking=no build/libs/${APP_NAME} mit@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
-                            ssh -P ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+                            ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
                             cd ${DEPLOY_PATH}
                             if [ -f "${APP_NAME}" ]; then
                                 mv ${APP_NAME} backup_${APP_NAME}
@@ -64,7 +64,7 @@ pipeline {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
-                            ssh -P ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+                            ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
                             if [ -f "${DEPLOY_PATH}/backup_${APP_NAME}" ]; then
                                 rm ${DEPLOY_PATH}/backup_${APP_NAME}
                             fi
