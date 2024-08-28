@@ -18,15 +18,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    // Git 저장소에서 최신 변경 사항을 강제로 가져오기
-                    sh """
-                    rm -rf *
-                    git init
-                    git fetch origin ${BRANCH}
-                    git reset --hard origin/${BRANCH}
-                    """
-                }
+                git branch: "${BRANCH}", url: "${GIT_REPO}"
             }
         }
 
@@ -77,7 +69,7 @@ pipeline {
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
                             PID=\$(lsof -ti:8080)
                             if [ -n "\$PID" ]; then
-                                kill -9 \$PID
+                                kill -15 \$PID
                             fi
                             exit
                             EOF
@@ -97,7 +89,7 @@ pipeline {
                                 mv ${APP_NAME} backup_${APP_NAME}
                             fi
                             mv new_${APP_NAME} ${APP_NAME}
-
+                            nohup java -jar ${APP_NAME} > log.log &
                             exit
                             EOF
                             """
