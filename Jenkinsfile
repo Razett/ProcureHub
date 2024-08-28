@@ -30,7 +30,7 @@ pipeline {
                     // Secret file을 가져와서 사용
                     withCredentials([file(credentialsId: SECRET_FILE_ID, variable: 'SECRET_FILE_PATH')]) {
                         // SECRET_FILE_PATH는 Jenkins가 파일을 다운로드한 경로
-                        sh "cp \$SECRET_FILE_ls PATH src/main/resources/application-secret.properties"
+                        sh "cp \$SECRET_FILE_PATH src/main/resources/application-secret.properties"
                     }
                 }
             }
