@@ -19,15 +19,14 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // 최신 커밋을 강제로 가져오기 위해 워크스페이스 정리 후 체크아웃
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: "${BRANCH}"]],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [[$class: 'WipeWorkspace']], // 워크스페이스 삭제 후 체크아웃
-                        submoduleCfg: [],
-                        userRemoteConfigs: [[url: "${GIT_REPO}"]]
-                    ])
+                    // Git 저장소에서 최신 변경 사항을 강제로 가져오기
+                    sh """
+                    rm -rf *
+                    git init
+                    git remote add origin ${GIT_REPO}
+                    git fetch origin ${BRANCH}
+                    git reset --hard origin/${BRANCH}
+                    """
                 }
             }
         }
