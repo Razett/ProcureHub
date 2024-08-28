@@ -97,10 +97,10 @@ public class OrderController {
      * 발주 전체 내역
      */
     @GetMapping("/totallist")
-    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model){
+    public String totalList(@AuthenticationPrincipal UserDTO userDTO, Model model, String type, String input){
         model.addAttribute("user", userDTO);
-        model.addAttribute("orderTotalList", orderService.totalList());
-        System.out.println("회사"+ orderService.totalList());
+        model.addAttribute("orderTotalList", orderService.totalList(type, input));
+
         return "/order/totallist";
     }
 

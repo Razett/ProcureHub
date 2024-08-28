@@ -1,5 +1,6 @@
 package com.glkids.procurehub.service;
 
+import com.glkids.procurehub.dto.ImportDTO;
 import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.dto.OrderInspectionDTO;
 import com.glkids.procurehub.entity.*;
@@ -11,6 +12,8 @@ import com.glkids.procurehub.status.PrcrStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,12 +145,23 @@ public class OrderServiceImpl implements OrderService {
         return list;
     }
 
+    @Deprecated
     @Override
     public List<OrderDTO> totalList() {
         List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC,"orderno"));
         List<OrderDTO> totalList = new ArrayList<>();
         orders.forEach(x -> totalList.add(orderEntityToDTO(x)));
         return totalList;
+    }
+
+    @Override
+    public List<OrderDTO> totalList(String type, String input) {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+
+        orderRepository.findOrdersByStatus(OrderStatus.INSPECTING.ordinal()).forEach(order -> {
+            orderDTOList.add(orderEntityToDTO(order));
+        });
+        return orderDTOList;
     }
 
     @Transactional

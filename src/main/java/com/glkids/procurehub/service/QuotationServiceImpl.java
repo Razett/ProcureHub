@@ -139,4 +139,9 @@ public class QuotationServiceImpl implements QuotationService {
     public void changeStatus(Long qtno, QuotationStatus quotationStatus) {
         quotationRepository.changeStatus(qtno, quotationStatus.ordinal());
     }
+
+    @Override
+    public List<QuotationMtrl> getQuotationsByMaterialNo(Long mtrlno) {
+        return quotationMtrlRepository.findByMaterial(mtrlno);
+    }
 }

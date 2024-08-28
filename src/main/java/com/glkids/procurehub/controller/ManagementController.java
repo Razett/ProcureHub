@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -20,7 +21,8 @@ public class ManagementController {
     @GetMapping("/work")
     public String status(@AuthenticationPrincipal UserDTO userDTO, Model model, RedirectAttributes redirectAttributes){
 
-        model.addAttribute("empCounts", empService.getEmpCounts());
+        model.addAttribute("empCounts", empService.getEmpCounts()); // 모든 사원 일일 건 수
+        model.addAttribute("empMonthCounts", empService.getMonthCounts()); // 모든 사원 한달 건 수
         model.addAttribute("user", userDTO);
         model.addAttribute("title", "관리");
         if(userDTO.getEmp().getDept().getDeptno()==1L){

@@ -164,45 +164,6 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <style>
-                            /* 테이블 스타일 */
-                            .employee-info {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin: 20px 0;
-                                font-size: 15px;
-                                text-align: left;
-                            }
-
-                            .employee-info thead tr {
-                                background-color: pink;
-                                color: #000000;
-                                text-align: center;
-                                font-weight: bold;
-                            }
-
-                            .employee-info th, .employee-info td {
-                                padding: 12px 15px;
-                                border: 1px solid #ddd;
-                                text-align: center; /* 텍스트를 가운데 정렬 */
-                            }
-
-                            .employee-info tbody tr {
-                                border-bottom: 1px solid #dddddd;
-                            }
-
-                            .employee-info tbody tr:nth-of-type(even) {
-                                background-color: #f3f3f3;
-                            }
-
-                            .employee-info tbody tr:hover {
-                                background-color: #f1f1f1;
-                            }
-
-                            .employee-info thead th.ti-user {
-                                width: 90px; /* '사원' 열의 너비 설정 */
-                            }
-                        </style>
                         <div class="row gap-20 pos-r mB-20">
                             <div class="col-md-3">
                                 <div class="layers bd bgc-white p-20">
@@ -427,9 +388,9 @@
                             </div>
 
                             <div class="col-md-6 h-100">
-                                <div class="row">
+                                <div class="row mB-20">
                                     <div class="col-md-6">
-                                        <div class="layers bd bgc-white p-20 mB-20">
+                                        <div class="layers bd bgc-white p-20 h-100">
                                             <div class="layer w-100 mB-10">
                                                 <h5 class="lh-1">월간 제품 생산 수</h5>
                                             </div>
@@ -442,26 +403,30 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="layers bd bgc-white p-20 mB-20">
+                                        <div class="layers bd bgc-white p-20 h-100">
                                             <div class="layer w-100 mB-10">
                                                 <h5 class="lh-1">일일 업무 현황</h5><br>
-                                                <span class="ti-user">사원</span>: <span
-                                                    th:text="${user.emp.name}"></span>
-                                                <table class="employee-info">
-                                                    <thead>
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <span class="ti-user fa-1-25x"></span>
+                                                    <span class="fa-1-25x ms-2" th:text="${user.emp.name}"></span>
+                                                </div>
+                                                <table class="table table-hover table-bordered">
                                                     <tr>
-                                                        <th>입고 처리 건 수</th>
-                                                        <th>출고 처리 건 수</th>
-                                                        <th>발주 처리 건 수</th>
-                                                        <th>견적 처리 건 수</th>
+                                                        <th class="col text-center bgc-light-blue-600 c-white">견적<br>등록</th>
+                                                        <th class="col text-center bgc-pink-600 c-white">발주<br>실행</th>
                                                     </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <td th:text="${empUserCount.importCount} + ' 건'"></td>
-                                                        <td th:text="${empUserCount.exportCount} + ' 건'"></td>
-                                                        <td th:text="${empUserCount.orderCount} + ' 건'"></td>
-                                                        <td th:text="${empUserCount.quotationCount} + ' 건'"></td>
-                                                    </tbody>
+                                                    <tr>
+                                                        <td class="col text-center" th:text="${empUserCount.quotationCount} + ' 건'"></td>
+                                                        <td class="col text-center" th:text="${empUserCount.orderCount} + ' 건'"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="col text-center bgc-green-600 c-white">입고<br>처리</th>
+                                                        <th class="col text-center bgc-orange-600 c-white">출고<br>처리</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="col text-center" th:text="${empUserCount.importCount} + ' 건'"></td>
+                                                        <td class="col text-center" th:text="${empUserCount.exportCount} + ' 건'"></td>
+                                                    </tr>
                                                 </table>
                                             </div>
                                         </div>

@@ -1,12 +1,10 @@
 package com.glkids.procurehub.service;
 
 
+import com.glkids.procurehub.dto.ImportDTO;
 import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.dto.OrderInspectionDTO;
-import com.glkids.procurehub.entity.Emp;
-import com.glkids.procurehub.entity.Order;
-import com.glkids.procurehub.entity.OrderInspection;
-import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.entity.*;
 import com.glkids.procurehub.status.OrderStatus;
 import com.glkids.procurehub.status.QuotationStatus;
 import org.aspectj.weaver.ast.Or;
@@ -38,7 +36,11 @@ public interface OrderService {
     List<OrderInspectionDTO> inspectionRead(Long orderno);
 
     //6. 발주 전체 내역 목록
+    @Deprecated
     List<OrderDTO> totalList();
+
+    //6-1. 발주 전체 내역 목록
+    List<OrderDTO> totalList(String type, String input);
 
     //7.발주 실행
     List<OrderDTO> orderExecute(List<OrderDTO> orderDTOList, Emp emp);
@@ -85,6 +87,30 @@ public interface OrderService {
                 .nspcno(entity.getNspcno()).order(entity.getOrder()).duedate(entity.getDuedate())
                 .content(entity.getContent()).inspector(entity.getInspector()).status(entity.getStatus())
                 .build();
+    }
+
+    default OrderDTO orderObjectToDTO(Object entityObject) {
+        OrderDTO dto = new OrderDTO();
+        if (entityObject instanceof Object[] objectArray) {
+            if (objectArray[0] instanceof Order order) {
+                dto.setOrderno(order.getOrderno());
+                dto.setPrcr(order.getPrcr());
+                dto.setQuantity(order.getQuantity());
+                dto.setStatus(order.getStatus());
+                dto.setRegdate(order.getRegdate());
+                dto.setModdate(order.getModdate());
+                dto.setOrderdate(order.getOrderdate());
+            } if (objectArray[1] instanceof Material material) {
+                dto.setMaterial(material);
+            } if (objectArray[2] instanceof QuotationMtrl quotationmtrl) {
+                dto.setQuotationmtrl(quotationmtrl);
+            } if (objectArray[3] instanceof Emp emp) {
+                dto.setEmp(emp);
+            }
+            return dto;
+        } else {
+            return null;
+        }
     }
 
 }
