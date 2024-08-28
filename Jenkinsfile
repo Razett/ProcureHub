@@ -68,13 +68,13 @@ pipeline {
                             // Check and kill process running on port 8080
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+
                             PID=\$(lsof -t -i:8080)
                             if [ -n "\$PID" ]; then
                                 echo "Killing process \$PID on port 8080"
-                                fuser -k -n tcp 8080
+                                kill -9 \$PID
                             else
                                 echo "No process found on port 8080"
-                            fi
 
                             exit
                             EOF
@@ -94,7 +94,7 @@ pipeline {
                                 mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
-                            nohup java -jar ${RELEASE_NAME} > log.log &
+                            nohup java -jar ${RELEASE_NAME} > log.log 2>&1 &
 
                             exit
                             EOF
