@@ -58,6 +58,17 @@ pipeline {
                     for (server in serverList) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                            // Check and kill process running on port 8080
+                            sh """
+                            ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+                            PID=\$(lsof -ti:8080)
+                            if [ -n "\$PID" ]; then
+                                kill -9 \$PID
+                            fi
+                            exit
+                            EOF
+                            """
+
                             // Step 1: SCP the file to the remote server
                             sh """
                             scp -P ${port} -o StrictHostKeyChecking=no build/libs/${APP_NAME} mit@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
@@ -72,7 +83,7 @@ pipeline {
                                 mv ${APP_NAME} backup_${APP_NAME}
                             fi
                             mv new_${APP_NAME} ${APP_NAME}
-                            nohup java -jar ${APP_NAME} &
+                            nohup java -jar ${APP_NAME} > log.log &
                             exit
                             EOF
                             """
