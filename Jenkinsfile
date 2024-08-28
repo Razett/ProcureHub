@@ -12,6 +12,7 @@ pipeline {
         BRANCH = 'master'
         DEPLOY_PATH = '/home/mit'
         APP_NAME = 'ProcureHub-0.0.1-SNAPSHOT.jar'
+        RELEASE_NAME = 'release.jar'
         SSH_CREDENTIALS_ID = 'GoldenKidsWeb-MIT'
     }
 
@@ -88,10 +89,11 @@ pipeline {
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
 
                             cd ${DEPLOY_PATH}
+                            rm ${RELEASE_NAME}
                             if [ -f "${APP_NAME}" ]; then
-                                mv ${APP_NAME} backup_${APP_NAME}
+                                mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
-                            mv new_${APP_NAME} ${APP_NAME}
+                            mv new_${APP_NAME} ${RELEASE_NAME}
                             nohup java -jar ${APP_NAME} > log.log &
                             exit
                             EOF
@@ -115,8 +117,8 @@ pipeline {
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
-                            if [ -f "${DEPLOY_PATH}/backup_${APP_NAME}" ]; then
-                                rm ${DEPLOY_PATH}/backup_${APP_NAME}
+                            if [ -f "${DEPLOY_PATH}/backup_${RELEASE_NAME}" ]; then
+                                rm ${DEPLOY_PATH}/backup_${RELEASE_NAME}
                             fi
                             exit
                             EOF
