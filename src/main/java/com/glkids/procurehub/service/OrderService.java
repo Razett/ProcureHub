@@ -25,6 +25,9 @@ public interface OrderService {
     //1-3. 대기 현황 수정
     void update(List<OrderDTO> orderDTOList);
 
+    //1-4. 발주 취소(삭제)
+    void delete(Long orderno);
+
     //2. 발주 수동 추가
     boolean register(OrderDTO orderDTO);
 

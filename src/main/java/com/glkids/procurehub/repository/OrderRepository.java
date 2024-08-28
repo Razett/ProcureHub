@@ -32,5 +32,10 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
     @Query("update Order o set o.status = :status where o.orderno = :orderno")
     void changeStatus(@Param("orderno") Long orderno, @Param("status") Integer status);
 
+    //발주 대기 현황에서 발주 취소 시 삭제되는 쿼리
+    @Modifying
+    @Query("delete from Order o where o.orderno = :orderno")
+    void orderDelete(@Param("orderno") Long orderno);
+
 
 }

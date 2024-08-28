@@ -70,6 +70,12 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Transactional
+    @Override
+    public void delete(Long orderno) {
+        orderRepository.orderDelete(orderno);
+    }
+
     @Override
     public boolean register(OrderDTO orderDTO) {
         Order order = new Order();
