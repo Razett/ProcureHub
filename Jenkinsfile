@@ -83,12 +83,11 @@ pipeline {
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
 
                             cd ${DEPLOY_PATH}
-                            rm ${RELEASE_NAME}
-                            if [ -f "${APP_NAME}" ]; then
+                            if [ -f "${RELEASE_NAME}" ]; then
                                 mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
-                            nohup java -jar ${APP_NAME} > log.log &
+                            nohup java -jar ${RELEASE_NAME} > log.log &
                             exit
                             EOF
                             """
