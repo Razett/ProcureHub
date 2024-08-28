@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    options {
+            // 매 빌드 전에 워크스페이스 정리
+            skipDefaultCheckout()
+            buildDiscarder(logRotator(numToKeepStr: '5')) // 오래된 빌드 기록 유지 개수 설정
+        }
+
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
         BRANCH = 'master'
@@ -12,7 +18,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: "${BRANCH}", url: "${GIT_REPO}"
+                script {
+                    // 최신 커밋을 강제로 가져오기 위해 워크스페이스 정리 후 체크아웃
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "${BRANCH}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [[$class: 'WipeWorkspace']], // 워크스페이스 삭제 후 체크아웃
+                        submoduleCfg: [],
+                        userRemoteConfigs: [[url: "${GIT_REPO}"]]
+                    ])
+                }
             }
         }
 
