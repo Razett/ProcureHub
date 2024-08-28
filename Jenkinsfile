@@ -6,7 +6,7 @@ pipeline {
         BRANCH = 'master'
         DEPLOY_PATH = '/home/mit'
         APP_NAME = 'GoldenKids.jar'
-        SSH_CREDENTIALS_ID = 'your_ssh_credentials_id'
+        SSH_CREDENTIALS_ID = 'GoldenKidsWeb-MIT'
     }
 
     stages {
