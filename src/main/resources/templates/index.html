@@ -435,9 +435,13 @@
 
                                 <div class="layers bd bgc-white p-20">
                                     <div class="layer w-100 mB-10">
-                                        <h5 class="lh-1">그래프 2</h5>
+                                        <h5 class="lh-1">월별 업무 처리 현황</h5>
                                     </div>
-                                    <div>그래프 공간</div>
+                                    <div>
+                                        <canvas id="process-chart" class="p-10" height="270"
+                                                style="display: block; box-sizing: border-box; height: 270px; width: 600px;"
+                                                width="600"></canvas>
+                                    </div>
                                 </div>
 
                             </div>
@@ -834,7 +838,25 @@
                                 chartService.doughnutChart(ctx, labels, labelStrs, datas, colors);
                             })
 
+                            var ctx2 = document.getElementById('process-chart').getContext('2d');
 
+                            StatisticsService.getProcessDataStat(function (data) {
+                                const labels2 = Object.keys(data[0]);
+                                const labelStr2 = [
+                                    '발주', '입고', '출고'
+                                ];
+                                var dataArray = [];
+
+                                for (let i = 0; i < data.length; i++) {
+                                    dataArray.push(Object.values(data[i]));
+                                }
+
+                                const colors2 = [
+                                    'green', 'red', 'blue'
+                                ];
+
+                                chartService.barChart(ctx2, labels2, labelStr2, dataArray, colors2);
+                            })
                         </script>
                     </th:block>
                 </div> <!-- End Container -->

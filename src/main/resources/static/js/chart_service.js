@@ -361,8 +361,48 @@ var chartService = (function () {
         });
     }
 
+    function barChart(ctxElement, labels, labelStrs, datas, colors) {
+        const datasets = [];
+
+        for (let i = 0; i < labelStrs.length; i++) {
+            datasets.push({
+                label: labelStrs[i], // 데이터셋의 레이블
+                data: datas[i], // 데이터 값
+                fill: false, // 라인 아래를 채울지 여부
+                backgroundColor: COLORS[colors[i] + '-500'],
+                borderColor: COLORS['white'],
+                pointBackgroundColor: COLORS[colors[i] + '-700'],
+                tension: 0.1, // 곡선의 부드러움
+                borderWidth: 2
+            });
+        }
+
+        new Chart(ctxElement, {
+            type: 'bar', // 차트의 종류 (라인 차트)
+            data: {
+                labels: labels, // x축 레이블
+                datasets: datasets
+            },
+            options: {
+                responsive: true, // 차트 크기가 자동으로 조절되도록 설정
+                maintainAspectRatio: true, // 차트의 가로 세로 비율을 유지하지 않음
+
+                scales: {
+                    y: {
+                        beginAtZero: false // y축이 0부터 시작하도록 설정
+                    }
+                },
+                animation: {
+                    duration: 1200, // 애니메이션 지속 시간을 설정
+                    easing: 'ease-in-out' // 애니메이션의 변화 속도 설정
+                }
+            }
+        });
+    }
+
     return {
         lineChart:lineChart,
-        doughnutChart:doughnutChart
+        doughnutChart:doughnutChart,
+        barChart:barChart
     };
 })();
