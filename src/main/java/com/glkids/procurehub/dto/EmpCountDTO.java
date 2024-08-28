@@ -13,13 +13,15 @@ public class EmpCountDTO {
     private Long importCount;     // 입고 처리 건수
     private Long exportCount;
     private Long orderCount;// 출고 처리 건수
+    private Long quotationCount;
 
     // 필요한 경우, int 타입을 사용하는 생성자 추가 (기존)
-    public EmpCountDTO(Long empno, String name, int importCount, int exportCount, int orderCount) {
+    public EmpCountDTO(Long empno, String name, int importCount, int exportCount, int orderCount, int quotationCount) {
         this.empno = empno;
         this.name = name;
         this.importCount = (long) importCount;
         this.exportCount = (long) exportCount;
         this.orderCount = (long) orderCount;
+        this.quotationCount = (long) quotationCount;
     }
 }

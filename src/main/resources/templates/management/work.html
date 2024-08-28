@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <style>
+            /* 기본 스타일 */
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f7f8fc;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+            .card h5 {
+                font-size: 18px;
+                font-weight: 600;
+                color: #5f6368;
+            }
+
+            .card .text-muted {
+                color: #70757a;
+            }
+
+            .card .mb-2 strong {
+                font-weight: 600;
+                color: #1a73e8;
+            }
+
+            .bgc-grey-100 {
+                background-color: #f1f3f4;
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            /* 메인 컨텐츠 스타일 */
+            .main-content {
+                padding: 20px;
+            }
+
+            /* 테이블 스타일 */
+            .employee-info {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 16px;
+                min-width: 400px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .employee-info th,
+            .employee-info td {
+                padding: 12px 15px;
+                text-align: center;
+            }
+
+            .employee-info thead tr {
+                background-color: #009879;
+                color: #ffffff;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .employee-info tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .employee-info tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .employee-info tbody tr:last-of-type {
+                border-bottom: 2px solid #009879;
+            }
+
+            .employee-info tbody tr:hover {
+                background-color: #f1f1f1;
+                cursor: pointer;
+            }
+
+            /* 로더 스타일 */
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #ffffff;
+                z-index: 90000;
+            }
+
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    transform: scale(0);
+                }
+                100% {
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
+    </script>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+        <main class="main-content bgc-grey-100">
+            <input type="hidden" id="id" value="">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <style>
+                                /* 기본 스타일 */
+                            body {
+                                font-family: 'Roboto', sans-serif;
+                                background-color: #f7f8fc;
+                                color: #333;
+                                margin: 0;
+                                padding: 0;
+                            }
+                            .card h5 {
+                                font-size: 18px;
+                                font-weight: 600;
+                                color: #5f6368;
+                            }
+
+                            .card .text-muted {
+                                color: #70757a;
+                            }
+
+                            .card .mb-2 strong {
+                                font-weight: 600;
+                                color: #1a73e8;
+                            }
+
+                            .bgc-grey-100 {
+                                background-color: #f1f3f4;
+                                padding: 20px;
+                                border-radius: 12px;
+                            }
+
+                            /* 메인 컨텐츠 스타일 */
+                            .main-content {
+                                padding: 20px;
+                            }
+
+                            /* 테이블 스타일 */
+                            .employee-info {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin: 20px 0;
+                                font-size: 16px;
+                                min-width: 400px;
+                                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                            }
+
+                            .employee-info th,
+                            .employee-info td {
+                                padding: 12px 15px;
+                                text-align: center;
+                            }
+
+                            .employee-info thead tr {
+                                background-color: #009879;
+                                color: #ffffff;
+                                text-align: center;
+                                font-weight: bold;
+                            }
+
+                            .employee-info tbody tr {
+                                border-bottom: 1px solid #dddddd;
+                            }
+
+                            .employee-info tbody tr:nth-of-type(even) {
+                                background-color: #f3f3f3;
+                            }
+
+                            .employee-info tbody tr:last-of-type {
+                                border-bottom: 2px solid #009879;
+                            }
+
+                            .employee-info tbody tr:hover {
+                                background-color: #f1f1f1;
+                                cursor: pointer;
+                            }
+
+                            /* 로더 스타일 */
+                            #loader {
+                                transition: all 0.3s ease-in-out;
+                                opacity: 1;
+                                visibility: visible;
+                                position: fixed;
+                                height: 100vh;
+                                width: 100%;
+                                background: #ffffff;
+                                z-index: 90000;
+                            }
+
+                            #loader.fadeOut {
+                                opacity: 0;
+                                visibility: hidden;
+                            }
+
+                            .spinner {
+                                width: 40px;
+                                height: 40px;
+                                position: absolute;
+                                top: calc(50% - 20px);
+                                left: calc(50% - 20px);
+                                background-color: #333;
+                                border-radius: 100%;
+                                animation: sk-scaleout 1.0s infinite ease-in-out;
+                            }
+                        </style>
+                        <div class="col-md-5">
+                            <div class="layers bd bgc-white p-20 mB-20">
+                                <div class="layer w-100 mB-10">
+                                    <h5 class="lh-1">일일 업무 현황</h5><br>
+                                    <strong><h3>사원 업무 현황</h3></strong><br>
+                                    <h4>당일건</h4>
+                                    <table class="employee-info">
+                                        <thead>
+                                        <tr>
+                                            <th>사원명</th>
+                                            <th>입고 처리 건 수</th>
+                                            <th>출고 처리 건 수</th>
+                                            <th>발주 처리 건 수</th>
+                                            <th>견적 처리 건 수</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="count : ${empCounts}">
+                                            <tr>
+                                                <td th:text="${count.name}"></td>
+                                                <td th:text="${count.importCount} + ' 건'"></td>
+                                                <td th:text="${count.exportCount} + ' 건'"></td>
+                                                <td th:text="${count.orderCount} + ' 건'"></td>
+                                                <td th:text="${count.quotationCount} + ' 건'"></td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+    </div>
+    </body>
+</th:block>
+</html>
