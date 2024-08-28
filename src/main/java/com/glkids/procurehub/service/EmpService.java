@@ -12,6 +12,9 @@ public interface EmpService {
 
     List<EmpCountDTO> getEmpCounts();
 
+    // 로그인한 사람만 나오게
+    EmpCountDTO getCurrentUserEmpCounts();
+
     default EmpDTO empEntityToDTO(Emp emp){
         return EmpDTO.builder().name(emp.getName()).pw(emp.getPw())
                 .empno(emp.getEmpno()).build();

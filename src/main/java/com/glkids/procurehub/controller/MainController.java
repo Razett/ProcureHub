@@ -29,6 +29,7 @@ public class MainController {
     public String index(@AuthenticationPrincipal UserDTO userDTO, Model model, EmpDTO empDTO) {
         model.addAttribute("user", userDTO);
         model.addAttribute("empCount" , empService.getEmpCounts());
+        model.addAttribute("empUserCount", empService.getCurrentUserEmpCounts());
 
         model.addAttribute("redCount", procurementService.countRedStatus()); // 긴급 상태 개수
         model.addAttribute("yellowCount", procurementService.countYellowStatus()); // 경고 상태 개수
