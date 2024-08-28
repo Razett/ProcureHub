@@ -41,5 +41,4 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
     @Query("select o from Order o where o.status > :status order by o.orderno desc")
     List<Order> findOrdersByStatus(@Param("status") Integer status);
 
-
 }

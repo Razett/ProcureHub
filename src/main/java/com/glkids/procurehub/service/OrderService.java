@@ -32,8 +32,11 @@ public interface OrderService {
     //4. 발주 상세 정보
     OrderDTO read(Long orderno);
 
-    //5. 발주 진척 검수
+    //5-1. 발주 진척 검수 조회
     List<OrderInspectionDTO> inspectionRead(Long orderno);
+
+    //5-2. 발주 진척 검수 추가
+    Boolean inspectionRegister(OrderInspectionDTO orderInspectionDTO, Emp emp);
 
     //6. 발주 전체 내역 목록
     @Deprecated

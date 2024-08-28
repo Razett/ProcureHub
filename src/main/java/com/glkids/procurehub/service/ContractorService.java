@@ -34,13 +34,13 @@ public interface ContractorService {
     //6. 견적 등록
     Boolean quoRegister(QuotationDTO quotationDTO);
 
-    //7. 이름검색기능
+    //7. 이름 검색 기능
     ContractorDTO findByName(String name);
 
-    //8. 회사명 자동완성 기능검색
+    //8. 회사명 자동 완성 기능 검색
     List<ContractorDTO> findByNameContaining(String name);
 
-    //9. 견적상세보기
+    //9. 견적 상세 보기
     QuotationDTO quoread(Long qtno);
 
     //10. 견적 수정하기
