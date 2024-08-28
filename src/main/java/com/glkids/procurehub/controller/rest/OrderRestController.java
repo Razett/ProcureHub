@@ -49,5 +49,12 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.inspectionRead(orderDTO.getOrderno()));
     }
 
+    @DeleteMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void orderDelete(@RequestBody List<Long> ordernosList){
+        for (Long orderno : ordernosList) {
+            orderService.delete(orderno);
+        }
+    }
+
 
 }
