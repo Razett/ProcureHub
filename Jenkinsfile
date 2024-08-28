@@ -111,7 +111,7 @@ pipeline {
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
                             if [ -f "${DEPLOY_PATH}/backup_${RELEASE_NAME}" ]; then
-                                rm ${DEPLOY_PATH}/backup_${RELEASE_NAME}
+                                rm -rf ${DEPLOY_PATH}/backup_${RELEASE_NAME}
                             fi
                             exit
                             EOF
