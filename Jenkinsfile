@@ -27,8 +27,8 @@ pipeline {
                 script {
                     // Define SERVER_LIST within the script block
                     def serverList = [
-                        "m-it.iptime.org:8030",
-                        "m-it.iptime.org:8025"
+                        "m-it.iptime.org:2230",
+                        "m-it.iptime.org:2225"
                     ]
 
                     // Iterate over SERVER_LIST and perform deployment
@@ -56,8 +56,8 @@ pipeline {
             steps {
                 script {
                     def serverList = [
-                        "m-it.iptime.org:8030",
-                        "m-it.iptime.org:8025"
+                        "m-it.iptime.org:2230",
+                        "m-it.iptime.org:2225"
                     ]
 
                     for (server in serverList) {
