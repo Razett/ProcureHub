@@ -87,9 +87,9 @@ pipeline {
                                 mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
-                            setsid nohup java -jar ${RELEASE_NAME} > log.log &
+                            nohup java -jar ${RELEASE_NAME} > log.log &
                             disown
-                            echo "start jar"
+                            echo "start jar" << EOF
                             exit
                             EOF
                             """
