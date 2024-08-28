@@ -77,6 +77,8 @@ pipeline {
                                                             echo "No process found on port 8080"
                                                         fi
 
+fuser -k -n tcp 8080 || true
+
                                                         exit
                                                         EOF
                             """
