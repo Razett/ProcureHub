@@ -73,6 +73,7 @@ pipeline {
                             fi
                             mv new_${APP_NAME} ${APP_NAME}
                             nohup java -jar ${APP_NAME} &
+                            exit
                             EOF
                             """
                         }
@@ -97,6 +98,7 @@ pipeline {
                             if [ -f "${DEPLOY_PATH}/backup_${APP_NAME}" ]; then
                                 rm ${DEPLOY_PATH}/backup_${APP_NAME}
                             fi
+                            exit
                             EOF
                             """
                         }
