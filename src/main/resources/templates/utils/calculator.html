@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/base/base::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <style>
+            /* 기본 스타일 */
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f7f8fc;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+
+            .card h5 {
+                font-size: 18px;
+                font-weight: 600;
+                color: #5f6368;
+            }
+
+            .card .text-muted {
+                color: #70757a;
+            }
+
+            .card .mb-2 strong {
+                font-weight: 600;
+                color: #1a73e8;
+            }
+
+            .bgc-grey-100 {
+                background-color: #f1f3f4;
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            /* 메인 컨텐츠 스타일 */
+            .main-content {
+                padding: 20px;
+            }
+
+            /* 테이블 스타일 */
+            .employee-info {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 16px;
+                min-width: 400px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .employee-info th,
+            .employee-info td {
+                padding: 12px 15px;
+                text-align: center;
+            }
+
+            .employee-info thead tr {
+                background-color: #009879;
+                color: #ffffff;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .employee-info tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .employee-info tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .employee-info tbody tr:last-of-type {
+                border-bottom: 2px solid #009879;
+            }
+
+            .employee-info tbody tr:hover {
+                background-color: #f1f1f1;
+                cursor: pointer;
+            }
+
+            /* 로더 스타일 */
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
+                width: 100%;
+                background: #ffffff;
+                z-index: 90000;
+            }
+
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
+
+            @keyframes sk-scaleout {
+                0% {
+                    transform: scale(0);
+                }
+                100% {
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
+    </script>
+
+    <!-- #Main ============================ -->
+    <div class="page-container">
+        <main class="main-content bgc-grey-100">
+            <input type="hidden" id="id" value="">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <div class="col-md-5">
+                            <div class="layers bd bgc-white p-20 mB-20">
+                                <div class="layer w-100 mB-10">
+                                    <h3>생산 계획 계산기</h3><br>
+                                    <div class="mb-3">
+                                        <label for="prdcNo" class="form-label">제품 선택</label>
+                                        <select id="prdcNo" class="form-select" required>
+                                            <!-- 자재 옵션을 여기에 추가 -->
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">제품명</label>
+                                        <input class="form-control bgc-grey-50" id="prdcName">
+                                        <!-- 제품명이 표시될 곳 -->
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editStartDate" class="form-label">시작 날짜</label>
+                                        <input type="datetime-local" class="form-control bgc-grey-50"
+                                               id="editStartDate"> <!-- 시작 날짜 읽기 전용 -->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="layers bd bgc-white p-20 mB-20">
+                                <div class="layer w-100 mB-10">
+                                    <h3>견적 자재 목록</h3><br>
+
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            let calendar;
+                            let currentEvent;
+
+                            $(document).ready(function () {
+                                var calendarEl = document.getElementById('calendar');
+                                var deleteButton = $('#deleteEvent');
+
+                                const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
+
+                                $.ajax({
+                                    url: '/rest/calendar/all',
+                                    method: 'GET',
+                                    success: function (data) {
+                                        const prdcSelect = $('#prdcNo');
+                                        data.forEach(prdc => {
+                                            prdcSelect.append(new Option(prdc.name, prdc.prdcno));
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Error fetching prdc data:', error);
+                                        alert('자재 목록을 불러오는 데 실패했습니다.');
+                                    }
+                                });
+
+                                // prdcNo 선택 시 제품명 자동으로 가져오기
+                                $('#prdcNo').change(function () {
+                                    const selectedPrdcNo = $(this).val();
+                                    $.ajax({
+                                        url: `/rest/calendar/${selectedPrdcNo}`,
+                                        method: 'GET',
+                                        success: function (data) {
+                                            $('#prdcName').val(data.name);  // 제품명을 표시할 요소
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Error fetching product name:', error);
+                                            alert('제품명을 불러오는 데 실패했습니다.');
+                                        }
+                                    });
+                                });})
+                        </script>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+    </div>
+    </body>
+</th:block>
+</html>
+
