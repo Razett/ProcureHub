@@ -41,5 +41,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
     @Query("select o from Order o where o.status > :status order by o.orderno desc")
     List<Order> findOrdersByStatus(@Param("status") Integer status);
 
+    @Query("SELECT FUNCTION('DATE_FORMAT', o.orderdate, '%Y-%m') AS month, COUNT(o.orderdate) AS counts " +
+            "FROM Order o " +
+            "WHERE o.status > 5 " +
+            "AND o.orderdate >= :startDate " +
+            "GROUP BY FUNCTION('DATE_FORMAT', o.orderdate, '%Y-%m') ")
+    List<Object[]> findMonthlyOrderCount(@Param("startDate") LocalDateTime startDate);
+
 
 }
