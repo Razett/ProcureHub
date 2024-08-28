@@ -5,7 +5,7 @@ pipeline {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
         BRANCH = 'master'
         DEPLOY_PATH = '/home/mit'
-        APP_NAME = 'GoldenKids.jar'
+        APP_NAME = 'ProcureHub-0.0.1-SNAPSHOT.jar'
         SSH_CREDENTIALS_ID = 'GoldenKidsWeb-MIT'
     }
 
