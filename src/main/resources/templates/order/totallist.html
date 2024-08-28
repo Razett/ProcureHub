@@ -84,51 +84,261 @@
                     <th:block th:fragment="content">
                         <div class="row gap-20 pos-r">
                             <div class="bgc-white p-20 bd col-md-12">
-                                <h4 class="c-grey-900 mT-10 mB-30">발주 전체 내역</h4>
-                                <table class="table table-hover" style="min-width: 1400px;">
-                                    <thead class="position-sticky top-0">
-                                    <tr>
-                                        <th scope="col" class="text-center">발주 코드</th>
-                                        <th scope="col" class="text-center">발주 날짜</th>
-                                        <th scope="col" class="text-center">발주 사원</th>
-                                        <th scope="col" class="text-center">조달 계획 코드</th>
-                                        <th scope="col" class="text-center">납기일</th>
-                                        <th scope="col" class="text-center">자재 코드</th>
-                                        <th scope="col" class="text-center">자재명</th>
-                                        <th scope="col" class="text-center">자재 수량</th>
-                                        <th scope="col" class="text-center">회사명</th>
-                                        <th scope="col" class="text-center">단가</th>
-                                        <th scope="col" class="text-center">총 금액</th>
-                                        <th scope="col" class="text-center">발주 수량</th>
-                                        <th scope="col" class="text-center">등록 날짜</th>
-                                        <th scope="col" class="text-center">발주 상태</th>
-                                        <th scope="col" class="text-center">Download</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                    <th:block th:each="list : ${orderTotalList}">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="c-grey-900 mT-10 mB-30">발주 전체 내역</h4>
+                                    <div class="d-flex align-items-center mT-10 mB-30">
+                                        <a href="#searchGroup"
+                                           class="px-2 py-2 d-none" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="searchGroup">
+                                            <i class="c-grey-900 ti-search fa-1-25x"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row collapse" id="searchGroup">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4 mB-15">
+                                        <div class="input-group">
+                                            <div class="input-group-text"> <!-- #f8f9fa  rgba(0, 0, 0, 0.0625) --bs-btn-border-color -->
+                                                <i class="c-grey-900 ti-search"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="searchInput" aria-label="searchInput" aria-describedby="inputSearch">
+                                            <button class="btn btn-outline-light-group c-grey-900" id="searchButton" type="button">검색</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="table table-hover" style="min-width: 1400px;">
+                                        <thead class="position-sticky top-0">
                                         <tr>
-                                            <td class="import-code text-center" th:text="${list.orderno}"></td>
-                                            <td class="import-code text-center" th:text="${#temporals.format(list.orderdate, 'yyyy-MM-dd')}"></td>
-                                            <td class="import-code text-center" th:text="${list.emp?.name}"></td>
-                                            <td class="import-code text-center" th:text="${list.prcr?.prcrno}"></td>
-                                            <td class="import-code text-center" th:text="${#temporals.format(list.prcr?.regdate, 'yyyy-MM-dd')}"></td>
-                                            <td class="import-code text-center" th:text="${list.material.mtrlno}"></td>
-                                            <td class="import-code text-center" th:text="${list.material.name}"></td>
-                                            <td class="import-code text-center" th:text="${list.material.quantity}"></td>
-                                            <td th:text="${list.quotationmtrl?.quotation?.contractor?.name}"></td>
-                                            <td class="import-code text-center" th:text="${list.quotationmtrl?.unitprice}"></td>
-                                            <td class="import-code text-center" th:text="${list.quotationmtrl != null ? list.quotationmtrl.unitprice * list.quantity : ''}"></td>
-                                            <td class="import-code text-center" th:text="${list.quantity}"></td>
-                                            <td class="import-code text-center" th:text="${#temporals.format(list.regdate, 'yyyy-MM-dd')}"></td>
-                                            <td class="import-code text-center" th:text="${list.statusString}"></td>
-                                            <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
+                                            <th scope="col" class="text-center">발주 코드</th>
+                                            <th scope="col" class="text-center">발주 날짜</th>
+                                            <th scope="col" class="text-center">발주 사원</th>
+                                            <th scope="col" class="text-center">조달 계획 코드</th>
+                                            <th scope="col" class="text-center">납기일</th>
+                                            <th scope="col" class="text-center">자재 코드</th>
+                                            <th scope="col" class="text-center">자재명</th>
+                                            <th scope="col" class="text-center">자재 수량</th>
+                                            <th scope="col" class="text-center">회사명</th>
+                                            <th scope="col" class="text-center">단가</th>
+                                            <th scope="col" class="text-center">총 금액</th>
+                                            <th scope="col" class="text-center">발주 수량</th>
+                                            <th scope="col" class="text-center">등록 날짜</th>
+                                            <th scope="col" class="text-center">발주 상태</th>
+                                            <th scope="col" class="text-center d-none">Download</th>
                                         </tr>
-                                    </th:block>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                        <th:block th:each="list : ${orderTotalList}">
+                                            <tr class="tr-continue" th:id="${list.orderno}">
+                                                <td class="import-code text-center" th:text="${list.orderno}"></td>
+                                                <td class="import-code text-center" th:text="${#temporals.format(list.orderdate, 'yyyy-MM-dd')}"></td>
+                                                <td class="import-code text-center" th:text="${list.emp?.name}"></td>
+                                                <td class="import-code text-center" th:text="${list.prcr?.prcrno}"></td>
+                                                <td class="import-code text-center" th:text="${#temporals.format(list.prcr?.regdate, 'yyyy-MM-dd')}"></td>
+                                                <td class="import-code text-center" th:text="${list.material.mtrlno}"></td>
+                                                <td class="import-code text-center" th:text="${list.material.name}"></td>
+                                                <td class="import-code text-center" th:text="${list.material.quantity}"></td>
+                                                <td th:text="${list.quotationmtrl?.quotation?.contractor?.name}"></td>
+                                                <td class="import-code text-center" th:text="${list.quotationmtrl?.unitprice}"></td>
+                                                <td class="import-code text-center" th:text="${list.quotationmtrl != null ? list.quotationmtrl.unitprice * list.quantity : ''}"></td>
+                                                <td class="import-code text-center" th:text="${list.quantity}"></td>
+                                                <td class="import-code text-center" th:text="${#temporals.format(list.regdate, 'yyyy-MM-dd')}"></td>
+                                                <td class="import-code text-center" th:text="${list.statusString}"></td>
+                                                <td class="col-md-1 text-center d-none"><span class="ti-download"></span><span class="icon-name"></span></td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+                        <!-- 발주 상세 정보 모달 -->
+                        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="orderModalLabel">발주 상세 정보</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="overflow-x-auto">
+                                            <table class="table table-bordered" style="min-width: 760px;">
+                                                <tr class="table-active">
+                                                    <th class="text-center">발주 코드</th>
+                                                    <th class="text-center">발주 날짜</th>
+                                                    <th class="text-center">발주 사원</th>
+                                                    <th class="text-center">조달 계획 코드</th>
+                                                    <th class="text-center">납기일</th>
+                                                    <th class="text-center">등록일</th>
+                                                    <th class="text-center">검수 현황</th>
+                                                    <th class="text-center">발주 상태</th>
+                                                    <th class="text-center">발주서</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-orderno">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-emp">dummy</td>
+                                                    <td class="text-center" id="modal-table-prcrno">dummy</td>
+                                                    <td class="text-center" id="modal-table-reqdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-regdate">dummy</td>
+                                                    <td class="text-center" id="modal-table-inspectionStatus">dummy</td>
+                                                    <td class="text-center" id="modal-table-status">dummy</td>
+                                                    <td class="col-md-1 text-center" id="modal-table-orderdraft">
+                                                        <span class="ti-check-box"></span><span class="icon-name"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <th class="text-center">자재 코드</th>
+                                                    <th class="text-center">자재명</th>
+                                                    <th class="text-center">자재 규격</th>
+                                                    <th class="text-center">자재 수량</th>
+                                                    <th class="text-center">회사명</th>
+                                                    <th class="text-center">단가</th>
+                                                    <th class="text-center">총금액</th>
+                                                    <th class="text-center">L/T</th>
+                                                    <th class="text-center">발주 수량</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" id="modal-table-mtrlno">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlname">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlstandard">dummy</td>
+                                                    <td class="text-center" id="modal-table-mtrlquantity">dummy</td>
+                                                    <td class="text-center" id="modal-table-contractorname">dummy</td>
+                                                    <td class="text-center" id="modal-table-unitprice">dummy</td>
+                                                    <td class="text-center" id="modal-table-totalprice">dummy</td>
+                                                    <td class="text-center" id="modal-table-leadtime">dummy</td>
+                                                    <td class="text-center" id="modal-table-orderquantity">dummy</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <div class="d-flex align-items-center">
+                                                <h5 class="mb-0">진척 검수</h5>
+                                                <button type="button" class="btn btn-secondary ms-auto" onclick="addInsepction()">추가</button>
+                                            </div>
+                                            <br>
+                                            <div id="inspection-container"></div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="/js/order.js"></script>
+                        <script>
+                            var inspection_count = 0;
+
+                            $(document).ready(function () {
+                                $('#searchButton').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var input = $('#searchInput').val();
+
+                                    if (input) {
+                                        window.location.href = "/order/totallist?type=ECCNMCMNENEM" + "&inputSearch=" + input;
+                                    } else {
+                                        toastService.printToast("검색어를 입력하세요.")
+                                    }
+                                });
+
+                                $('.tr-continue').on('click', function () {
+                                    inspection_count = 0
+                                    var id = $(this).closest('tr').attr('id');
+
+                                    OrderService.readOrder(id, function (data) {
+                                        console.log(data);
+                                        $('#modal-table-orderno').text('OR' + data.orderno.toString().padStart(6, '0'));
+                                        $('#modal-table-orderdate').text(OrderService.formatDate(data.orderdate));
+                                        $('#modal-table-emp').text(data.emp.name);
+                                        if (data.prcr){
+                                            $('#modal-table-prcrno').text('P' + data.prcr.prcrno.toString().padStart(6, '0'));
+                                            $('#modal-table-reqdate').text(OrderService.formatDate(data.prcr.reqdate));
+                                        } else {
+                                            $('#modal-table-prcrno').text(null);
+                                            $('#modal-table-reqdate').text(null);
+                                        }
+                                        $('#modal-table-regdate').text(OrderService.formatDate(data.regdate));
+                                        $('#modal-table-inspectionStatus').text(data.statusString);
+                                        $('#modal-table-status').text(data.statusString);
+
+                                        $('#modal-table-mtrlno').text('MA' + data.material.mtrlno.toString().padStart(6, '0'));
+                                        $('#modal-table-mtrlname').text(data.material.name);
+                                        $('#modal-table-mtrlstandard').text(data.material.standard);
+                                        $('#modal-table-mtrlquantity').text(data.material.quantity);
+                                        $('#modal-table-contractorname').text(data.contractorName);
+                                        $('#modal-table-unitprice').text(data.quotationmtrl.unitprice);
+                                        $('#modal-table-totalprice').text(data.quotationmtrl.unitprice * data.quantity);
+                                        $('#modal-table-leadtime').text(data.quotationmtrl.leadtime);
+                                        $('#modal-table-orderquantity').text(data.quantity);
+
+                                    });
+
+                                    //진행 현황 클릭 시 모달 표시(진척 검수 정보)
+                                    OrderService.readInspection(id, function (data) {
+                                        console.log(data);
+
+                                        var insTotalHtml = '';
+
+                                        for (let i = 0; i < data.length; i++) {
+                                            inspection_count++;
+                                            var insHtml =
+                                                '<div class="row alert alert-light">' +
+                                                '<h5>' + (data.length - i) + '.' + '</h5>' +
+                                                '<div class="col-md-4 mb-1">' +
+                                                '<label class="form-label">검수(예정)일</label>' +
+                                                '<input type="text" id="duedate'+ i +'" class="form-control bgc-grey-50" value="" readonly>' +
+                                                '</div>' +
+                                                '<div class="col-md-4 mb-1">' +
+                                                '<label class="form-label">검수자</label>' +
+                                                '<input type="text" id="inspector' + i + '" class="form-control bgc-grey-50" value="" readonly>' +
+                                                '</div>' +
+                                                '<div class="col-md-4 mb-1">' +
+                                                '<label class="form-label">검수 상태</label>' +
+                                                '<select class="form-select" id="ins-status' + i + '">' +
+                                                '<option value="" disabled selected style="font-weight: bold;">검수 상태</option>' +
+                                                '<option value="0">검수전</option>' +
+                                                '<option value="1">정상</option>' +
+                                                '</select>' +
+                                                '</div>' +
+                                                '<div class="col-md-12 mb-1">' +
+                                                '<label class="form-label">검수 내용</label>' +
+                                                '<textarea rows="3" class="form-control" id="ins-content' + i + '"></textarea>' +
+                                                '<div class="d-flex align-items-center">' +
+                                                '<button type="button" id="ins-submit' + i + '" class="btn btn-secondary ms-auto mt-2" data-bs-dismiss="modal">저장</button>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>';
+
+                                            insTotalHtml += insHtml;
+                                        }
+                                        $('#inspection-container').html(insTotalHtml);
+
+                                        for (let i = 0; i < data.length; i++) {
+                                            if (data[i].inspector) {
+                                                document.getElementById('inspector' + i).value = data[i].inspector.name;
+                                            } else {
+                                                document.getElementById('inspector' + i).value = 'N/A';
+                                            }
+                                            document.getElementById('duedate' + i).value = OrderService.formatDate(data[i].duedate);
+                                            document.getElementById('ins-status' + i).value = data[i].status;
+                                            document.getElementById('ins-content' + i).value = data[i].content;
+
+                                            if (data[i].status != 0) {
+                                                document.getElementById('ins-content' + i).classList.add('bgc-grey-50');
+                                                document.getElementById('ins-content' + i).readOnly = true;
+                                                document.getElementById('ins-submit' + i).classList.add(('d-none'));
+                                            }
+                                        }
+
+                                    });
+                                    $('#orderModal').modal('show');
+                                });
+
+                            })
+                        </script>
                     </th:block>
                 </div>
             </div>

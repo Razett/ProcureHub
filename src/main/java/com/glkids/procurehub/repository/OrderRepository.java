@@ -5,6 +5,7 @@ import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.entity.Material;
 import com.glkids.procurehub.entity.Order;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.repository.search.OrderSearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPredicateExecutor<Order> {
+public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPredicateExecutor<Order>, OrderSearchRepository {
 
     // prcrno에 해당하는 Order를 조회하는 쿼리
     @Query("SELECT o FROM Order o WHERE o.prcr.prcrno = :prcrno")
@@ -36,6 +37,9 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
     @Modifying
     @Query("delete from Order o where o.orderno = :orderno")
     void orderDelete(@Param("orderno") Long orderno);
+
+    @Query("select o from Order o where o.status > :status order by o.orderno desc")
+    List<Order> findOrdersByStatus(@Param("status") Integer status);
 
 
 }
