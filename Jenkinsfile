@@ -70,14 +70,15 @@ pipeline {
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
 
                             PID=\$(lsof -t -i:8080)
-                            if [ -n "\$PID" ]; then
-                                echo "Killing process \$PID on port 8080"
-                                kill -9 \$PID
-                            else
-                                echo "No process found on port 8080"
+                                                        if [ -n "\$PID" ]; then
+                                                            echo "Killing process \$PID on port 8080"
+                                                            kill -9 \$PID
+                                                        else
+                                                            echo "No process found on port 8080"
+                                                        fi
 
-                            exit
-                            EOF
+                                                        exit
+                                                        EOF
                             """
 
                             // Step 1: SCP the file to the remote server
