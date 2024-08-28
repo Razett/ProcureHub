@@ -1,11 +1,14 @@
 package com.glkids.procurehub.repository;
 
 import com.glkids.procurehub.dto.EmpCountDTO;
+import com.glkids.procurehub.dto.EmpMonthDTO;
 import com.glkids.procurehub.entity.Emp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EmpRepository extends JpaRepository<Emp, Long> {
@@ -29,6 +32,18 @@ public interface EmpRepository extends JpaRepository<Emp, Long> {
             "(SELECT COUNT(q) FROM Quotation q WHERE q.emp.empno = :empNo AND FUNCTION('DATE', q.regdate) = CURRENT_DATE)) " +
             "FROM Emp e WHERE e.empno = :empNo")
     EmpCountDTO getEmpCountsByCurrentUser(@Param("empNo") Long empNo);
+
+    @Query("SELECT new com.glkids.procurehub.dto.EmpMonthDTO(e.empno, e.name, " +
+            "(SELECT COUNT(o) FROM Order o WHERE o.emp.empno = e.empno " +
+            "AND o.orderdate BETWEEN :startOfMonth AND CURRENT_TIMESTAMP), " +
+            "(SELECT COUNT(i) FROM Imports i WHERE i.approver.empno = e.empno " +
+            "AND i.approvedate BETWEEN :startOfMonth AND CURRENT_TIMESTAMP), " +
+            "(SELECT COUNT(ex) FROM Export ex WHERE ex.shipper.empno = e.empno " +
+            "AND ex.shippeddate BETWEEN :startOfMonth AND CURRENT_TIMESTAMP), " +
+            "(SELECT COUNT(q) FROM Quotation q WHERE q.emp.empno = e.empno " +
+            "AND q.regdate BETWEEN :startOfMonth AND CURRENT_TIMESTAMP)) " +
+            "FROM Emp e")
+    List<EmpMonthDTO> findMonthCounts(@Param("startOfMonth") LocalDateTime startOfMonth);
 
 
 }
