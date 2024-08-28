@@ -14,6 +14,7 @@ pipeline {
         APP_NAME = 'ProcureHub-0.0.1-SNAPSHOT.jar'
         RELEASE_NAME = 'release.jar'
         SSH_CREDENTIALS_ID = 'GoldenKidsWeb-MIT'
+        SECRET_FILE_ID = 'secret' // Jenkins에 설정한 Secret file ID
     }
 
     stages {
@@ -26,22 +27,11 @@ pipeline {
         stage('Prepare environment') {
             steps {
                 script {
-                    // application-secret.properties 파일 생성
-                    writeFile file: 'src/main/resources/application-secret.properties', text: """
-                        spring.application.name=ProcureHub
-
-                        # Database
-                        spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-                        #spring.datasource.url=jdbc:mariadb://3.34.94.105:3306/ProcureHUB
-                        spring.datasource.url=jdbc:mariadb://m-it.iptime.org:8026/ProcureHUB
-                        spring.datasource.username=dev
-                        spring.datasource.password=glkids1234
-
-                        # Redis
-                        spring.data.redis.host=3.34.94.105
-                        spring.data.redis.password=glkids1234
-                        spring.data.redis.port=6379
-                    """
+                    // Secret file을 가져와서 사용
+                    withCredentials([file(credentialsId: SECRET_FILE_ID, variable: 'SECRET_FILE_PATH')]) {
+                        // SECRET_FILE_PATH는 Jenkins가 파일을 다운로드한 경로
+                        sh "cp \$SECRET_FILE_PATH src/main/resources/application-secret.properties"
+                    }
                 }
             }
         }
