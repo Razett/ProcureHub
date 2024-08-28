@@ -11,6 +11,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ImportRepository extends JpaRepository<Imports, Long>, QuerydslPredicateExecutor<Imports>, ImportsSearchRepository {
@@ -28,5 +29,12 @@ public interface ImportRepository extends JpaRepository<Imports, Long>, Querydsl
     @Modifying
     @Query("UPDATE Imports i SET i.quantity = :quantity WHERE i.importno = :importno")
     void updateQuantityByImportno(@Param("importno") Long importno, @Param("quantity") Long quantity);
+
+    @Query("SELECT FUNCTION('DATE_FORMAT', im.approvedate, '%Y-%m') AS month, COUNT(im.importno) AS counts " +
+            "FROM Imports im " +
+            "WHERE im.status > 5 AND im.status < 8 " +
+            "AND im.approvedate >= :startDate " +
+            "GROUP BY FUNCTION('DATE_FORMAT', im.approvedate, '%Y-%m') ")
+    List<Object[]> findMonthlyImportCount(@Param("startDate") LocalDateTime startDate);
 
 }

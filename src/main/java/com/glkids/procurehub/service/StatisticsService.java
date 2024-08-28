@@ -6,6 +6,7 @@ import com.glkids.procurehub.dto.StatisticsDTO;
 import com.glkids.procurehub.entity.Material;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StatisticsService {
 
@@ -17,4 +18,10 @@ public interface StatisticsService {
     List<StatisticsDTO> getMonthExportByMaterial(Long mtrlno);
 
     List<StatisticsDTO> getMaterialQuantityStatistics(MaterialDTO materialDTO, List<StatisticsDTO> importsStat, List<StatisticsDTO> exportsStat);
+
+    Map<String, Long> getMonthOrderCounts();
+
+    Map<String, Long> getMonthImportsCounts();
+
+    Map<String, Long> getMonthExportsCounts();
 }
