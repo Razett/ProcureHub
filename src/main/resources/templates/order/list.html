@@ -307,9 +307,14 @@
                             <script>
                                 var inspection_count = 0;
 
+                                //체크박스 전체 선택(disabled 체크박스는 제외)
                                 function toggleCheckboxes(masterCheckbox) {
                                     const isChecked = $(masterCheckbox).is(':checked');
-                                    $('.ordernoCheckbox').prop('checked', isChecked);
+                                    $('.ordernoCheckbox').each(function() {
+                                        if (!$(this).is(':disabled')) {
+                                            $(this).prop('checked', isChecked);
+                                        }
+                                    });
                                 }
 
                                 //회사명 선택 시 단가 변경
@@ -340,7 +345,7 @@
                                     totalPriceCell.textContent = totalPrice;  //.toLocaleString('en-US');
                                 }
 
-                                //체크박스가 체크된 항목들의 값 중 발주코드, 회사명 저장
+                                //체크박스가 체크된 항목들의 값 중 발주 코드, 회사명 저장
                                 $(document).ready(function () {
 
                                     function getOrder() {
@@ -355,6 +360,16 @@
 
                                         return excuteOrderArray;
                                     }
+
+                                    function getOrderno(){
+                                        var ordernos = [];
+                                        $('.ordernoCheckbox:checked').each(function () {
+                                            ordernos.push($(this).val());
+                                        });
+
+                                        return ordernos;
+                                    }
+
 
                                     // "수정" 버튼 클릭 시
                                     var updateOrderno = []; // 수정 전 발주 코드
@@ -435,12 +450,35 @@
                                     });
 
                                     // "발주 취소" 버튼 누를 시
-                                    $('#cancel-orders-btn').on('click', function () {
+                                    $('#cancel-orders-btn').on('click', function (e) {
+                                        e.preventDefault();
+
+                                        console.log(getOrderno());
+
+                                        $.ajax({
+                                            url: '/rest/order/delete',
+                                            type: 'DELETE',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(getOrderno()),
+                                            success: function (response) {
+                                                console.log(response);
+                                                window.location.href='/order/list';
+                                                // 체크박스 상태를 초기화
+                                                $('#order-code').prop('checked', false);
+                                                $('.ordernoCheckbox').prop('checked', false);
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error(error);
+                                                // 체크박스 상태를 초기화
+                                                $('#order-code').prop('checked', false);
+                                                $('.ordernoCheckbox').prop('checked', false);
+                                            }
+                                        });
+
                                         $(this).addClass("d-none");
                                         $('#save-orders-btn').addClass("d-none");
                                         $('#update-orders-btn').removeClass("d-none");
 
-                                        window.location.href='/order/list';
                                     });
 
                                     // "발주 실행" 버튼 클릭 시
@@ -491,9 +529,9 @@
                                                 //     $('#conTbody').append(newRow); // 생성된 행을 테이블 본문에 추가
                                                 // });
                                                 //
-                                                // // 체크박스 상태를 초기화
-                                                // $('#order-code').prop('checked', false);
-                                                // $('.ordernoCheckbox').prop('checked', false);
+                                                 // 체크박스 상태를 초기화
+                                                 $('#order-code').prop('checked', false);
+                                                 $('.ordernoCheckbox').prop('checked', false);
                                                 window.location.href='/order/list';
                                             },
                                             error: function (xhr, status, error) {
@@ -541,6 +579,7 @@
 
                                         });
 
+                                        //진행 현황 클릭 시 모달 표시(진척 검수 정보)
                                         OrderService.readInspection(id, function (data) {
                                             console.log(data);
 
@@ -550,7 +589,7 @@
                                                 inspection_count++;
                                                 var insHtml =
                                                     '<div class="row alert alert-light">' +
-                                                    '<h5>' + (data.length - i) + '</h5>' +
+                                                    '<h5>' + (data.length - i) + '.' + '</h5>' +
                                                     '<div class="col-md-4 mb-1">' +
                                                     '<label class="form-label">검수(예정)일</label>' +
                                                     '<input type="text" id="duedate'+ i +'" class="form-control bgc-grey-50" value="" readonly>' +
@@ -606,7 +645,7 @@
                                     var insContainer = document.getElementById("inspection-container");
 
                                     var newHtml = '<div class="row alert alert-light">' +
-                                        '<h5>' + (++inspection_count) + '</h5>' +
+                                        '<h5>' + (++inspection_count)+ '.' + '</h5>' +
                                         '<div class="col-md-4 mb-1">' +
                                         '<label class="form-label">검수(예정)일</label>' +
                                         '<input type="text" id="duedate'+ --inspection_count +'" class="form-control" value="">' +
@@ -626,7 +665,7 @@
                                         '<textarea rows="3" class="form-control" id="ins-content' + inspection_count + '"></textarea>' +
                                         '<div class="d-flex align-items-center">' +
                                         '<button type="button" id="ins-add' + inspection_count + '" class="btn btn-secondary ms-auto mt-2" data-index="' + inspection_count + '" data-bs-dismiss="modal">추가</button>' +
-                                        '<button type="button" id="ins-submit' + inspection_count + '" class="btn btn-secondary ms-auto mt-2 d-none" data-bs-dismiss="modal">저장</button>' +
+                                        '<button type="button" id="ins-submit' + inspection_count + '" class="btn btn-secondary ms-auto mt-2" data-bs-dismiss="modal">저장</button>' +
                                         '</div>' +
                                         '</div>' +
                                         '</div>';

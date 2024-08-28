@@ -16,6 +16,29 @@ pipeline {
             }
         }
 
+        stage('Prepare environment') {
+            steps {
+                script {
+                    // application-secret.properties 파일 생성
+                    writeFile file: 'src/main/resources/application-secret.properties', text: """
+                        spring.application.name=ProcureHub
+
+                        # Database
+                        spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+                        #spring.datasource.url=jdbc:mariadb://3.34.94.105:3306/ProcureHUB
+                        spring.datasource.url=jdbc:mariadb://m-it.iptime.org:8026/ProcureHUB
+                        spring.datasource.username=dev
+                        spring.datasource.password=glkids1234
+
+                        # Redis
+                        spring.data.redis.host=3.34.94.105
+                        spring.data.redis.password=glkids1234
+                        spring.data.redis.port=6379
+                    """
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh './gradlew clean build -x test'
@@ -35,6 +58,17 @@ pipeline {
                     for (server in serverList) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                            // Check and kill process running on port 8080
+                            sh """
+                            ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+                            PID=\$(lsof -ti:8080)
+                            if [ -n "\$PID" ]; then
+                                kill -9 \$PID
+                            fi
+                            exit
+                            EOF
+                            """
+
                             // Step 1: SCP the file to the remote server
                             sh """
                             scp -P ${port} -o StrictHostKeyChecking=no build/libs/${APP_NAME} mit@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
@@ -49,7 +83,8 @@ pipeline {
                                 mv ${APP_NAME} backup_${APP_NAME}
                             fi
                             mv new_${APP_NAME} ${APP_NAME}
-                            nohup java -jar ${APP_NAME} &
+                            nohup java -jar ${APP_NAME} > log.log &
+                            exit
                             EOF
                             """
                         }
@@ -74,6 +109,7 @@ pipeline {
                             if [ -f "${DEPLOY_PATH}/backup_${APP_NAME}" ]; then
                                 rm ${DEPLOY_PATH}/backup_${APP_NAME}
                             fi
+                            exit
                             EOF
                             """
                         }
