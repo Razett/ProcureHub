@@ -82,12 +82,13 @@ pipeline {
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
                             cd ${DEPLOY_PATH}
-                            ehco "mv release to backup_release"
+                            echo "mv release to backup_release"
                             if [ -f "${RELEASE_NAME}" ]; then
                                 mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
                             nohup java -jar ${RELEASE_NAME} > log.log &
+                            disown
                             echo "start jar"
                             exit
                             EOF
@@ -112,7 +113,7 @@ pipeline {
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
                             cd ${DEPLOY_PATH}
-                            ehco "rm backup_release"
+                            echo "rm backup_release"
                             if [ -f "backup_${RELEASE_NAME}" ]; then
                                 rm backup_${RELEASE_NAME}
                             fi
