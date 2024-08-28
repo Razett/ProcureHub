@@ -39,10 +39,4 @@ public class UtilsController {
         model.addAttribute("user", userDTO);
         return "/utils/calculator";
     }
-    @GetMapping("/quotations")
-    @ResponseBody
-    public List<QuotationMtrl> getQuotationsByMaterialNo(@RequestParam("mtrlno") Long mtrlno) {
-        // 자재 번호에 따른 견적 자재 목록 반환
-        return quotationMtrlService.getQuotationsByMaterialNo(mtrlno);
-    }
 }
