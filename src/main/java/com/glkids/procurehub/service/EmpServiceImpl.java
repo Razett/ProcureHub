@@ -5,6 +5,7 @@ import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Emp;
 import com.glkids.procurehub.repository.EmpRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,4 +59,13 @@ public class EmpServiceImpl implements EmpService, UserDetailsService {
         return empRepository.findEmpCounts();
     }
 
+    @Override
+    public EmpCountDTO getCurrentUserEmpCounts() {
+        // 로그인한 사용자 정보 가져오기
+        UserDTO userDetails = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long empNo = userDetails.getEmp().getEmpno();
+
+        // 현재 사용자 정보로 EmpCountDTO 조회
+        return empRepository.getEmpCountsByCurrentUser(empNo);
+    }
 }

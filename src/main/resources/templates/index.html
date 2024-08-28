@@ -1,853 +1,884 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/base/base::setContent(~{this::content})}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <title>Home</title>
-    <style>
-      /* 기본 스타일 */
-      body {
-        font-family: 'Roboto', sans-serif;
-        background-color: #f7f8fc;
-        color: #333;
-      }
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <title>Home</title>
+        <style>
+            /* 기본 스타일 */
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f7f8fc;
+                color: #333;
+            }
 
-      /* 카드 스타일 개선 */
-      .card {
-        border: none;
-        border-radius: 12px;
-        padding: 20px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-      }
+            /* 카드 스타일 개선 */
+            .card {
+                border: none;
+                border-radius: 12px;
+                padding: 20px;
+                background-color: #ffffff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+            }
 
-      .card:hover {
-        transform: translateY(-5px);
-      }
+            .card:hover {
+                transform: translateY(-5px);
+            }
 
-      .card h5 {
-        font-size: 18px;
-        font-weight: 600;
-        color: #5f6368;
-      }
+            .card h5 {
+                font-size: 18px;
+                font-weight: 600;
+                color: #5f6368;
+            }
 
-      .card .text-muted {
-        color: #70757a;
-      }
+            .card .text-muted {
+                color: #70757a;
+            }
 
-      .card .mb-2 strong {
-        font-weight: 600;
-        color: #1a73e8;
-      }
+            .card .mb-2 strong {
+                font-weight: 600;
+                color: #1a73e8;
+            }
 
-      .d-ib {
-        display: inline-block;
-        font-size: 16px;
-        padding: 5px 10px;
-        border-radius: 20px;
-      }
+            .d-ib {
+                display: inline-block;
+                font-size: 16px;
+                padding: 5px 10px;
+                border-radius: 20px;
+            }
 
-      .bgc-red-50 {
-        background-color: #f8d7da;
-        color: #721c24;
-      }
+            .bgc-red-50 {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
 
-      .bgc-orange-50 {
-        background-color: #ffe5b4;
-        color: #856404;
-      }
+            .bgc-orange-50 {
+                background-color: #ffe5b4;
+                color: #856404;
+            }
 
-      .bgc-green-50 {
-        background-color: #d4edda;
-        color: #155724;
-      }
+            .bgc-green-50 {
+                background-color: #d4edda;
+                color: #155724;
+            }
 
-      .bgc-grey-100 {
-        background-color: #f1f3f4;
-        padding: 20px;
-        border-radius: 12px;
-      }
+            .bgc-grey-100 {
+                background-color: #f1f3f4;
+                padding: 20px;
+                border-radius: 12px;
+            }
 
-      /* 메인 컨텐츠 스타일 */
-      .main-content {
-        padding: 20px;
-      }
+            /* 메인 컨텐츠 스타일 */
+            .main-content {
+                padding: 20px;
+            }
 
-      /* 로더 스타일 */
-      #loader {
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        visibility: visible;
-        position: fixed;
-        height: 100vh;
-        width: 100%;
-        background: #ffffff;
-        z-index: 90000;
-      }
-      #loader.fadeOut {
-        opacity: 0;
-        visibility: hidden;
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: calc(50% - 20px);
-        left: calc(50% - 20px);
-        background-color: #333;
-        border-radius: 100%;
-        animation: sk-scaleout 1.0s infinite ease-in-out;
-      }
-      @keyframes sk-scaleout {
-        0% {
-          transform: scale(0);
-        }
-        100% {
-          transform: scale(1.0);
-          opacity: 0;
-        }
-      }
-
-      /* 버튼 스타일 */
-      .btn-color {
-        background-color: #1a73e8;
-        color: #ffffff;
-      }
-      .btn-color:hover {
-        background-color: #1558b0;
-      }
-
-      /* 캘린더 스타일 */
-      .calendar {
-        padding: 10px;
-      }
-
-      /* 상세보기 카드 */
-      #detailCard {
-        background-color: #f1f3f4;
-        padding: 20px;
-        border-radius: 12px;
-      }
-
-      /* 수정 모달 스타일 */
-      .modal-header {
-        background-color: #1a73e8;
-        color: #ffffff;
-      }
-    </style>
-    <script src="js/main.js"></script>
-    <link href="css/style.css" rel="stylesheet">
-  </head>
-  <body class="app">
-  <div id="loader">
-    <div class="spinner"></div>
-  </div>
-  <script>
-    window.addEventListener('load', function load() {
-      const loader = document.getElementById('loader');
-      setTimeout(function() {
-        loader.classList.add('fadeOut');
-      }, 300);
-    });
-  </script>
-
-  <!-- #Main ============================ -->
-  <div class="page-container">
-    <main class="main-content bgc-grey-100">
-      <input type="hidden" id="id" value="">
-      <div id="mainContent">
-        <div class="full-container">
-          <th:block th:fragment="content">
-            <style>
-              /* 테이블 스타일 */
-              .employee-info {
+            /* 로더 스타일 */
+            #loader {
+                transition: all 0.3s ease-in-out;
+                opacity: 1;
+                visibility: visible;
+                position: fixed;
+                height: 100vh;
                 width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-                font-size: 15px;
-                text-align: left;
-              }
+                background: #ffffff;
+                z-index: 90000;
+            }
 
-              .employee-info thead tr {
-                background-color: rgba(255, 185, 196, 0.8);
-                color: #ffffff;
-                text-align: center;
-                font-weight: bold;
-              }
+            #loader.fadeOut {
+                opacity: 0;
+                visibility: hidden;
+            }
 
-              .employee-info th, .employee-info td {
-                padding: 12px 15px;
-                border: 1px solid #ddd;
-                text-align: center; /* 텍스트를 가운데 정렬 */
-              }
+            .spinner {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 20px);
+                background-color: #333;
+                border-radius: 100%;
+                animation: sk-scaleout 1.0s infinite ease-in-out;
+            }
 
-              .employee-info tbody tr {
-                border-bottom: 1px solid #dddddd;
-              }
-
-              .employee-info tbody tr:nth-of-type(even) {
-                background-color: #f3f3f3;
-              }
-
-              .employee-info tbody tr:hover {
-                background-color: #f1f1f1;
-              }
-              .employee-info thead th.ti-user {
-                width: 90px; /* '사원' 열의 너비 설정 */
-              }
-            </style>
-            <div class="row gap-20 pos-r mB-20">
-              <div class="col-md-3">
-                <div class="layers bd bgc-white p-20">
-                  <div class="layer w-100 mB-10">
-                    <h5 class="lh-1">조달계획</h5>
-                  </div>
-                  <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-red-700">긴급</span> 상태의 조달 계획</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/material/prcrlist">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${redCount} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-orange-700">경고</span> 상태의 조달 계획</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/material/prcrlist">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${yellowCount} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-blue-700">자동 수정됨</span> 상태의 조달 계획</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/material/prcrlist">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${BlueCount} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span>전체 조달 계획</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/material/prcrlist">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalPlans} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="layers bd bgc-white p-20">
-                  <div class="layer w-100 mB-10">
-                    <h5 class="lh-1">발주</h5>
-                  </div>
-                  <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-red-700">긴급</span> 상태의 발주</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/order/list">
-                          <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${orderRedCount} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-orange-700">검수 필요</span> 상태의 발주</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/order/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${orderYellowCount} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-blue-700">자동 수정됨</span> 상태의 발주</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/order/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${orderBlueCount} + '건'"></span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span>전체 대기 및 진행 중인 발주</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/order/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalOrder} + '건'">32건</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="layers bd bgc-white p-20">
-                  <div class="layer w-100 mB-10">
-                    <h5 class="lh-1">입고</h5>
-                  </div>
-                  <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-red-700">긴급</span> 상태의 입고</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/import/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${importRedCount} + '건'">1건</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-orange-700">검수 필요</span> 상태의 입고</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/import/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500" th:text="${importYellowCount} + '건'">1건</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-blue-700">자동 수정됨</span> 상태의 입고</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/import/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600" th:text="${importBlueCount} + '건'">5건</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span>전체 대기 및 진행 중인 입고</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/import/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalImport} + '건'">32건</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="layers bd bgc-white p-20 h-100">
-                  <div class="layer w-100 mB-10">
-                    <h5 class="lh-1">출고</h5>
-                  </div>
-                  <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span><span class="c-red-700">대기</span> 상태의 출고</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/export/list">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500" th:text="${exportRedCount} + '건'">1건</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="peers ai-sb fxw-nw align-items-center mb-2">
-                      <div class="peer peer-greed">
-                        <span>전체 출고</span>
-                      </div>
-                      <div class="peer">
-                        <a href="/export/totallist">
-                        <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600" th:text="${totalExport} + '건'">32건</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row pos-r mB-20">
-              <div class="col-md-6">
-                <div>
-                  <div class="bgc-white p-20 mB-20 bd">
-                    <div>
-                      <div class="d-flex justify-content-between align-items-center mT-10 mB-30">
-                        <h5 class="lh-1">생산 계획</h5>
-                        <button type="button" class="btn cur-p btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">
-                          생산 계획 추가
-                        </button>
-                      </div>
-                      <div class="calendar">
-                        <div id='calendar'></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="bgc-white p-20 bd" id="detailCard">
-                    <h5 class="mT-10 mB-5">상세보기</h5>
-                    <div id="prdc-detail-body" class="mT-10 mB-25">
-                      <span class="c-grey-900">날짜를 선택하세요</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 h-100">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="layers bd bgc-white p-20 mB-20">
-                      <div class="layer w-100 mB-10">
-                        <h5 class="lh-1">월간 제품 생산 수</h5>
-                      </div>
-                      <div>
-                        <canvas id="prdc-pie-chart" class="p-10" height="300" style="display: block; box-sizing: border-box; height: 300px; width: 300px;" width="300"></canvas>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="layers bd bgc-white p-20 mB-20">
-                      <div class="layer w-100 mB-10">
-                        <h5 class="lh-1">일일 업무 현황</h5><br>
-                        <table class="employee-info">
-                          <thead>
-                          <tr>
-                            <th class="ti-user">사원</th>
-                            <th>입고 처리 건 수</th>
-                            <th>출고 처리 건 수</th>
-                            <th>발주 처리 건 수</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <th:block th:each="empCount : ${empCount}">
-                            <tr>
-                              <td th:text="${empCount.name}"></td>
-                              <td th:text="${empCount.importCount} + ' 건'"></td>
-                              <td th:text="${empCount.exportCount} + ' 건'"></td>
-                              <td th:text="${empCount.orderCount} + ' 건'"></td>
-                            </tr>
-                          </th:block>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="layers bd bgc-white p-20">
-                  <div class="layer w-100 mB-10">
-                    <h5 class="lh-1">그래프 2</h5>
-                  </div>
-                  <div>그래프 공간</div>
-                </div>
-
-              </div>
-
-            </div>
-                  <!-- 생산 추가 모달 -->
-                  <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="eventModalLabel">생산 계획 추가</h5>
-                        </div>
-                        <div class="modal-body">
-                          <form id="eventForm">
-                            <div class="mb-3">
-                              <label for="prdcNo" class="form-label">제품 선택</label>
-                              <select id="prdcNo" class="form-select" required>
-                                <!-- 자재 옵션을 여기에 추가 -->
-                              </select>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label">제품명</label>
-                              <input class="form-control bgc-grey-50" id="prdcName" readonly>  <!-- 제품명이 표시될 곳 -->
-                            </div>
-                            <div class="mb-3">
-                              <label for="quantity" class="form-label">수량</label>
-                              <input type="number" class="form-control" id="quantity" required>
-                            </div>
-                            <div class="mb-3">
-                              <label for="startDate" class="form-label">시작 날짜</label>
-                              <input type="datetime-local" class="form-control" id="startDate" required>
-                            </div>
-                            <div class="mb-3">
-                              <label for="endDate" class="form-label">종료 날짜</label>
-                              <input type="datetime-local" class="form-control" id="endDate" required>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                              <button type="submit" class="btn cur-p btn-primary c-white">저장</button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 수정 모달 -->
-                  <div class="modal fade" id="editPrdcPlanModal" tabindex="-1" aria-labelledby="editPrdcPlanModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="editPrdcPlanModalLabel">생산 계획 수정</h5>
-                        </div>
-                        <div class="modal-body">
-                          <form id="editPrdcPlanForm">
-                            <div class="mb-3">
-                              <label for="editPrdcName" class="form-label">제품명</label>
-                              <input type="text" class="form-control bgc-grey-50" id="editPrdcName" readonly> <!-- 이름 읽기 전용 -->
-                            </div>
-                            <div class="mb-3">
-                              <label for="editStartDate" class="form-label">시작 날짜</label>
-                              <input type="datetime-local" class="form-control bgc-grey-50" id="editStartDate" readonly> <!-- 시작 날짜 읽기 전용 -->
-                            </div>
-                            <div class="mb-3">
-                              <label for="editEndDate" class="form-label">종료 날짜</label>
-                              <input type="datetime-local" class="form-control bgc-grey-50" id="editEndDate" readonly> <!-- 종료 날짜 읽기 전용 -->
-                            </div>
-                            <div class="mb-3">
-                              <label for="editQuantity" class="form-label">수량</label>
-                              <input type="number" class="form-control" id="editQuantity" required> <!-- 수량 수정 가능 -->
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                              <button type="submit" class="btn cur-p btn-primary c-white">수정</button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            <style>
-              /* FullCalendar 날짜와 요일 색상 스타일링 */
-              .fc-daygrid-day-number, .fc-col-header-cell-cushion {
-                color: #000000 !important;
-              }
-            </style>
-            <script src="/js/chart_service.js"></script>
-            <script>
-              let calendar;
-              let currentEvent;
-
-              $(document).ready(function () {
-                var calendarEl = document.getElementById('calendar');
-                var deleteButton = $('#deleteEvent');
-
-                const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
-
-                $.ajax({
-                  url: '/rest/calendar/all',
-                  method: 'GET',
-                  success: function (data) {
-                    const prdcSelect = $('#prdcNo');
-                    data.forEach(prdc => {
-                      prdcSelect.append(new Option(prdc.name, prdc.prdcno));
-                    });
-                  },
-                  error: function (xhr, status, error) {
-                    console.error('Error fetching prdc data:', error);
-                    alert('자재 목록을 불러오는 데 실패했습니다.');
-                  }
-                });
-
-                // prdcNo 선택 시 제품명 자동으로 가져오기
-                $('#prdcNo').change(function() {
-                  const selectedPrdcNo = $(this).val();
-                  $.ajax({
-                    url: `/rest/calendar/${selectedPrdcNo}`,
-                    method: 'GET',
-                    success: function (data) {
-                      $('#prdcName').val(data.name);  // 제품명을 표시할 요소
-                    },
-                    error: function (xhr, status, error) {
-                      console.error('Error fetching product name:', error);
-                      alert('제품명을 불러오는 데 실패했습니다.');
-                    }
-                  });
-                });
-
-                // FullCalendar 초기화
-                calendar = new FullCalendar.Calendar(calendarEl, {
-                  initialView: 'dayGridMonth',
-                  locale: 'ko',
-                  editable: false,
-                  eventTextColor: '#000000',
-
-                  // 날짜 클릭 시 상세보기 처리
-                  dateClick: function (info) {
-                    const clickedDate = info.dateStr;
-                    const events = calendar.getEvents().filter(event => {
-                      const eventStartDate = event.start.toISOString().split('T')[0];
-                      const eventEndDate = event.end ? event.end.toISOString().split('T')[0] : eventStartDate;
-
-                      // 클릭한 날짜가 이벤트의 시작 날짜와 종료 날짜 사이에 있는지 확인
-                      return clickedDate >= eventStartDate && clickedDate <= eventEndDate;
-                    });
-
-                    let detailsHtml = `<p>${clickedDate}</p>`;
-                    if (events.length > 0) {
-                      events.forEach(event => {
-                        if (event.extendedProps.prdcName) {
-                          detailsHtml += `<p>제품명: ${event.extendedProps.prdcName}</p>`;
-                        }
-                        if (event.extendedProps.quantity) {
-                          detailsHtml += `<p>수량: ${event.extendedProps.quantity}</p>`;
-                        }
-                      });
-                    } else {
-                      detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
-                    }
-
-                    $('#prdc-detail-body').html(detailsHtml);
-                  },
-
-                  // 서버에서 이벤트 데이터를 가져오는 처리
-                  events: function (fetchInfo, successCallback, failureCallback) {
-                    // prdcPlans 엔드포인트에서 데이터를 가져옴
-                    $.ajax({
-                      url: '/rest/calendar/prdcPlans',
-                      method: 'GET',
-                      success: function (data) {
-                        const prdcPlanEvents = data.map(plan => {
-                          const eventId = `event-${plan.planNo}`;
-
-                          // 로컬 스토리지에서 색상을 가져옴
-                          let storedColors = localStorage.getItem(eventId);
-                          let backgroundColor, borderColor;
-
-                          if (storedColors) {
-                            const parsedColors = JSON.parse(storedColors);
-                            backgroundColor = parsedColors.backgroundColor;
-                            borderColor = parsedColors.borderColor;
-                          } else {
-                            // 색상이 로컬 스토리지에 없으면 새로운 색상을 선택하고 저장
-                            backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                            borderColor = backgroundColor;
-
-                            localStorage.setItem(eventId, JSON.stringify({
-                              backgroundColor: backgroundColor,
-                              borderColor: borderColor
-                            }));
-                          }
-
-                          return {
-                            id: plan.planNo,
-                            title: `자재명: ${plan.prdcName}`,
-                            start: plan.start,
-                            end: plan.end,
-                            backgroundColor: backgroundColor,
-                            borderColor: borderColor,
-                            extendedProps: {
-                              prdcName: plan.prdcName,
-                              quantity: plan['quantity+']
-                            }
-                          };
-                        });
-
-                        // prdcPlanEvents와 calendarEvents를 합쳐서 전달
-                        successCallback(prdcPlanEvents);
-                      },
-                      error: function (xhr, status, error) {
-                        console.error('Error fetching prdcPlans:', error);
-                        failureCallback(error);
-                      }
-                    });
-                  },
-
-                  eventContent: function (arg) {
-                    let title = arg.event.title;
-                    let contentEl = document.createElement('div');
-                    contentEl.innerHTML = `<b>${title}</b>`;
-                    return { domNodes: [contentEl] };
-                  },
-
-                  eventDidMount: function (info) {
-                    $(info.el).css({
-                      'background-color': info.event.backgroundColor + ' !important',
-                      'border-color': info.event.borderColor + ' !important'
-                    });
-                  },
-
-                  // 이벤트 클릭 시 새로 만든 수정 모달 열기 및 수량 수정
-                  eventClick: function (info) {
-                    var editPrdcPlanModalEl = $('#editPrdcPlanModal');  // 새로 만든 수정 모달
-                    var editPrdcPlanModal = new bootstrap.Modal(editPrdcPlanModalEl[0]);
-
-                    currentEvent = info.event;
-
-                    // 수정 모달에 수량 정보만 설정
-                    $('#editPrdcPlanModalLabel').text('생산 계획 수정');
-                    $('#editQuantity').val(info.event.extendedProps.quantity); // 수량을 모달에 설정
-                    $('#editPrdcName').val(info.event.extendedProps.prdcName); // 자재 이름을 모달에 설정
-                    $('#editStartDate').val(info.event.start.toISOString().slice(0, 16)); // 시작 날짜 설정
-                    $('#editEndDate').val(info.event.end ? info.event.end.toISOString().slice(0, 16) : ''); // 종료 날짜 설정
-
-                    editPrdcPlanModal.show();
-
-                    // 폼 제출 시 수정된 데이터를 서버로 전송
-                    $('#editPrdcPlanForm').off('submit').on('submit', function (e) {
-                      e.preventDefault();
-
-                      const prdcPlanData = {
-                        prdcPlanNo: currentEvent.id, // ID 대신 prdcPlanNo로 수정
-                        quantity: $('#editQuantity').val()
-                      };
-
-                      $.ajax({
-                        url: '/rest/calendar/updatePrdcPlan',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(prdcPlanData),
-                        success: function (data) {
-                          alert('생산 계획이 수정되었습니다.');
-                          currentEvent.setProp('extendedProps', { quantity: quantity });
-                          editPrdcPlanModal.hide();
-                        },
-                        error: function (xhr, status, error) {
-                          console.error('Error updating prdc plan:', error);
-                          console.log('서버 응답:', xhr.responseText);
-                        }
-                      });
-                    });
-                  }
-                });
-
-                calendar.render();
-
-                $('[data-bs-target="#eventModal"]').on('click', function () {
-                  currentEvent = null;
-                  $('#eventModalLabel').text('일정 추가');
-                  $('#eventForm')[0].reset();
-                  deleteButton.hide();
-                });
-
-                $('#eventModal').on('hidden.bs.modal', function () {
-                  var modalBackdrop = $('.modal-backdrop');
-                  if (modalBackdrop.length) {
-                    modalBackdrop.remove();
-                  }
-                });
-
-                function closeModal() {
-                  var eventModalEl = $('#eventModal');
-                  var eventModal = bootstrap.Modal.getInstance(eventModalEl[0]);
-                  if (eventModal) {
-                    eventModal.hide();
-                    $('body').removeClass('modal-open');
-                    var modalBackdrop = $('.modal-backdrop');
-                    if (modalBackdrop.length) {
-                      modalBackdrop.remove();
-                    }
-                  }
+            @keyframes sk-scaleout {
+                0% {
+                    transform: scale(0);
                 }
+                100% {
+                    transform: scale(1.0);
+                    opacity: 0;
+                }
+            }
 
-                // 이벤트 폼 제출 처리 (추가 또는 수정)
-                $('#eventForm').on('submit', function (e) {
-                  e.preventDefault();
+            /* 버튼 스타일 */
+            .btn-color {
+                background-color: #1a73e8;
+                color: #ffffff;
+            }
 
-                  const prdcNo = $('#prdcNo').val();  // 자재 선택
-                  const quantity = $('#quantity').val();
-                  const start = $('#startDate').val();
-                  let end = $('#endDate').val();
+            .btn-color:hover {
+                background-color: #1558b0;
+            }
 
-                  if (!end || start === end) {
-                    end = null;
-                  } else {
-                    end += ':00';
-                  }
+            /* 캘린더 스타일 */
+            .calendar {
+                padding: 10px;
+            }
 
-                  const startWithTime = start + ':00';
+            /* 상세보기 카드 */
+            #detailCard {
+                background-color: #f1f3f4;
+                padding: 20px;
+                border-radius: 12px;
+            }
 
-                  const prdcPlanData = {
-                    prdcNo: prdcNo,
-                    quantity: quantity,
-                    startdate: startWithTime,
-                    enddate: end
-                  };
+            /* 수정 모달 스타일 */
+            .modal-header {
+                background-color: #1a73e8;
+                color: #ffffff;
+            }
+        </style>
+        <script src="js/main.js"></script>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="app">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        window.addEventListener('load', function load() {
+            const loader = document.getElementById('loader');
+            setTimeout(function () {
+                loader.classList.add('fadeOut');
+            }, 300);
+        });
+    </script>
 
-                  $.ajax({
-                    url: '/rest/calendar/addPrdcPlan',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(prdcPlanData),
-                    success: function (data) {
-                      console.log("새로운 생산 계획 추가:", data);
-                      alert('생산 계획이 추가되었습니다.');
-                      closeModal();
-                    },
-                    error: function (xhr, status, error) {
-                      console.error('Error adding prdc plan:', error);
-                      console.log('서버 응답:', xhr.responseText);
-                    }
-                  });
-                });
+    <!-- #Main ============================ -->
+    <div class="page-container">
+        <main class="main-content bgc-grey-100">
+            <input type="hidden" id="id" value="">
+            <div id="mainContent">
+                <div class="full-container">
+                    <th:block th:fragment="content">
+                        <style>
+                            /* 테이블 스타일 */
+                            .employee-info {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin: 20px 0;
+                                font-size: 15px;
+                                text-align: left;
+                            }
 
-                deleteButton.on('click', function () {
-                  if (currentEvent) {
-                    $.ajax({
-                      url: '/rest/calendar/deletePrdcPlan',
-                      method: 'POST',
-                      contentType: 'application/json',
-                      data: JSON.stringify({ id: currentEvent.id }),
-                      success: function () {
-                        currentEvent.remove();
-                        localStorage.removeItem(`event-${currentEvent.id}`);
-                        alert('일정이 삭제되었습니다.');
-                        closeModal();
-                      },
-                      error: function (xhr, status, error) {
-                        console.error('Error deleting event:', error);
-                      }
-                    });
-                  }
-                });
-              });
-            </script>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script src="/js/statistics.js"></script>
-            <script>
-              var ctx = document.getElementById('prdc-pie-chart').getContext('2d');
+                            .employee-info thead tr {
+                                background-color: pink;
+                                color: #000000;
+                                text-align: center;
+                                font-weight: bold;
+                            }
 
-              StatisticsService.getPrdcPlanStat(function (data) {
-                const labels = data.map(item => item.prdcName);
-                const datas = data.map(item => item.totalQuantity);
+                            .employee-info th, .employee-info td {
+                                padding: 12px 15px;
+                                border: 1px solid #ddd;
+                                text-align: center; /* 텍스트를 가운데 정렬 */
+                            }
 
-                const labelStrs = [
-                  '제품 수량'
-                ]
+                            .employee-info tbody tr {
+                                border-bottom: 1px solid #dddddd;
+                            }
 
-                const colors = [
-                  'red', 'blue', 'yellow', 'green', 'deep-orange', 'purple', 'grey'
-                ]
+                            .employee-info tbody tr:nth-of-type(even) {
+                                background-color: #f3f3f3;
+                            }
 
-                chartService.doughnutChart(ctx, labels, labelStrs, datas, colors);
-              })
+                            .employee-info tbody tr:hover {
+                                background-color: #f1f1f1;
+                            }
+
+                            .employee-info thead th.ti-user {
+                                width: 90px; /* '사원' 열의 너비 설정 */
+                            }
+                        </style>
+                        <div class="row gap-20 pos-r mB-20">
+                            <div class="col-md-3">
+                                <div class="layers bd bgc-white p-20">
+                                    <div class="layer w-100 mB-10">
+                                        <h5 class="lh-1">조달계획</h5>
+                                    </div>
+                                    <div class="layer w-100">
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-red-700">긴급</span> 상태의 조달 계획</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/material/prcrlist">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500"
+                                                          th:text="${redCount} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-orange-700">경고</span> 상태의 조달 계획</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/material/prcrlist">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500"
+                                                          th:text="${yellowCount} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-blue-700">자동 수정됨</span> 상태의 조달 계획</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/material/prcrlist">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600"
+                                                          th:text="${BlueCount} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span>전체 조달 계획</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/material/prcrlist">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600"
+                                                          th:text="${totalPlans} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="layers bd bgc-white p-20">
+                                    <div class="layer w-100 mB-10">
+                                        <h5 class="lh-1">발주</h5>
+                                    </div>
+                                    <div class="layer w-100">
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-red-700">긴급</span> 상태의 발주</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/order/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500"
+                                                          th:text="${orderRedCount} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-orange-700">검수 필요</span> 상태의 발주</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/order/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500"
+                                                          th:text="${orderYellowCount} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-blue-700">자동 수정됨</span> 상태의 발주</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/order/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600"
+                                                          th:text="${orderBlueCount} + '건'"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span>전체 대기 및 진행 중인 발주</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/order/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600"
+                                                          th:text="${totalOrder} + '건'">32건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="layers bd bgc-white p-20">
+                                    <div class="layer w-100 mB-10">
+                                        <h5 class="lh-1">입고</h5>
+                                    </div>
+                                    <div class="layer w-100">
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-red-700">긴급</span> 상태의 입고</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/import/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500"
+                                                          th:text="${importRedCount} + '건'">1건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-orange-700">검수 필요</span> 상태의 입고</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/import/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-orange-50 c-orange-500"
+                                                          th:text="${importYellowCount} + '건'">1건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-blue-700">자동 수정됨</span> 상태의 입고</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/import/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-100 c-blue-600"
+                                                          th:text="${importBlueCount} + '건'">5건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span>전체 대기 및 진행 중인 입고</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/import/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600"
+                                                          th:text="${totalImport} + '건'">32건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="layers bd bgc-white p-20 h-100">
+                                    <div class="layer w-100 mB-10">
+                                        <h5 class="lh-1">출고</h5>
+                                    </div>
+                                    <div class="layer w-100">
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span><span class="c-red-700">대기</span> 상태의 출고</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/export/list">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500"
+                                                          th:text="${exportRedCount} + '건'">1건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="peers ai-sb fxw-nw align-items-center mb-2">
+                                            <div class="peer peer-greed">
+                                                <span>전체 출고</span>
+                                            </div>
+                                            <div class="peer">
+                                                <a href="/export/totallist">
+                                                    <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-grey-100 c-grey-600"
+                                                          th:text="${totalExport} + '건'">32건</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pos-r mB-20">
+                            <div class="col-md-6">
+                                <div>
+                                    <div class="bgc-white p-20 mB-20 bd">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center mT-10 mB-30">
+                                                <h5 class="lh-1">생산 계획</h5>
+                                                <button type="button" class="btn cur-p btn-outline-secondary"
+                                                        data-bs-toggle="modal" data-bs-target="#eventModal">
+                                                    생산 계획 추가
+                                                </button>
+                                            </div>
+                                            <div class="calendar">
+                                                <div id='calendar'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bgc-white p-20 bd" id="detailCard">
+                                        <h5 class="mT-10 mB-5">상세보기</h5>
+                                        <div id="prdc-detail-body" class="mT-10 mB-25">
+                                            <span class="c-grey-900">날짜를 선택하세요</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 h-100">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="layers bd bgc-white p-20 mB-20">
+                                            <div class="layer w-100 mB-10">
+                                                <h5 class="lh-1">월간 제품 생산 수</h5>
+                                            </div>
+                                            <div>
+                                                <canvas id="prdc-pie-chart" class="p-10" height="300"
+                                                        style="display: block; box-sizing: border-box; height: 300px; width: 300px;"
+                                                        width="300"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="layers bd bgc-white p-20 mB-20">
+                                            <div class="layer w-100 mB-10">
+                                                <h5 class="lh-1">일일 업무 현황</h5><br>
+                                                <span class="ti-user">사원</span>: <span
+                                                    th:text="${user.emp.name}"></span>
+                                                <table class="employee-info">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>입고 처리 건 수</th>
+                                                        <th>출고 처리 건 수</th>
+                                                        <th>발주 처리 건 수</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <td th:text="${empUserCount.importCount} + ' 건'"></td>
+                                                        <td th:text="${empUserCount.exportCount} + ' 건'"></td>
+                                                        <td th:text="${empUserCount.orderCount} + ' 건'"></td>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layers bd bgc-white p-20">
+                                    <div class="layer w-100 mB-10">
+                                        <h5 class="lh-1">그래프 2</h5>
+                                    </div>
+                                    <div>그래프 공간</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- 생산 추가 모달 -->
+                        <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eventModalLabel">생산 계획 추가</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="eventForm">
+                                            <div class="mb-3">
+                                                <label for="prdcNo" class="form-label">제품 선택</label>
+                                                <select id="prdcNo" class="form-select" required>
+                                                    <!-- 자재 옵션을 여기에 추가 -->
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">제품명</label>
+                                                <input class="form-control bgc-grey-50" id="prdcName" readonly>
+                                                <!-- 제품명이 표시될 곳 -->
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="quantity" class="form-label">수량</label>
+                                                <input type="number" class="form-control" id="quantity" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="startDate" class="form-label">시작 날짜</label>
+                                                <input type="datetime-local" class="form-control" id="startDate"
+                                                       required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="endDate" class="form-label">종료 날짜</label>
+                                                <input type="datetime-local" class="form-control" id="endDate" required>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    닫기
+                                                </button>
+                                                <button type="submit" class="btn cur-p btn-primary c-white">저장</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 수정 모달 -->
+                        <div class="modal fade" id="editPrdcPlanModal" tabindex="-1"
+                             aria-labelledby="editPrdcPlanModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editPrdcPlanModalLabel">생산 계획 수정</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editPrdcPlanForm">
+                                            <div class="mb-3">
+                                                <label for="editPrdcName" class="form-label">제품명</label>
+                                                <input type="text" class="form-control bgc-grey-50" id="editPrdcName"
+                                                       readonly> <!-- 이름 읽기 전용 -->
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editStartDate" class="form-label">시작 날짜</label>
+                                                <input type="datetime-local" class="form-control bgc-grey-50"
+                                                       id="editStartDate" readonly> <!-- 시작 날짜 읽기 전용 -->
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editEndDate" class="form-label">종료 날짜</label>
+                                                <input type="datetime-local" class="form-control bgc-grey-50"
+                                                       id="editEndDate" readonly> <!-- 종료 날짜 읽기 전용 -->
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editQuantity" class="form-label">수량</label>
+                                                <input type="number" class="form-control" id="editQuantity" required>
+                                                <!-- 수량 수정 가능 -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    닫기
+                                                </button>
+                                                <button type="submit" class="btn cur-p btn-primary c-white">수정</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            /* FullCalendar 날짜와 요일 색상 스타일링 */
+                            .fc-daygrid-day-number, .fc-col-header-cell-cushion {
+                                color: #000000 !important;
+                            }
+                        </style>
+                        <script src="/js/chart_service.js"></script>
+                        <script>
+                            let calendar;
+                            let currentEvent;
+
+                            $(document).ready(function () {
+                                var calendarEl = document.getElementById('calendar');
+                                var deleteButton = $('#deleteEvent');
+
+                                const colors = ['#D3C2E6', '#FBC5D8', '#F8A8C9', '#BDDFF5', '#9EC8EB', '#89a5ea', '#a5ea89', '#ffcb6b', '#FFFAF0', '#FFFACD'];
+
+                                $.ajax({
+                                    url: '/rest/calendar/all',
+                                    method: 'GET',
+                                    success: function (data) {
+                                        const prdcSelect = $('#prdcNo');
+                                        data.forEach(prdc => {
+                                            prdcSelect.append(new Option(prdc.name, prdc.prdcno));
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Error fetching prdc data:', error);
+                                        alert('자재 목록을 불러오는 데 실패했습니다.');
+                                    }
+                                });
+
+                                // prdcNo 선택 시 제품명 자동으로 가져오기
+                                $('#prdcNo').change(function () {
+                                    const selectedPrdcNo = $(this).val();
+                                    $.ajax({
+                                        url: `/rest/calendar/${selectedPrdcNo}`,
+                                        method: 'GET',
+                                        success: function (data) {
+                                            $('#prdcName').val(data.name);  // 제품명을 표시할 요소
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Error fetching product name:', error);
+                                            alert('제품명을 불러오는 데 실패했습니다.');
+                                        }
+                                    });
+                                });
+
+                                // FullCalendar 초기화
+                                calendar = new FullCalendar.Calendar(calendarEl, {
+                                    initialView: 'dayGridMonth',
+                                    locale: 'ko',
+                                    editable: false,
+                                    eventTextColor: '#000000',
+
+                                    // 날짜 클릭 시 상세보기 처리
+                                    dateClick: function (info) {
+                                        const clickedDate = info.dateStr;
+                                        const events = calendar.getEvents().filter(event => {
+                                            const eventStartDate = event.start.toISOString().split('T')[0];
+                                            const eventEndDate = event.end ? event.end.toISOString().split('T')[0] : eventStartDate;
+
+                                            // 클릭한 날짜가 이벤트의 시작 날짜와 종료 날짜 사이에 있는지 확인
+                                            return clickedDate >= eventStartDate && clickedDate <= eventEndDate;
+                                        });
+
+                                        let detailsHtml = `<p>${clickedDate}</p>`;
+                                        if (events.length > 0) {
+                                            events.forEach(event => {
+                                                if (event.extendedProps.prdcName) {
+                                                    detailsHtml += `<p>제품명: ${event.extendedProps.prdcName}</p>`;
+                                                }
+                                                if (event.extendedProps.quantity) {
+                                                    detailsHtml += `<p>수량: ${event.extendedProps.quantity}</p>`;
+                                                }
+                                            });
+                                        } else {
+                                            detailsHtml += `<p>이 날짜에 일정이 없습니다.</p>`;
+                                        }
+
+                                        $('#prdc-detail-body').html(detailsHtml);
+                                    },
+
+                                    // 서버에서 이벤트 데이터를 가져오는 처리
+                                    events: function (fetchInfo, successCallback, failureCallback) {
+                                        // prdcPlans 엔드포인트에서 데이터를 가져옴
+                                        $.ajax({
+                                            url: '/rest/calendar/prdcPlans',
+                                            method: 'GET',
+                                            success: function (data) {
+                                                const prdcPlanEvents = data.map(plan => {
+                                                    const eventId = `event-${plan.planNo}`;
+
+                                                    // 로컬 스토리지에서 색상을 가져옴
+                                                    let storedColors = localStorage.getItem(eventId);
+                                                    let backgroundColor, borderColor;
+
+                                                    if (storedColors) {
+                                                        const parsedColors = JSON.parse(storedColors);
+                                                        backgroundColor = parsedColors.backgroundColor;
+                                                        borderColor = parsedColors.borderColor;
+                                                    } else {
+                                                        // 색상이 로컬 스토리지에 없으면 새로운 색상을 선택하고 저장
+                                                        backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                                                        borderColor = backgroundColor;
+
+                                                        localStorage.setItem(eventId, JSON.stringify({
+                                                            backgroundColor: backgroundColor,
+                                                            borderColor: borderColor
+                                                        }));
+                                                    }
+
+                                                    return {
+                                                        id: plan.planNo,
+                                                        title: `자재명: ${plan.prdcName}`,
+                                                        start: plan.start,
+                                                        end: plan.end,
+                                                        backgroundColor: backgroundColor,
+                                                        borderColor: borderColor,
+                                                        extendedProps: {
+                                                            prdcName: plan.prdcName,
+                                                            quantity: plan['quantity+']
+                                                        }
+                                                    };
+                                                });
+
+                                                // prdcPlanEvents와 calendarEvents를 합쳐서 전달
+                                                successCallback(prdcPlanEvents);
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Error fetching prdcPlans:', error);
+                                                failureCallback(error);
+                                            }
+                                        });
+                                    },
+
+                                    eventContent: function (arg) {
+                                        let title = arg.event.title;
+                                        let contentEl = document.createElement('div');
+                                        contentEl.innerHTML = `<b>${title}</b>`;
+                                        return {domNodes: [contentEl]};
+                                    },
+
+                                    eventDidMount: function (info) {
+                                        $(info.el).css({
+                                            'background-color': info.event.backgroundColor + ' !important',
+                                            'border-color': info.event.borderColor + ' !important'
+                                        });
+                                    },
+
+                                    // 이벤트 클릭 시 새로 만든 수정 모달 열기 및 수량 수정
+                                    eventClick: function (info) {
+                                        var editPrdcPlanModalEl = $('#editPrdcPlanModal');  // 새로 만든 수정 모달
+                                        var editPrdcPlanModal = new bootstrap.Modal(editPrdcPlanModalEl[0]);
+
+                                        currentEvent = info.event;
+
+                                        // 수정 모달에 수량 정보만 설정
+                                        $('#editPrdcPlanModalLabel').text('생산 계획 수정');
+                                        $('#editQuantity').val(info.event.extendedProps.quantity); // 수량을 모달에 설정
+                                        $('#editPrdcName').val(info.event.extendedProps.prdcName); // 자재 이름을 모달에 설정
+                                        $('#editStartDate').val(info.event.start.toISOString().slice(0, 16)); // 시작 날짜 설정
+                                        $('#editEndDate').val(info.event.end ? info.event.end.toISOString().slice(0, 16) : ''); // 종료 날짜 설정
+
+                                        editPrdcPlanModal.show();
+
+                                        // 폼 제출 시 수정된 데이터를 서버로 전송
+                                        $('#editPrdcPlanForm').off('submit').on('submit', function (e) {
+                                            e.preventDefault();
+
+                                            const prdcPlanData = {
+                                                prdcPlanNo: currentEvent.id, // ID 대신 prdcPlanNo로 수정
+                                                quantity: $('#editQuantity').val()
+                                            };
+
+                                            $.ajax({
+                                                url: '/rest/calendar/updatePrdcPlan',
+                                                method: 'POST',
+                                                contentType: 'application/json',
+                                                data: JSON.stringify(prdcPlanData),
+                                                success: function (data) {
+                                                    alert('생산 계획이 수정되었습니다.');
+                                                    currentEvent.setProp('extendedProps', {quantity: quantity});
+                                                    editPrdcPlanModal.hide();
+                                                },
+                                                error: function (xhr, status, error) {
+                                                    console.error('Error updating prdc plan:', error);
+                                                    console.log('서버 응답:', xhr.responseText);
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+
+                                calendar.render();
+
+                                $('[data-bs-target="#eventModal"]').on('click', function () {
+                                    currentEvent = null;
+                                    $('#eventModalLabel').text('일정 추가');
+                                    $('#eventForm')[0].reset();
+                                    deleteButton.hide();
+                                });
+
+                                $('#eventModal').on('hidden.bs.modal', function () {
+                                    var modalBackdrop = $('.modal-backdrop');
+                                    if (modalBackdrop.length) {
+                                        modalBackdrop.remove();
+                                    }
+                                });
+
+                                function closeModal() {
+                                    var eventModalEl = $('#eventModal');
+                                    var eventModal = bootstrap.Modal.getInstance(eventModalEl[0]);
+                                    if (eventModal) {
+                                        eventModal.hide();
+                                        $('body').removeClass('modal-open');
+                                        var modalBackdrop = $('.modal-backdrop');
+                                        if (modalBackdrop.length) {
+                                            modalBackdrop.remove();
+                                        }
+                                    }
+                                }
+
+                                // 이벤트 폼 제출 처리 (추가 또는 수정)
+                                $('#eventForm').on('submit', function (e) {
+                                    e.preventDefault();
+
+                                    const prdcNo = $('#prdcNo').val();  // 자재 선택
+                                    const quantity = $('#quantity').val();
+                                    const start = $('#startDate').val();
+                                    let end = $('#endDate').val();
+
+                                    if (!end || start === end) {
+                                        end = null;
+                                    } else {
+                                        end += ':00';
+                                    }
+
+                                    const startWithTime = start + ':00';
+
+                                    const prdcPlanData = {
+                                        prdcNo: prdcNo,
+                                        quantity: quantity,
+                                        startdate: startWithTime,
+                                        enddate: end
+                                    };
+
+                                    $.ajax({
+                                        url: '/rest/calendar/addPrdcPlan',
+                                        method: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(prdcPlanData),
+                                        success: function (data) {
+                                            console.log("새로운 생산 계획 추가:", data);
+                                            alert('생산 계획이 추가되었습니다.');
+                                            closeModal();
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Error adding prdc plan:', error);
+                                            console.log('서버 응답:', xhr.responseText);
+                                        }
+                                    });
+                                });
+
+                                deleteButton.on('click', function () {
+                                    if (currentEvent) {
+                                        $.ajax({
+                                            url: '/rest/calendar/deletePrdcPlan',
+                                            method: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify({id: currentEvent.id}),
+                                            success: function () {
+                                                currentEvent.remove();
+                                                localStorage.removeItem(`event-${currentEvent.id}`);
+                                                alert('일정이 삭제되었습니다.');
+                                                closeModal();
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Error deleting event:', error);
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        </script>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script src="/js/statistics.js"></script>
+                        <script>
+                            var ctx = document.getElementById('prdc-pie-chart').getContext('2d');
+
+                            StatisticsService.getPrdcPlanStat(function (data) {
+                                const labels = data.map(item => item.prdcName);
+                                const datas = data.map(item => item.totalQuantity);
+
+                                const labelStrs = [
+                                    '제품 수량'
+                                ]
+
+                                const colors = [
+                                    'red', 'blue', 'yellow', 'green', 'deep-orange', 'purple', 'grey'
+                                ]
+
+                                chartService.doughnutChart(ctx, labels, labelStrs, datas, colors);
+                            })
 
 
-            </script>
-          </th:block>
-        </div> <!-- End Container -->
-      </div>
-    </main>
-    <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-      <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
-    </footer>
-  </div>
+                        </script>
+                    </th:block>
+                </div> <!-- End Container -->
+            </div>
+        </main>
+        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+            <span>Copyright © 2021 Designed by <a href="https://colorlib.com" target="_blank"
+                                                  title="Colorlib">Colorlib</a>. All rights reserved.</span>
+        </footer>
+    </div>
 
-  </body>
+    </body>
 </th:block>
 </html>
