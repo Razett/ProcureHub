@@ -23,7 +23,6 @@ pipeline {
                     sh """
                     rm -rf *
                     git init
-                    git remote add origin ${GIT_REPO}
                     git fetch origin ${BRANCH}
                     git reset --hard origin/${BRANCH}
                     """
