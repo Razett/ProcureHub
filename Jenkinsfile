@@ -67,9 +67,12 @@ pipeline {
                             // Check and kill process running on port 8080
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
-                            PID=\$(lsof -ti:8080)
+                            PID=\$(sudo lsof -t -i:8080)
                             if [ -n "\$PID" ]; then
-                                kill -15 \$PID
+                                echo "Killing process \$PID on port 8080"
+                                sudo kill -9 \$PID
+                            else
+                                echo "No process found on port 8080"
                             fi
                             exit
                             EOF
