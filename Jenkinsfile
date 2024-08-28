@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // application-secret.properties 파일 생성
-                    writeFile file: 'application-secret.properties', text: """
+                    writeFile file: 'src/resources/application-secret.properties', text: """
                         spring.application.name=ProcureHub
 
                         # Database
