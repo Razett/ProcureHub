@@ -97,7 +97,7 @@ pipeline {
                                 mv ${APP_NAME} backup_${APP_NAME}
                             fi
                             mv new_${APP_NAME} ${APP_NAME}
-                            nohup java -jar ${APP_NAME} > log.log &
+
                             exit
                             EOF
                             """
