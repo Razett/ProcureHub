@@ -36,8 +36,8 @@ pipeline {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
-                            scp build/libs/${APP_NAME} root@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
-                            ssh root@${serverAddress} << EOF
+                            scp -P ${port} build/libs/${APP_NAME} root@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
+                            ssh -P ${port} root@${serverAddress} << EOF
                             cd ${DEPLOY_PATH}
                             if [ -f "${APP_NAME}" ]; then
                                 mv ${APP_NAME} backup_${APP_NAME}
@@ -64,7 +64,7 @@ pipeline {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
-                            ssh root@${serverAddress} << EOF
+                            ssh -P ${port} root@${serverAddress} << EOF
                             if [ -f "${DEPLOY_PATH}/backup_${APP_NAME}" ]; then
                                 rm ${DEPLOY_PATH}/backup_${APP_NAME}
                             fi
