@@ -60,17 +60,16 @@ pipeline {
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
 
                             PID=\$(lsof -t -i:8080)
-                                                        if [ -n "\$PID" ]; then
-                                                            echo "Killing process \$PID on port 8080"
-                                                            kill -9 \$PID
-                                                        else
-                                                            echo "No process found on port 8080"
-                                                        fi
+                            if [ -n "\$PID" ]; then
+                                echo "Killing process \$PID on port 8080"
+                                kill -9 \$PID
+                            else
+                                echo "No process found on port 8080"
+                            fi
+                                fuser -k -n tcp 8080 || true
 
-fuser -k -n tcp 8080 || true
-
-                                                        exit
-                                                        EOF
+                            exit
+                            EOF
                             """
 
                             // Step 1: SCP the file to the remote server
@@ -92,6 +91,19 @@ fuser -k -n tcp 8080 || true
                             exit
                             EOF
                             """
+
+                            // Health check after deployment
+                            def healthCheckCmd = """
+                            ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+                            curl -f http://localhost:8080/health || exit 1
+                            exit
+                            EOF
+                            """
+                            // Retry up to 3 times if health check fails, with a delay between retries
+                            retry(3) {
+                                sleep(time: 5, unit: 'SECONDS')  // wait 5 seconds before retry
+                                sh healthCheckCmd
+                            }
                         }
                     }
                 }
