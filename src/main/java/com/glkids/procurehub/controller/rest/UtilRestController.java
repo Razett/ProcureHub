@@ -1,11 +1,15 @@
 package com.glkids.procurehub.controller.rest;
 
+import com.glkids.procurehub.dto.QuotationMtrlDTO;
+import com.glkids.procurehub.entity.PrdcMtrl;
+import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.service.PrdcPlanService;
+import com.glkids.procurehub.service.PrdcService;
+import com.glkids.procurehub.service.QuotationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +22,12 @@ public class UtilRestController {
 
     private final PrdcPlanService prdcPlanService;
 
+    private final PrdcService prdcService;
+
+    private final QuotationMtrlRepository quotationMtrlRepository;
+
+    private final QuotationService quotationService;
+
     @GetMapping("/prdcPlanDoughnut")
     public ResponseEntity<List<Map<String, Object>>> getPrdcPlanDoughnut() {
         LocalDateTime startDate = LocalDateTime.now().minusMonths(1); // 한 달 시작일 !
@@ -27,4 +37,19 @@ public class UtilRestController {
 
         return ResponseEntity.ok(productionData);
     }
+
+    // 자재 목록을 가져오는 API 엔드포인트
+    @GetMapping("/materials")
+    @ResponseBody
+    public List<PrdcMtrl> getMaterialsByProduct(@RequestParam("prdcno") Long prdcno) {
+        return prdcService.getPrdcmtrlByPrdcno(prdcno);
+    }
+
+    @GetMapping("/materialList")
+    @ResponseBody
+    public List<QuotationMtrl> getMaterialsByProductNo(@RequestParam("prdcno") Long prdcno) {
+        return prdcService.getMaterial(prdcService.getPrdcmtrlByPrdcno(prdcno));
+
+    }
+
 }

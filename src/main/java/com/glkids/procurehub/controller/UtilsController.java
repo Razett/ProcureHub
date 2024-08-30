@@ -1,7 +1,11 @@
 package com.glkids.procurehub.controller;
 
+import com.glkids.procurehub.dto.PrdcMtrlDetailsDTO;
 import com.glkids.procurehub.dto.UserDTO;
+import com.glkids.procurehub.entity.PrdcMtrl;
 import com.glkids.procurehub.entity.QuotationMtrl;
+import com.glkids.procurehub.service.MaterialService;
+import com.glkids.procurehub.service.PrdcService;
 import com.glkids.procurehub.service.QuotationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +26,10 @@ import java.util.List;
 @Controller
 public class UtilsController {
 
-    private final QuotationService quotationMtrlService;
+    private final QuotationService quotationService;
+    private final MaterialService materialService;
+    private final PrdcService prdcService;
+
     /**
      * 통계 화면
      */
@@ -35,8 +42,9 @@ public class UtilsController {
 
     @GetMapping("/calculator")
     public String calculator(@AuthenticationPrincipal UserDTO userDTO, Model model) {
-
         model.addAttribute("user", userDTO);
+
         return "/utils/calculator";
     }
+
 }

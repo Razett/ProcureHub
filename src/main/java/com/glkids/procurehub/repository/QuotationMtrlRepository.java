@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface QuotationMtrlRepository extends JpaRepository<QuotationMtrl, Long> , QuerydslPredicateExecutor<QuotationMtrl> {
 
     @Query("select qm from QuotationMtrl qm where qm.material.mtrlno = :mtrlno and qm.quotation.status=2")
     List<QuotationMtrl> findByMaterial(@Param("mtrlno") Long mtrlno);
+
 }

@@ -24,4 +24,8 @@ public interface PrdcMtrlRepository extends JpaRepository<PrdcMtrl, Long> {
 
     @Query("select pm from PrdcMtrl pm where pm.material.mtrlno = :mtrlno")
     List<PrdcMtrl> findByMtrlno(@Param("mtrlno") Long mtrlno);
+
+    @Query("select pm from PrdcMtrl pm where pm.prdc.prdcno = :prdcno")
+    List<PrdcMtrl> findByPrdcno(@Param("prdcno") Long prdcno);
+
 }
