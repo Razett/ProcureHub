@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     options {
-            // 매 빌드 전에 워크스페이스 정리
-            skipDefaultCheckout()
-            buildDiscarder(logRotator(numToKeepStr: '5')) // 오래된 빌드 기록 유지 개수 설정
-        }
+        // 매 빌드 전에 워크스페이스 정리
+        skipDefaultCheckout()
+        buildDiscarder(logRotator(numToKeepStr: '5')) // 오래된 빌드 기록 유지 개수 설정
+    }
 
     environment {
         GIT_REPO = 'https://github.com/Razett/ProcureHub.git'
@@ -15,6 +15,10 @@ pipeline {
         RELEASE_NAME = 'release.jar'
         SSH_CREDENTIALS_ID = 'goldenkidsWeb'
         SECRET_FILE_ID = 'secret' // Jenkins에 설정한 Secret file ID
+        SERVER_LIST = [
+            "m-it.iptime.org:2230",
+            "m-it.iptime.org:2225"
+        ]
     }
 
     stages {
@@ -29,7 +33,6 @@ pipeline {
                 script {
                     // Secret file을 가져와서 사용
                     withCredentials([file(credentialsId: SECRET_FILE_ID, variable: 'SECRET_FILE_PATH')]) {
-                        // SECRET_FILE_PATH는 Jenkins가 파일을 다운로드한 경로
                         sh "cp \$SECRET_FILE_PATH src/main/resources/application-secret.properties"
                     }
                 }
@@ -42,56 +45,55 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Servers') {
             steps {
                 script {
-                    // Define SERVER_LIST within the script block
-                    def serverList = [
-                        "m-it.iptime.org:2230",
-                        "m-it.iptime.org:2225"
-                    ]
-
-                    // Iterate over SERVER_LIST and perform deployment
-                    for (server in serverList) {
+                    // 서버 리스트 순회
+                    for (server in SERVER_LIST) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
-                            // Check and kill process running on port 8080
+                            // 현재 서버에서 애플리케이션 종료
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
-
                             PID=\$(lsof -t -i:8080)
-                                                        if [ -n "\$PID" ]; then
-                                                            echo "Killing process \$PID on port 8080"
-                                                            kill -9 \$PID
-                                                        else
-                                                            echo "No process found on port 8080"
-                                                        fi
-
-fuser -k -n tcp 8080 || true
-
-                                                        exit
-                                                        EOF
+                            if [ -n "\$PID" ]; then
+                                echo "Killing process \$PID on port 8080"
+                                kill -9 \$PID
+                            else
+                                echo "No process found on port 8080"
+                            fi
+                            exit
+                            EOF
                             """
 
-                            // Step 1: SCP the file to the remote server
+                            // 새로운 버전 업로드
                             sh """
                             scp -P ${port} -o StrictHostKeyChecking=no build/libs/${APP_NAME} mit@${serverAddress}:${DEPLOY_PATH}/new_${APP_NAME}
                             """
 
-                            // Step 2: Execute commands on the remote server after the file has been copied
+                            // 애플리케이션 배포 및 실행
                             sh """
                             ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
-
                             cd ${DEPLOY_PATH}
                             if [ -f "${RELEASE_NAME}" ]; then
                                 mv ${RELEASE_NAME} backup_${RELEASE_NAME}
                             fi
                             mv new_${APP_NAME} ${RELEASE_NAME}
                             nohup java -jar ${RELEASE_NAME} > log.log 2>&1 &
-
                             exit
                             EOF
                             """
+
+                            // 배포 후 헬스 체크
+                            def healthCheckCmd = """
+                            ssh -p ${port} -o StrictHostKeyChecking=no mit@${serverAddress} << EOF
+                            curl -f http://localhost:8080/health || exit 1
+                            exit
+                            EOF
+                            """
+                            retry(3) {
+                                sh healthCheckCmd
+                            }
                         }
                     }
                 }
@@ -101,12 +103,8 @@ fuser -k -n tcp 8080 || true
         stage('Post-deployment Cleanup') {
             steps {
                 script {
-                    def serverList = [
-                        "m-it.iptime.org:2230",
-                        "m-it.iptime.org:2225"
-                    ]
-
-                    for (server in serverList) {
+                    // 서버 리스트 순회
+                    for (server in SERVER_LIST) {
                         def (serverAddress, port) = server.split(':')
                         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
