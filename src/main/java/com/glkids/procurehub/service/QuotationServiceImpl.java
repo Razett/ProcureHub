@@ -1,13 +1,8 @@
 package com.glkids.procurehub.service;
 
-import com.glkids.procurehub.dto.QuotationDTO;
-import com.glkids.procurehub.dto.QuotationFileDTO;
-import com.glkids.procurehub.dto.QuotationMtrlDTO;
-import com.glkids.procurehub.dto.UserDTO;
+import com.glkids.procurehub.dto.*;
 import com.glkids.procurehub.entity.*;
-import com.glkids.procurehub.repository.QuotationFileRepository;
-import com.glkids.procurehub.repository.QuotationMtrlRepository;
-import com.glkids.procurehub.repository.QuotationRepository;
+import com.glkids.procurehub.repository.*;
 import com.glkids.procurehub.status.QuotationStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -18,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +22,8 @@ public class QuotationServiceImpl implements QuotationService {
     private final QuotationRepository quotationRepository;
     private final QuotationMtrlRepository quotationMtrlRepository;
     private final QuotationFileRepository quotationFileRepository;
+    private final PrdcRepository prdcRepository;
+    private final PrdcMtrlRepository prdcMtrlRepository;
 
     @Override
     @Transactional
@@ -36,15 +34,14 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @Transactional
-    public Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList , UserDTO userDTO) {
+    public Boolean saveQuotationMtrl(List<QuotationMtrlDTO> quotationMtrlDTOList, UserDTO userDTO) {
         List<QuotationMtrl> quotationMtrlList = new ArrayList<>();
-        for(QuotationMtrlDTO quotationMtrlDTO : quotationMtrlDTOList) {
+        for (QuotationMtrlDTO quotationMtrlDTO : quotationMtrlDTOList) {
             quotationMtrlDTO.setEmp(userDTO.getEmp().getEmpno());
             QuotationMtrl quotationMtrl = quotationMtrlDtoToEntity(quotationMtrlDTO);
-            if (quotationMtrlRepository.save(quotationMtrl).getQtmtno()!=null){
+            if (quotationMtrlRepository.save(quotationMtrl).getQtmtno() != null) {
                 quotationMtrlList.add(quotationMtrl);
-            }
-            else{
+            } else {
                 return null;
             }
         }
@@ -69,14 +66,14 @@ public class QuotationServiceImpl implements QuotationService {
         BooleanExpression quoExp = qQuotationMtrl.quotation.qtno.eq(qtno);
 
         quotationMtrlRepository.findAll(builder.and(quoExp)).forEach(x -> quotationMtrlDTOList.add(quotationMtrlEntityToDTO(x)));
-        return  quotationMtrlDTOList;
+        return quotationMtrlDTOList;
     }
 
     @Override
     public QuotationMtrlDTO quoread(Long qtmtno) {
         Optional<QuotationMtrl> optional = quotationMtrlRepository.findById(qtmtno);
-        if(optional.isPresent()){
-            return  quotationMtrlEntityToDTO(optional.get());
+        if (optional.isPresent()) {
+            return quotationMtrlEntityToDTO(optional.get());
         }
         return null;
     }
@@ -84,7 +81,7 @@ public class QuotationServiceImpl implements QuotationService {
     @Override
     public QuotationDTO read(Long qtno) {
         Optional<Quotation> opquo = quotationRepository.findById(qtno);
-        if(opquo.isPresent()){
+        if (opquo.isPresent()) {
             return quotationEntityToDTO(opquo.get());
         }
         return null;
@@ -97,8 +94,7 @@ public class QuotationServiceImpl implements QuotationService {
         QQuotationFile qQuotationFile = QQuotationFile.quotationFile;
 
         BooleanBuilder builder = new BooleanBuilder();
-        BooleanExpression quotationExp = qQuotationFile.quotation.qtno.eq(qtno)
-;
+        BooleanExpression quotationExp = qQuotationFile.quotation.qtno.eq(qtno);
         quotationFileRepository.findAll(builder.and(quotationExp)).forEach(x -> quotationFileDTOList.add(quotationFileEntityToDTO(x)));
         return quotationFileDTOList;
     }
@@ -140,8 +136,4 @@ public class QuotationServiceImpl implements QuotationService {
         quotationRepository.changeStatus(qtno, quotationStatus.ordinal());
     }
 
-    @Override
-    public List<QuotationMtrl> getQuotationsByMaterialNo(Long mtrlno) {
-        return quotationMtrlRepository.findByMaterial(mtrlno);
-    }
 }

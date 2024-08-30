@@ -26,8 +26,6 @@ public interface QuotationService {
 
     void changeStatus(Long qtno, QuotationStatus quotationStatus);
 
-    List<QuotationMtrl> getQuotationsByMaterialNo(Long mtrlno);
-
     // DTO to Entity 변환 메서드
     default Quotation quotationDtoToEntity(QuotationDTO quotationDTO) {
         return Quotation.builder()
