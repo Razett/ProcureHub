@@ -155,13 +155,7 @@
 
                                     <div class="mb-3">
                                         <label class="form-label">제품명</label>
-                                        <input class="form-control bgc-grey-50" id="prdcName">
-                                        <!-- 제품명이 표시될 곳 -->
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">제품 생산 수량</label>
-                                        <input class="form-control bgc-grey-50" id="prdcqauntity">
+                                        <input class="form-control bgc-grey-50" id="prdcName" readonly>
                                         <!-- 제품명이 표시될 곳 -->
                                     </div>
 
@@ -175,7 +169,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-8">
                             <div class="layers bd bgc-white p-20 mB-20">
                                 <div class="layer w-100 mB-10">
                                     <h3>자재 및 회사 목록</h3>
@@ -186,6 +180,8 @@
                                             <th>자재 코드</th>
                                             <th>회사 명</th>
                                             <th>단가</th>
+                                            <th>리드 타임</th>
+                                            <th>발주 가능 수량</th>
                                             <th>가능 여부</th>
                                         </tr>
                                         </thead>
@@ -220,7 +216,7 @@
                                 // 제품 선택 시 제품명과 자재 정보를 가져옴
                                 prdcSelect.change(function () {
                                     const selectedPrdcNo = $(this).val();
-                                    const selectedDate = new Date(editStartDate.val());
+                                    const selectedDate = new Date(editStartDate.val()); // 사용자가 선택한 날짜를 Date 객체로 변환
 
                                     // 제품명 입력 필드를 지움
                                     $('#prdcName').val('');
@@ -260,17 +256,21 @@
                                                 const leadTimeDate = new Date();
                                                 leadTimeDate.setDate(leadTimeDate.getDate() + prdcMtrl.leadtime);
 
-                                                // 선택된 날짜가 리드타임 이후인지 확인
-                                                if (selectedDate > leadTimeDate) {
-                                                    materialList.append(`
+                                                // 자재 사용 가능 여부 확인
+                                                const availability = selectedDate > leadTimeDate ? "가능" : "불가능";
+
+                                                // 자재 목록에 행 추가
+                                                materialList.append(`
                             <tr>
                                 <td>${prdcMtrl.material.name}</td> <!-- 자재 이름 -->
                                 <td>${prdcMtrl.material.mtrlno}</td> <!-- 자재 번호 -->
                                 <td>${prdcMtrl.quotation.contractor.name}</td> <!-- 회사 이름 -->
-                                <td>${prdcMtrl.unitprice}</td>
+                                <td>${prdcMtrl.unitprice}</td> <!-- 단가 -->
+                                <td>${prdcMtrl.leadtime}</td> <!-- 리드타임 -->
+                                <td>${prdcMtrl.quantity}</td> <!-- 수량 -->
+                                <td>${availability}</td> <!-- 가능 여부 -->
                             </tr>
                         `);
-                                                }
                                             });
                                         },
                                         error: function (xhr, status, error) {
@@ -281,7 +281,6 @@
                                 }
                             });
                         </script>
-
                     </th:block>
                 </div>
             </div>
