@@ -17,7 +17,22 @@ var StatisticsService = (function (){
         });
     }
 
+    function getProcessDataStat(callback) {
+        $.ajax({
+            method: 'GET',
+            url: url + '/rest/utils/monthlyProcessData',
+            contentType: 'application/json',
+            success: function (data) {
+                if (callback) {
+                    console.log(data);
+                    callback(data);
+                }
+            }
+        });
+    }
+
     return {
-        getPrdcPlanStat:getPrdcPlanStat
+        getPrdcPlanStat:getPrdcPlanStat,
+        getProcessDataStat:getProcessDataStat
     };
 })();

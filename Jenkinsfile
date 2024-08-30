@@ -13,7 +13,7 @@ pipeline {
         DEPLOY_PATH = '/home/mit'
         APP_NAME = 'ProcureHub-0.0.1-SNAPSHOT.jar'
         RELEASE_NAME = 'release.jar'
-        SSH_CREDENTIALS_ID = 'GoldenKidsWeb-MIT'
+        SSH_CREDENTIALS_ID = 'goldenkidsWeb'
         SECRET_FILE_ID = 'secret' // Jenkins에 설정한 Secret file ID
     }
 

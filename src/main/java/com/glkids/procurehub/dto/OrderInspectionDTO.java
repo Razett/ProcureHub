@@ -35,6 +35,9 @@ public class OrderInspectionDTO {
     private Emp inspector;
     private Integer status;
 
+    private String duedateString;
+    private Long orderno;
+
     public String getStatusString() {
         if (status != null) {
             for (InspectionStatus inspectionStatus : InspectionStatus.values()) {

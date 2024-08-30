@@ -291,7 +291,7 @@
                                             <div>
                                                 <div class="d-flex align-items-center">
                                                     <h5 class="mb-0">진척 검수</h5>
-                                                    <button type="button" class="btn btn-secondary ms-auto" onclick="addInsepction()">추가</button>
+                                                    <button type="button" class="btn btn-secondary ms-auto" onclick="addInspection()">추가</button>
                                                 </div>
                                                 <br>
                                                 <div id="inspection-container"></div>
@@ -306,6 +306,7 @@
                             <script src="/js/order.js"></script>
                             <script>
                                 var inspection_count = 0;
+                                var id = 0;
 
                                 //체크박스 전체 선택(disabled 체크박스는 제외)
                                 function toggleCheckboxes(masterCheckbox) {
@@ -345,10 +346,11 @@
                                     totalPriceCell.textContent = totalPrice;  //.toLocaleString('en-US');
                                 }
 
-                                //체크박스가 체크된 항목들의 값 중 발주 코드, 회사명 저장
+                                //체크박스가 체크된 항목들
                                 $(document).ready(function () {
 
-                                    function getOrder() {
+                                    //체크박스가 체크된 항목들의 값 중 발주 코드, 회사명 저장
+                                    function getOrderInfo() {
                                         var excuteOrderArray = [];
 
                                         $('.ordernoCheckbox:checked').each(function () {
@@ -361,6 +363,7 @@
                                         return excuteOrderArray;
                                     }
 
+                                    //체크박스가 체크된 항목들의 값 중 발주 코드 저장
                                     function getOrderno(){
                                         var ordernos = [];
                                         $('.ordernoCheckbox:checked').each(function () {
@@ -369,7 +372,6 @@
 
                                         return ordernos;
                                     }
-
 
                                     // "수정" 버튼 클릭 시
                                     var updateOrderno = []; // 수정 전 발주 코드
@@ -439,7 +441,7 @@
                                             data: JSON.stringify(jsonArray),
                                             success: function (response) {
                                                 console.log(response);
-                                                // 성공 시 화면 새로고침해서 보여주기
+                                                // 성공 시 화면 새로 고침해서 보여주기
                                                 window.location.href='/order/list';
                                             },
                                             error: function (xhr, status, error) {
@@ -453,7 +455,7 @@
                                     $('#cancel-orders-btn').on('click', function (e) {
                                         e.preventDefault();
 
-                                        console.log(getOrderno());
+                                        // console.log(getOrderno());
 
                                         $.ajax({
                                             url: '/rest/order/delete',
@@ -462,6 +464,7 @@
                                             data: JSON.stringify(getOrderno()),
                                             success: function (response) {
                                                 console.log(response);
+                                                // 성공 시 화면 새로 고침해서 보여주기
                                                 window.location.href='/order/list';
                                                 // 체크박스 상태를 초기화
                                                 $('#order-code').prop('checked', false);
@@ -485,13 +488,13 @@
                                     $('#execute-orders-btn').on('click', function (e) {
                                         e.preventDefault();
 
-                                        console.log(getOrder());
+                                         console.log(getOrderInfo());
 
                                         $.ajax({
                                             url: '/rest/order/list',
                                             type: 'POST',
                                             contentType: 'application/json',
-                                            data: JSON.stringify(getOrder()), // getOrder() 함수를 통해 서버로 보낼 데이터를 준비합니다.
+                                            data: JSON.stringify(getOrderInfo()), // getOrderInfo() 함수를 통해 서버로 보낼 데이터를 준비합니다.
                                             success: function (response) {
                                                 console.log(response); // 서버로부터의 응답을 확인합니다.
 
@@ -529,10 +532,11 @@
                                                 //     $('#conTbody').append(newRow); // 생성된 행을 테이블 본문에 추가
                                                 // });
                                                 //
-                                                 // 체크박스 상태를 초기화
-                                                 $('#order-code').prop('checked', false);
-                                                 $('.ordernoCheckbox').prop('checked', false);
+                                                // 성공 시 화면 새로 고침해서 보여주기
                                                 window.location.href='/order/list';
+                                                // 체크박스 상태를 초기화
+                                                $('#order-code').prop('checked', false);
+                                                $('.ordernoCheckbox').prop('checked', false);
                                             },
                                             error: function (xhr, status, error) {
                                                 console.error(error); // 오류 로그 출력
@@ -540,19 +544,17 @@
                                                 // 오류 발생 시 체크박스 상태를 초기화
                                                 $('#order-code').prop('checked', false);
                                                 $('.ordernoCheckbox').prop('checked', false);
-
-                                                window.location.href='/order/list';
                                             }
                                         });
                                     });
 
                                     //진행 현황 클릭 시 모달 표시(발주 상세 정보)
                                     $('.tr-continue').on('click', function () {
-                                        inspection_count = 0
-                                        var id = $(this).closest('tr').attr('id');
+                                        inspection_count = 0;
+                                        id = $(this).closest('tr').attr('id');
 
                                         OrderService.readOrder(id, function (data) {
-                                            console.log(data);
+                                            // console.log(data);
                                             $('#modal-table-orderno').text('OR' + data.orderno.toString().padStart(6, '0'));
                                             $('#modal-table-orderdate').text(OrderService.formatDate(data.orderdate));
                                             $('#modal-table-emp').text(data.emp.name);
@@ -581,7 +583,7 @@
 
                                         //진행 현황 클릭 시 모달 표시(진척 검수 정보)
                                         OrderService.readInspection(id, function (data) {
-                                            console.log(data);
+                                            // console.log(data);
 
                                             var insTotalHtml = '';
 
@@ -591,16 +593,17 @@
                                                     '<div class="row alert alert-light">' +
                                                     '<h5>' + (data.length - i) + '.' + '</h5>' +
                                                     '<div class="col-md-4 mb-1">' +
+                                                    '<input type="hidden" id="nspcno-' + i + '" class="form-control bgc-grey-50" value="" readonly>' +
                                                     '<label class="form-label">검수(예정)일</label>' +
-                                                    '<input type="text" id="duedate'+ i +'" class="form-control bgc-grey-50" value="" readonly>' +
+                                                    '<input type="text" id="duedate-' + i + '" class="form-control bgc-grey-50" value="" readonly>' +
                                                     '</div>' +
                                                     '<div class="col-md-4 mb-1">' +
                                                     '<label class="form-label">검수자</label>' +
-                                                    '<input type="text" id="inspector' + i + '" class="form-control bgc-grey-50" value="" readonly>' +
+                                                    '<input type="text" id="inspector-' + i + '" class="form-control bgc-grey-50" value="" readonly>' +
                                                     '</div>' +
                                                     '<div class="col-md-4 mb-1">' +
                                                     '<label class="form-label">검수 상태</label>' +
-                                                    '<select class="form-select" id="ins-status' + i + '">' +
+                                                    '<select class="form-select" id="ins-status-' + i + '">' +
                                                     '<option value="" disabled selected style="font-weight: bold;">검수 상태</option>' +
                                                     '<option value="0">검수전</option>' +
                                                     '<option value="1">정상</option>' +
@@ -608,9 +611,9 @@
                                                     '</div>' +
                                                     '<div class="col-md-12 mb-1">' +
                                                     '<label class="form-label">검수 내용</label>' +
-                                                    '<textarea rows="3" class="form-control" id="ins-content' + i + '"></textarea>' +
+                                                    '<textarea rows="3" class="form-control" id="ins-content-' + i + '"></textarea>' +
                                                     '<div class="d-flex align-items-center">' +
-                                                    '<button type="button" id="ins-submit' + i + '" class="btn btn-secondary ms-auto mt-2" data-bs-dismiss="modal">저장</button>' +
+                                                    '<button type="button" id="ins-submit-' + i + '" class="btn btn-secondary ms-auto mt-2" data-bs-dismiss="modal" onclick="saveInspection(' + i + ')">수정</button>' +
                                                     '</div>' +
                                                     '</div>' +
                                                     '</div>';
@@ -621,18 +624,19 @@
 
                                             for (let i = 0; i < data.length; i++) {
                                                 if (data[i].inspector) {
-                                                    document.getElementById('inspector' + i).value = data[i].inspector.name;
+                                                    document.getElementById('inspector-' + i).value = data[i].inspector.name;
                                                 } else {
-                                                    document.getElementById('inspector' + i).value = 'N/A';
+                                                    document.getElementById('inspector-' + i).value = 'N/A';
                                                 }
-                                                document.getElementById('duedate' + i).value = OrderService.formatDate(data[i].duedate);
-                                                document.getElementById('ins-status' + i).value = data[i].status;
-                                                document.getElementById('ins-content' + i).value = data[i].content;
+                                                document.getElementById('nspcno-' + i).value = data[i].nspcno;
+                                                document.getElementById('duedate-' + i).value = OrderService.formatDate(data[i].duedate);
+                                                document.getElementById('ins-status-' + i).value = data[i].status;
+                                                document.getElementById('ins-content-' + i).value = data[i].content;
 
                                                 if (data[i].status != 0) {
-                                                    document.getElementById('ins-content' + i).classList.add('bgc-grey-50');
-                                                    document.getElementById('ins-content' + i).readOnly = true;
-                                                    document.getElementById('ins-submit' + i).classList.add(('d-none'));
+                                                    document.getElementById('ins-content-' + i).classList.add('bgc-grey-50');
+                                                    document.getElementById('ins-content-' + i).readOnly = true;
+                                                    document.getElementById('ins-submit-' + i).classList.add(('d-none'));
                                                 }
                                             }
 
@@ -641,36 +645,78 @@
                                     });
                                 });
 
-                                function addInsepction() {
+                                //진척 검수 추가 시
+                                function addInspection() {
+                                    inspection_count++;
+
                                     var insContainer = document.getElementById("inspection-container");
 
                                     var newHtml = '<div class="row alert alert-light">' +
-                                        '<h5>' + (++inspection_count)+ '.' + '</h5>' +
+                                        '<h5>' + inspection_count + '.</h5>' +
                                         '<div class="col-md-4 mb-1">' +
+                                        '<input type="hidden" id="nspcno-' + inspection_count + '" class="form-control bgc-grey-50" value="" readonly>' +
                                         '<label class="form-label">검수(예정)일</label>' +
-                                        '<input type="text" id="duedate'+ --inspection_count +'" class="form-control" value="">' +
+                                        '<input type="text" id="duedate-' + inspection_count + '" class="form-control" value="">' +
                                         '</div>' +
                                         '<div class="col-md-4 mb-1">' +
                                         '<label class="form-label">검수자</label>' +
-                                        '<input type="text" id="inspector' + inspection_count + '" class="form-control bgc-grey-50" value="N/A" readonly>' +
+                                        '<input type="text" id="inspector-' + inspection_count + '" class="form-control bgc-grey-50" value="N/A" readonly>' +
                                         '</div>' +
                                         '<div class="col-md-4 mb-1">' +
                                         '<label class="form-label">검수 상태</label>' +
-                                        '<select class="form-select" id="ins-status' + inspection_count + '">' +
-                                        '<option value="0" selected>검수전</option>' +
+                                        '<select class="form-select" id="ins-status-' + inspection_count + '">' +
+                                        '<option value="" disabled selected style="font-weight: bold;">검수 상태</option>' +
+                                        '<option value="0">검수전</option>' +
+                                        '<option value="1">정상</option>' +
                                         '</select>' +
                                         '</div>' +
                                         '<div class="col-md-12 mb-1">' +
                                         '<label class="form-label">검수 내용</label>' +
-                                        '<textarea rows="3" class="form-control" id="ins-content' + inspection_count + '"></textarea>' +
+                                        '<textarea rows="3" class="form-control" id="ins-content-' + inspection_count + '"></textarea>' +
                                         '<div class="d-flex align-items-center">' +
-                                        '<button type="button" id="ins-add' + inspection_count + '" class="btn btn-secondary ms-auto mt-2" data-index="' + inspection_count + '" data-bs-dismiss="modal">추가</button>' +
-                                        '<button type="button" id="ins-submit' + inspection_count + '" class="btn btn-secondary ms-auto mt-2" data-bs-dismiss="modal">저장</button>' +
+                                        '<button type="button" id="ins-submit-' + inspection_count + '" class="btn btn-secondary ms-auto mt-2" data-bs-dismiss="modal" onclick="saveInspection(' + inspection_count + ')">저장</button>' +
+                                        '<button type="button" id="ins-update-' + inspection_count + '" class="btn btn-secondary ms-auto mt-2 d-none" data-bs-dismiss="modal">수정</button>' +
                                         '</div>' +
                                         '</div>' +
                                         '</div>';
 
+
                                     insContainer.insertAdjacentHTML('afterbegin', newHtml);
+                                }
+
+                                function saveInspection(index) {
+                                    // var inspector = document.getElementById('inspector-' + index).value;
+                                    var nspcno = document.getElementById('nspcno-' + index).value;
+                                    var duedate = document.getElementById('duedate-' + index).value;
+                                    var status = document.getElementById('ins-status-' + index).value;
+                                    var content = document.getElementById('ins-content-' + index).value;
+
+                                    var inspectionData = {
+                                        nspcno: nspcno,
+                                        duedateString: duedate,
+                                        status: status,
+                                        content: content,
+                                        orderno: id
+                                    };
+
+                                    console.log(inspectionData)
+
+                                    $.ajax({
+                                        url: '/rest/order/inspection',
+                                        method: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(inspectionData),
+                                        success: function(response) {
+                                            console.log(response);
+                                            // 저장 후 저장 버튼을 숨기고 수정 버튼을 보임
+                                            document.getElementById('ins-submit-' + index).classList.add('d-none');
+                                            document.getElementById('ins-update-' + index).classList.remove('d-none');
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // 에러 처리
+                                            console.error('저장 중 오류 발생:', error);
+                                        }
+                                    });
                                 }
                             </script>
                         </div>

@@ -15,4 +15,5 @@ public interface PrdcService {
     List<PrdcMtrl> getPrdcmtrlByPrdcno(Long prdcno);
 
     List<QuotationMtrl> getMaterial(List<PrdcMtrl> list);
+
 }

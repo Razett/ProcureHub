@@ -5,7 +5,9 @@ import com.glkids.procurehub.repository.search.ExportSearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ExportRepository extends JpaRepository<Export, Long>, QuerydslPredicateExecutor<Export>, ExportSearchRepository {
@@ -21,4 +23,11 @@ public interface ExportRepository extends JpaRepository<Export, Long>, QuerydslP
             "GROUP BY DATE_FORMAT(e.shippeddate, '%Y-%m') " +
             "ORDER BY month DESC", nativeQuery = true)
     List<Object[]> findMonthlyExportData(Long mtrlno);
+
+    @Query("SELECT FUNCTION('DATE_FORMAT', ex.shippeddate, '%Y-%m') AS month, COUNT(ex.shippeddate) AS counts " +
+            "FROM Export ex " +
+            "WHERE ex.status > 3 " +
+            "AND ex.shippeddate >= :startDate " +
+            "GROUP BY FUNCTION('DATE_FORMAT', ex.shippeddate, '%Y-%m') ")
+    List<Object[]> findMonthlyExportCount(@Param("startDate") LocalDateTime startDate);
 }

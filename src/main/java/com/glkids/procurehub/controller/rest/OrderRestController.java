@@ -6,11 +6,13 @@ import com.glkids.procurehub.dto.UserDTO;
 import com.glkids.procurehub.entity.Order;
 import com.glkids.procurehub.entity.OrderInspection;
 import com.glkids.procurehub.service.OrderService;
+import com.glkids.procurehub.status.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,11 +51,18 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.inspectionRead(orderDTO.getOrderno()));
     }
 
+    @Transactional
     @DeleteMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void orderDelete(@RequestBody List<Long> ordernosList){
         for (Long orderno : ordernosList) {
-            orderService.delete(orderno);
+            orderService.changeStatus(orderno, OrderStatus.RETURNED);
         }
+    }
+
+    @PostMapping(value="/inspection", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Boolean> inspectionRegister(@AuthenticationPrincipal UserDTO userDTO, @RequestBody OrderInspectionDTO orderInspectionDTO){
+
+        return ResponseEntity.ok(orderService.inspectionRegister(orderInspectionDTO, userDTO.getEmp()));
     }
 
 

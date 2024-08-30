@@ -7,6 +7,7 @@ import com.glkids.procurehub.entity.QImports;
 import com.glkids.procurehub.repository.ExportRepository;
 import com.glkids.procurehub.repository.ImportInspectionRepository;
 import com.glkids.procurehub.repository.ImportRepository;
+import com.glkids.procurehub.repository.OrderRepository;
 import com.glkids.procurehub.status.ImportStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -25,6 +26,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final ImportInspectionRepository importInspectionRepository;
     private final ImportService importService;
     private final ExportRepository exportRepository;
+    private final OrderRepository orderRepository;
 
     @Deprecated
     @Override
@@ -155,5 +157,95 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         Collections.reverse(list);
         return list;
+    }
+
+    @Override
+    public Map<String, Long> getMonthOrderCounts() {
+        int year = LocalDate.now().getYear();
+
+        TreeMap<String, Long> quantityMap = new TreeMap<>();
+
+        for (int i = 0; i < 6; i++) {
+            int month = LocalDate.now().getMonthValue() - i;
+            // 월이 음수일 경우 12월을 넘어서는 경우 처리
+            if (month <= 0) {
+                month += 12;
+                year -= 1; // 이전 년도로 변경
+            }
+            // 월을 두 자릿수 형식으로 포맷팅
+            String monthStr = String.format("%02d", month);
+            quantityMap.put(year + "-" + monthStr, 0L);
+        }
+
+        List<Object[]> objects = orderRepository.findMonthlyOrderCount(LocalDate.now().minusMonths(6).atStartOfDay());
+        if (objects != null && !objects.isEmpty()) {
+            for (Object[] object : objects) {
+                Long mapQuantity = quantityMap.get((String) object[0]);
+                mapQuantity = mapQuantity +  (Long) object[1];
+                quantityMap.put((String) object[0], mapQuantity);
+            }
+        }
+
+        return quantityMap;
+    }
+
+    @Override
+    public Map<String, Long> getMonthImportsCounts() {
+        int year = LocalDate.now().getYear();
+
+        TreeMap<String, Long> quantityMap = new TreeMap<>();
+
+        for (int i = 0; i < 6; i++) {
+            int month = LocalDate.now().getMonthValue() - i;
+            // 월이 음수일 경우 12월을 넘어서는 경우 처리
+            if (month <= 0) {
+                month += 12;
+                year -= 1; // 이전 년도로 변경
+            }
+            // 월을 두 자릿수 형식으로 포맷팅
+            String monthStr = String.format("%02d", month);
+            quantityMap.put(year + "-" + monthStr, 0L);
+        }
+
+        List<Object[]> objects = importRepository.findMonthlyImportCount(LocalDate.now().minusMonths(6).atStartOfDay());
+        if (objects != null && !objects.isEmpty()) {
+            for (Object[] object : objects) {
+                Long mapQuantity = quantityMap.get((String) object[0]);
+                mapQuantity = mapQuantity +  (Long) object[1];
+                quantityMap.put((String) object[0], mapQuantity);
+            }
+        }
+
+        return quantityMap;
+    }
+
+    @Override
+    public Map<String, Long> getMonthExportsCounts() {
+        int year = LocalDate.now().getYear();
+
+        TreeMap<String, Long> quantityMap = new TreeMap<>();
+
+        for (int i = 0; i < 6; i++) {
+            int month = LocalDate.now().getMonthValue() - i;
+            // 월이 음수일 경우 12월을 넘어서는 경우 처리
+            if (month <= 0) {
+                month += 12;
+                year -= 1; // 이전 년도로 변경
+            }
+            // 월을 두 자릿수 형식으로 포맷팅
+            String monthStr = String.format("%02d", month);
+            quantityMap.put(year + "-" + monthStr, 0L);
+        }
+
+        List<Object[]> objects = exportRepository.findMonthlyExportCount(LocalDate.now().minusMonths(6).atStartOfDay());
+        if (objects != null && !objects.isEmpty()) {
+            for (Object[] object : objects) {
+                Long mapQuantity = quantityMap.get((String) object[0]);
+                mapQuantity = mapQuantity +  (Long) object[1];
+                quantityMap.put((String) object[0], mapQuantity);
+            }
+        }
+
+        return quantityMap;
     }
 }

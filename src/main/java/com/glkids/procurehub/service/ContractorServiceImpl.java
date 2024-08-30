@@ -57,6 +57,7 @@ public class ContractorServiceImpl implements ContractorService {
         contractorRepository.save(contractorDtoToEntity(contractorDTO));
     }
 
+    @Override
     public Boolean register(ContractorDTO contractorDTO) {
 
         Contractor conEntity = contractorDtoToEntity(contractorDTO);

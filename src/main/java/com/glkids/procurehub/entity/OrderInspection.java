@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @Getter
+@Setter
 @Entity
 public class OrderInspection extends BaseEntity {
 

@@ -1,17 +1,18 @@
 package com.glkids.procurehub.controller.rest;
 
-import com.glkids.procurehub.dto.QuotationMtrlDTO;
 import com.glkids.procurehub.entity.PrdcMtrl;
 import com.glkids.procurehub.entity.QuotationMtrl;
 import com.glkids.procurehub.repository.QuotationMtrlRepository;
 import com.glkids.procurehub.service.PrdcPlanService;
 import com.glkids.procurehub.service.PrdcService;
 import com.glkids.procurehub.service.QuotationService;
+import com.glkids.procurehub.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +22,9 @@ import java.util.Map;
 public class UtilRestController {
 
     private final PrdcPlanService prdcPlanService;
+    private final StatisticsService statisticsService;
 
     private final PrdcService prdcService;
-
     private final QuotationMtrlRepository quotationMtrlRepository;
 
     private final QuotationService quotationService;
@@ -38,6 +39,15 @@ public class UtilRestController {
         return ResponseEntity.ok(productionData);
     }
 
+    @GetMapping("/monthlyProcessData")
+    public ResponseEntity<List<Map<String, Long>>> getMonthlyProcessData() {
+        List<Map<String, Long>> list = new ArrayList<>();
+        list.add(statisticsService.getMonthOrderCounts());
+        list.add(statisticsService.getMonthImportsCounts());
+        list.add(statisticsService.getMonthExportsCounts());
+
+        return ResponseEntity.ok(list);
+    }
     // 자재 목록을 가져오는 API 엔드포인트
     @GetMapping("/materials")
     @ResponseBody
@@ -51,5 +61,4 @@ public class UtilRestController {
         return prdcService.getMaterial(prdcService.getPrdcmtrlByPrdcno(prdcno));
 
     }
-
 }

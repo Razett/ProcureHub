@@ -1,5 +1,6 @@
 package com.glkids.procurehub.service;
 
+import com.glkids.procurehub.dto.ImportDTO;
 import com.glkids.procurehub.dto.OrderDTO;
 import com.glkids.procurehub.dto.OrderInspectionDTO;
 import com.glkids.procurehub.entity.*;
@@ -11,11 +12,16 @@ import com.glkids.procurehub.status.PrcrStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Service
@@ -142,12 +148,44 @@ public class OrderServiceImpl implements OrderService {
         return list;
     }
 
+    @Transactional
+    @Override
+    public Boolean inspectionRegister(OrderInspectionDTO orderInspectionDTO, Emp emp) {
+        String date = orderInspectionDTO.getDuedateString();
+
+        LocalDateTime duedate = parseDate(date);
+        orderInspectionDTO.setDuedate(duedate);
+
+        Long orderno = orderInspectionDTO.getOrderno();
+        orderInspectionDTO.setOrder(Order.builder().orderno(orderno).build());
+
+        if (orderInspectionDTO.getStatus() != 0) {
+            orderInspectionDTO.setInspector(emp);
+        }
+
+        OrderInspection ins = orderInspectionRepository.save(orderInspectionDTOToEntity(orderInspectionDTO));
+        orderRepository.changeStatus(orderno, OrderStatus.INSPECTING.ordinal());
+
+        return ins.getNspcno() != null;
+    }
+
+    @Deprecated
     @Override
     public List<OrderDTO> totalList() {
         List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC,"orderno"));
         List<OrderDTO> totalList = new ArrayList<>();
         orders.forEach(x -> totalList.add(orderEntityToDTO(x)));
         return totalList;
+    }
+
+    @Override
+    public List<OrderDTO> totalList(String type, String input) {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+
+        orderRepository.findOrdersByStatus(OrderStatus.INSPECTING.ordinal()).forEach(order -> {
+            orderDTOList.add(orderEntityToDTO(order));
+        });
+        return orderDTOList;
     }
 
     @Transactional
@@ -229,5 +267,27 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public long countTotalOrder() {
         return orderRepository.count();
+    }
+
+    public LocalDateTime parseDate(String dateStr) {
+        // 날짜 문자열의 포맷 정의
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-M-d"); // 예: "2024-8-5"
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 예: "2024-12-11"
+
+        LocalDate date = null;
+
+        // 날짜 문자열을 LocalDate로 변환
+        try {
+            date = LocalDate.parse(dateStr, formatter1);
+        } catch (DateTimeParseException e1) {
+            try {
+                date = LocalDate.parse(dateStr, formatter2);
+            } catch (DateTimeParseException e2) {
+                throw new IllegalArgumentException("Invalid date format: " + dateStr);
+            }
+        }
+
+        // LocalDate를 LocalDateTime으로 변환 (시간 부분을 기본값인 00:00:00으로 설정)
+        return date.atStartOfDay();
     }
 }
