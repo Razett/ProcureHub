@@ -142,34 +142,59 @@
             <div id="mainContent">
                 <div class="full-container">
                     <th:block th:fragment="content">
-                        <div class="col-md-5">
-                            <div class="layers bd bgc-white p-20 mB-20">
-                                <div class="layer w-100 mB-10">
-                                    <h3>생산 계획 계산기</h3><br>
-                                    <div class="mb-3">
-                                        <label for="prdcNo" class="form-label">제품 선택</label>
-                                        <select id="prdcNo" class="form-select" required>
-                                            <!-- 자재 옵션을 여기에 추가 -->
-                                        </select>
-                                    </div>
+                        <div class="row mB-20">
+                            <div class="col-md-5">
+                                <div class="layers bd bgc-white p-20 h-100">
+                                    <div class="layer w-100 mB-10">
+                                        <h3>생산 계획 계산기</h3><br>
+                                        <div class="mb-3">
+                                            <label for="prdcNo" class="form-label">제품 선택</label>
+                                            <select id="prdcNo" class="form-select" required>
+                                                <!-- 자재 옵션을 여기에 추가 -->
+                                            </select>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label">제품명</label>
-                                        <input class="form-control bgc-grey-50" id="prdcName" readonly>
-                                        <!-- 제품명이 표시될 곳 -->
-                                    </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">제품명</label>
+                                            <input class="form-control bgc-grey-50" id="prdcName" readonly>
+                                            <!-- 제품명이 표시될 곳 -->
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="editStartDate" class="form-label">시작 날짜</label>
-                                        <input type="datetime-local" class="form-control bgc-grey-50"
-                                               id="editStartDate"> <!-- 시작 날짜 읽기 전용 -->
-                                    </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">생산 제품 수량</label>
+                                            <input class="form-control bgc-grey-50" id="Quantity">
+                                        </div>
 
+                                        <div class="mb-3">
+                                            <label for="editStartDate" class="form-label">시작 날짜</label>
+                                            <input type="datetime-local" class="form-control bgc-grey-50"
+                                                   id="editStartDate"> <!-- 시작 날짜 읽기 전용 -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="layers bd bgc-white p-20 h-100">
+                                    <div class="layer w-100 mB-10">
+                                        <h3>자재 소요량</h3><br>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>자재명</th>
+                                            <th>자재 수량</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="prdcQuantity">
+                                        <!-- 자재 수량 목록이 여기에 추가될 예정 -->
+                                        </tbody>
+                                    </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="layers bd bgc-white p-20 mB-20">
                                 <div class="layer w-100 mB-10">
                                     <h3>자재 및 회사 목록</h3>
@@ -192,95 +217,152 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            $(document).ready(function () {
-                                const prdcSelect = $('#prdcNo'); // 제품 선택 드롭다운
-                                const materialList = $('#materialList'); // 자재 목록 테이블 바디
-                                const editStartDate = $('#editStartDate'); // 사용자 선택 날짜
+                            <script>
+                                $(document).ready(function () {
+                                    const prdcSelect = $('#prdcNo'); // 제품 선택 드롭다운
+                                    const materialList = $('#materialList'); // 자재 목록 테이블 바디
+                                    const editStartDate = $('#editStartDate'); // 사용자 선택 날짜
+                                    const quantityInput = $('#Quantity'); // 생산 제품 수량 입력 필드
+                                    let selectedPrdcNo, selectedDate; // 선택된 제품 번호와 날짜를 저장할 변수
+                                    let productData; // 제품 데이터를 저장할 변수
 
-                                // 모든 제품을 가져와서 드롭다운을 채움
-                                $.ajax({
-                                    url: '/rest/calendar/all',
-                                    method: 'GET',
-                                    success: function (data) {
-                                        data.forEach(prdc => {
-                                            prdcSelect.append(new Option(prdc.name, prdc.prdcno));
-                                        });
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.error('Error fetching prdc data:', error);
-                                        alert('제품 목록을 불러오는 데 실패했습니다.');
-                                    }
-                                });
-
-                                // 제품 선택 시 제품명과 자재 정보를 가져옴
-                                prdcSelect.change(function () {
-                                    const selectedPrdcNo = $(this).val();
-                                    const selectedDate = new Date(editStartDate.val()); // 사용자가 선택한 날짜를 Date 객체로 변환
-
-                                    // 제품명 입력 필드를 지움
-                                    $('#prdcName').val('');
-
-                                    // 선택된 제품 번호에 대한 제품명을 가져옴
+                                    // 모든 제품을 가져와서 드롭다운을 채움
                                     $.ajax({
-                                        url: `/rest/calendar/${selectedPrdcNo}`,
+                                        url: '/rest/calendar/all',
                                         method: 'GET',
                                         success: function (data) {
-                                            $('#prdcName').val(data.name);  // 제품명 표시
-                                            console.log("가져온 제품 데이터", data);
-
-                                            // 자재 목록 가져오기
-                                            fetchMaterialList(data.prdcno, selectedDate);
+                                            data.forEach(prdc => {
+                                                prdcSelect.append(new Option(prdc.name, prdc.prdcno));
+                                            });
                                         },
                                         error: function (xhr, status, error) {
-                                            console.error('Error fetching product name:', error);
-                                            alert('제품명을 불러오는 데 실패했습니다.');
+                                            console.error('Error fetching prdc data:', error);
+                                            alert('제품 목록을 불러오는 데 실패했습니다.');
                                         }
                                     });
-                                });
 
-                                // 자재 목록을 가져오는 함수
-                                function fetchMaterialList(prdcno, selectedDate) {
-                                    $.ajax({
-                                        url: '/rest/utils/materialList',
-                                        method: 'GET',
-                                        data: { prdcno: prdcno },
-                                        success: function (result) {
-                                            console.log("가져온 마테리얼 데이터", result);
+                                    // 제품 선택 시 제품명과 자재 정보를 가져옴
+                                    prdcSelect.change(function () {
+                                        selectedPrdcNo = $(this).val();
+                                        selectedDate = new Date(editStartDate.val()); // 사용자가 선택한 날짜를 Date 객체로 변환
 
-                                            // 자재 목록 비우기
-                                            materialList.empty();
+                                        // 제품명 입력 필드를 지움
+                                        $('#prdcName').val('');
+                                        $('#prdcQuantity').empty(); // 수량 목록을 비움
 
-                                            // 새로운 자재 목록 추가
-                                            result.forEach(prdcMtrl => {
-                                                const leadTimeDate = new Date();
-                                                leadTimeDate.setDate(leadTimeDate.getDate() + prdcMtrl.leadtime);
+                                        // 선택된 제품 번호에 대한 제품명을 가져옴
+                                        $.ajax({
+                                            url: `/rest/calendar/${selectedPrdcNo}`,
+                                            method: 'GET',
+                                            success: function (data) {
+                                                productData = data; // 제품 데이터를 저장
+                                                $('#prdcName').val(data.name);  // 제품명 표시
+                                                console.log("가져온 제품 데이터", data);
 
-                                                // 자재 사용 가능 여부 확인
-                                                const availability = selectedDate > leadTimeDate ? "가능" : "불가능";
+                                                // 여러 수량 값을 테이블로 표시
+                                                if (Array.isArray(data.quantity)) {
+                                                    updateMaterialList(); // 자재 목록 업데이트
+                                                } else {
+                                                    console.error('Error: Quantities data is missing or is not an array.');
+                                                    alert('수량 데이터를 불러오는 데 문제가 있습니다.');
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Error fetching product name:', error);
+                                                alert('제품명을 불러오는 데 실패했습니다.');
+                                            }
+                                        });
+                                    });
 
-                                                // 자재 목록에 행 추가
-                                                materialList.append(`
+                                    // 수량 입력 필드와 시작 날짜 필드의 값이 변경될 때마다 이벤트 처리
+                                    quantityInput.on('input', function () {
+                                        checkInputsAndFetchMaterials(); // 수량이 변경될 때 자재 목록 업데이트
+                                    });
+
+                                    editStartDate.on('change', function () {
+                                        checkInputsAndFetchMaterials(); // 시작 날짜가 변경될 때 자재 목록 업데이트
+                                    });
+
+                                    // 자재 목록 업데이트 함수
+                                    function updateMaterialList() {
+                                        const productionQuantity = parseInt(quantityInput.val(), 10) || 0; // 생산 제품 수량을 정수로 가져옴
+                                        $('#prdcQuantity').empty(); // 수량 목록을 비움
+
+                                        productData.quantity.forEach((qty, index) => {
+                                            const materialName = productData.materialNames[index] || "N/A"; // 자재 이름이 있는 경우 가져오고, 없으면 "N/A"
+                                            $('#prdcQuantity').append(`
+                    <tr>
+                        <td>${materialName}</td> <!-- 자재 이름 -->
+                        <td>${qty}</td>
+                    </tr>
+                `);
+
+                                            // 자재 목록 가져오기 (각 자재의 수량 정보와 함께 전달)
+                                            fetchMaterialList(productData.prdcno, selectedDate, productionQuantity, qty);
+                                        });
+                                    }
+
+                                    // 입력 필드들이 모두 채워졌는지 확인하고 자재 목록을 가져오는 함수
+                                    function checkInputsAndFetchMaterials() {
+                                        const productionQuantity = parseInt(quantityInput.val(), 10) || 0; // 생산 제품 수량을 정수로 가져옴
+                                        const startDate = editStartDate.val(); // 시작 날짜를 가져옴
+
+                                        if (productionQuantity > 0 && startDate) { // 둘 다 입력된 경우
+                                            selectedDate = new Date(startDate); // 시작 날짜를 업데이트
+                                            if (productData) {
+                                                updateMaterialList(); // 자재 목록 업데이트
+                                            }
+                                        } else {
+                                            materialList.empty(); // 자재 목록을 비움
+                                        }
+                                    }
+
+                                    // 자재 목록을 가져오는 함수
+                                    function fetchMaterialList(prdcno, selectedDate, productionQuantity, qty) {
+                                        $.ajax({
+                                            url: '/rest/utils/materialList',
+                                            method: 'GET',
+                                            data: { prdcno: prdcno },
+                                            success: function (result) {
+                                                console.log("가져온 마테리얼 데이터", result);
+
+                                                // 자재 목록 비우기
+                                                materialList.empty();
+
+                                                // 새로운 자재 목록 추가
+                                                result.forEach(prdcMtrl => {
+                                                    const leadTimeDate = new Date();
+                                                    leadTimeDate.setDate(leadTimeDate.getDate() + prdcMtrl.leadtime);
+                                                    const requiredQuantity = qty * productionQuantity; // 필요한 총 자재 수량
+
+                                                    // 자재 사용 가능 여부 확인
+                                                    const availability = (selectedDate > leadTimeDate && requiredQuantity <= prdcMtrl.quantity) ? "가능" : "불가능";
+
+                                                    // 자재 목록에 행 추가
+                                                    materialList.append(`
                             <tr>
                                 <td>${prdcMtrl.material.name}</td> <!-- 자재 이름 -->
                                 <td>${prdcMtrl.material.mtrlno}</td> <!-- 자재 번호 -->
                                 <td>${prdcMtrl.quotation.contractor.name}</td> <!-- 회사 이름 -->
                                 <td>${prdcMtrl.unitprice}</td> <!-- 단가 -->
                                 <td>${prdcMtrl.leadtime}</td> <!-- 리드타임 -->
-                                <td>${prdcMtrl.quantity}</td> <!-- 수량 -->
+                                <td>${prdcMtrl.quantity}</td> <!-- 발주 가능 수량 -->
                                 <td>${availability}</td> <!-- 가능 여부 -->
                             </tr>
                         `);
-                                            });
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error('Error fetching material data:', error);
-                                            alert('자재 목록을 불러오는 데 실패했습니다.');
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
+                                                });
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Error fetching material data:', error);
+                                                alert('자재 목록을 불러오는 데 실패했습니다.');
+                                            }
+                                        });
+                                    }
+                                });
+                            </script>
+
+
+                        </div>
                     </th:block>
                 </div>
             </div>

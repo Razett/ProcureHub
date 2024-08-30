@@ -1,7 +1,5 @@
 package com.glkids.procurehub.dto;
 
-import com.glkids.procurehub.entity.PrdcMtrl;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +14,7 @@ import java.util.List;
 public class PrdcDTO {
     private Long prdcno;
     private String name;
+    private List<Integer> quantity; // 제품 수량 필드 추가
+    private List<String> materialNames;
 
 }

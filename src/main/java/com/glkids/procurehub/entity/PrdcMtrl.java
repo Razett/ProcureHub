@@ -33,4 +33,6 @@ public class PrdcMtrl {
 
     @Column(nullable = false)
     private Integer quantity;
+
+
 }

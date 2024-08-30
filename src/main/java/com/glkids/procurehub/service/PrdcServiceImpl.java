@@ -42,9 +42,10 @@ public class PrdcServiceImpl implements PrdcService {
     @Override
     public List<QuotationMtrl> getMaterial(List<PrdcMtrl> list) {
         List<QuotationMtrl> resultList = new ArrayList<>();
-        list.forEach(prdcMtrl -> {
+        list.forEach(quotationMtrl -> {
             // PrdcMtrl에서 자재 번호를 가져옴
-            Long mtrlno = prdcMtrl.getMaterial().getMtrlno();
+            Long mtrlno = quotationMtrl.getMaterial().getMtrlno();
+            Long prdcMtrlNo = quotationMtrl.getPrdcMtrlNo();
 
             // 자재 번호를 사용하여 QuotationMtrl 엔티티를 조회
             List<QuotationMtrl> quotationMtrls = quotationMtrlRepository.findByMaterial(mtrlno);

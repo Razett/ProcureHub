@@ -5,6 +5,7 @@ import com.glkids.procurehub.dto.PrdcDTO;
 import com.glkids.procurehub.dto.PrdcPlanDTO;
 import com.glkids.procurehub.entity.Calendar;
 import com.glkids.procurehub.entity.Prdc;
+import com.glkids.procurehub.entity.PrdcMtrl;
 import com.glkids.procurehub.service.CalendarService;
 import com.glkids.procurehub.service.PrdcPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,9 +102,20 @@ public class CalendarRestController {
     @GetMapping("/{prdcno}")
     public ResponseEntity<PrdcDTO> getPrdcByNo(@PathVariable Long prdcno) {
             Prdc prdc = prdcPlanService.getPrdcByNo(prdcno);
+        // 각 PrdcMtrl의 수량을 리스트로 가져오기
+        List<Integer> quantities = prdc.getPrdcmtrls().stream()
+                .map(PrdcMtrl::getQuantity)
+                .collect(Collectors.toList());
+
+        List<String> materialNames = prdc.getPrdcmtrls().stream()
+                .map(prdcMtrl -> prdcMtrl.getMaterial().getName() )
+                .collect(Collectors.toList());
+
             PrdcDTO prdcDTO = new PrdcDTO();
             prdcDTO.setPrdcno(prdc.getPrdcno());
             prdcDTO.setName(prdc.getName());
+            prdcDTO.setQuantity(quantities);
+            prdcDTO.setMaterialNames(materialNames);
             return ResponseEntity.ok(prdcDTO);
         }
 
