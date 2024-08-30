@@ -99,8 +99,9 @@ pipeline {
                             exit
                             EOF
                             """
-                            // Retry up to 3 times if health check fails
+                            // Retry up to 3 times if health check fails, with a delay between retries
                             retry(3) {
+                                sleep(time: 5, unit: 'SECONDS')  // wait 5 seconds before retry
                                 sh healthCheckCmd
                             }
                         }
