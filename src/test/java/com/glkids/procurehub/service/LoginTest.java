@@ -16,7 +16,7 @@ public class LoginTest {
 
     @Test
     public void test() {
-        String pw ="6063";
+        String pw ="0804";
         System.out.println(passwordEncoder.encode(pw).length());
         System.out.println(passwordEncoder.encode(pw));
 
