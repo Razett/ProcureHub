@@ -712,10 +712,12 @@
                                             // 저장 후 저장 버튼을 숨기고 수정 버튼을 보임
                                             document.getElementById('ins-submit-' + index).classList.add('d-none');
                                             document.getElementById('ins-update-' + index).classList.remove('d-none');
+                                            window.location.href="/order/list";
                                         },
                                         error: function(xhr, status, error) {
                                             // 에러 처리
                                             console.error('저장 중 오류 발생:', error);
+                                            window.location.href="/order/list";
                                         }
                                     });
                                 }
