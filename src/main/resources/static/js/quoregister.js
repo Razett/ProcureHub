@@ -472,7 +472,7 @@ $(document).ready(function () {
             fileData.append('file', files[i]);
         }
         $.ajax({
-            url: server_url + '/quotation/uploadFile',
+            url:'http://m-it.iptime.org:8028/quotation/uploadFile',
             type: 'POST',
             data: fileData,
             processData: false,
