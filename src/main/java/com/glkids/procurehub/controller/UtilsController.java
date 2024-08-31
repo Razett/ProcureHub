@@ -44,6 +44,7 @@ public class UtilsController {
     public String calculator(@AuthenticationPrincipal UserDTO userDTO, Model model) {
         model.addAttribute("user", userDTO);
 
+        model.addAttribute("title", "계산기");
         return "/utils/calculator";
     }
 
