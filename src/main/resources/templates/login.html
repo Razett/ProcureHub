@@ -52,7 +52,7 @@
             <div class="px-5 py-5">
                 <h2 class="mb-3">로그인</h2>
                 <div>
-                    <form action="/login" method="post">
+                    <form action="/login" method="post" id="form">
                         <div class="mb-3">
                             <label for="id" class="form-label">사원번호</label>
                             <input type="text" class="form-control" id="id" name="username" placeholder="20240705">
@@ -61,7 +61,10 @@
                             <label for="password" class="form-label">암호</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="1234">
                         </div>
-                        <button type="submit" class="btn btn-secondary w-100">로그인</button>
+                        <button id="submit-button" type="submit" class="btn btn-secondary w-100">로그인</button>
+                        <div class="d-flex justify-content-end mt-1 d-none">
+                            <a href="/signup">등록 요청</a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -78,4 +81,27 @@
             <p th:text="${logoutMsg}"></p>
         </div>
 </body>
+<script>
+    // msg 변수는 서버에서 적절하게 주입되어야 합니다.
+    let msg = `[[${msg}]]`;
+
+    if (msg) {
+        alert(msg);
+    }
+
+    var button = document.getElementById("submit-button");
+    var id = document.getElementById("id");
+    var pw = document.getElementById("password");
+
+    button.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        if (id.value.length < 1 || pw.value.length < 1) {
+            alert("사원번호 혹은 암호를 입력하세요");
+        } else {
+            var form = document.getElementById("form");
+            form.submit();
+        }
+    });
+</script>
 </html>
