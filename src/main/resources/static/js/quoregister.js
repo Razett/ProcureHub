@@ -472,7 +472,7 @@ $(document).ready(function () {
             fileData.append('file', files[i]);
         }
         $.ajax({
-            url:'http://m-it.iptime.org:8028/quotation/uploadFile',
+            url:'https://file.glkids.site/quotation/uploadFile',
             type: 'POST',
             data: fileData,
             processData: false,
