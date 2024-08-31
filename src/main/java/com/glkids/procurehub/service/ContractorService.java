@@ -54,7 +54,7 @@ public interface ContractorService {
     default Contractor contractorDtoToEntity(ContractorDTO contractorDTO) {
         Contractor contractor=Contractor.builder().corno(contractorDTO.getCorno())
                 .name(contractorDTO.getName()).phone(contractorDTO.getPhone())
-                .address1(contractorDTO.getAddress1()).address2(contractorDTO.getAddress2())
+                .postcode(contractorDTO.getPostcode()).address1(contractorDTO.getAddress1()).address2(contractorDTO.getAddress2())
                 .mngrName(contractorDTO.getMngrName()).mngrPhone(contractorDTO.getMngrPhone())
                 .mngrAddress(contractorDTO.getMngrAddress()).bank(contractorDTO.getBank())
                 .accountNum(contractorDTO.getAccountNum()).build();
@@ -63,7 +63,7 @@ public interface ContractorService {
     }
 
     default ContractorDTO contractorEntityToDTO(Contractor entity) {
-        return ContractorDTO.builder().corno(entity.getCorno()).name(entity.getName()).phone(entity.getPhone())
+        return ContractorDTO.builder().corno(entity.getCorno()).name(entity.getName()).phone(entity.getPhone()).postcode(entity.getPostcode())
                 .address1(entity.getAddress1()).address2(entity.getAddress2()).mngrName(entity.getMngrName())
                 .mngrPhone(entity.getMngrPhone()).mngrAddress(entity.getMngrAddress()).bank(entity.getBank())
                 .accountNum(entity.getAccountNum()).build();

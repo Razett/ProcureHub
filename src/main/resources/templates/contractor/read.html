@@ -84,9 +84,13 @@
                                         <i class="c-grey-600 ti-mobile me-1"></i>
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.phone}"></span>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">주소</label><br>
+                                    <label class="form-label">주소</label><br>
+                                    <div class="mb-1">
                                         <i class="c-grey-600 ti-location-pin me-1"></i>
+                                        <span class="text-black fa-1-25x" th:text="${contractorRead.postcode}"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="c-grey-600 ti-map me-1"></i>
                                         <span class="text-black fa-1-25x" th:text="${contractorRead.address1}"></span> <br>
                                         <i class="c-grey-600 ps-3 ms-1 me-1"></i>
                                         <span class="text-black fa-1-25x" th:if="${contractorRead.address2 != null and !contractorRead.address2.isEmpty()}" th:text="${contractorRead.address2}"></span>
