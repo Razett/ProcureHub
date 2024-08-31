@@ -144,9 +144,9 @@
                     <th:block th:fragment="content">
                         <div class="row mB-20">
                             <div class="col-md-5">
-                                <div class="layers bd bgc-white p-20 h-100">
-                                    <div class="layer w-100 mB-10">
-                                        <h3>생산 계획 계산기</h3><br>
+                                <div class="bd bgc-white p-20 h-100">
+                                    <div class="w-100 mB-10">
+                                        <h4 class="c-grey-900 mT-10 mB-10">생산 계획 계산기</h4><br>
                                         <div class="mb-3">
                                             <label for="prdcNo" class="form-label">제품 선택</label>
                                             <select id="prdcNo" class="form-select" required>
@@ -162,27 +162,28 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">생산 제품 수량</label>
-                                            <input class="form-control bgc-grey-50" id="Quantity">
+                                            <input class="form-control" id="Quantity">
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="editStartDate" class="form-label">시작 날짜</label>
-                                            <input type="datetime-local" class="form-control bgc-grey-50"
+                                            <input type="datetime-local" class="form-control"
                                                    id="editStartDate"> <!-- 시작 날짜 읽기 전용 -->
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="layers bd bgc-white p-20 h-100">
-                                    <div class="layer w-100 mB-10">
-                                        <h3>자재 소요량</h3><br>
+                            <div class="col-md-7">
+                                <div class="bd bgc-white p-20 h-100">
+                                    <div class="w-100 mB-10">
+                                        <h4 class="c-grey-900 mT-10 mB-10">자재 소요량</h4><br>
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
                                                 <th>자재명</th>
-                                                <th>자재 수량</th>
+                                                <th>현재 자재 수량</th>
+                                                <th>필요 자재 수량</th>
                                             </tr>
                                             </thead>
                                             <tbody id="prdcQuantity">
@@ -194,15 +195,15 @@
                             </div>
                         </div>
 
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div class="layers bd bgc-white p-20 mB-20">
-                                <div class="layer w-100 mB-10">
-                                    <h3>자재 및 회사 목록</h3>
+                                <div class="w-100 mB-10">
+                                    <h4 class="c-grey-900 mT-10 mB-30">자재 및 회사 목록</h4>
                                     <table class="table table-hover">
                                         <thead>
                                         <tr>
-                                            <th>자재명</th>
                                             <th>자재 코드</th>
+                                            <th>자재명</th>
                                             <th>회사 명</th>
                                             <th>단가</th>
                                             <th>리드 타임</th>
@@ -305,6 +306,7 @@
                     <tr>
                         <td>${materialName}</td> <!-- 자재 이름 -->
                         <td>${qty}</td>
+                        <td>${qty * productionQuantity}</td>
                     </tr>
                 `);
 
@@ -338,8 +340,8 @@
                                                 // 자재 목록에 행 추가
                                                 materialList.append(`
                             <tr>
+                                <td>${'MA' + prdcMtrl.material.mtrlno.toString().padStart(6, '0')}</td> <!-- 자재 번호 -->
                                 <td>${prdcMtrl.material.name}</td> <!-- 자재 이름 -->
-                                <td>${prdcMtrl.material.mtrlno}</td> <!-- 자재 번호 -->
                                 <td>${prdcMtrl.quotation.contractor.name}</td> <!-- 회사 이름 -->
                                 <td>${prdcMtrl.unitprice}</td> <!-- 단가 -->
                                 <td>${prdcMtrl.leadtime}</td> <!-- 리드타임 -->
