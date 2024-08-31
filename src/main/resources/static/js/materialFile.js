@@ -1,4 +1,4 @@
-const server_url = 'https://m-it.iptime.org:8028';
+const server_url = 'http://m-it.iptime.org:8028';
 const url = '';
 
 $(document).ready(function () {
