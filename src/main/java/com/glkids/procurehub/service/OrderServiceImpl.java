@@ -114,11 +114,15 @@ public class OrderServiceImpl implements OrderService {
                     .orderdate(order.getOrderdate())
                     .quantity(order.getQuantity())
                     .material(order.getMaterial())
-                    .quotationmtrl(QuotationMtrl.builder().qtmtno(qtmt.getQtmtno()).unitprice(qtmt.getUnitprice()).leadtime(qtmt.getLeadtime()).build())
-                    .contractorName(qtmt.getQuotation().getContractor().getName())
                     .status(order.getStatus())
                     .regdate(order.getRegdate())
                     .moddate(order.getModdate()).build();
+
+            if (qtmt != null) {
+                dto.setQuotationmtrl(QuotationMtrl.builder().qtmtno(qtmt.getQtmtno()).unitprice(qtmt.getUnitprice()).leadtime(qtmt.getLeadtime()).build());
+                dto.setContractorName(qtmt.getQuotation().getContractor().getName());
+
+            }
 
             if (order.getPrcr() != null) {
                 dto.setPrcr(Prcr.builder().prcrno(order.getPrcr().getPrcrno()).reqdate(order.getPrcr().getReqdate()).build());
