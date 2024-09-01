@@ -146,7 +146,7 @@
                                             <th class="text-center">단가</th>
                                             <th class="text-center">총금액</th>
                                             <th class="text-center">발주 상태</th>
-                                            <th class="text-center">발주서 발행</th>
+<!--                                            <th class="text-center">발주서 발행</th>-->
                                         </tr>
                                         </thead>
                                         <tbody id="tableBody">
@@ -176,7 +176,7 @@
                                                 <td th:text="${order.quotationmtrlList.size()>0 ? order.quotationmtrlList.get(order.index).getUnitprice() : 'N/A'}" class="text-end"></td>
                                                 <td th:text="${order.quotationmtrlList.size()>0 ? order.quotationmtrlList.get(order.index).getUnitprice() * order.quantity : 'N/A'}" class="text-end"></td>
                                                 <td th:text="${order.statusString}" class="text-center"></td>
-                                                <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>
+<!--                                                <td class="col-md-1 text-center"><span class="ti-download"></span><span class="icon-name"></span></td>-->
                                             </tr>
                                         </tbody>
                                     </table>
