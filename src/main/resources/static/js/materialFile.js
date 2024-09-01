@@ -1,4 +1,4 @@
-const server_url = 'http://m-it.iptime.org:8028';
+const server_url = 'https://file.glkids.site';
 const url = '';
 
 $(document).ready(function () {

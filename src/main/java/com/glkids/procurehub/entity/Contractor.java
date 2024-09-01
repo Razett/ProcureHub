@@ -34,6 +34,9 @@ public class Contractor extends BaseEntity{
     @Column(length = 11, nullable = false)
     private String phone;
 
+    @Column(length = 6, nullable = false)
+    private String postcode;
+
     @Column(length = 100, nullable = false)
     private String address1;
 

@@ -30,6 +30,7 @@ public class ContractorDTO {
     private Long corno; //사업자 등록번호
     private String name; //회사명
     private String phone; //전화번호
+    private String postcode;
     private String address1; //도로명 주소
     private String address2; //상세 주소
     private String mngrName; //담당자 성명

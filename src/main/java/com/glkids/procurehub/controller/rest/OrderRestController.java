@@ -55,7 +55,11 @@ public class OrderRestController {
     @DeleteMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void orderDelete(@RequestBody List<Long> ordernosList){
         for (Long orderno : ordernosList) {
-            orderService.changeStatus(orderno, OrderStatus.RETURNED);
+            OrderDTO orderDTO = orderService.read(orderno);
+
+            if (orderDTO.getPrcr() == null) {
+                orderService.changeStatus(orderno, OrderStatus.RETURNED);
+            }
         }
     }
 

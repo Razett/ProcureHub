@@ -472,7 +472,7 @@ $(document).ready(function () {
             fileData.append('file', files[i]);
         }
         $.ajax({
-            url: server_url + '/quotation/uploadFile',
+            url:'https://file.glkids.site/quotation/uploadFile',
             type: 'POST',
             data: fileData,
             processData: false,
