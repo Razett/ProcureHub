@@ -166,7 +166,7 @@ public class ProcurementService {
 
         // DTO 리스트 생성 후 납기일(reqdate) 기준으로 정렬
         List<ProcurementDetailsDTO> sortedDtoList = new ArrayList<>(dtoMap.values());
-        sortedDtoList.sort(Comparator.comparing(ProcurementDetailsDTO::getReqdate));
+//        sortedDtoList.sort(Comparator.comparing(ProcurementDetailsDTO::getReqdate));
         // 최종 DTO 리스트를 생성
         return sortedDtoList;
     }
