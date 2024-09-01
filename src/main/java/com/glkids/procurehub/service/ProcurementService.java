@@ -10,6 +10,7 @@ import com.glkids.procurehub.status.OrderStatus;
 import com.glkids.procurehub.status.PrcrStatus;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ public class ProcurementService {
 
     @Transactional
     public List<ProcurementDetailsDTO> getProcurementDetailsGroupMtrl() {
-        List<Prcr> procurementPlans = prcrRepository.findAll();
+        List<Prcr> procurementPlans = prcrRepository.findAll(Sort.by(Sort.Direction.ASC, "reqdate"));
 
         // prdcPlanNo를 기준으로 DTO와 자재 리스트를 관리할 맵
         Map<Long, ProcurementDetailsDTO> dtoMap = new HashMap<>();
