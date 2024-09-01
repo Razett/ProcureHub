@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,8 @@ public class UtilRestController {
 
     @GetMapping("/prdcPlanDoughnut")
     public ResponseEntity<List<Map<String, Object>>> getPrdcPlanDoughnut() {
-        LocalDateTime startDate = LocalDateTime.now().minusMonths(1); // 한 달 시작일 !
-        LocalDateTime endDate = LocalDateTime.now(); //  현재 날짜 종료일 !
+        LocalDateTime startDate = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime endDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()).atTime(23, 59, 59);
 
         List<Map<String, Object>> productionData = prdcPlanService.getTotalQuantityByPrdcNameForMonth(startDate, endDate);
 

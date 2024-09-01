@@ -1,8 +1,5 @@
 package com.glkids.procurehub.service;
 
-import com.glkids.procurehub.dto.CaculatorDTO;
-import com.glkids.procurehub.entity.Material;
-import com.glkids.procurehub.entity.Prdc;
 import com.glkids.procurehub.entity.PrdcMtrl;
 import com.glkids.procurehub.entity.QuotationMtrl;
 
