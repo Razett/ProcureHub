@@ -40,8 +40,6 @@ public class ProcurementService {
 
             if (!mtrlQuantityMap.containsKey(material.getMtrlno())) {
                 mtrlQuantityMap.put(material.getMtrlno(), material.getQuantity());
-            } else {
-                mtrlQuantityMap.put(material.getMtrlno(), mtrlQuantityMap.get(material.getMtrlno()) - prcr.getQuantity() < 0 ? 0L : mtrlQuantityMap.get(material.getMtrlno()) - prcr.getQuantity());
             }
 
 
@@ -81,6 +79,8 @@ public class ProcurementService {
                     // 앞선 조달 계획 처리 후 남는 재고수량과 조달 수량을 비교하여 발주 필요수량을 계산
                     .procureQuantity(mtrlQuantityMap.get(material.getMtrlno()) >= prcr.getQuantity() ? 0 : prcr.getQuantity() - mtrlQuantityMap.get(material.getMtrlno()) + 5)
                     .build();
+
+            mtrlQuantityMap.put(material.getMtrlno(), mtrlQuantityMap.get(material.getMtrlno()) - prcr.getQuantity() < 0 ? 0L : mtrlQuantityMap.get(material.getMtrlno()) - prcr.getQuantity());
 
             // Order에 자동 추가
             if (mtrlDto.getProcureQuantity() > 0 && prcr.getStatus() < PrcrStatus.ORDERED.ordinal()) {
