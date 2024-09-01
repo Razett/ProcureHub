@@ -27,8 +27,13 @@ public class ProcurementService {
 
     @Transactional
     public List<ProcurementDetailsDTO> getProcurementDetailsGroupMtrl() {
-        List<Prcr> procurementPlans = prcrRepository.findAll(Sort.by(Sort.Direction.ASC, "reqdate"));
-
+        List<Prcr> procurementPlans = prcrRepository.findAll(
+                Sort.by(
+                        Sort.Order.asc("reqdate"),
+                        Sort.Order.asc("prcrno"),
+                        Sort.Order.asc("prdc_plan_prdc_plan_no")
+                )
+        );
         // prdcPlanNo를 기준으로 DTO와 자재 리스트를 관리할 맵
         Map<Long, ProcurementDetailsDTO> dtoMap = new HashMap<>();
         Map<Long, Long> mtrlQuantityMap = new HashMap<>();  // key = mtrlno, value=currentQuantity - prcr.quantity
