@@ -79,7 +79,7 @@ public class ProcurementService {
                     .status(prcr.getStatus())
                     .quantity(mtrlQuantityMap.get(material.getMtrlno())) // 각 자재에 해당하는 prcr의 quantity 설정
                     // 앞선 조달 계획 처리 후 남는 재고수량과 조달 수량을 비교하여 발주 필요수량을 계산
-                    .procureQuantity(mtrlQuantityMap.get(material.getMtrlno()) >= prcr.getQuantity() ? 0 : prcr.getQuantity() - mtrlQuantityMap.get(material.getMtrlno()) + 5)
+                    .procureQuantity(mtrlQuantityMap.get(material.getMtrlno()))
                     .build();
 
             // Order에 자동 추가
