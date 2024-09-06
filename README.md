@@ -34,7 +34,6 @@ GoldenKids [금쪽이파티]는 아래와 같은 멤버로 구성되었습니다
 2. [기술 스택](#기술-스택)
 3. [설계](#설계)
 4. [구현](#구현)
-5. [라이센스](#라이센스)
 <br>
 
 ## 소개
@@ -136,10 +135,51 @@ ERD(엔티티-관계 다이어그램)는 다음과 같습니다.
 <br>
 
 UI 설계는 와이어프레임 도구인 Figma[[#]](https://url.kr/fwuxm5)를 통해 진행하였으며, 결과는 다음과 같습니다.
-
+<blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;QbIRB6bZ">Trello - 디자인 시안 확정</a></blockquote>
+<details>
+  <summary>클릭하여 펼치기</summary>
+  <table>
+    <tr>
+      <td rowspan="2"><img width="600" src="https://github.com/user-attachments/assets/8ce2c8c0-ed9b-4fec-87b4-899c755b28e7"/></td>
+      <td><img width="500" src="https://github.com/user-attachments/assets/1c313f78-e504-413c-895e-a77e41b0d032"/></td>
+    </tr>
+    <tr>
+      <td><img width="500" src="https://github.com/user-attachments/assets/9c1d2a0f-9ab9-406b-a7a3-b92b5fdb041a"/></td>
+    </tr>
+  </table>
+</details>
+<br>
 
 ### 테스트
+소프트웨어의 품질을 보장하고, 모든 기능이 예상대로 작동하는지 확인하기 위해 계획한 **테스트 게획서**는 다음과 같습니다.
+<blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;zEPiRwJw">Trello - 테스트 계획서</a></blockquote>
+<br>
 
+### URL 설계
+웹 애플리케이션의 **URL 설계서**는 다음과 같습니다.
+<blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;yY1hNkV5">URL 설계</a></blockquote>
+<br>
 
-### 배포
+### 서버 및 배포
+서버는 Nginx가 사용자의 요청을 라운드 로빈 방식으로 WAS 1과 WAS 2에 분배하며, 각 WAS는 MariaDB와 파일 서버와 연결되어 데이터와 파일 자원을 접근하여 요청을 처리합니다. 모든 서버는 Amazon EC2 인스턴스에서 운영됩니다.
+서버 구성도는 아래와 같습니다.
+<details>
+  <summary>클릭하여 펼치기</summary>
+  <table>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/e396f111-429c-477c-8c65-ee74985eba3e"></td>
+      <td><img src="https://github.com/user-attachments/assets/4f5a2bd4-2f7d-48d9-ab41-650f6f02c754"></td>
+    </tr>
+  </table>
+</details>
+<br>
 
+배포는 GitHub의 WebHook 및 Jenkins Pipeline을 통해 두 개의 WAS에 롤링 업데이트 방식으로 진행됩니다. 이는 서비스 중단 없이 배포를 진행하여 사용자에게 연속적인 서비스를 제공합니다.
+배포 구조도는 다음과 같습니다.
+<details>
+  <summary>클릭하여 펼치기</summary>
+  <img width="1000" src="https://github.com/user-attachments/assets/886069a0-1f83-4436-ab4d-04a362a671e7">
+</details>
+<br>
+
+## 구현
