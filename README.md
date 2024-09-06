@@ -19,12 +19,12 @@ GoldenKids [금쪽이파티]는 아래와 같은 멤버로 구성되었습니다
     <th>장연희</th>
     <th>최지우</th>
   </tr>
-  <tr>
+<!--   <tr>
     <td>팀장</td>
     <td>팀원</td>
     <td>팀원</td>
     <td>팀원</td>
-  </tr>
+  </tr> -->
 </table>
 <br>
 
@@ -40,14 +40,14 @@ GoldenKids [금쪽이파티]는 아래와 같은 멤버로 구성되었습니다
 ## 소개
 ### 프로젝트 목표
 
-이 프로젝트는 **엠아이티능력개발원**에서 진행한 **KDT 과정**의 일환으로, 주요 목표는 다음과 같습니다.
+이 프로젝트는 **엠아이티능력개발원**[[#]](https://www.mit.or.kr "엠아이티능력개발원 홈페이지")에서 진행한 **KDT 과정**의 일환으로, 주요 목표는 다음과 같습니다.
 
 - **웹 어플리케이션 개발 지식 습득**: 웹 어플리케이션 개발과 관련된 이론과 실무 지식을 습득하고 이를 실천하여 숙달화하는 것을 목표로 하였습니다.
 - **팀 단위 활동 경험**: 팀원들과 협력하여 프로젝트를 진행하면서 조직 내 활동 경험을 쌓고, 효과적인 소통 및 협업 능력을 향상시키는 것을 목표로 하였습니다.
 - **개발 과정의 체계화 및 문서화**: 개발 과정을 체계적으로 관리하고, 문서화를 통해 프로젝트의 흐름을 명확히 하고 표준화하는 것을 목표로 하였습니다.
 
 이 프로젝트는 위의 목표를 달성하기 위해 진행되었으며, 실질적인 개발 경험과 팀워크, 그리고 문서화의 중요성을 강조하고자 하였습니다.
-<br>
+<br><br>
 
 ## 기술 스택
 
@@ -58,12 +58,14 @@ GoldenKids [금쪽이파티]는 아래와 같은 멤버로 구성되었습니다
 - **JavaScript**: Vanilla JS, jQuery 3.7.1
 
 ### 프레임워크 및 라이브러리
-- **Spring Boot**: 3.3.1
+- **Spring Boot**: 3.3.1 (Spring Core 6.1.10)
 - **JPA Hibernate**: ORM 솔루션
 - **Spring Security**: 사용자 로그인 처리
-- **Thymeleaf**: 서버 사이드 템플릿 엔진
-- **Lombok**: 코드 간결화
-- **QueryDSL**: 타입 안전한 쿼리 생성
+- **Thymeleaf**: 3.1.2, 서버 사이드 템플릿 엔진
+- **Bootstrap**: 5.2.3, CSS 프레임워크, 반응형 디자인 및 UI 구성
+- **Lombok**: 1.18.32, 코드 간결화
+- **QueryDSL**: 5.1.0, 복잡한 쿼리 생성
+- **HikariCP**: 5.1.0, 고성능 JDBC 커넥션 풀
 
 ### 데이터베이스
 - **MariaDB**: 10.6.18
@@ -81,5 +83,63 @@ GoldenKids [금쪽이파티]는 아래와 같은 멤버로 구성되었습니다
 - **Git**: 버전 관리
 - **GitHub**: 원격 저장소 호스팅
 - **IntelliJ IDEA**: 통합 개발 환경(IDE)
-- **Trello**: 프로젝트 관리
+- **Trello**: 프로젝트 관리 [[#]](https://trello.com/b/MTJkvgDV)
 - **Notion**: 문서화 및 협업
+- **Jenkins**: 지속적 통합 및 배포 자동화
+- **dbdiagam.io**: ERD 제작 도구
+<br><br>
+
+## 설계
+
+이 프로젝트의 설계는 다음과 같은 주요 구성 요소로 이루어져 있습니다.
+<br>
+
+### 아키텍쳐
+
+이 웹 애플리케이션은 **MVC (Model-View-Controller)** 패턴을 사용하여 개발되었으며, 구조도는 아래와 같습니다.
+<details>
+  <summary>클릭하여 펼치기</summary>
+    <img width="500" src="https://github.com/user-attachments/assets/e783c0ee-f805-4e1e-9614-1f75bbc25bc2"/>
+</details>
+<br>
+
+이 웹 애플리케이션 내 파일 입•출력을 처리하는 웹 애플리케이션(ProcureHubFiles[[#]](https://github.com/Razett/ProcureHubFiles "ProcureHubFiles GitHub")) 또한 **MVC** 패턴을 사용하여 개발되었으며, 구조도는 아래와 같습니다.
+<details>
+  <summary>클릭하여 펼치기</summary>
+    <img width="500" src="https://github.com/user-attachments/assets/23735213-615b-42c4-b3ac-501a4c573a51"/>
+    <img width="500" src="https://github.com/user-attachments/assets/8b0637fa-e6bb-45e8-823d-b8a282d3cd53"/>
+</details>
+<br>
+
+### 데이터베이스 모델링
+
+데이터 베이스는 다음과 같은 테이블로 구성됩니다.
+<blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;naliNuIe">Trello - DB 테이블 정의서</a></blockquote>
+<br>
+
+ERD(엔티티-관계 다이어그램)는 다음과 같습니다.
+<blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;oLb12DlK">Trello - DB ER다이어그램</a></blockquote>
+<br>
+
+### 화면 별 기능 정의 및 정책
+화면 별 기능 정의 및 정책서는 다음과 같습니다.
+<blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;KWKy51Lc">Trello - 화면 기능 정의 및 정책서</a></blockquote>
+<br>
+
+### UI
+유저 인터페이스는 사용자 편의를 고려하여 설계되었습니다. 주요 디자인 원칙은 다음과 같습니다.
+
+- **효율적인 데이터 입력**: 사용자가 여러 값을 반복적으로 입력할 필요 없이, 최소한의 화면 이동으로 여러 작업을 한 화면에서 수행할 수 있도록 구성했습니다. (모달)
+- **직관적인 데이터 시각화**: 표를 사용하여 다양한 데이터를 한눈에 확인할 수 있게 하여, 정보 접근성을 높였습니다. (목록)
+- **진행 상태 확인**: 영역을 분할하여 각 프로세스의 진행 상황을 명확히 시각화하여, 사용자가 현재 상태를 쉽게 파악할 수 있도록 디자인했습니다. (발주, 입고)
+- **색상 기반 상태 표시**: 색상으로 상태를 구분하여 빠른 인식과 시각적 피드백을 제공합니다. (견적, 조달 계획)
+<br>
+
+UI 설계는 와이어프레임 도구인 Figma[[#]](https://url.kr/fwuxm5)를 통해 진행하였으며, 결과는 다음과 같습니다.
+
+
+### 테스트
+
+
+### 배포
+
