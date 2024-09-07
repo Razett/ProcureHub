@@ -230,7 +230,7 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 계약 관리 기능은 **업체**와 **견적** 메뉴로 구성되어 있으며, 각 메뉴의 세부 사항은 다음과 같습니다:
 
-### 업체
+#### 업체
 - **업체 목록**:
   - 업체 명, 주소, 내선 번호를 확인할 수 있습니다.
   - 등록된 업체를 클릭하면 상세정보 페이지로 이동하여, 해당 업체의 정보와 주고받은 견적 목록을 확인할 수 있습니다.
@@ -260,7 +260,7 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
   </table>
 </details>
 
-### 견적
+#### 견적
 - **견적 목록**:
   - 전체 주고받은 견적 목록을 표 형태로 표시하며, 상태 부분에는 색상을 통해 견적의 상태를 나타냅니다.
   - 목록 검색 기능이 제공되어 원하는 견적을 쉽게 찾을 수 있습니다.
@@ -277,4 +277,30 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 <details>
   <summary>클릭하여 펼치기</summary>
+  <table>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/04637450-bd39-40e0-8049-8b95a5bc0bc9"/></td>
+      <td><img src="https://github.com/user-attachments/assets/bb1dc347-cd9c-407b-92f3-1e15f82d1171"/></td>
+    </tr>
+    <tr>
+      <th>견적 목록 및 상세정보</th>
+      <th>견적서 출력 및 파일 업로드</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/2067a555-290d-410b-a4e6-6561cd11240a"/></td>
+      <td><img src="https://github.com/user-attachments/assets/8cd136c3-d914-445e-a611-def05ef12f3b"/></td>
+    </tr>
+    <tr>
+      <th>견적 등록</th>
+      <th>견적 수정</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/cf30948e-f6d7-467a-8ba6-e197995bd070"/></td>
+      <td><img src="https://github.com/user-attachments/assets/eff30110-4a89-4ee6-b43c-0496c17c7967"/></td>
+    </tr>
+    <tr>
+      <th>계약 등록 실패 시</th>
+      <th>계약 등록 성공 시</th>
+    </tr>
+  </table>
 </details>
