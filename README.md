@@ -335,5 +335,29 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 <details>
   <summary>클릭하여 펼치기</summary>
   <table>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/7328a74d-c7a0-44f1-a771-ec3d1d5b8dfc"/></td>
+      <td><img src="https://github.com/user-attachments/assets/19205e74-cc74-4bd8-8ee4-f0b6810c3050"/></td>
+    </tr>
+    <tr>
+      <th>자재 목록 및 검색</th>
+      <th>상세정보 및 도면</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/fb42a90d-a6dc-4105-86c8-a240908b4cd2"/></td>
+      <td><img src="https://github.com/user-attachments/assets/59ced78f-382f-4d12-afc2-9af0a0b2f20f"/></td>
+    </tr>
+    <tr>
+      <th>자재 등록</th>
+      <th>자재 수정</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/b8219a1b-dd56-445b-905d-4736a1df6099"/></td>
+      <td><img src="https://github.com/user-attachments/assets/10acb759-65be-4ea8-b158-0400534ee5d9"/></td>
+    </tr>
+    <tr>
+      <th>그룹 목록</th>
+      <th>창고 목록</th>
+    </tr>
   </table>
 </details>
