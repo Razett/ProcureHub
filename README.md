@@ -469,6 +469,40 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 <details>
   <summary>클릭하여 펼치기</summary>
+  <table>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/514a18f2-1c47-4128-9154-810d249b6d28"/></td>
+      <td><img src="https://github.com/user-attachments/assets/f616a87f-cd23-4de9-92ff-9936ebbe8a9b"/></td>
+    </tr>
+    <tr>
+      <th>발주 대기 화면</th>
+      <th>발주 대기 수정</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/3d3cc848-1480-41b5-95e9-885939825c75"/></td>
+      <td><img src="https://github.com/user-attachments/assets/4159bd07-e5e6-4f90-ba5c-a0e0b9c60a46"/></td>
+    </tr>
+    <tr>
+      <th>발주 수동 추가 및 취소</th>
+      <th>발주 실행</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/4f59d94c-0082-4137-8f8d-1c82cb6ef38a"/></td>
+      <td><img src="https://github.com/user-attachments/assets/e9e7c073-54d6-4daa-a423-55ec7e39d0ea"/></td>
+    </tr>
+    <tr>
+      <th>발주 상세 정보 및 진척 검수 추가</th>
+      <th>발주 진척 검수 진행</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/2c5bf565-96e3-4269-8fca-edffa0f279ac"/></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>발주 전체 내역 및 상세 정보</th>
+      <th></th>
+    </tr>
+  </table>
 </details>
 <br>
 
