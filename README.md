@@ -528,6 +528,40 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 <details>
   <summary>클릭하여 펼치기</summary>
+  <table>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/fa88dbb3-3821-4dc2-a038-26fdf8a9cb4e"/></td>
+      <td><img src="https://github.com/user-attachments/assets/de8cb114-9c7e-4f8e-8741-36e4157bf2a4"/></td>
+    </tr>
+    <tr>
+      <th>입고 대기 현황 및 수정</th>
+      <th>입고 도착 및 진행</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/4d4f5425-272e-450b-bb82-18f82301764e"/></td>
+      <td><img src="https://github.com/user-attachments/assets/798c9e0d-efb1-44f8-935c-0b220fdcdadc"/></td>
+    </tr>
+    <tr>
+      <th>입고 검수 불량</th>
+      <th>입고 검수 정상</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/f35d9567-c695-4082-863d-cc15333630c1"/></td>
+      <td><img src="https://github.com/user-attachments/assets/b0e33401-7f19-4867-a801-60cc5e5815bd"/></td>
+    </tr>
+    <tr>
+      <th>입고 도착 처리 시, 발주 완료 처리</th>
+      <th>입고 전체 내역</th>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/a9e4e06d-54d0-44b9-b61d-39f0d367d300"/></td>
+      <td><img src="https://github.com/user-attachments/assets/3cda6a30-b0c1-4ae7-a058-020ae5a9ff16"/></td>
+    </tr>
+    <tr>
+      <th>입고 전체 내역 검색</th>
+      <th>입고 명세서 발행</th>
+    </tr>
+  </table>
 </details>
 <br>
 
@@ -544,6 +578,24 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 <details>
   <summary>클릭하여 펼치기</summary>
+    <table>
+      <tr>
+        <td><img src="https://github.com/user-attachments/assets/f2f8b87d-a1f4-4a93-bad2-3c346ebb159d"/></td>
+        <td><img src="https://github.com/user-attachments/assets/d8c4e1fb-6139-4402-b8ac-a915b364ae94"/></td>
+      </tr>
+      <tr>
+        <th>출고 요청 현황</th>
+        <th>출고 처리</th>
+      </tr>
+      <tr>
+      <td><img src="https://github.com/user-attachments/assets/d54db347-f810-4b93-bfc4-9e551f2e0d75"/></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>출고 전체 내역, 상세정보, 검색</th>
+      <th></th>
+    </tr>
+    </table>
 </details>
 <br>
 
@@ -562,6 +614,7 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 <details>
   <summary>클릭하여 펼치기</summary>
+    <img width="600" src="https://github.com/user-attachments/assets/939f631b-df05-4318-9317-fbef169da509"/>
 </details>
 <br>
 
@@ -576,5 +629,6 @@ ProcureHub는 다음과 같은 주요 기능들로 구성되었습니다.
 
 <details>
   <summary>클릭하여 펼치기</summary>
+    <img width="600" src="https://github.com/user-attachments/assets/f1c5853b-36c8-4dca-a76e-509f166e1da5"/>
 </details>
 <br>
