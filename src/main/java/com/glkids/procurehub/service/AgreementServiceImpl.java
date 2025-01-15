@@ -27,7 +27,6 @@ public class AgreementServiceImpl implements AgreementService {
     private final ContractorRepository contractorRepository;
     private final QuotationService quotationService;
 
-
     @Transactional
     @Override
     public Boolean register(AgreementDTO agreementdto) {
@@ -40,7 +39,6 @@ public class AgreementServiceImpl implements AgreementService {
         } else {
             quotationService.changeStatus(agreementdto.getQtno(), QuotationStatus.AGREEMENT);
         }
-
         return agreement.getGrmno() != null;
     }
 

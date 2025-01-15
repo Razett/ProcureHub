@@ -47,8 +47,9 @@ public class PrcrRepositoryTest {
     }
     @Test
     public void prdcMtrlTest(){
-        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(3).material(Material.builder().mtrlno(157L).build()).prdc(Prdc.builder().prdcno(8L).build()).build());
-        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(4).material(Material.builder().mtrlno(211L).build()).prdc(Prdc.builder().prdcno(8L).build()).build());
+        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(3).material(Material.builder().mtrlno(3L).build()).prdc(Prdc.builder().prdcno(6L).build()).build());
+        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(4).material(Material.builder().mtrlno(5L).build()).prdc(Prdc.builder().prdcno(6L).build()).build());
+        prdcMtrlRepository.save(PrdcMtrl.builder().quantity(10).material(Material.builder().mtrlno(7L).build()).prdc(Prdc.builder().prdcno(6L).build()).build());
     }
 
 
